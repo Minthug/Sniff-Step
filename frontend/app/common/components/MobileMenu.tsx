@@ -8,7 +8,7 @@ interface Props {
     setOnMobileSearch: (onMobileSearch: boolean) => void
 }
 
-export default function MobileMenu({ onMobileMenu, onMobileSearch, setOnMobileMenu, setOnMobileSearch }: Props) {
+export function MobileMenu({ onMobileMenu, onMobileSearch, setOnMobileMenu, setOnMobileSearch }: Props) {
     return (
         <div className="flex gap-4">
             <div

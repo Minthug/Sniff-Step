@@ -4,12 +4,10 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { container } from './styles'
 import { AiOutlineSearch } from 'react-icons/ai'
 import { D2CodingBold } from '../fonts'
-import MobileCategories from './components/MobileCategories'
-import MobileMenu from './components/MobileMenu'
-import MobileSearch from './components/MobileSearch'
 import { useRouter } from 'next/navigation'
+import { MobileCategories, MobileMenu, MobileSearch } from './components'
 
-export default function Header() {
+export function Header() {
     const [onMobileMenu, setOnMobileMenu] = useState(false)
     const [onMobileSearch, setOnMobileSearch] = useState(false)
     const [viewportWidth, setViewportWidth] = useState(0)

@@ -6,7 +6,7 @@ interface Props {
     setOnMobileMenu: (onMobileMenu: boolean) => void
 }
 
-export default function MobileCategories({ onMobileMenu, setOnMobileMenu }: Props) {
+export function MobileCategories({ onMobileMenu, setOnMobileMenu }: Props) {
     return (
         <>
             <div
