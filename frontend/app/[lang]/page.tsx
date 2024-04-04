@@ -2,8 +2,7 @@ import React from 'react'
 import { Locales } from '../types/locales'
 import Link from 'next/link'
 import { D2CodingBold } from '../fonts'
-import Header from '../common/Header'
-import { container } from '../common/styles'
+import { Header, container } from '../common'
 
 interface Props {
     params: { lang: Locales }
