@@ -5,6 +5,7 @@ import SeparateLine from '@/app/common/SeparateLine'
 import SigninButton from '@/app/common/SigninButton'
 import SigninInput from '@/app/common/SigninInput'
 import { D2CodingBold } from '@/app/fonts'
+import useResponsive from '@/app/hooks/useResponsive'
 import { Locales } from '@/app/types/locales'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -19,6 +20,56 @@ export default function page({ params: { lang } }: Props) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const router = useRouter()
+    const { mobile } = useResponsive()
+
+    if (mobile) {
+        return (
+            <div className="relative w-full h-screen flex justify-center">
+                <div className="w-fit max-w-[500px] px-8 h-full flex flex-col justify-center">
+                    <img className=" min-w-[205px] mb-4" src="/text-logo.png" alt="" />
+                    <GoogleLogin className="mb-4">Sign in with Google</GoogleLogin>
+                    <SeparateLine className="mb-0 text-[12px]">or</SeparateLine>
+                    <div className="my-4">
+                        <div className={`${D2CodingBold.className} mb-1 text-[14px]`}>Username or Email</div>
+                        <SigninInput
+                            value={email}
+                            className="placeholder:text-[12px]"
+                            placeholder="Enter your username or email"
+                            type="text"
+                            onChange={setEmail}
+                        />
+                    </div>
+                    <div className="mb-8">
+                        <div className="flex justify-between">
+                            <div className={`${D2CodingBold.className} mb-1 text-[14px]`}>Password</div>
+                            <button
+                                onClick={() => router.push(`/${lang}/find-password`)}
+                                className={`${D2CodingBold.className} text-[12px] underline select-none`}
+                            >
+                                Find Password
+                            </button>
+                        </div>
+                        <SigninInput
+                            value={password}
+                            className="placeholder:text-[12px]"
+                            placeholder="Enter your password"
+                            type="password"
+                            onChange={setPassword}
+                        />
+                    </div>
+                    <SigninButton theme="dark" onClick={() => {}}>
+                        Sign in
+                    </SigninButton>
+                    <div className="flex gap-2 text-[12px] justify-center">
+                        <div>Don't have account?</div>
+                        <button className="underline select-none" onClick={() => router.push(`/${lang}/signup`)}>
+                            Sign Up
+                        </button>
+                    </div>
+                </div>
+            </div>
+        )
+    }
 
     return (
         <div className="relative w-full h-screen flex">
@@ -36,10 +87,10 @@ export default function page({ params: { lang } }: Props) {
             <div className="pl-[160px] w-[720px] h-full flex flex-col justify-center">
                 <div className={`${D2CodingBold.className} text-[28px] font-bold mb-8`}>Sign in to Sniff & Step</div>
                 <GoogleLogin>Sign in with Google</GoogleLogin>
-                <SeparateLine>or sign in with email</SeparateLine>
+                <SeparateLine>or</SeparateLine>
                 <div className="my-4">
                     <div className={`${D2CodingBold.className} mb-1`}>Username or Email</div>
-                    <SigninInput placeholder="Enter your username or email" type="text" onChange={setEmail} />
+                    <SigninInput value={email} placeholder="Enter your username or email" type="text" onChange={setEmail} />
                 </div>
                 <div className="mb-8">
                     <div className="flex justify-between">
@@ -51,7 +102,7 @@ export default function page({ params: { lang } }: Props) {
                             Find Password
                         </button>
                     </div>
-                    <SigninInput placeholder="Enter your password" type="password" onChange={setPassword} />
+                    <SigninInput value={password} placeholder="Enter your password" type="password" onChange={setPassword} />
                 </div>
                 <SigninButton theme="dark" onClick={() => {}}>
                     Sign in
