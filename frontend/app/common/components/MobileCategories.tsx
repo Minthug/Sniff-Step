@@ -15,18 +15,18 @@ export function MobileCategories({ onMobileMenu, setOnMobileMenu }: Props) {
                     height: onMobileMenu ? '100%' : 0,
                     minHeight: onMobileMenu ? 'calc(100vh - 56px)' : 0
                 }}
-                className={`absolute left-0 top-[56px] h-[100%] w-full bg-[#222] opacity-[60%]`}
+                className={`absolute left-0 top-[76px] h-[100%] w-full bg-[#222] opacity-[60%]`}
             ></div>
             <div
                 style={{
-                    height: onMobileMenu ? '161px' : '0px',
+                    height: onMobileMenu ? '151px' : '0px',
                     opacity: onMobileMenu ? 1 : 0,
                     transition: onMobileMenu ? 'height 0.3s, opacity 0.3s' : 'height 0.5s',
-                    padding: onMobileMenu ? '16px 0' : '0'
+                    padding: onMobileMenu ? '0 0 16px 0' : '0'
                 }}
                 className={`
                     ${D2CodingBold.className}
-                    absolute left-0 top-[56px] w-full items-center bg-[#fff] text-[18px]
+                    absolute left-0 top-[76px] w-full items-center bg-neutral-50 text-[18px]
                 `}
             >
                 {onMobileMenu && (

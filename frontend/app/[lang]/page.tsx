@@ -11,9 +11,9 @@ interface Props {
 export default function page({ params: { lang } }: Props) {
     return (
         <div className="relative">
-            <Header />
+            <Header lang={lang} />
             <div className={`${container}`}>
-                <Link className={`${D2CodingBold.className}`} href="/[lang]/login" as={`/${lang}/login`}>
+                <Link className={`${D2CodingBold.className}`} href={`/${lang}/signin`}>
                     login
                 </Link>
             </div>
