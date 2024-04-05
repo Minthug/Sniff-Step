@@ -1,11 +1,12 @@
 'use client'
 
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { container } from './styles'
 import { AiOutlineSearch } from 'react-icons/ai'
 import { useRouter } from 'next/navigation'
 import { MobileCategories, MobileMenu, MobileSearch } from './components'
 import HeaderButton from './components/HeaderButton'
+import useResponsive from '../hooks/useResponsive'
 
 interface Props {
     lang: 'ko' | 'en'
@@ -14,21 +15,8 @@ interface Props {
 export function Header({ lang }: Props) {
     const [onMobileMenu, setOnMobileMenu] = useState(false)
     const [onMobileSearch, setOnMobileSearch] = useState(false)
-    const [viewportWidth, setViewportWidth] = useState(0)
     const router = useRouter()
-    const mobile = viewportWidth < 1280
-
-    const handleResize = useCallback(() => {
-        setViewportWidth(window.innerWidth)
-    }, [])
-
-    useEffect(() => {
-        setViewportWidth(window.innerWidth)
-        window.addEventListener('resize', handleResize)
-        return () => {
-            window.removeEventListener('resize', handleResize)
-        }
-    }, [])
+    const { mobile } = useResponsive()
 
     if (mobile) {
         return (
