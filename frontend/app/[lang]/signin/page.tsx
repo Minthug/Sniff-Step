@@ -3,6 +3,7 @@
 import { GoogleLogin } from '@/app/common/GoogleLogin'
 import SeparateLine from '@/app/common/SeparateLine'
 import SigninButton from '@/app/common/SigninButton'
+import SigninInput from '@/app/common/SigninInput'
 import { D2CodingBold } from '@/app/fonts'
 import { Locales } from '@/app/types/locales'
 import Link from 'next/link'
@@ -30,6 +31,7 @@ export default function page({ params: { lang } }: Props) {
                     className="w-full h-full object-contain select-none bg-[#C9E2EB]"
                     src="https://cdn.dribbble.com/users/338126/screenshots/15483287/media/2f03c8290d612078b76883e579d4fd99.gif"
                 />
+                <img className="absolute bottom-4 w-[140px] object-cover" src="/text-logo.png" alt="" />
             </div>
             <div className="pl-[160px] w-[720px] h-full flex flex-col justify-center">
                 <div className={`${D2CodingBold.className} text-[28px] font-bold mb-8`}>Sign in to Sniff & Step</div>
@@ -37,12 +39,7 @@ export default function page({ params: { lang } }: Props) {
                 <SeparateLine>or sign in with email</SeparateLine>
                 <div className="my-4">
                     <div className={`${D2CodingBold.className} mb-1`}>Username or Email</div>
-                    <input
-                        className="w-full p-4 outline-none border border-gray-300 rounded-2xl text-[14px]"
-                        placeholder="Enter your email"
-                        type="text"
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
+                    <SigninInput placeholder="Enter your username or email" type="text" onChange={setEmail} />
                 </div>
                 <div className="mb-8">
                     <div className="flex justify-between">
@@ -54,14 +51,11 @@ export default function page({ params: { lang } }: Props) {
                             Find Password
                         </button>
                     </div>
-                    <input
-                        className="w-full p-4 outline-none border border-gray-300 rounded-2xl text-[14px]"
-                        placeholder="Enter your password"
-                        type="password"
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
+                    <SigninInput placeholder="Enter your password" type="password" onChange={setPassword} />
                 </div>
-                <SigninButton theme="dark">Sign in</SigninButton>
+                <SigninButton theme="dark" onClick={() => {}}>
+                    Sign in
+                </SigninButton>
                 <div className="flex gap-2 text-[12px] justify-center">
                     <div>Don't have account?</div>
                     <button className="underline select-none" onClick={() => router.push(`/${lang}/signup`)}>
