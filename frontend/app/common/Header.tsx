@@ -3,9 +3,9 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { container } from './styles'
 import { AiOutlineSearch } from 'react-icons/ai'
-import { D2CodingBold, D2CodingLight } from '../fonts'
 import { useRouter } from 'next/navigation'
 import { MobileCategories, MobileMenu, MobileSearch } from './components'
+import HeaderButton from './components/HeaderButton'
 
 interface Props {
     lang: 'ko' | 'en'
@@ -63,9 +63,9 @@ export function Header({ lang }: Props) {
             `}
         >
             <img className="w-[80px] h-[80px] cursor-pointer" src="/logo1-removebg-preview.png" onClick={() => router.push(`/${lang}`)} />
-            <div className="flex gap-2 items-center">
-                <button className={`${D2CodingLight.className} px-4 py-2 text-[14px] tracking-[-0.12rem]`}>산책 시키기</button>
-                <button className={`${D2CodingLight.className} px-4 py-2 text-[14px] tracking-[-0.12rem]`}>산책 맡기기</button>
+            <div className="flex gap-10 items-center">
+                <HeaderButton contents="산책 시키기" href={`/${lang}/register-walker`} />
+                <HeaderButton contents="산책 맡기기" href={`/${lang}/assign-walker`} />
                 <div className="relative">
                     <input
                         className="w-[400px] pl-8 pr-[60px] py-4 text-[14px] text-[#898989] border bg-white rounded-[100px] outline-none"
@@ -77,12 +77,7 @@ export function Header({ lang }: Props) {
                         <AiOutlineSearch className="text-[#898989]" />
                     </div>
                 </div>
-                <button
-                    className={`${D2CodingLight.className} px-4 py-2 text-[14px] tracking-[-0.12rem]y-2`}
-                    onClick={() => router.push(`/${lang}/signin`)}
-                >
-                    로그인
-                </button>
+                <HeaderButton contents="로그인" href={`/${lang}/signin`} />
             </div>
         </div>
     )
