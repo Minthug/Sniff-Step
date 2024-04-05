@@ -24,7 +24,7 @@ export default function page({ params: { lang } }: Props) {
                     href={`/${lang}/signin`}
                 >
                     <FaLongArrowAltLeft className="w-[20px] h-[20px]" />
-                    <div className={`${D2CodingBold.className}`}>Login</div>
+                    <div className={`${D2CodingBold.className} text-[14px]`}>Login</div>
                 </Link>
                 <video
                     className="w-full h-full object-contain select-none bg-[#a6bee4]"
@@ -33,12 +33,13 @@ export default function page({ params: { lang } }: Props) {
                     loop
                     src="https://cdn.dribbble.com/users/1341046/screenshots/16057590/media/db8ececb62cdd03ddaa78fab991a4ec3.mp4"
                 />
+                <img className="absolute bottom-4 w-[140px] object-cover" src="/text-logo.png" alt="" />
             </div>
             <div className="pl-[160px] w-[720px] h-full flex flex-col justify-center">
                 <div className={`${D2CodingBold.className} text-[28px] font-bold mb-8`}>Sign up to Sniff & Step</div>
                 <GoogleLogin theme="dark">Sign up with Google</GoogleLogin>
                 <SeparateLine>or</SeparateLine>
-                <SigninButton>Sign up with Email</SigninButton>
+                <SigninButton onClick={() => router.push(`/${lang}/signup/email-password`)}>Sign up with Email</SigninButton>
                 <div className="flex flex-wrap justify-center mb-4 text-[12px] mt-8">
                     By creating an account you agree with our&nbsp;
                     <button className="underline select-none">Terms of Service</button>,&nbsp;

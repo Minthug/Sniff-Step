@@ -1,3 +1,32 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+input[type='checkbox'] {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    -o-appearance: none;
+    outline: none;
+    content: none;
+}
+
+input[type='checkbox']:before {
+    display: block;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    content: '✔';
+    font-size: 14px;
+    color: transparent !important;
+    background: #fff;
+    border: 1px solid rgb(209 213 219);
+    border-radius: 4px;
+    margin-right: 7px;
+}
+
+input[type='checkbox']:checked:before {
+    color: rgb(255, 255, 255) !important;
+    background: #ff6497;
+}
