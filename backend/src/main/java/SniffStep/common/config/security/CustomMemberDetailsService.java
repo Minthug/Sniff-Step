@@ -1,4 +1,4 @@
-package SniffStep.common.config;
+package SniffStep.common.config.security;
 
 import SniffStep.entity.Member;
 import SniffStep.repository.MemberRepository;

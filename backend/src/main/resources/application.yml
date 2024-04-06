@@ -1,4 +1,14 @@
-jwt:
+server:
+  port: 8081 # 애플리케이션 서버 포트 설정
+  servlet:
+    context-path: /api # 애플리케이션의 기본 컨텍스트 패스 설정
+  tomcat:
+    max-threads: 200 # Tomcat의 최대 스레드 수 설정
+    accept-count: 100 # 연결을 대기할 수 있는 최대 큐 길이
+    connection-timeout: 20000 # 밀리초 단위의 연결 타임아웃 설정
+
+
+  jwt:
   secret: ${JWT_SECRET} # JWT를 서명하는 데 사용될 비밀 키
   accessTokenExpireTime: 600000 # 액세스 토큰의 만료 시간 (예: 600000ms = 10분)
   refreshTokenExpireTime: 2592000000 # 리프레시 토큰의 만료 시간 (예: 2592000000ms = 30일)
