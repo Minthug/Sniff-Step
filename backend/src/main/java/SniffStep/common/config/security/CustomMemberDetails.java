@@ -1,4 +1,4 @@
-package SniffStep.common.config;
+package SniffStep.common.config.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
