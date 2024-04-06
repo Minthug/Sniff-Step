@@ -1,7 +1,7 @@
 package SniffStep.api;
 
-import SniffStep.member.entity.Member;
-import SniffStep.member.repository.MemberRepository;
+import SniffStep.entity.Member;
+import SniffStep.repository.MemberRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

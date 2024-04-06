@@ -1,8 +1,11 @@
-package SniffStep.member.service;
+package SniffStep.service;
 
-import SniffStep.member.entity.Member;
-import SniffStep.member.repository.MemberRepository;
+import SniffStep.dto.JoinDTO;
+import SniffStep.entity.Member;
+import SniffStep.mapper.JoinMapper;
+import SniffStep.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,21 +17,22 @@ import java.util.List;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JoinMapper joinMapper;
 
     // Sign up
     @Transactional
-    public Long join(Member member) {
-        validateDuplicateMember(member);
-        memberRepository.save(member);
-        return member.getId();
-    }
+    public Member join(JoinDTO joinDTO) {
+        boolean isExist = memberRepository.existsByEmail(joinDTO.getEmail());
 
-    // Exception
-    private void validateDuplicateMember(Member member) {
-        List<Member> findMember = memberRepository.findByName(member.getName());
-        if(!findMember.isEmpty()) {
-            throw new IllegalStateException("Already existing member.");
+        if (isExist) {
+            throw new IllegalStateException("Email is already in use.");
         }
+
+        Member member = joinMapper.toEntity(joinDTO);
+        member.hashPassword(passwordEncoder);
+
+        return memberRepository.save(member);
     }
 
     // View all members
@@ -45,7 +49,7 @@ public class MemberService {
     // Update member
     public Member update(long memberId, String nickname) {
         Member member = memberRepository.findById(memberId).get();
-        member.updateNickname(nickname);
+//        member.updateNickname(nickname);
         return member;
     }
 }
