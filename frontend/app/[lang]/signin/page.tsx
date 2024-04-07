@@ -4,6 +4,7 @@ import { GoogleLogin } from '@/app/common/GoogleLogin'
 import SeparateLine from '@/app/common/SeparateLine'
 import SigninButton from '@/app/common/SigninButton'
 import SigninInput from '@/app/common/SigninInput'
+import SigninLogo from '@/app/common/SigninLogo'
 import { D2CodingBold } from '@/app/fonts'
 import useResponsive from '@/app/hooks/useResponsive'
 import { Locales } from '@/app/types/locales'
@@ -26,8 +27,8 @@ export default function page({ params: { lang } }: Props) {
         return (
             <div className="relative w-full h-screen flex justify-center">
                 <div className="w-fit max-w-[500px] px-8 h-full flex flex-col justify-center">
-                    <img className=" min-w-[205px] mb-4" src="/text-logo.png" alt="" />
-                    <GoogleLogin className="mb-4">Sign in with Google</GoogleLogin>
+                    <SigninLogo lang={lang} />
+                    <GoogleLogin className="mb-4 active:bg-slate-100">Sign in with Google</GoogleLogin>
                     <SeparateLine className="mb-0 text-[12px]">or</SeparateLine>
                     <div className="my-4">
                         <div className={`${D2CodingBold.className} mb-1 text-[14px]`}>Username or Email</div>
@@ -44,7 +45,10 @@ export default function page({ params: { lang } }: Props) {
                             <div className={`${D2CodingBold.className} mb-1 text-[14px]`}>Password</div>
                             <button
                                 onClick={() => router.push(`/${lang}/find-password`)}
-                                className={`${D2CodingBold.className} text-[12px] underline select-none`}
+                                className={`
+                                    ${D2CodingBold.className} text-[12px] underline select-none
+                                    active:bg-slate-100
+                                `}
                             >
                                 Find Password
                             </button>
@@ -57,12 +61,12 @@ export default function page({ params: { lang } }: Props) {
                             onChange={setPassword}
                         />
                     </div>
-                    <SigninButton theme="dark" onClick={() => {}}>
+                    <SigninButton className="active:bg-gray-800" theme="dark" onClick={() => {}}>
                         Sign in
                     </SigninButton>
                     <div className="flex gap-2 text-[12px] justify-center">
                         <div>Don't have account?</div>
-                        <button className="underline select-none" onClick={() => router.push(`/${lang}/signup`)}>
+                        <button className="underline select-none active:bg-slate-100" onClick={() => router.push(`/${lang}/signup`)}>
                             Sign Up
                         </button>
                     </div>

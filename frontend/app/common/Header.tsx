@@ -38,7 +38,7 @@ export function Header({ lang }: Props) {
                     setOnMobileSearch={setOnMobileSearch}
                     setOnMobileMenu={setOnMobileMenu}
                 />
-                <MobileCategories onMobileMenu={onMobileMenu} setOnMobileMenu={setOnMobileMenu} />
+                <MobileCategories lang={lang} onMobileMenu={onMobileMenu} setOnMobileMenu={setOnMobileMenu} />
             </div>
         )
     }
@@ -51,7 +51,7 @@ export function Header({ lang }: Props) {
             `}
         >
             <img className="w-[80px] h-[80px] cursor-pointer" src="/logo1-removebg-preview.png" onClick={() => router.push(`/${lang}`)} />
-            <div className="flex gap-10 items-center">
+            <div className="flex gap-8 items-center">
                 <HeaderButton contents="산책 시키기" href={`/${lang}/register-walker`} />
                 <HeaderButton contents="산책 맡기기" href={`/${lang}/assign-walker`} />
                 <div className="relative">
