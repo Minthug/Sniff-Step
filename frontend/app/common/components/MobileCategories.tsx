@@ -1,12 +1,16 @@
 import { D2CodingBold } from '@/app/fonts'
+import { useRouter } from 'next/navigation'
 import React, { HTMLAttributes } from 'react'
 
 interface Props {
+    lang: string
     onMobileMenu: boolean
     setOnMobileMenu: (onMobileMenu: boolean) => void
 }
 
-export function MobileCategories({ onMobileMenu, setOnMobileMenu }: Props) {
+export function MobileCategories({ lang, onMobileMenu, setOnMobileMenu }: Props) {
+    const router = useRouter()
+
     return (
         <>
             <div
@@ -33,7 +37,7 @@ export function MobileCategories({ onMobileMenu, setOnMobileMenu }: Props) {
                     <>
                         <MobileCategory onClick={() => console.log('산책 시키기')}>산책 시키기</MobileCategory>
                         <MobileCategory onClick={() => console.log('산책 맡기기')}>산책 맡기기</MobileCategory>
-                        <MobileCategory onClick={() => console.log('내 프로필')}>내 프로필</MobileCategory>
+                        <MobileCategory onClick={() => router.push(`/${lang}/signin`)}>로그인</MobileCategory>
                     </>
                 )}
             </div>
