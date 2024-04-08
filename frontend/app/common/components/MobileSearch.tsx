@@ -10,7 +10,7 @@ export function MobileSearch({ setOnMobileSearch }: Props) {
     return (
         <div
             className={`
-                        ${container}
+                        ${container.header}
                         absolute flex gap-4 justify-between items-center left-0 w-full h-full py-2 bg-neutral-50 z-10
                 `}
         >
