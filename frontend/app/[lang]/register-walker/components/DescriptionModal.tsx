@@ -7,7 +7,7 @@ interface Props {
     handleDescriptionChange: (description: string) => void
 }
 
-export default function DescriptionModal({ descriptionExample, setShowDescriptionModal, handleDescriptionChange }: Props) {
+export function DescriptionModal({ descriptionExample, setShowDescriptionModal, handleDescriptionChange }: Props) {
     return (
         <>
             <div onClick={() => setShowDescriptionModal(false)} className="fixed top-0 left-0 w-full h-full bg-[#222] opacity-[60%]" />

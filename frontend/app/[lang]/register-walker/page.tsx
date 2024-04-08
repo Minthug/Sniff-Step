@@ -1,15 +1,9 @@
 'use client'
 import React from 'react'
 import { Locales } from '@/app/types/locales'
-import useRegisterWalker from '@/app/hooks/useRegisterWalker'
-import useFileChange from '@/app/hooks/useFileChange'
+import { useRegisterWalker, useFileChange, useResponsive } from '@/app/hooks/'
 import { AiOutlineSearch } from 'react-icons/ai'
-import DescriptionModal from './components/DescriptionModal'
-import ChooseWalkDates from './components/ChooseWalkDates'
-import ChooseWalkTimes from './components/ChooseWalkTimes'
-import ChooseImageFile from './components/ChooseImageFile'
-import DescriptionTextarea from './components/DescriptionTextarea'
-import useResponsive from '@/app/hooks/useResponsive'
+import { DescriptionModal, ChooseWalkDates, ChooseWalkTimes, ChooseImageFile, DescriptionTextarea } from './components'
 import { styles } from './resource'
 
 interface Props {

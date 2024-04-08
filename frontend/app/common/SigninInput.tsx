@@ -8,7 +8,7 @@ interface Props {
     onChange: (value: string) => void
 }
 
-export default function SigninInput({ value, placeholder, type, className, onChange }: Props) {
+export function SigninInput({ value, placeholder, type, className, onChange }: Props) {
     return (
         <input
             className={`w-full p-4 outline-none border border-gray-300 rounded-2xl text-[14px] ${className}`}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 export const MAX_DESCRIPTION_SIZE = 3000
 
-export default function useRegisterWalker() {
+export function useRegisterWalker() {
     const [days, setDays] = useState<{ [key: string]: boolean }>({
         mon: false,
         tue: false,

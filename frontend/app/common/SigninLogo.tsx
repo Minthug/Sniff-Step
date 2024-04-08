@@ -5,7 +5,7 @@ interface Props {
     lang: string
 }
 
-export default function SigninLogo({ lang }: Props) {
+export function SigninLogo({ lang }: Props) {
     const router = useRouter()
     return (
         <img

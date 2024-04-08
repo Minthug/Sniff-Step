@@ -6,7 +6,7 @@ import { AiOutlineSearch } from 'react-icons/ai'
 import { useRouter } from 'next/navigation'
 import { MobileCategories, MobileMenu, MobileSearch } from './components'
 import HeaderButton from './components/HeaderButton'
-import useResponsive from '../hooks/useResponsive'
+import { useResponsive } from '../hooks'
 
 interface Props {
     lang: 'ko' | 'en'

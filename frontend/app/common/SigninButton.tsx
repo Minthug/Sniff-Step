@@ -8,7 +8,7 @@ interface Props {
     onClick: () => void
 }
 
-export default function SigninButton({ theme = 'light', children, className, onClick }: Props) {
+export function SigninButton({ theme = 'light', children, className, onClick }: Props) {
     return (
         <button
             style={{

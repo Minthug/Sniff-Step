@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 
-export default function useResponsive() {
+export function useResponsive() {
     const [viewportWidth, setViewportWidth] = useState(0)
     const mobile = viewportWidth < 1280
 

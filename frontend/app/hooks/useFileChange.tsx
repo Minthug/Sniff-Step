@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 const MAX_FILE_SIZE = 100000000
 
-export default function useFileChange() {
+export function useFileChange() {
     const [file, setFile] = useState<File | null>(null)
     const [fileSizeError, setFileSizeError] = useState(false)
 

@@ -1,5 +1,5 @@
-import { Locales } from '@/app/types/locales'
 import React from 'react'
+import { Locales } from '@/app/types/locales'
 
 interface Props {
     days: { [key: string]: boolean }
@@ -8,7 +8,7 @@ interface Props {
     changeDayToKorean: (lang: string, day: string) => string
 }
 
-export default function ChooseWalkDates({ days, lang, handleDayChange, changeDayToKorean }: Props) {
+export function ChooseWalkDates({ days, lang, handleDayChange, changeDayToKorean }: Props) {
     return (
         <div className="flex gap-4 items-center flex-wrap text-[14px]">
             {Object.keys(days).map((day) => (

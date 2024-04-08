@@ -6,7 +6,7 @@ interface Props {
     handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-export default function ChooseImageFile({ file, handleFileChange }: Props) {
+export function ChooseImageFile({ file, handleFileChange }: Props) {
     return (
         <button
             className="relative w-full h-[361px] flex justify-center items-center mb-8 bg-[#d9d9d9] rounded-md cursor-pointer"

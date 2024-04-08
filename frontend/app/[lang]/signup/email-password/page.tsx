@@ -1,14 +1,12 @@
 'use client'
 
-import SigninButton from '@/app/common/SigninButton'
-import SigninInput from '@/app/common/SigninInput'
-import SigninLogo from '@/app/common/SigninLogo'
-import { D2CodingBold } from '@/app/fonts'
-import useResponsive from '@/app/hooks/useResponsive'
-import { Locales } from '@/app/types/locales'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
+import Link from 'next/link'
+import { useResponsive } from '@/app/hooks'
+import { Locales } from '@/app/types/locales'
+import { SigninButton, SigninInput, SigninLogo } from '@/app/common'
+import { D2CodingBold } from '@/app/fonts'
+import { useRouter } from 'next/navigation'
 import { FaLongArrowAltLeft } from 'react-icons/fa'
 
 interface Props {

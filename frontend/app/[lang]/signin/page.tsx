@@ -1,17 +1,13 @@
 'use client'
 
-import { GoogleLogin } from '@/app/common/GoogleLogin'
-import SeparateLine from '@/app/common/SeparateLine'
-import SigninButton from '@/app/common/SigninButton'
-import SigninInput from '@/app/common/SigninInput'
-import SigninLogo from '@/app/common/SigninLogo'
-import { D2CodingBold } from '@/app/fonts'
-import useResponsive from '@/app/hooks/useResponsive'
-import { Locales } from '@/app/types/locales'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
+import Link from 'next/link'
+import { Locales } from '@/app/types/locales'
+import { useResponsive } from '@/app/hooks'
+import { useRouter } from 'next/navigation'
+import { D2CodingBold } from '@/app/fonts'
 import { FaLongArrowAltLeft } from 'react-icons/fa'
+import { GoogleLogin, SeparateLine, SigninButton, SigninInput, SigninLogo } from '@/app/common'
 
 interface Props {
     params: { lang: Locales }
