@@ -22,7 +22,7 @@ export function Header({ lang }: Props) {
         return (
             <div
                 className={`
-                    ${container}
+                    ${container.header}
                     relative flex justify-between items-center py-2 bg-neutral-50
                 `}
             >
@@ -46,7 +46,7 @@ export function Header({ lang }: Props) {
     return (
         <div
             className={`
-                ${container}
+                ${container.header}
                 flex justify-between items-center pb-8 pt-4
             `}
         >
