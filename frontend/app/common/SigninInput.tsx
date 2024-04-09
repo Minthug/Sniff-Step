@@ -5,17 +5,20 @@ interface Props {
     placeholder: string
     type: 'text' | 'password'
     className?: string
-    onChange: (value: string) => void
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-export default function SigninInput({ value, placeholder, type, className, onChange }: Props) {
+export function SigninInput({ value, placeholder, type, className, onChange }: Props) {
     return (
         <input
-            className={`w-full p-4 outline-none border border-gray-300 rounded-2xl text-[14px] ${className}`}
+            className={`
+            xl:placeholder:text-[14px]
+            placeholder:text-[12px]
+            w-full p-4 outline-none border border-gray-300 rounded-lg text-[14px] ${className}`}
             value={value}
             placeholder={placeholder}
             type={type}
-            onChange={(e) => onChange(e.target.value)}
+            onChange={onChange}
         />
     )
 }

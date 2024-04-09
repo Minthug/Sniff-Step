@@ -1,7 +1,22 @@
 import React, { useState } from 'react'
 export const MAX_DESCRIPTION_SIZE = 3000
 
-export default function useRegisterWalker() {
+export interface RegisterWalker {
+    days: { [key: string]: boolean }
+    times: { [key: string]: boolean }
+    description: string
+    descriptionSizeError: boolean
+    descriptionExample: string
+    showDescriptionModal: boolean
+    handleDayChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+    handleTimeChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+    changeDayToKorean: (lang: string, day: string) => string
+    changeTimeToKorean: (lang: string, time: string) => string
+    handleDescriptionChange: (value: string) => void
+    setShowDescriptionModal: (value: boolean) => void
+}
+
+export function useRegisterWalker(): RegisterWalker {
     const [days, setDays] = useState<{ [key: string]: boolean }>({
         mon: false,
         tue: false,

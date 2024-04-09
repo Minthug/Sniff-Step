@@ -1,2 +1,7 @@
 export * from './Header'
 export * from './styles'
+export * from './GoogleLogin'
+export * from './SeparateLine'
+export * from './SigninButton'
+export * from './SigninInput'
+export * from './SigninLogo'

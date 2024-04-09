@@ -1,9 +1,9 @@
 'use client'
 
-import { D2CodingBold } from '@/app/fonts'
-import { Locales } from '@/app/types/locales'
-import Link from 'next/link'
 import React from 'react'
+import Link from 'next/link'
+import { Locales } from '@/app/types/locales'
+import { D2CodingBold } from '@/app/fonts'
 import { FaLongArrowAltLeft } from 'react-icons/fa'
 
 interface Props {

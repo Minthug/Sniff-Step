@@ -1,5 +1,5 @@
-import { Locales } from '@/app/types/locales'
 import React from 'react'
+import { Locales } from '@/app/types/locales'
 
 interface Props {
     times: { [key: string]: boolean }
@@ -8,7 +8,7 @@ interface Props {
     changeTimeToKorean: (lang: string, day: string) => string
 }
 
-export default function ChooseWalkTimes({ times, lang, handleTimeChange, changeTimeToKorean }: Props) {
+export function ChooseWalkTimes({ times, lang, handleTimeChange, changeTimeToKorean }: Props) {
     return (
         <div className="flex gap-4 items-center flex-wrap text-[14px]">
             {Object.keys(times).map((time) => (

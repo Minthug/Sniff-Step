@@ -5,7 +5,7 @@ interface Props {
     className?: string
 }
 
-export default function SeparateLine({ children, className }: Props) {
+export function SeparateLine({ children, className }: Props) {
     return (
         <div className={`flex gap-2 items-center mb-4 text-[14px] ${className}`}>
             <div className="w-full h-[1px] bg-gray-300" />

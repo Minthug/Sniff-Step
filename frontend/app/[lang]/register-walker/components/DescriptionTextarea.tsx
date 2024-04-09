@@ -1,6 +1,6 @@
-import { MAX_DESCRIPTION_SIZE } from '@/app/hooks/useRegisterWalker'
 import React from 'react'
 import ReactTextareaAutosize from 'react-textarea-autosize'
+import { MAX_DESCRIPTION_SIZE } from '@/app/hooks/useRegisterWalker'
 
 interface Props {
     description: string
@@ -9,7 +9,7 @@ interface Props {
     handleDescriptionChange: (description: string) => void
 }
 
-export default function DescriptionTextarea({ description, descriptionExample, descriptionSizeError, handleDescriptionChange }: Props) {
+export function DescriptionTextarea({ description, descriptionExample, descriptionSizeError, handleDescriptionChange }: Props) {
     return (
         <>
             <ReactTextareaAutosize
