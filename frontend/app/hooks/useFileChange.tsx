@@ -1,7 +1,13 @@
 import React, { useState } from 'react'
 const MAX_FILE_SIZE = 100000000
 
-export function useFileChange() {
+export interface FileChange {
+    file: File | null
+    fileSizeError: boolean
+    handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+}
+
+export function useFileChange(): FileChange {
     const [file, setFile] = useState<File | null>(null)
     const [fileSizeError, setFileSizeError] = useState(false)
 
