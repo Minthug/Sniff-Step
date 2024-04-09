@@ -158,4 +158,10 @@ public class MemberService {
         Member member = findById(id);
         return member.updateMember(memberUpdateDTO, passwordEncoder);
     }
+
+    public Member delete(Long id) {
+        Member member = findById(id);
+        memberRepository.delete(member);
+        return member;
+    }
 }

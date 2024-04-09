@@ -37,11 +37,14 @@ public class MemberController {
         return success(memberMapper.toDto(memberService.findById(id)));
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseResult<MemberDTO> update(@RequestBody @Valid MemberUpdateDTO memberUpdateDTO,
-                                            @PathVariable Long id) {
+                                            @PathVariable(value = "id") Long id) {
         return success(memberMapper.toDto(memberService.update(memberUpdateDTO, id)));
     }
 
-
+    @DeleteMapping("/{id}")
+    public ResponseResult<MemberDTO> delete(@PathVariable Long id) {
+        return success(memberMapper.toDto(memberService.delete(id)));
+    }
 }
