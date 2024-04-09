@@ -52,7 +52,9 @@ public class JwtTokenProvider {
     }
 
     public String generateAccessToken(String username) {
-        return doGenerateToken(username, ACCESS_TOKEN_EXPIRE_TIME.getValue());
+        String token = doGenerateToken(username, ACCESS_TOKEN_EXPIRE_TIME.getValue());
+        log.debug("generateAccessToken: {}", token);
+        return token;
     }
 
     public String generateRefreshToken(String username) {
