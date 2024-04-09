@@ -11,7 +11,7 @@ export default function page({ children, params: { lang } }: Props) {
     return (
         <div>
             <Header lang={lang} />
-            <section className={`${container.section}`}>{children}</section>
+            <section className={container.section}>{children}</section>
         </div>
     )
 }
