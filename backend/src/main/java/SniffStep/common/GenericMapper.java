@@ -3,11 +3,11 @@ package SniffStep.common;
 import java.util.List;
 
 public interface GenericMapper<D, E> {
-    D toDto(E entity);
+    D toDto(E e);
 
-    E toEntity(D dto);
+    E toEntity(D d);
 
-    List<D> toDto(List<E> entityList);
+    List<D> toDtoList(List<E> entityList);
 
-    List<E> toEntity(List<D> dtoList);
+    List<E> toEntityList(List<D> dtoList);
 }

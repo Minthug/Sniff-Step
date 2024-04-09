@@ -1,14 +1,22 @@
 package SniffStep.api;
 
+import SniffStep.common.HttpResponseEntity;
+import SniffStep.common.HttpResponseEntity.ResponseResult;
+import SniffStep.common.jwt.JwtTokenProvider;
+import SniffStep.dto.MemberDTO;
+import SniffStep.dto.MemberUpdateDTO;
 import SniffStep.entity.Member;
+import SniffStep.mapper.MemberMapper;
 import SniffStep.service.MemberService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static SniffStep.common.HttpResponseEntity.success;
+
 @Slf4j
 @RestController
 @RequestMapping("/v1/members")
@@ -16,15 +24,23 @@ import java.util.List;
 public class MemberController {
 
     private final MemberService memberService;
+    private final MemberMapper memberMapper;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    @GetMapping("")
-    public List<Member> findAll() {
-        return memberService.findMembers();
+    @GetMapping("/list")
+    public ResponseResult<List<MemberDTO>> getList() {
+        return success(memberMapper.toDtoList(memberService.findAll()));
     }
 
     @GetMapping("/{id}")
-    public Member findOne(Long memberId) {
-        return memberService.findOne(memberId);
+    public ResponseResult<MemberDTO> findOne(@PathVariable Long id) {
+        return success(memberMapper.toDto(memberService.findById(id)));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseResult<MemberDTO> update(@RequestBody @Valid MemberUpdateDTO memberUpdateDTO,
+                                            @PathVariable Long id) {
+        return success(memberMapper.toDto(memberService.update(memberUpdateDTO, id)));
     }
 
 

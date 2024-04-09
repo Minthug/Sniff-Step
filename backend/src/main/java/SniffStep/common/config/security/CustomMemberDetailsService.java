@@ -1,5 +1,6 @@
 package SniffStep.common.config.security;
 
+import SniffStep.common.exception.UserNotFoundException;
 import SniffStep.entity.Member;
 import SniffStep.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class CustomMemberDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         log.info("email in loadUserByUsername: {}", email);
         Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: "));
+                .orElseThrow(() -> new UserNotFoundException("User not found with email: "));
         return new CustomMemberDetails(member.getEmail(), member.getPassword(), member.getNickname(),
                 List.of(member.getMemberRole().getValue()));
     }

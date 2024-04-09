@@ -1,5 +1,8 @@
 package SniffStep.dto;
 
+import SniffStep.common.validation.MemberRoleValid;
+import SniffStep.common.validation.Password;
+import SniffStep.entity.MemberRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
@@ -16,20 +19,22 @@ public class JoinDTO {
     @Email(regexp="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")
     @NotBlank
     private String email;
-    @NotBlank
     private String name;
     @Length(min = 2, max = 8)
     private String nickname;
     private String phoneNumber;
-    @NotBlank
+    @Password
     private String password;
 
-    @Builder
-    public JoinDTO(String email, String name, String nickname, String phoneNumber, String password) {
+    @MemberRoleValid
+    private MemberRole memberRole;
+
+    public JoinDTO(String email, String name, String nickname, String phoneNumber, String password, MemberRole memberRole) {
         this.email = email;
         this.name = name;
         this.nickname = nickname;
         this.phoneNumber = phoneNumber;
         this.password = password;
+        this.memberRole = memberRole;
     }
 }
