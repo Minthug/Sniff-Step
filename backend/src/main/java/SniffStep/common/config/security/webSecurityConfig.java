@@ -14,6 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @RequiredArgsConstructor
@@ -42,8 +43,9 @@ public class webSecurityConfig {
 
         http
                 .authorizeHttpRequests()
-                .requestMatchers("/v1/auth/signup", "/v1/auth/signin", "/v1/auth/refresh")
-                .permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/v1/auth/signup", "POST")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/v1/auth/signin", "POST")).permitAll()
+                .requestMatchers("/v1/auth/signup", "/v1/auth/signin", "/v1/auth/refresh", "/v1/auth/reissue", "/v1/members/*").permitAll()
                 .requestMatchers("/logout").authenticated()
                 .anyRequest().hasAnyRole("USER", "ADMIN");
 

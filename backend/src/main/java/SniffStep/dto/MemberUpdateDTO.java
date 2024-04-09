@@ -8,12 +8,12 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberUpdateDTO {
-    private String email;
+    private String nickname;
     private String password;
     
     @Builder
-    public MemberUpdateDTO(String email, String password) {
-        this.email = email;
+    public MemberUpdateDTO(String nickname, String password) {
+        this.nickname = nickname;
         this.password = password;
     }
 }

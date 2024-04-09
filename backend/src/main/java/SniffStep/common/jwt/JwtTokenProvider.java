@@ -20,8 +20,14 @@ import static SniffStep.common.jwt.JwtTokenExpireEnum.REFRESH_TOKEN_EXPIRE_TIME;
 @Component
 public class JwtTokenProvider {
 
-    @Value("${jwt.secret:defaultSecretKey}")
-    private String secretKey;
+    private static final String AUTHORITIES_KEY = "auth";
+    private static final String BEARER_TYPE = "bearer";
+
+    private final String secretKey;
+
+    public JwtTokenProvider(@Value("${jwt.secret-key}") String secretKey) {
+        this.secretKey = secretKey;
+    }
 
     public Claims extractAllClaims(String token) {
         return Jwts.parserBuilder()

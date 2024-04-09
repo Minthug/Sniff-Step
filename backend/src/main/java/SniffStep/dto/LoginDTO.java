@@ -1,19 +1,13 @@
 package SniffStep.dto;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class LoginDTO {
     private String email;
     private String password;
 
-    @Builder
-    public LoginDTO(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
 }

@@ -1,56 +1,48 @@
 package SniffStep.api;
 
-import SniffStep.common.HttpResponseEntity;
+import SniffStep.common.jwt.JwtTokenProvider;
+import SniffStep.common.jwt.dto.TokenResponseDTO;
 import SniffStep.dto.JoinDTO;
+import SniffStep.dto.LoginDTO;
 import SniffStep.dto.MemberDTO;
 import SniffStep.entity.Member;
 import SniffStep.mapper.MemberMapper;
 import SniffStep.service.MemberService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.ui.Model;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 import static SniffStep.common.HttpResponseEntity.ResponseResult;
 import static SniffStep.common.HttpResponseEntity.success;
 
-@RestController
+@Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/v1/auth")
+@RestController
+@RequestMapping(value = "/v1/auth")
 public class SignUpController {
 
     private final MemberService memberService;
-//    private final JwtTokenProvider jwtTokenProvider;
     private final MemberMapper memberMapper;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/signup")
-    public ResponseResult<MemberDTO> join(@RequestParam @Valid JoinDTO joinDTO) {
-        return success(memberMapper.toDto(memberService.join(joinDTO)));
+    public ResponseResult<MemberDTO> join(@RequestBody @Valid JoinDTO joinDTO) {
+        Member newMember = processJoinRequest(joinDTO);
+        return success(memberMapper.toDto(newMember));
     }
 
-    @GetMapping("/signin")
-    public String list(Model model) {
-        List<Member> members = memberService.findMembers();
-        model.addAttribute("members", members);
-        return "members/memberList";
+    private Member processJoinRequest(JoinDTO joinDTO) {
+        return memberService.join(joinDTO);
     }
 
-
-    @Data
-    static class CreateMemberRequest {
-        @NotEmpty
-        private String name;
+    @PostMapping("/signin")
+    public ResponseResult<TokenResponseDTO> login(@RequestBody LoginDTO loginDTO) {
+        return success(memberService.login(loginDTO));
     }
-    @Data
-    static class CreateMemberResponse {
-        private Long id;
 
-        public CreateMemberResponse(Long id) {
-            this.id = id;
-        }
+    @PostMapping("/reissue")
+    public ResponseResult<TokenResponseDTO> reissue(@RequestHeader("RefreshToken") String refreshToken) {
+        return success(memberService.reissue(refreshToken));
     }
 }

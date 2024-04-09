@@ -26,4 +26,12 @@ public class RefreshToken {
         this.refreshToken = refreshToken;
         this.expiration = expiration;
     }
+
+    public static RefreshToken createRefreshToken(String id, String refreshToken, Long remainingMilliseconds) {
+        return RefreshToken.builder()
+                .id(id)
+                .refreshToken(refreshToken)
+                .expiration(remainingMilliseconds / 1_000)
+                .build();
+    }
 }
