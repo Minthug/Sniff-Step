@@ -156,7 +156,9 @@ public class MemberService {
     // Update member
     public Member update(MemberUpdateDTO memberUpdateDTO, Long id) {
         Member member = findById(id);
-        return member.updateMember(memberUpdateDTO, passwordEncoder);
+        member.updateMember(memberUpdateDTO);
+        member.hashPassword(passwordEncoder);
+        return member;
     }
 
     public Member delete(Long id) {

@@ -9,11 +9,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberUpdateDTO {
     private String nickname;
+    private String introduce;
     private String password;
     
     @Builder
-    public MemberUpdateDTO(String nickname, String password) {
+    public MemberUpdateDTO(String nickname, String introduce, String password) {
         this.nickname = nickname;
+        this.introduce = introduce;
         this.password = password;
     }
 }

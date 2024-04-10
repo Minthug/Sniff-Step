@@ -22,6 +22,7 @@ public class JoinDTO {
     private String name;
     @Length(min = 2, max = 8)
     private String nickname;
+    private String introduce;
     private String phoneNumber;
     @Password
     private String password;
@@ -29,10 +30,12 @@ public class JoinDTO {
     @MemberRoleValid
     private MemberRole memberRole;
 
-    public JoinDTO(String email, String name, String nickname, String phoneNumber, String password, MemberRole memberRole) {
+    @Builder
+    public JoinDTO(String email, String name, String nickname, String introduce, String phoneNumber, String password, MemberRole memberRole) {
         this.email = email;
         this.name = name;
         this.nickname = nickname;
+        this.introduce = introduce;
         this.phoneNumber = phoneNumber;
         this.password = password;
         this.memberRole = memberRole;

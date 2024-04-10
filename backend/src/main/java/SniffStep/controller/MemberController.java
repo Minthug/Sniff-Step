@@ -1,11 +1,9 @@
-package SniffStep.api;
+package SniffStep.controller;
 
-import SniffStep.common.HttpResponseEntity;
 import SniffStep.common.HttpResponseEntity.ResponseResult;
 import SniffStep.common.jwt.JwtTokenProvider;
 import SniffStep.dto.MemberDTO;
 import SniffStep.dto.MemberUpdateDTO;
-import SniffStep.entity.Member;
 import SniffStep.mapper.MemberMapper;
 import SniffStep.service.MemberService;
 import jakarta.validation.Valid;
