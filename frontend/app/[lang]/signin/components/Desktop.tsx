@@ -2,7 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import { D2CodingBold } from '@/app/fonts'
 import { FaLongArrowAltLeft } from 'react-icons/fa'
-import { GoogleLogin, SeparateLine, SigninButton, SigninInput } from '@/app/common'
+import { GoogleLogin, SeparateLine, SigninButton, SigninInput, container } from '@/app/common'
 import { useRouter } from 'next/navigation'
 import { LoginStates } from '@/app/hooks'
 
@@ -16,13 +16,8 @@ export function Desktop({ lang, loginStates }: Props) {
     const { email, password, changeEmail, changePassword } = loginStates
 
     return (
-        <div
-            className={`
-                    xl:flex
-                    relative w-full h-screen hidden
-                `}
-        >
-            <div className="w-[27.5%] min-w-[400px] h-full">
+        <div className={container.autentication.desktop.section}>
+            <div className={container.autentication.desktop.sidebar}>
                 <Link className="absolute left-8 h-[60px] flex gap-2 justify-center items-center animate-leftBounce" href={`/${lang}/`}>
                     <FaLongArrowAltLeft className="w-[20px] h-[20px]" />
                     <div className={`${D2CodingBold.className}`}>Home</div>
@@ -33,7 +28,7 @@ export function Desktop({ lang, loginStates }: Props) {
                 />
                 <img className="absolute bottom-4 w-[140px] object-cover" src="/text-logo.png" alt="" />
             </div>
-            <div className="pl-[160px] w-[720px] h-full flex flex-col justify-center">
+            <div className={container.autentication.desktop.main}>
                 <div className={`${D2CodingBold.className} text-[28px] font-bold mb-8`}>Sign in to Sniff & Step</div>
                 <GoogleLogin>Sign in with Google</GoogleLogin>
                 <SeparateLine>or</SeparateLine>
