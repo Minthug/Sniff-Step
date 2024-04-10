@@ -40,7 +40,7 @@ spring:
 
 jwt:
   header: Authorization
-  secret-key: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.-DprLrW2OyqiAFiuWs14WO2TWp2EHtaX7a63dqrklk-xrjaZMrcPhpX4hkZw803SQx5HpGc-7VYBX8l82XlMZg # JWT를 서명하는 데 사용될 비밀 키
+  secret-key:  # JWT를 서명하는 데 사용될 비밀 키
   accessTokenExpireTime: 600000 # 액세스 토큰의 만료 시간 (예: 600000ms = 10분)
   refreshTokenExpireTime: 2592000000 # 리프레시 토큰의 만료 시간 (예: 2592000000ms = 30일)
 #jasypt:
