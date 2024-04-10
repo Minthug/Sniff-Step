@@ -5,6 +5,7 @@ import { FileChange, RegisterWalker } from '@/app/hooks'
 import { ChooseImageFile, ChooseWalkDates, ChooseWalkTimes, DescriptionModal, DescriptionTextarea } from '.'
 import { AiOutlineSearch } from 'react-icons/ai'
 import { styles } from '../resource'
+
 interface Props {
     lang: Locales
     fileChangeState: FileChange
