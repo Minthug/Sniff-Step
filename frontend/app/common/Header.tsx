@@ -22,7 +22,7 @@ export function Header({ lang }: Props) {
                 className={`
                 ${container.header} 
                 xl:flex
-                justify-between items-center pb-8 pt-4 hidden
+                justify-between items-center pb-4 pt-4 hidden
             `}
             >
                 <img
@@ -32,7 +32,7 @@ export function Header({ lang }: Props) {
                 />
                 <div className="flex gap-8 items-center">
                     <HeaderButton contents="산책 시키기" href={`/${lang}/register-walker`} />
-                    <HeaderButton contents="산책 맡기기" href={`/${lang}/assign-walker`} />
+                    <HeaderButton contents="산책 맡기기" href={`/${lang}/boards`} />
                     <div className="relative">
                         <input
                             className="w-[400px] pl-8 pr-[60px] py-4 text-[14px] text-[#898989] border bg-white rounded-[100px] outline-none"
@@ -52,7 +52,7 @@ export function Header({ lang }: Props) {
                 className={`
                     ${container.header}
                     xl:hidden
-                    fixed top-0 w-full flex justify-between items-center py-2 bg-neutral-50 z-10
+                    fixed top-0 w-full flex justify-between items-center py-2 bg-neutral-50 z-20
                 `}
             >
                 {onMobileSearch && <MobileSearch setOnMobileSearch={setOnMobileSearch} />}
