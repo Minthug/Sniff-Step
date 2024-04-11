@@ -35,7 +35,7 @@ export function MobileCategories({ lang, onMobileMenu, setOnMobileMenu }: Props)
             >
                 {onMobileMenu && (
                     <>
-                        <MobileCategory onClick={() => router.push(`/${lang}/register-walker`)}>산책 시키기</MobileCategory>
+                        <MobileCategory onClick={() => router.push(`/${lang}/register-walker`)}>산책인 등록</MobileCategory>
                         <MobileCategory onClick={() => router.push(`/${lang}/boards`)}>산책 맡기기</MobileCategory>
                         <MobileCategory onClick={() => router.push(`/${lang}/signin`)}>로그인</MobileCategory>
                     </>

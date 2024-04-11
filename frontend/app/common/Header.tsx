@@ -5,7 +5,7 @@ import { container } from './styles'
 import { AiOutlineSearch } from 'react-icons/ai'
 import { useRouter } from 'next/navigation'
 import { MobileCategories, MobileMenu, MobileSearch } from './components'
-import HeaderButton from './components/HeaderButton'
+import Button from './components/Button'
 
 interface Props {
     lang: 'ko' | 'en'
@@ -31,8 +31,8 @@ export function Header({ lang }: Props) {
                     onClick={() => router.push(`/${lang}`)}
                 />
                 <div className="flex gap-8 items-center">
-                    <HeaderButton contents="산책 시키기" href={`/${lang}/register-walker`} />
-                    <HeaderButton contents="산책 맡기기" href={`/${lang}/boards`} />
+                    <Button contents="산책인 등록" href={`/${lang}/register-walker`} />
+                    <Button contents="산책 맡기기" href={`/${lang}/boards`} />
                     <div className="relative">
                         <input
                             className="w-[400px] pl-8 pr-[60px] py-4 text-[14px] text-[#898989] border bg-white rounded-[100px] outline-none"
@@ -44,7 +44,7 @@ export function Header({ lang }: Props) {
                             <AiOutlineSearch className="text-[#898989]" />
                         </div>
                     </div>
-                    <HeaderButton contents="로그인" href={`/${lang}/signin`} />
+                    <Button contents="로그인" href={`/${lang}/signin`} />
                 </div>
             </div>
 
@@ -52,7 +52,7 @@ export function Header({ lang }: Props) {
                 className={`
                     ${container.header}
                     xl:hidden
-                    fixed top-0 w-full flex justify-between items-center py-2 bg-neutral-50 z-20
+                    fixed top-0 w-full flex justify-between items-center py-2 bg-[#fcfcfc] z-20
                 `}
             >
                 {onMobileSearch && <MobileSearch setOnMobileSearch={setOnMobileSearch} />}

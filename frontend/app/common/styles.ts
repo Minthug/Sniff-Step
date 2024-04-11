@@ -1,5 +1,5 @@
 export const container = {
-    header: 'xl:px-16 px-2',
+    header: 'xl:px-24 px-2',
     section: 'xl:px-24 px-4 mb-32',
     main: {
         mobile: 'xl:hidden h-full min-h-screen mt-[76px]',

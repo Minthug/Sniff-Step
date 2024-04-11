@@ -14,7 +14,7 @@ export function Desktop({ lang }: Props) {
                 </div>
                 <div className="flex gap-16">
                     <Button contents="홈" href={`/${lang}`} />
-                    <Button contents="산책 시키기" href={`/${lang}/register-walker`} />
+                    <Button contents="산책인 등록" href={`/${lang}/register-walker`} />
                     <Button contents="산책 맡기기" href={`/${lang}/boards`} />
                     <Button contents="로그인" href={`/${lang}/signin`} />
                 </div>
