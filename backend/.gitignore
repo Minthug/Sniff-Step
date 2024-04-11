@@ -22,3 +22,6 @@ gradle-app.setting
 .classpath
 
 .idea
+
+*.yml
+application.properties

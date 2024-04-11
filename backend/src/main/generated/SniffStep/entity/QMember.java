@@ -28,6 +28,8 @@ public class QMember extends EntityPathBase<Member> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final StringPath introduce = createString("introduce");
+
     public final EnumPath<MemberRole> memberRole = createEnum("memberRole", MemberRole.class);
 
     public final StringPath name = createString("name");

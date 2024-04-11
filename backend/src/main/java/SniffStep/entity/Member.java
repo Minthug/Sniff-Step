@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.net.URL;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -23,7 +25,11 @@ public class Member extends BaseTime {
 
     private String nickname;
 
+    private String introduce;
+
     private String phoneNumber;
+
+//    private String profileImage;
 
     private String password;
 
@@ -32,26 +38,26 @@ public class Member extends BaseTime {
     private MemberRole memberRole;
 
     @Builder
-    public Member(Long id, String email, String name, String nickname, String phoneNumber, String password, MemberRole memberRole) {
+    public Member(Long id, String email, String name, String nickname, String introduce, String phoneNumber, String password, MemberRole memberRole) {
         this.id = id;
         this.email = email;
         this.name = name;
         this.nickname = nickname;
+        this.introduce = introduce;
         this.phoneNumber = phoneNumber;
         this.password = password;
         this.memberRole = memberRole;
     }
-
-
 
     public Member hashPassword(PasswordEncoder passwordEncoder) {
         this.password = passwordEncoder.encode(this.password);
         return this;
     }
 
-    public Member updateMember(MemberUpdateDTO memberUpdateDTO, PasswordEncoder passwordEncoder) {
+    public Member updateMember(MemberUpdateDTO memberUpdateDTO) {
         this.nickname = memberUpdateDTO.getNickname();
-        this.password = passwordEncoder.encode(memberUpdateDTO.getPassword());
+        this.introduce = memberUpdateDTO.getIntroduce();
+        this.password = memberUpdateDTO.getPassword();
         return this;
     }
 }

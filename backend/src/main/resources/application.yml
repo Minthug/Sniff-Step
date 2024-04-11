@@ -1,11 +1,15 @@
 server:
-  port: 8081 # 애플리케이션 서버 포트 설정
+  port: 8081
   servlet:
-    context-path: /api # 애플리케이션의 기본 컨텍스트 패스 설정
+    context-path: /api
+    multipart:
+      enabled: true
+      max-file-size: 2MB
+      max-request-size: 10MB
   tomcat:
-    max-threads: 200 # Tomcat의 최대 스레드 수 설정
-    accept-count: 100 # 연결을 대기할 수 있는 최대 큐 길이
-    connection-timeout: 20000 # 밀리초 단위의 연결 타임아웃 설정
+    max-threads: 200
+    accept-count: 100
+    connection-timeout: 20000
 
 spring:
   datasource:
@@ -16,36 +20,48 @@ spring:
   jpa:
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.H2Dialect # 명시적으로 방언 설정
+        dialect: org.hibernate.dialect.H2Dialect
         ddl-auto: create
-        show_sql: true # 필요에 따라 주석 처리 해제
+        show_sql: true
         format_sql: true
         default_batch_fetch_size: 100
     hibernate:
-      ddl-auto: update # 올바른 위치에 ddl-auto 설정
+      ddl-auto: update
   thymeleaf:
     prefix: classpath:templates/
     suffix: .html
   redis:
-    host: localhost  # Redis 서버의 호스트명
-    port: 6379       # Redis 서버의 포트 번호, 기본값은 6379입니다
-    password:        # Redis 서버에 접속하기 위한 비밀번호, 필요한 경우 설정
-    database: 0      # 데이터베이스 인덱스, 기본값은 0
+    host: localhost
+    port: 6379
+    password:
+    database: 0
     lettuce:
       pool:
-        max-active: 8    # 커넥션 풀에서 최대 활성 상태로 유지할 수 있는 커넥션 수
-        max-idle: 8      # 커넥션 풀에서 유지할 수 있는 최대 유휴 커넥션 수
-        min-idle: 0      # 커넥션 풀에서 유지할 수 있는 최소 유휴 커넥션 수
-        max-wait: -1ms   # 커넥션 풀에서 커넥션을 얻기 위해 대기하는 최대 시간
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+        max-wait: -1ms
+
+aws:
+  access-key: ${AWS_ACCESS_KEY} # 환경 변수를 사용하는 것이 좋음
+  secret-key: ${AWS_SECRET_KEY} # 환경 변수를 사용하는 것이 좋음
+  s3:
+    bucket: your-bucket-name
+    region: us-east-1 # 예시 리전, 실제 사용하는 리전으로 변경
 
 jwt:
   header: Authorization
+  secret-key: ${JWT_SECRET_KEY}
+  accessTokenExpireTime: 600000
+  refreshTokenExpireTime: 2592000000
+
   secret-key:  # JWT를 서명하는 데 사용될 비밀 키
   accessTokenExpireTime: 600000 # 액세스 토큰의 만료 시간 (예: 600000ms = 10분)
   refreshTokenExpireTime: 2592000000 # 리프레시 토큰의 만료 시간 (예: 2592000000ms = 30일)
 #jasypt:
 #  encryptor:
 #    password: secret # 암호화/복호화에 사용할 비밀 키
+
 logging:
   level:
     org.hibernate.SQL: debug

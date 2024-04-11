@@ -1,4 +1,4 @@
-package SniffStep.api;
+package SniffStep.controller;
 
 import SniffStep.common.jwt.JwtTokenProvider;
 import SniffStep.common.jwt.dto.TokenResponseDTO;
