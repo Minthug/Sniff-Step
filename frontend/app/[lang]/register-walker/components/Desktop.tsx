@@ -96,7 +96,7 @@ export function Desktop({ lang, fileChangeState, registerWalkerState }: Props) {
                         hover:bg-green-700 active:bg-green-800 mb-8
                     `}
                 >
-                    산책인 등록하기
+                    게시글 등록하기
                 </button>
             </div>
         </div>

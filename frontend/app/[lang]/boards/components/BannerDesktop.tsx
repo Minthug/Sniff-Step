@@ -1,5 +1,4 @@
 import React from 'react'
-import { D2CodingBold, D2CodingLight } from '@/app/fonts'
 
 export function BannerDesktop() {
     return (

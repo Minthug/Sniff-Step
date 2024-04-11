@@ -9,7 +9,7 @@ interface Props {
 export function Mobile({ boards }: Props) {
     return (
         <div className={`${container.main.mobile} mt-[48px]`}>
-            <div className="flex justify-center text-[32px] font-[600] mb-12">현재 등록된 산책인들</div>
+            <div className="flex justify-center text-[24px] font-[600] mb-12">현재 등록된 게시물</div>
             <div
                 className={`
                     sm:grid-cols-2

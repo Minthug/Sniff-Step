@@ -10,8 +10,8 @@ interface Props {
 export function DescriptionModal({ descriptionExample, setShowDescriptionModal, handleDescriptionChange }: Props) {
     return (
         <>
-            <div onClick={() => setShowDescriptionModal(false)} className="fixed top-0 left-0 w-full h-full bg-[#222] opacity-[60%]" />
-            <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-[450px] w-full px-4">
+            <div onClick={() => setShowDescriptionModal(false)} className="fixed top-0 left-0 w-full h-full bg-[#222] opacity-[60%] z-20" />
+            <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-[450px] w-full px-4 z-20">
                 <button
                     onClick={() => setShowDescriptionModal(false)}
                     className="absolute top-2 right-6 w-[40px] h-[40px] flex justify-center items-center"

@@ -66,10 +66,10 @@ export function Mobile({ lang, fileChangeState, registerWalkerState }: Props) {
                 </div>
                 <div className="mb-8">
                     <div className={`${styles.subject.mobile} flex flex-col justify-between gap-2`}>
-                        <div>5. 견주님들께 산책에 대한 경험 및 자세한 플랜을 설명해보세요!</div>
+                        <div className="mb-2">5. 견주님들께 산책에 대한 경험 및 자세한 플랜을 설명해보세요!</div>
                         <button
                             onClick={() => setShowDescriptionModal(!showDescriptionModal)}
-                            className="px-4 py-2 border rounded-sm bg-white text-[14px]"
+                            className="px-4 py-4 border rounded-sm bg-white text-[14px]"
                         >
                             예시 템플릿 가져오기
                         </button>
@@ -96,7 +96,7 @@ export function Mobile({ lang, fileChangeState, registerWalkerState }: Props) {
                         active:bg-green-800 mb-8
                     `}
                 >
-                    산책인 등록하기
+                    게시글 등록하기
                 </button>
             </div>
         </div>
