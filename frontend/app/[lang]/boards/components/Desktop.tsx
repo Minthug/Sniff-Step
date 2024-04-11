@@ -1,5 +1,6 @@
 import { container } from '@/app/common'
 import { Board } from '@/app/types/board'
+import Link from 'next/link'
 import React from 'react'
 
 interface Props {
@@ -9,10 +10,14 @@ interface Props {
 export function Desktop({ boards }: Props) {
     return (
         <div className={`${container.main.desktop} items-center px-[108px]`}>
-            <div className="my-[60px] text-[32px] font-[500]">현재 등록된 게시글</div>
+            <div className="my-[60px] text-[32px] font-[500]">현재 등록된 게시물</div>
             <div className="max-w-[1600px] grid grid-cols-3 gap-8">
                 {boards.map((board) => (
-                    <div key={board.id} className="relative w-[304px] h-full shadow-sm rounded-md cursor-pointer bg-white">
+                    <Link
+                        key={board.id}
+                        className="relative w-[304px] h-full shadow-sm rounded-md cursor-pointer bg-white"
+                        href={`/boards/${board.id}`}
+                    >
                         <div
                             className={`
                                     hover:bg-black
@@ -33,7 +38,7 @@ export function Desktop({ boards }: Props) {
                                 <div className="text-[12px]">{board.address}</div>
                             </div>
                         </div>
-                    </div>
+                    </Link>
                 ))}
             </div>
         </div>

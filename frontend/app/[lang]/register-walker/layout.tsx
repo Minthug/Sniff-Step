@@ -1,4 +1,5 @@
 import { Header, container } from '@/app/common'
+import { Footer } from '@/app/common/footer/Footer'
 import { Locales } from '@/app/types/locales'
 import React from 'react'
 
@@ -12,6 +13,7 @@ export default function page({ children, params: { lang } }: Props) {
         <div>
             <Header lang={lang} />
             <section className={container.section}>{children}</section>
+            <Footer lang={lang} />
         </div>
     )
 }

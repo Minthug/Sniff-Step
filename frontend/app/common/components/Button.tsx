@@ -1,3 +1,4 @@
+'use client'
 import { D2CodingLight } from '@/app/fonts'
 import { useRouter } from 'next/navigation'
 import React from 'react'
@@ -5,16 +6,18 @@ import React from 'react'
 interface Props {
     contents: string
     href: string
+    className?: string
 }
 
-export default function HeaderButton({ contents, href }: Props) {
+export default function Button({ contents, href, className }: Props) {
     const router = useRouter()
     return (
         <button
             className={`
                         ${D2CodingLight.className}
                         [&>div]:hover:w-full
-                        relative py-2 text-[14px] tracking-[-0.12rem]
+                        relative py-2 text-[14px] tracking-[-0.12rem] font-[700]
+                        ${className}
             `}
             onClick={() => router.push(href)}
         >
