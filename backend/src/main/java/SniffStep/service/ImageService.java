@@ -28,22 +28,22 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ImageService {
 
-    private final AmazonS3 amazonS3;
+//    private final AmazonS3 amazonS3;
     private final ImageRepository imageRepository;
 
-    @Value("${cloud.aws.s3.bucket}")
-    private String bucket;
+//    @Value("${cloud.aws.s3.bucket}")
+//    private String bucket;
 
-    public List<ImageResponseDTO> addFile(List<MultipartFile> multipartFiles) throws IOException {
-        List<ImageResponseDTO> imageResponseList = new ArrayList<>();
-
-        for (MultipartFile multipartFile : multipartFiles) {
-            ImageResponseDTO imageResponseDTO = saveFile(multipartFile);
-
-            imageResponseList.add(imageResponseDTO);
-        }
-        return imageResponseList;
-    }
+//    public List<ImageResponseDTO> addFile(List<MultipartFile> multipartFiles) throws IOException {
+//        List<ImageResponseDTO> imageResponseList = new ArrayList<>();
+//
+//        for (MultipartFile multipartFile : multipartFiles) {
+//            ImageResponseDTO imageResponseDTO = saveFile(multipartFile);
+//
+//            imageResponseList.add(imageResponseDTO);
+//        }
+//        return imageResponseList;
+//    }
 
     public List<String> saveBoard(Board saveBoard, List<Long> imageId) {
         List<String> saveImageUrlList = new ArrayList<>();
@@ -86,61 +86,61 @@ public class ImageService {
         return "존재하지 않는 게시글 입니다.";
     }
 
-    public void deleteFile(Long id) {
-        Image image = imageRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 이미지가 없습니다. id = " + id));
+//    public void deleteFile(Long id) {
+//        Image image = imageRepository.findById(id)
+//                .orElseThrow(() -> new IllegalArgumentException("해당 이미지가 없습니다. id = " + id));
+//
+//        String bucketKey = image.getS3FilePath();
+//        amazonS3.deleteObject(bucket, bucketKey);
+//        imageRepository.delete(image);
+//    }
 
-        String bucketKey = image.getS3FilePath();
-        amazonS3.deleteObject(bucket, bucketKey);
-        imageRepository.delete(image);
-    }
-
-    public ImageResponseDTO saveFile(MultipartFile multipartFile) throws IOException {
-
-        String absolutePath = new File("").getAbsolutePath() + File.separator + "temp";
-        String fileName = "";
-
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
-        String currentDate = simpleDateFormat.format(new Date());
-
-        String contentType = multipartFile.getContentType();
-
-        if (!ObjectUtils.isEmpty(contentType)) {
-            if (verifyContentType(contentType)) {
-                fileName = UUID.randomUUID() + multipartFile.getOriginalFilename();
-
-                // save local
-                File file = new File(absolutePath + File.separator + fileName);
-                if (!file.exists()) { file.mkdirs(); }
-                    multipartFile.transferTo(file);
-                    file.createNewFile();
-
-                    // save S3
-                    String bucketKey = fileName;
-                    amazonS3.putObject(new PutObjectRequest(bucket, bucketKey, file).withCannedAcl(CannedAccessControlList.PublicRead));
-
-                    // Image Save
-                    String s3Url = amazonS3.getUrl(bucket, bucketKey).toString();
-
-                    Image img = Image.builder()
-                            .name(fileName)
-                            .s3Url(s3Url)
-                            .s3FilePath(bucketKey)
-                            .build();
-
-                    imageRepository.save(img);
-                    ImageResponseDTO imageResponseDTO = new ImageResponseDTO(img);
-                    file.delete();
-
-                    return imageResponseDTO;
-
-                } else {
-                    throw new BusinessLogicException(ExceptionCode.FILE_TYPE_NOT_ACCEPTED);
-                }
-            } else {
-                throw new BusinessLogicException(ExceptionCode.FILE_TYPE_NOT_ACCEPTED);
-            }
-        }
+//    public ImageResponseDTO saveFile(MultipartFile multipartFile) throws IOException {
+//
+//        String absolutePath = new File("").getAbsolutePath() + File.separator + "temp";
+//        String fileName = "";
+//
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+//        String currentDate = simpleDateFormat.format(new Date());
+//
+//        String contentType = multipartFile.getContentType();
+//
+//        if (!ObjectUtils.isEmpty(contentType)) {
+//            if (verifyContentType(contentType)) {
+//                fileName = UUID.randomUUID() + multipartFile.getOriginalFilename();
+//
+//                // save local
+//                File file = new File(absolutePath + File.separator + fileName);
+//                if (!file.exists()) { file.mkdirs(); }
+//                    multipartFile.transferTo(file);
+//                    file.createNewFile();
+//
+//                    // save S3
+//                    String bucketKey = fileName;
+//                    amazonS3.putObject(new PutObjectRequest(bucket, bucketKey, file).withCannedAcl(CannedAccessControlList.PublicRead));
+//
+//                    // Image Save
+//                    String s3Url = amazonS3.getUrl(bucket, bucketKey).toString();
+//
+//                    Image img = Image.builder()
+//                            .name(fileName)
+//                            .s3Url(s3Url)
+//                            .s3FilePath(bucketKey)
+//                            .build();
+//
+//                    imageRepository.save(img);
+//                    ImageResponseDTO imageResponseDTO = new ImageResponseDTO(img);
+//                    file.delete();
+//
+//                    return imageResponseDTO;
+//
+//                } else {
+//                    throw new BusinessLogicException(ExceptionCode.FILE_TYPE_NOT_ACCEPTED);
+//                }
+//            } else {
+//                throw new BusinessLogicException(ExceptionCode.FILE_TYPE_NOT_ACCEPTED);
+//            }
+//        }
 
 
     public boolean verifyContentType(String contentType) {
