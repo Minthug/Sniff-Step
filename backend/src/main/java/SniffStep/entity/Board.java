@@ -1,6 +1,7 @@
 package SniffStep.entity;
 
 import SniffStep.common.BaseTime;
+import SniffStep.dto.BoardPatchDTO;
 import SniffStep.dto.BoardRequestDTO;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -10,8 +11,8 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.io.File;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -32,46 +33,38 @@ public class Board extends BaseTime {
 
     private String activityLocation;
 
-    private LocalDate activityDate;
+    private String activityDate;
 
-    private LocalTime activityTime;
+    private String activityTime;
 
-    private File imageFile;
+    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Image> images = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member author;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "board_type")
-    private BoardType boardType;
+//    @Enumerated(EnumType.STRING)
+//    @Column(name = "board_type")
+//    private BoardType boardType;
 
-    public Board(Long id, String title, String description, String activityLocation,
-                 LocalDate activityDate, LocalTime activityTime, File imageFile, Member author, BoardType boardType) {
-        this.id = id;
+    @Builder
+    public Board(String title, String description, String activityLocation, String activityDate, String activityTime) {
         this.title = title;
         this.description = description;
         this.activityLocation = activityLocation;
         this.activityDate = activityDate;
         this.activityTime = activityTime;
-        this.imageFile = imageFile;
-        this.author = author;
-        this.boardType = boardType;
     }
 
-    @Builder
-
-
-    public Board updateBoard(BoardRequestDTO boardRequestDTO) {
-        this.title = boardRequestDTO.getTitle();
-        this.description = boardRequestDTO.getDescription();
-        this.activityLocation = boardRequestDTO.getActivityLocation();
-        this.activityDate = LocalDate.parse(boardRequestDTO.getActivityDate());
-        this.activityTime = LocalTime.parse(boardRequestDTO.getActivityTime());
-        return this;
+    public void updateBoard(Long id, BoardPatchDTO patch) {
+        this.title = patch.getTitle();
+        this.description = patch.getDescription();
+        this.activityLocation = patch.getActivityLocation();
+        this.activityDate = patch.getActivityDate();
+        this.activityTime = patch.getActivityTime();
     }
-
-    public void updateMember(Member member) {
+    public void saveMember(Member member) {
         this.author = member;
     }
 }
