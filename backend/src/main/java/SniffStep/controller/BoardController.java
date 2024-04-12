@@ -9,6 +9,8 @@ import SniffStep.service.BoardService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,18 +28,11 @@ public class BoardController {
     private final BoardRequestMapper boardRequestMapper;
     private final BoardResponseMapper boardResponseMapper;
 
-    @GetMapping("/list")
-    public ResponseResult<List<BoardResponseDTO>> listAll() {
-        return success(boardResponseMapper.toDtoList(boardService.findAll()));
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @PostMapping("/newBoard")
+    public ResponseEntity<BoardResponseDTO> saveBoard(@RequestBody BoardRequestDTO boardRequestDTO) {
+        return ResponseEntity.ok(boardService.saveBoard(boardRequestDTO));
     }
 
-    @GetMapping("/{id}")
-    public ResponseResult<BoardResponseDTO> findOne(@PathVariable(value = "id") Long id) {
-        return success(boardResponseMapper.toDto(boardService.findById(id)));
-    }
 
-    @PostMapping
-    public ResponseResult<BoardResponseDTO> insert(@RequestBody @Valid BoardRequestDTO boardRequestDTO) {
-        return success(boardResponseMapper.toDto(boardService.insert(boardRequestDTO)));
-    }
 }

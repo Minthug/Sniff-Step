@@ -1,15 +1,18 @@
 package SniffStep.dto;
 
 import SniffStep.common.BaseTime;
+import SniffStep.entity.Board;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class BoardResponseDTO extends BaseTime {
+public class BoardResponseDTO {
 
     private Long id;
     private String title;
@@ -17,16 +20,25 @@ public class BoardResponseDTO extends BaseTime {
     private String activityLocation;
     private String activityDate;
     private String activityTime;
-    private MemberDTO author;
 
-    @Builder
-    public BoardResponseDTO(Long id, String title, String description, String activityLocation, String activityDate, String activityTime, MemberDTO author) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.activityLocation = activityLocation;
-        this.activityDate = activityDate;
-        this.activityTime = activityTime;
-        this.author = author;
+    private List<String> imgUrl;
+
+    public BoardResponseDTO(Board board, List<String> savedImgUrlList) {
+        this.id = board.getId();
+        this.title = board.getTitle();
+        this.description = board.getDescription();
+        this.activityLocation = board.getActivityLocation();
+        this.activityDate = board.getActivityDate();
+        this.activityTime = board.getActivityTime();
+        this.imgUrl = savedImgUrlList;
+    }
+
+    public BoardResponseDTO(Board board) {
+        this.id = board.getId();
+        this.title = board.getTitle();
+        this.description = board.getDescription();
+        this.activityLocation = board.getActivityLocation();
+        this.activityDate = board.getActivityDate();
+        this.activityTime = board.getActivityTime();
     }
 }
