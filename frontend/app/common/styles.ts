@@ -1,6 +1,6 @@
 export const container = {
     header: 'xl:px-24 px-2',
-    section: 'xl:px-24 px-4 mb-32',
+    section: 'xl:px-24 xl:mb-32 px-4 mb-16',
     main: {
         mobile: 'xl:hidden h-full min-h-screen mt-[76px]',
         desktop: 'xl:flex h-full min-h-screen flex-col hidden'
