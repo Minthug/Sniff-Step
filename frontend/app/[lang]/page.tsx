@@ -12,7 +12,7 @@ export default function page({ params: { lang } }: Props) {
     return (
         <div className="relative">
             <Header lang={lang} />
-            <div className={`xl:flex h-full min-h-screen mt-[76px]`}>main</div>
+            <div className={`xl:flex h-full min-h-screen mt-[76px]`}></div>
             <Footer lang={lang} />
         </div>
     )

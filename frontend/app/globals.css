@@ -26,6 +26,10 @@ input[type='checkbox']:before {
     margin-right: 7px;
 }
 
+input[type='checkbox']:disabled:before {
+    color: #bab9b9 !important;
+}
+
 input[type='checkbox']:checked:before {
     color: rgb(255, 255, 255) !important;
     background: #ff6497;

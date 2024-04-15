@@ -1,7 +1,8 @@
 import React from 'react'
 import { Locales } from '@/app/types/locales'
 import { getBoards } from './utils/getBoards'
-import { Desktop, Mobile } from './components'
+import { BannerDesktop, BannerMobile, Desktop, Mobile } from './components'
+import { container } from '@/app/common'
 
 interface Props {
     params: { lang: Locales }
@@ -11,9 +12,13 @@ export default async function page({ params: { lang } }: Props) {
     const boards = await getBoards()
 
     return (
-        <>
-            <Desktop boards={boards} />
-            <Mobile boards={boards} />
-        </>
+        <div>
+            <BannerDesktop />
+            <BannerMobile />
+            <div className={`${container.section} px-[16px]`}>
+                <Desktop boards={boards} />
+                <Mobile boards={boards} />
+            </div>
+        </div>
     )
 }

@@ -60,7 +60,7 @@ export function useRegisterWalker(): RegisterWalker {
 산책 전후로 견주님과 직접 연락을 취하여 [강아지 이름]의 상태와 특별한 요청사항을 확인합니다.
 산책 중에는 사진이나 짧은 동영상을 찍어 견주님께 전달해, 안심하실 수 있도록 하겠습니다.
 
-연착처: [카카오톡 ID, 전화번호 등]
+연락처: [카카오톡 ID, 전화번호 등]
     `
 
     const handleDayChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -107,7 +107,7 @@ export function useRegisterWalker(): RegisterWalker {
 
         switch (time) {
             case 'morning':
-                return '아침'
+                return '오전'
             case 'afternoon':
                 return '오후'
             case 'evening':
