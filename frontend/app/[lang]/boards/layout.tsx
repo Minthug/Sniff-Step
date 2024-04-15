@@ -13,9 +13,7 @@ export default function page({ children, params: { lang } }: Props) {
     return (
         <div>
             <Header lang={lang} />
-            <BannerDesktop />
-            <BannerMobile />
-            <section className={`${container.section} px-[16px]`}>{children}</section>
+            {children}
             <Footer lang={lang} />
         </div>
     )
