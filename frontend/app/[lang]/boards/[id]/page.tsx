@@ -3,10 +3,8 @@ import { container } from '@/app/common'
 import { Locales } from '@/app/types/locales'
 import { getBoardById } from './utils/getBoardById'
 import { D2CodingBold } from '@/app/fonts'
-import Button from '@/app/common/components/Button'
-import { changeDayToKorean, changeTimeToKorean } from '@/app/utils/changeDateUtils'
-import { FaThumbsUp } from 'react-icons/fa6'
 import { Desktop, Mobile } from './components'
+import Button from '@/app/common/components/Button'
 
 interface Props {
     params: { lang: Locales; id: string }
