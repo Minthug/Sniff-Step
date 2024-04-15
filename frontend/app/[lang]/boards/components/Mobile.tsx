@@ -1,12 +1,15 @@
 import React from 'react'
 import { Board } from '@/app/types/board'
 import { container } from '@/app/common'
+import Link from 'next/link'
+import { Locale } from '@/i18n.config'
 
 interface Props {
+    lang: Locale
     boards: Board[]
 }
 
-export function Mobile({ boards }: Props) {
+export function Mobile({ lang, boards }: Props) {
     return (
         <div className={`${container.main.mobile} mt-[48px]`}>
             <div className="flex justify-center text-[24px] font-[600] mb-12">현재 등록된 게시물</div>
@@ -17,7 +20,11 @@ export function Mobile({ boards }: Props) {
                 `}
             >
                 {boards.map((board) => (
-                    <div key={board.id} className="relative w-full shadow-sm rounded-md cursor-pointer bg-white">
+                    <Link
+                        key={board.id}
+                        href={`/${lang}/boards/${board.id}`}
+                        className="relative w-full shadow-sm rounded-md cursor-pointer bg-white"
+                    >
                         <div
                             className={`
                                     hover:bg-black
@@ -38,7 +45,7 @@ export function Mobile({ boards }: Props) {
                                 <div className="text-[12px]">{board.address}</div>
                             </div>
                         </div>
-                    </div>
+                    </Link>
                 ))}
             </div>
         </div>

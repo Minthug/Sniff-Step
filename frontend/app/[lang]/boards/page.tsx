@@ -16,8 +16,8 @@ export default async function page({ params: { lang } }: Props) {
             <BannerDesktop />
             <BannerMobile />
             <div className={`${container.section} px-[16px]`}>
-                <Desktop boards={boards} />
-                <Mobile boards={boards} />
+                <Desktop lang={lang} boards={boards} />
+                <Mobile lang={lang} boards={boards} />
             </div>
         </div>
     )

@@ -1,13 +1,15 @@
 import { container } from '@/app/common'
 import { Board } from '@/app/types/board'
+import { Locale } from '@/i18n.config'
 import Link from 'next/link'
 import React from 'react'
 
 interface Props {
+    lang: Locale
     boards: Board[]
 }
 
-export function Desktop({ boards }: Props) {
+export function Desktop({ lang, boards }: Props) {
     return (
         <div className={`${container.main.desktop} items-center px-[108px]`}>
             <div className="my-[60px] text-[32px] font-[500]">현재 등록된 게시물</div>
@@ -15,8 +17,8 @@ export function Desktop({ boards }: Props) {
                 {boards.map((board) => (
                     <Link
                         key={board.id}
+                        href={`/${lang}/boards/${board.id}`}
                         className="relative w-[304px] h-full shadow-sm rounded-md cursor-pointer bg-white"
-                        href={`/boards/${board.id}`}
                     >
                         <div
                             className={`
