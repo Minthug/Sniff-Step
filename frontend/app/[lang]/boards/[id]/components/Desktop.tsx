@@ -4,6 +4,7 @@ import { Locales } from '@/app/types/locales'
 import { FaThumbsUp } from 'react-icons/fa6'
 import { changeDayToKorean, changeTimeToKorean } from '@/app/utils/changeDateUtils'
 import { Board } from '@/app/types/board'
+import Link from 'next/link'
 
 interface Props {
     lang: Locales
@@ -88,15 +89,16 @@ export function Desktop({ lang, board, dates }: Props) {
                     </div>
                 </div>
             </div>
-            <div
+            <Link
+                href={`/${lang}/boards`}
                 className={`
-                                hover:bg-gray-100
-                                active:bg-gray-200
-                                w-full flex gap-4 items-center justify-center py-4 border rounded-md cursor-pointer
-                            `}
+                            hover:bg-gray-100
+                            active:bg-gray-200
+                            w-full flex gap-4 items-center justify-center py-4 border rounded-md cursor-pointer
+                        `}
             >
                 <div className="flex gap-2 items-center cursor-pointer font-[700]">목록으로 돌아가기</div>
-            </div>
+            </Link>
         </div>
     )
 }
