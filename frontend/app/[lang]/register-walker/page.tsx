@@ -1,4 +1,5 @@
 'use client'
+
 import React from 'react'
 import { Locales } from '@/app/types/locales'
 import { useRegisterWalker, useFileChange } from '@/app/hooks/'
