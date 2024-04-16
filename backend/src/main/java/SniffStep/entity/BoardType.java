@@ -1,3 +1,4 @@
+
 package SniffStep.entity;
 
 import lombok.Getter;

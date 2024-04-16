@@ -7,6 +7,8 @@ import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -36,6 +38,9 @@ public class Member extends BaseTime {
     @Enumerated(EnumType.STRING)
     @Column(name = "member_role")
     private MemberRole memberRole;
+
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+    private List<Board> boardList = new ArrayList<>();
 
     @Builder
     public Member(Long id, String email, String name, String nickname, String introduce, String phoneNumber, String password, MemberRole memberRole) {
