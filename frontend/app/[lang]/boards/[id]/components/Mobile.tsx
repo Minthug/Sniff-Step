@@ -4,6 +4,7 @@ import { Locales } from '@/app/types/locales'
 import { FaThumbsUp } from 'react-icons/fa6'
 import { changeDayToKorean, changeTimeToKorean } from '@/app/utils/changeDateUtils'
 import { Board } from '@/app/types/board'
+import Link from 'next/link'
 
 interface Props {
     lang: Locales
@@ -43,7 +44,7 @@ export function Mobile({ lang, board, dates }: Props) {
                         className={`
                                 hover:bg-gray-100
                                 active:bg-gray-200
-                                flex gap-4 items-center px-4 py-2 border rounded-md cursor-pointer`}
+                                flex gap-4 items-center px-4 py-2 border rounded-md cursor-pointer bg-white`}
                     >
                         <div className="flex gap-2 items-center cursor-pointer">
                             <FaThumbsUp />
@@ -57,7 +58,7 @@ export function Mobile({ lang, board, dates }: Props) {
                 <div className="text-[14px] text-gray-400">{createdAt}</div>
             </div>
             <div className="flex flex-wrap gap-4 mb-8">
-                <div className="text-[18px] font-[500]">1. 활동할 주소</div>
+                <div className="text-[18px] font-[500]">1. 활동할 주소)</div>
                 <div className="text-[18px] font-[500] border-b-2 mb-[2px] border-red-600">{address}</div>
             </div>
             <div className="flex flex-col gap-8 mb-8">
@@ -80,19 +81,20 @@ export function Mobile({ lang, board, dates }: Props) {
                 <div className="flex items-center justify-between text-[18px] font-[500] mb-4">
                     <div className="text-[18px] font-[500]">3. 견주님들께 산책에 대한 경험 및 자세한 플랜을 설명해보세요!</div>
                 </div>
-                <div className="w-full h-full min-h-[300px] p-4 border rounded-md resize-none outline-none whitespace-pre-wrap">
+                <div className="w-full h-full min-h-[300px] p-4 border rounded-md resize-none outline-none whitespace-pre-wrap bg-white">
                     {description}
                 </div>
             </div>
-            <div
+            <Link
                 className={`
-                                hover:bg-gray-100
-                                active:bg-gray-200
-                                w-full flex gap-4 items-center justify-center py-4 border rounded-md cursor-pointer
-                            `}
+                            hover:bg-gray-100
+                            active:bg-gray-200
+                            w-full flex gap-4 items-center justify-center py-4 border rounded-md cursor-pointer bg-white
+                        `}
+                href={`/${lang}/boards`}
             >
                 <div className="flex gap-2 items-center cursor-pointer font-[700]">목록으로 돌아가기</div>
-            </div>
+            </Link>
         </div>
     )
 }
