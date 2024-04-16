@@ -30,7 +30,7 @@ public class BoardController {
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/newBoard")
-    public ResponseEntity<BoardResponseDTO> saveBoard(@RequestBody BoardRequestDTO boardRequestDTO) {
+    public ResponseEntity<BoardResponseDTO> saveBoard(@ModelAttribute BoardRequestDTO boardRequestDTO) {
         return ResponseEntity.ok(boardService.saveBoard(boardRequestDTO));
     }
 

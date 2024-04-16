@@ -65,7 +65,7 @@ dependencies {
 
 // Querydsl 설정부
 def generated = 'src/main/generated'
-
+//
 //querydsl {
 //	library = "com.querydsl:querydsl-apt"
 //	jpa = true
@@ -87,6 +87,6 @@ def generated = 'src/main/generated'
 //	querydsl.extendsFrom compileClasspath
 //
 //}
-	tasks.named('test') {
-	useJUnitPlatform()
-}
+//	tasks.named('test') {
+//	useJUnitPlatform()
+//}

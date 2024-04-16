@@ -29,17 +29,25 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     private final LogoutTokenRedisRepository logoutTokenRedisRepository;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         String accessToken = getToken(request);
-        if (!StringUtils.isEmpty((accessToken))) {
-            checkLogout(accessToken);
-            String username = jwtTokenProvider.getUsername(accessToken);
-            if (username != null) {
-                UserDetails userDetails = customMemberDetailsService.loadUserByUsername(username);
-                validateAccessToken(accessToken, userDetails);
-                successfulAuthentication(request, userDetails);
+        if (StringUtils.isNotBlank(accessToken)) {
+            try {
+                UserDetails userDetails = jwtTokenProvider.getUserDetailsFromToken(accessToken);
+                if (userDetails != null && jwtTokenProvider.validateToken(accessToken, userDetails)) {
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                } else {
+                    // 로그인 정보 불일치 로그 처리
+                    logger.error("Invalid token or user details");
+                }
+            } catch (io.jsonwebtoken.MalformedJwtException ex) {
+                logger.error("JWT format invalid, it must contain exactly 2 period characters");
+            } catch (Exception ex) {
+                logger.error("Authentication error", ex);
             }
         }
         filterChain.doFilter(request, response);

@@ -45,7 +45,7 @@ public class webSecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers(new AntPathRequestMatcher("/v1/auth/signup", "POST")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/v1/auth/signin", "POST")).permitAll()
-                .requestMatchers("/v1/auth/signup", "/v1/auth/signin", "/v1/auth/refresh", "/v1/auth/reissue", "/v1/members/*").permitAll()
+                .requestMatchers("/v1/auth/signup", "/v1/auth/signin", "/v1/auth/refresh", "/v1/auth/reissue", "/v1/members/*", "/v1/boards/*").permitAll()
                 .requestMatchers("/logout").authenticated()
                 .anyRequest().hasAnyRole("USER", "ADMIN");
 
