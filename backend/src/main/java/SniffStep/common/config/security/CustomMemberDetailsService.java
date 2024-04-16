@@ -20,12 +20,13 @@ public class CustomMemberDetailsService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
 
+
     @Override
     @Cacheable(value = "member", key = "#email", unless = "#result == null")
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        log.info("email in loadUserByUsername: {}", email);
+        log.debug("Attempting to load user by email: {}", email);  // 로그 레벨을 debug로 조정
         Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException("User not found with email: "));
+                .orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));  // 이메일 주소 포함
         return new CustomMemberDetails(member.getEmail(), member.getPassword(), member.getNickname(),
                 List.of(member.getMemberRole().getValue()));
     }

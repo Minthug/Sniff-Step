@@ -1,11 +1,13 @@
 package SniffStep.common.jwt;
 
+import SniffStep.common.config.security.CustomMemberDetailsService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -24,9 +26,11 @@ public class JwtTokenProvider {
     private static final String BEARER_TYPE = "bearer";
 
     private final String secretKey;
+    private final CustomMemberDetailsService customMemberDetailsService;
 
-    public JwtTokenProvider(@Value("${jwt.secret-key}") String secretKey) {
-        this.secretKey = secretKey;
+    public JwtTokenProvider(Environment env, CustomMemberDetailsService customMemberDetailsService) {
+        this.secretKey = env.getProperty("jwt.secret-key");
+        this.customMemberDetailsService = customMemberDetailsService;
     }
 
     public Claims extractAllClaims(String token) {
@@ -73,9 +77,9 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public Boolean validateToken(String token, UserDetails userDetails) {
-        String username = getUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    public boolean validateToken(String accessToken, UserDetails userDetails) {
+        String username = getUsername(accessToken);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(accessToken));
     }
 
     public long getRemainMilliseconds(String token) {
@@ -83,4 +87,14 @@ public class JwtTokenProvider {
         Date now = new Date();
         return expiration.getTime() - now.getTime();
     }
+
+    public UserDetails getUserDetailsFromToken(String token) {
+        String username = getUsername(token);
+        if (username != null) {
+            return customMemberDetailsService.loadUserByUsername(username);
+        }
+        return null;
+    }
+
+
 }
