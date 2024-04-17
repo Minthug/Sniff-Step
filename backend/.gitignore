@@ -23,5 +23,6 @@ gradle-app.setting
 
 .idea
 
+application-local.yml
 *.yml
 application.properties
