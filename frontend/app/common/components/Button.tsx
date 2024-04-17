@@ -16,7 +16,7 @@ export default function Button({ contents, href, className }: Props) {
             className={`
                         ${D2CodingLight.className}
                         [&>div]:hover:w-full
-                        relative py-2 text-[14px] tracking-[-0.12rem] font-[700]
+                        relative py-2 text-[18px] tracking-[-0.12rem] font-[700]
                         ${className}
             `}
             onClick={() => router.push(href)}

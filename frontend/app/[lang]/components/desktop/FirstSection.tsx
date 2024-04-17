@@ -15,60 +15,64 @@ export function FirstSection() {
     useEffect(() => {
         setLoading(false)
         opacityChange(document.getElementById('poppy-foot1'), '0.6', 400)
-        opacityChange(document.getElementById('poppy-foot2'), '0.7', 400)
-        opacityChange(document.getElementById('poppy-foot3'), '0.8', 400)
-        opacityChange(document.getElementById('poppy-foot4'), '1', 400)
+        opacityChange(document.getElementById('poppy-foot2'), '0.7', 600)
+        opacityChange(document.getElementById('poppy-foot3'), '0.8', 800)
+        opacityChange(document.getElementById('poppy-foot4'), '1', 1000)
     }, [])
 
     return (
-        <div className="relative h-[calc(100vh-112px)] flex select-none">
-            <div
-                style={{
-                    opacity: loading ? 0 : 1,
-                    top: loading ? '140px' : '120px'
-                }}
-                className={`
-            absolute top-[120px] left-[100px] flex flex-col gap-2 text-[60px] font-[800] z-10 transition-all duration-500
-        `}
-            >
-                <div>반려견을 위한</div>
-                <div>우리 동네 산책 커뮤니티</div>
-                <button
-                    className={`
-                ${D2CodingBold.className}
-                hover:bg-green-600 hover:text-gray-100
-                active:bg-green-700
-                w-full py-4 mt-4 bg-[#10b94e] rounded-lg font-[500] text-[18px] text-white
-        `}
+        <div className="relative h-[calc(100vh-112px)] flex gap-[100px] px-[100px] select-none">
+            <div className="relative flex-1">
+                <div>
+                    <img
+                        id="poppy-foot1"
+                        className="absolute bottom-[23%] right-[5%] -rotate-[80deg] w-[30px] object-contain opacity-[0] duration-500"
+                        src="/images/poppy-foot.png"
+                        alt=""
+                    />
+                    <img
+                        id="poppy-foot2"
+                        className="absolute bottom-[25%] right-[30%] -rotate-[90deg] w-[30px] object-contain opacity-[0] duration-500"
+                        src="/images/poppy-foot.png"
+                        alt=""
+                    />
+                    <img
+                        id="poppy-foot3"
+                        className="absolute bottom-[23%] left-[30%] -rotate-[80deg] w-[30px] object-contain opacity-[0] duration-500"
+                        src="/images/poppy-foot.png"
+                        alt=""
+                    />
+                    <img
+                        id="poppy-foot4"
+                        className="absolute bottom-[25%] left-[5%] -rotate-[100deg] w-[30px] object-contain opacity-[0] duration-500"
+                        src="/images/poppy-foot.png"
+                        alt=""
+                    />
+                </div>
+                <div
+                    style={{
+                        opacity: loading ? 0 : 1,
+                        transform: loading ? 'translateY(20px)' : 'translateY(0)'
+                    }}
+                    className="h-full flex justify-center flex-col gap-2 pb-[100px] text-[60px] font-[800] z-10 transition-all duration-500"
                 >
-                    산책인 공고 구경하기
-                </button>
+                    <div>반려견을 위한</div>
+                    <div>우리 동네 산책 커뮤니티</div>
+                    <button
+                        className={`
+                                ${D2CodingBold.className}
+                                hover:bg-green-600 hover:text-gray-100
+                                active:bg-green-700
+                                w-full py-4 mt-4 bg-[#10b94e] rounded-lg font-[500] text-[18px] text-white
+                        `}
+                    >
+                        산책인 공고 구경하기
+                    </button>
+                </div>
             </div>
-            <img className="absolute top-1/2 right-[80px] -translate-y-1/2 w-[600px] object-contain" src="/images/main-1-6.png" alt="" />
-            <img
-                id="poppy-foot1"
-                className="absolute bottom-[20px] left-[700px] -translate-y-1/2 -rotate-[30deg] w-[60px] object-contain opacity-[0] duration-500"
-                src="/images/poppy-foot.png"
-                alt=""
-            />
-            <img
-                id="poppy-foot2"
-                className="absolute bottom-[50px] left-[530px] -translate-y-1/2 -rotate-[10deg] w-[60px] object-contain opacity-[0] duration-500"
-                src="/images/poppy-foot.png"
-                alt=""
-            />
-            <img
-                id="poppy-foot3"
-                className="absolute top-[100px] left-[550px] -translate-y-1/2 -rotate-[30deg] w-[60px] object-contain opacity-[0] duration-500"
-                src="/images/poppy-foot.png"
-                alt=""
-            />
-            <img
-                id="poppy-foot4"
-                className="absolute top-[50px] left-[380px] -translate-y-1/2 -rotate-[10deg] w-[60px] object-contain opacity-[0] duration-500"
-                src="/images/poppy-foot.png"
-                alt=""
-            />
+            <div className="flex-1 flex justify-center items-center">
+                <img className="object-contain" src="/images/main/1-section.png" alt="1-section" />
+            </div>
         </div>
     )
 }

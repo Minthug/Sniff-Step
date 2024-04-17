@@ -11,12 +11,11 @@ interface Props {
 
 export function Mobile({ lang, boards }: Props) {
     return (
-        <div className={`${container.main.mobile} mt-[48px]`}>
-            <div className="flex justify-center text-[24px] font-[600] mb-12">현재 등록된 게시물</div>
+        <div className={`${container.main.mobile} mt-[16px]`}>
             <div
                 className={`
                     sm:grid-cols-2
-                    grid grid-cols-1 gap-8
+                    grid grid-cols-1 gap-4
                 `}
             >
                 {boards.map((board) => (

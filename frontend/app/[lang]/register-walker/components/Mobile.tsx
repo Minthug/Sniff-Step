@@ -47,7 +47,7 @@ export function Mobile({ lang, fileChangeState, registerWalkerState }: Props) {
                 </div>
                 <div className="mb-8">
                     <div className={styles.subject.mobile}>2. 활동하실 주소를 정해주세요!</div>
-                    <button className="relative w-full max-w-[480px] h-[40px] pr-8 text-[16px] text-start border-2 border-gray-300 rounded-md overflow-hidden text-ellipsis whitespace-nowrap">
+                    <button className="relative w-full max-w-[480px] h-[40px] pr-8 text-[16px] text-start border border-gray-300 rounded-md overflow-hidden text-ellipsis whitespace-nowrap bg-white">
                         <AiOutlineSearch className="absolute top-1/2 right-[4px] translate-y-[-50%] text-gray-400 text-[24px]" />
                     </button>
                 </div>

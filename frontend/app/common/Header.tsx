@@ -26,16 +26,16 @@ export function Header({ lang }: Props) {
             `}
             >
                 <img
-                    className="w-[80px] h-[80px] cursor-pointer"
-                    src="/images/logo1-removebg-preview.png"
+                    className="w-[220px] h-[60px] cursor-pointer object-contain translate-x-[-20px]"
+                    src="/images/text-logo-1.png"
                     onClick={() => router.push(`/${lang}`)}
                 />
-                <div className="flex gap-8 items-center">
+                <div className="flex gap-10 items-center">
                     <Button contents="산책인 등록" href={`/${lang}/register-walker`} />
                     <Button contents="산책 맡기기" href={`/${lang}/boards`} />
                     <div className="relative">
                         <input
-                            className="w-[400px] pl-8 pr-[60px] py-4 text-[14px] text-[#898989] border bg-white rounded-[100px] outline-none"
+                            className="w-[400px] pl-8 pr-[60px] py-4 text-[18px] text-[#898989] border bg-white rounded-[100px] outline-none"
                             onChange={() => {}}
                             type="text"
                             placeholder="동네 검색으로 산책인을 찾아보세요!"
