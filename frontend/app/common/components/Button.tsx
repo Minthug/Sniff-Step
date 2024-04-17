@@ -24,7 +24,7 @@ export default function Button({ contents, href, className }: Props) {
             {contents}
             <div
                 className={`
-                            w-0 h-[2px] bg-red-500 rounded-xl transition-all duration-300
+                            w-0 h-[2px] bg-[#10b94e] rounded-xl transition-all duration-300
                         `}
             />
         </button>
