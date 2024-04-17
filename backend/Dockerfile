@@ -2,7 +2,6 @@ FROM amazoncorretto:17
 WORKDIR /app
 COPY . .
 RUN ./gradlew clean build
-COPY build/libs/*.jar app.jar
-RUN chmod +x app.jar
-EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+RUN cp /app/build/libs/Sniff-Step-0.0.1-SNAPSHOT.jar /app/Sniff-Step-0.0.1-SNAPSHOT.jar
+EXPOSE 8081
+CMD ["java", "-jar", "Sniff-Step-0.0.1-SNAPSHOT.jar"]
