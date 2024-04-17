@@ -33,7 +33,7 @@ export function Desktop({ lang, boards }: Props) {
                         <div className="flex gap-4 px-4 pb-4">
                             <img
                                 className="w-[40px] h-[40px] border rounded-full"
-                                src={board.profileUrl || '/logo1-removebg-preview.png'}
+                                src={board.profileUrl || '/images/logo1-removebg-preview.png'}
                             />
                             <div className="flex flex-col justify-center">
                                 <div className="w-[170px] whitespace-nowrap overflow-hidden text-ellipsis text-[14px]">{board.title}</div>

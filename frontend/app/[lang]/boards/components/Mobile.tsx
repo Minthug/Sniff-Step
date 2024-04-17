@@ -1,8 +1,8 @@
 import React from 'react'
-import { Board } from '@/app/types/board'
-import { container } from '@/app/common'
 import Link from 'next/link'
 import { Locale } from '@/i18n.config'
+import { Board } from '@/app/types/board'
+import { container } from '@/app/common'
 
 interface Props {
     lang: Locale
@@ -38,7 +38,7 @@ export function Mobile({ lang, boards }: Props) {
                         <div className="flex gap-4 px-4 pb-4">
                             <img
                                 className="w-[40px] h-[40px] border rounded-full"
-                                src={board.profileUrl || '/logo1-removebg-preview.png'}
+                                src={board.profileUrl || '/images/logo1-removebg-preview.png'}
                             />
                             <div className="flex flex-col justify-center">
                                 <div className="w-[170px] whitespace-nowrap overflow-hidden text-ellipsis text-[14px]">{board.title}</div>

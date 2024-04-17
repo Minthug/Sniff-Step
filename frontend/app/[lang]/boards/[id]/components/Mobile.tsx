@@ -33,7 +33,7 @@ export function Mobile({ lang, board, dates }: Props) {
             </div>
             <div className="w-full flex justify-between mb-4 pb-4 border-b select-none">
                 <div className="flex items-center gap-4">
-                    <img className="w-[48px] h-[48px] border rounded-full" src={profileUrl || '/logo1-removebg-preview.png'} />
+                    <img className="w-[48px] h-[48px] border rounded-full" src={profileUrl || '/images/logo1-removebg-preview.png'} />
                     <div>
                         <div className="text-[18px] font-[600]">{nickname}</div>
                         <div className="text-[14px]">{address}</div>
@@ -77,7 +77,7 @@ export function Mobile({ lang, board, dates }: Props) {
                     })}
                 </div>
             </div>
-            <div className="mb-8">
+            <div className="mb-4">
                 <div className="flex items-center justify-between text-[18px] font-[500] mb-4">
                     <div className="text-[18px] font-[500]">3. 견주님들께 산책에 대한 경험 및 자세한 플랜을 설명해보세요!</div>
                 </div>

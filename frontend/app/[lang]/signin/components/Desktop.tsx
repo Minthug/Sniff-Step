@@ -26,7 +26,7 @@ export function Desktop({ lang, loginStates }: Props) {
                     className="w-full h-full object-contain select-none bg-[#C9E2EB]"
                     src="https://cdn.dribbble.com/users/338126/screenshots/15483287/media/2f03c8290d612078b76883e579d4fd99.gif"
                 />
-                <img className="absolute bottom-4 w-[140px] object-cover" src="/text-logo.png" alt="" />
+                <img className="absolute bottom-4 w-[140px] object-cover" src="/images/text-logo.png" alt="" />
             </div>
             <div className={container.autentication.desktop.main}>
                 <div className={`${D2CodingBold.className} text-[28px] font-bold mb-8`}>Sign in to Sniff & Step</div>

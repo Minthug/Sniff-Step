@@ -7,7 +7,7 @@ export function GET(req: NextRequest) {
             title: '산본동 산책시켜드립니다',
             address: '경기도 군포시 산본동',
             ownerSatisfaction: 10,
-            imageUrl: '/logo1-removebg-preview.png',
+            imageUrl: '/images/logo1-removebg-preview.png',
             createdAt: new Date()
         },
         {
@@ -15,7 +15,7 @@ export function GET(req: NextRequest) {
             title: '서울대입구 산책시켜드립니다',
             address: '서울특별시 관악구 봉천동',
             ownerSatisfaction: 10,
-            imageUrl: '/text-logo.png',
+            imageUrl: '/images/text-logo.png',
             createdAt: new Date()
         },
         {
@@ -23,7 +23,7 @@ export function GET(req: NextRequest) {
             title: '신림동 산책시켜드립니다',
             address: '서울특별시 관악구 신림동',
             ownerSatisfaction: 10,
-            imageUrl: '/loginSide.webp',
+            imageUrl: '/images/loginSide.webp',
             createdAt: new Date()
         },
         {
@@ -31,7 +31,7 @@ export function GET(req: NextRequest) {
             title: '서울대입구 산책시켜드립니다',
             address: '서울특별시 관악구 봉천동',
             ownerSatisfaction: 10,
-            imageUrl: '/logo1-removebg-preview.png',
+            imageUrl: '/images/logo1-removebg-preview.png',
             createdAt: new Date()
         },
         {
@@ -39,7 +39,7 @@ export function GET(req: NextRequest) {
             title: '신림동 산책시켜드립니다',
             address: '서울특별시 관악구 신림동',
             ownerSatisfaction: 10,
-            imageUrl: '/logo1-removebg-preview.png',
+            imageUrl: '/images/logo1-removebg-preview.png',
             createdAt: new Date()
         }
     ]

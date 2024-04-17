@@ -34,7 +34,7 @@ export function Desktop({ lang, board, dates }: Props) {
                 </div>
                 <div className="w-full flex justify-between mb-8 pb-4 border-b select-none">
                     <div className="flex items-center gap-4">
-                        <img className="w-[48px] h-[48px] border rounded-full" src={profileUrl || '/logo1-removebg-preview.png'} />
+                        <img className="w-[48px] h-[48px] border rounded-full" src={profileUrl || '/images/logo1-removebg-preview.png'} />
                         <div>
                             <div className="text-[18px] font-[600]">{nickname}</div>
                             <div className="text-[14px]">{address}</div>

@@ -28,7 +28,9 @@ export function BannerMobile() {
                         text-[14px] text-white
                     `}
                 >
-                    우리 반려견들에게 필요한 산책인들과 다양한 커넥션을 만들어보세요
+                    우리 반려견들에게 필요한 산책인들과&nbsp;
+                    <br className="sm:hidden" />
+                    다양한 커넥션을 만들어보세요
                 </div>
             </div>
             <div className="absolute top-[10px] right-[240px] w-[200px] h-[200px] bg-[#dcfbde] rounded-full" />

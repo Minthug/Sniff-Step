@@ -10,7 +10,7 @@ export function Mobile({ lang }: Props) {
         <footer className="xl:hidden h-full min-h-[203px] flex flex-col justify-between px-4 py-8">
             <div className="flex justify-between">
                 <div className="w-full flex flex-col">
-                    <img className="w-[96px]" src="/text-logo-1.png" alt="" />
+                    <img className="w-[96px]" src="/images/text-logo-1.png" alt="" />
                     <div className="flex flex-wrap text-[12px] gap-8 gap-y-0">
                         <Button className="text-[13px]" contents="홈" href={`/${lang}`} />
                         <Button className="text-[13px]" contents="산책인 등록" href={`/${lang}/register-walker`} />

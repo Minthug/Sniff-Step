@@ -12,8 +12,8 @@ export function BannerDesktop() {
                         <div className={`text-[18px] font-[500] text-white`}>다양한 커넥션을 만들어보세요</div>
                     </div>
                 </div>
-                <img className="absolute top-[150px] right-[230px] w-[100px] z-10" src="/dog.png" alt="" />
-                <img className="absolute top-[40px] right-[50px] w-[200px] -rotate-12 z-10" src="/leg.png" alt="" />
+                <img className="absolute top-[150px] right-[230px] w-[100px] z-10" src="/images/dog.png" alt="" />
+                <img className="absolute top-[40px] right-[50px] w-[200px] -rotate-12 z-10" src="/images/leg.png" alt="" />
                 <div className="absolute top-[10px] right-[30px] w-[230px] h-[230px] bg-[#d08a64] rounded-full" />
                 <div className="absolute top-[20px] right-[50px] w-[900px] h-[900px] bg-[#3d8345] rounded-full" />
                 <div className="absolute top-[10px] right-[240px] w-[200px] h-[200px] bg-[#dcfbde] rounded-full" />

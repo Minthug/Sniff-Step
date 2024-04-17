@@ -27,7 +27,7 @@ export function Header({ lang }: Props) {
             >
                 <img
                     className="w-[80px] h-[80px] cursor-pointer"
-                    src="/logo1-removebg-preview.png"
+                    src="/images/logo1-removebg-preview.png"
                     onClick={() => router.push(`/${lang}`)}
                 />
                 <div className="flex gap-8 items-center">
@@ -58,7 +58,7 @@ export function Header({ lang }: Props) {
                 {onMobileSearch && <MobileSearch setOnMobileSearch={setOnMobileSearch} />}
                 <img
                     className="w-[160px] h-[60px] cursor-pointer object-contain translate-x-[-20px]"
-                    src="/text-logo.png"
+                    src="/images/text-logo.png"
                     onClick={() => router.push(`/${lang}`)}
                 />
                 <MobileMenu

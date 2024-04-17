@@ -45,7 +45,7 @@ export function Desktop({ lang, signupStates }: Props) {
                     loop
                     src="https://cdn.dribbble.com/users/1341046/screenshots/16057590/media/db8ececb62cdd03ddaa78fab991a4ec3.mp4"
                 />
-                <img className="absolute bottom-4 w-[140px] object-cover" src="/text-logo.png" alt="" />
+                <img className="absolute bottom-4 w-[140px] object-cover" src="/images/text-logo.png" alt="" />
             </div>
             <div className={container.autentication.desktop.main}>
                 <div className={`${D2CodingBold.className} text-[28px] mb-4`}>Sign up to Sniff & Step</div>

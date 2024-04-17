@@ -10,7 +10,7 @@ export function Desktop({ lang }: Props) {
         <footer className="xl:flex h-[203px] flex-col justify-between px-24 py-8 hidden">
             <div className="flex justify-between items-center">
                 <div>
-                    <img className="w-[160px]" src="/text-logo-1.png" alt="" />
+                    <img className="w-[160px]" src="/images/text-logo-1.png" alt="" />
                 </div>
                 <div className="flex gap-16">
                     <Button contents="홈" href={`/${lang}`} />

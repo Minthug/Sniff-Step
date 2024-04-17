@@ -23,7 +23,7 @@ export function GoogleLogin({ theme = 'light', children, className }: Props) {
                 ${className}
             `}
         >
-            <img className="w-[18px] h-[18px] object-cover" src="/googleIcon.webp" alt="" />
+            <img className="w-[18px] h-[18px] object-cover" src="/images/googleIcon.webp" alt="" />
             {children}
         </button>
     )
