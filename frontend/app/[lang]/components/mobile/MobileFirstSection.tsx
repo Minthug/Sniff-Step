@@ -10,7 +10,7 @@ export function MobileFirstSection() {
     }, [])
 
     return (
-        <div className={`${container.home.mobile} relative min-h-screen h-full flex items-center select-none mt-[76px]`}>
+        <div className={`${container.home.mobile} relative min-h-[calc(100vh-76px)] h-full flex items-center select-none mt-[76px]`}>
             <div className="relative flex-1">
                 <div className="flex flex-col gap-[40px]">
                     <div className="flex-1 flex justify-center items-center">
