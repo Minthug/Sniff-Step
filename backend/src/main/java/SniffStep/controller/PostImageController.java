@@ -20,12 +20,12 @@ public class PostImageController {
 
     private final ImageService imageService;
 
-//    @PostMapping
-//    public ResponseEntity saveFile(@RequestPart(value = "files") List<MultipartFile> multipartFiles) throws IOException {
-//
-//        List<ImageResponseDTO> imageResponse = imageService.addFile(multipartFiles);
-//        return new ResponseEntity(imageResponse, HttpStatus.CREATED);
-//    }
+    @PostMapping
+    public ResponseEntity saveFile(@RequestPart(value = "files") List<MultipartFile> multipartFiles) throws IOException {
+
+        List<ImageResponseDTO> imageResponse = imageService.addFile(multipartFiles);
+        return new ResponseEntity(imageResponse, HttpStatus.CREATED);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity findFile(@PathVariable(value = "id") Long id) {
@@ -33,9 +33,9 @@ public class PostImageController {
         return new ResponseEntity(url, HttpStatus.OK);
     }
 
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity deleteFile(@PathVariable(value = "id") Long id) {
-//        imageService.deleteFile(id);
-//        return new ResponseEntity(HttpStatus.NO_CONTENT);
-//    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteFile(@PathVariable(value = "id") Long id) {
+        imageService.deleteFile(id);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
 }
