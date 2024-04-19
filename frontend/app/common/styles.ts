@@ -6,10 +6,8 @@ export const container = {
         desktop: 'xl:flex h-full min-h-screen flex-col hidden'
     },
     home: {
-        mobile: '',
-        desktop: {
-            section: 'max-w-[1230px] mx-auto'
-        }
+        mobile: 'xl:hidden px-[20px]',
+        desktop: 'xl:flex max-w-[1230px] mx-auto hidden'
     },
     autentication: {
         desktop: {

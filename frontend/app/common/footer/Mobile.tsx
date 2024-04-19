@@ -11,11 +11,11 @@ export function Mobile({ lang }: Props) {
             <div className="flex justify-between">
                 <div className="w-full flex flex-col">
                     <img className="w-[96px]" src="/images/text-logo-1.png" alt="" />
-                    <div className="flex flex-wrap text-[12px] gap-8 gap-y-0">
-                        <Button className="text-[13px]" contents="홈" href={`/${lang}`} />
-                        <Button className="text-[13px]" contents="산책인 등록" href={`/${lang}/register-walker`} />
-                        <Button className="text-[13px]" contents="산책 맡기기" href={`/${lang}/boards`} />
-                        <Button className="text-[13px]" contents="로그인" href={`/${lang}/signin`} />
+                    <div className="flex flex-wrap gap-8 gap-y-0">
+                        <Button className="text-[10px]" contents="홈" href={`/${lang}`} />
+                        <Button className="text-[10px]" contents="산책인 등록" href={`/${lang}/register-walker`} />
+                        <Button className="text-[10px]" contents="산책 맡기기" href={`/${lang}/boards`} />
+                        <Button className="text-[10px]" contents="로그인" href={`/${lang}/signin`} />
                     </div>
                 </div>
             </div>
