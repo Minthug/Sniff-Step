@@ -7,11 +7,10 @@ export function SecondSection() {
     const target2 = useRef<HTMLDivElement>(null)
     const target3 = useRef<HTMLDivElement>(null)
     const target4 = useRef<HTMLDivElement>(null)
-
     useIntersectionObserver([target, target2, target3, target4])
 
     return (
-        <div className={`${container.home.desktop.section} relative h-full flex`}>
+        <div className={`${container.home.desktop} relative h-full flex`}>
             <div className="flex-1 flex flex-col">
                 <div ref={target2} className="relative w-fit flex mx-auto transition-opacity duration-[1s] opacity-0">
                     <img className="relative w-[500px] z-10" src="/images/main/iPhone_clay_shadow.png" alt="" />

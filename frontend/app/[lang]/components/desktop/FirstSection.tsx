@@ -24,7 +24,7 @@ export function FirstSection() {
     }, [])
 
     return (
-        <div className={`${container.home.desktop.section} relative h-[calc(100vh-93px)] flex gap-[100px] select-none`}>
+        <div className={`${container.home.desktop} relative h-[calc(100vh-93px)] flex gap-[100px] select-none`}>
             <div className="relative flex-1">
                 <div>
                     <img

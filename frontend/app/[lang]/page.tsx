@@ -4,10 +4,8 @@ import React from 'react'
 import { Locales } from '../types/locales'
 import { Header } from '../common'
 import { Footer } from '../common/footer/Footer'
-import { FirstSection } from './components/desktop/FirstSection'
-import { SecondSection } from './components/desktop/SecondSection'
-import { ThirdSection } from './components/desktop/ThirdSection'
-import FourthSection from './components/desktop/FourthSection'
+import { FirstSection, SecondSection, ThirdSection, FourthSection } from './components/desktop'
+import { MobileFirstSection, MobileSecondSection, MobileThirdSection, MobileFourthSection } from './components/mobile'
 
 interface Props {
     params: { lang: Locales }
@@ -21,6 +19,10 @@ export default function page({ params: { lang } }: Props) {
             <SecondSection />
             <ThirdSection />
             <FourthSection />
+            <MobileFirstSection />
+            <MobileSecondSection />
+            <MobileThirdSection />
+            <MobileFourthSection />
             <Footer lang={lang} />
         </div>
     )
