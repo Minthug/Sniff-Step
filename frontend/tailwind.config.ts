@@ -13,10 +13,12 @@ const config: Config = {
             leftBounce: {
                 '0%, 100%': { transform: 'translateX(-15%)', animationTimingFunction: 'cubic-bezier(.58,.25,.83,.67)' },
                 '50%': { transform: 'translateX(0)', animationTimingFunction: 'cubic-bezier(0, 0, 0, 1)' }
-            }
+            },
+            spin: { from: { transform: 'rotate(0deg)' }, to: { transform: 'rotate(360deg)' } }
         },
         animation: {
-            leftBounce: 'leftBounce 1.2s infinite'
+            leftBounce: 'leftBounce 1.2s infinite',
+            spin: 'spin 1s linear infinite'
         }
     },
     mode: 'jit',
