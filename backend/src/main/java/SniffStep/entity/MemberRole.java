@@ -4,23 +4,17 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.util.stream.Stream;
 
-@RequiredArgsConstructor
-@Getter
-public enum MemberRole {
+public enum MemberRole implements GrantedAuthority {
 
-    ROLE_ADMIN("ROLE_ADMIN"),
-    ROLE_USER("ROLE_USER");
+    USER, ADMIN;
 
-    private final String value;
 
-    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
-    public static MemberRole fromMemberRole(String value) {
-        return Stream.of(MemberRole.values())
-                .filter(memberRole -> StringUtils.equals(memberRole.getValue(), value))
-                .findFirst()
-                .orElse(null);
+    @Override
+    public String getAuthority() {
+        return this.name();
     }
 }
