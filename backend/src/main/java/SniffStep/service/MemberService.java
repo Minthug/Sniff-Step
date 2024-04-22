@@ -6,11 +6,12 @@ import SniffStep.common.jwt.dto.TokenResponseDTO;
 import SniffStep.common.jwt.entity.RefreshToken;
 import SniffStep.common.jwt.repository.LogoutTokenRedisRepository;
 import SniffStep.common.jwt.repository.RefreshTokenRedisRepository;
-import SniffStep.dto.JoinDTO;
-import SniffStep.dto.LoginDTO;
-import SniffStep.dto.MemberUpdateDTO;
+import SniffStep.dto.*;
 import SniffStep.entity.Member;
+import SniffStep.entity.MemberRole;
+import SniffStep.entity.MemberType;
 import SniffStep.mapper.JoinMapper;
+import SniffStep.repository.BoardRepository;
 import SniffStep.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -34,7 +35,11 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final RefreshTokenRedisRepository refreshTokenRedisRepository;
+    private final BoardRepository boardRepository;
+    private final ImageService imageService;
     private final LogoutTokenRedisRepository logoutTokenRedisRepository;
+
+    private static final String HEADER_PREFIX = "Bearer ";
 
     @Transactional(readOnly = true)
     public List<Member> findAll() {
@@ -58,7 +63,6 @@ public class MemberService {
         return memberRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("Member not found."));
     }
-
     // Sign up
     @Transactional
     public Member join(JoinDTO joinDTO) {
@@ -166,4 +170,18 @@ public class MemberService {
         memberRepository.delete(member);
         return member;
     }
+
+    public MemberResponseDTO registerGeneral(MemberPostDTO request) {
+        Member newMember = Member.builder()
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .nickname(request.getNickname())
+                .type(MemberType.GENERAL)
+                .role(MemberRole.USER)
+                .build();
+
+        Member createdMember = memberRepository.save(newMember);
+        return MemberResponseDTO.of(createdMember);
+    }
+
 }

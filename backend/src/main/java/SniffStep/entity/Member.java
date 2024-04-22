@@ -37,13 +37,16 @@ public class Member extends BaseTime {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "member_role")
-    private MemberRole memberRole;
+    private MemberRole role;
+
+    @Enumerated(EnumType.STRING)
+    private MemberType type;
 
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
     private List<Board> boardList = new ArrayList<>();
 
     @Builder
-    public Member(Long id, String email, String name, String nickname, String introduce, String phoneNumber, String password, MemberRole memberRole) {
+    public Member(Long id, String email, String name, String nickname, String introduce, String phoneNumber, String password, MemberRole role, MemberType type) {
         this.id = id;
         this.email = email;
         this.name = name;
@@ -51,8 +54,11 @@ public class Member extends BaseTime {
         this.introduce = introduce;
         this.phoneNumber = phoneNumber;
         this.password = password;
-        this.memberRole = memberRole;
+        this.role = role;
+        this.type = type;
     }
+
+
 
     public Member hashPassword(PasswordEncoder passwordEncoder) {
         this.password = passwordEncoder.encode(this.password);

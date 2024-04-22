@@ -28,6 +28,6 @@ public class CustomMemberDetailsService implements UserDetailsService {
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));  // 이메일 주소 포함
         return new CustomMemberDetails(member.getEmail(), member.getPassword(), member.getNickname(),
-                List.of(member.getMemberRole().getValue()));
+                List.of(member.getRole().name()));
     }
 }

@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
   servlet:
     context-path: /api
     multipart:
@@ -13,14 +13,14 @@ server:
 
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: minthug
+    password: g1138745x
+    driver-class-name: org.postgresql.Driver
   jpa:
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
         ddl-auto: create
         show_sql: true
         format_sql: true
@@ -43,11 +43,11 @@ spring:
         max-wait: -1ms
 
 aws:
-  access-key: ${AWS_ACCESS_KEY} # 환경 변수를 사용하는 것이 좋음
-  secret-key: ${AWS_SECRET_KEY} # 환경 변수를 사용하는 것이 좋음
+  access-key: ${cloud.aws.credentials.access-key} # 환경 변수를 사용하는 것이 좋음
+  secret-key: ${cloud.aws.credentials.secret-key} # 환경 변수를 사용하는 것이 좋음
   s3:
-    bucket: your-bucket-name
-    region: us-east-1 # 예시 리전, 실제 사용하는 리전으로 변경
+    bucket: ${aws_s3_bucket} # 환경 변수를 사용하는 것이 좋음
+    region: ${aws.s3.region} # 예시 리전, 실제 사용하는 리전으로 변경
 
 jwt:
   header: Authorization

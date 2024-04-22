@@ -2,15 +2,14 @@ package SniffStep.controller;
 
 import SniffStep.common.jwt.JwtTokenProvider;
 import SniffStep.common.jwt.dto.TokenResponseDTO;
-import SniffStep.dto.JoinDTO;
-import SniffStep.dto.LoginDTO;
-import SniffStep.dto.MemberDTO;
+import SniffStep.dto.*;
 import SniffStep.entity.Member;
 import SniffStep.mapper.MemberMapper;
 import SniffStep.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import static SniffStep.common.HttpResponseEntity.ResponseResult;
@@ -44,5 +43,10 @@ public class SignUpController {
     @PostMapping("/reissue")
     public ResponseResult<TokenResponseDTO> reissue(@RequestHeader("RefreshToken") String refreshToken) {
         return success(memberService.reissue(refreshToken));
+    }
+
+    @PostMapping("/test")
+    public ResponseEntity<MemberResponseDTO> register(@Valid @RequestBody MemberPostDTO request) {
+        return ResponseEntity.ok(memberService.registerGeneral(request));
     }
 }

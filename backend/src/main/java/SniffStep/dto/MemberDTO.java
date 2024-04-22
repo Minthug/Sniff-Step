@@ -26,7 +26,7 @@ public class MemberDTO {
         this.nickname = member.getNickname();
         this.introduce = member.getIntroduce();
         this.phoneNumber = member.getPhoneNumber();
-        this.memberRole = member.getMemberRole();
+        this.memberRole = member.getRole();
     }
 
     @Builder
