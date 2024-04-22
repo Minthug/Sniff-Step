@@ -1,21 +1,23 @@
 import React from 'react'
 import Button from '../components/Button'
+import { LocaleFooter } from '@/app/types/locales'
 
 interface Props {
     lang: string
+    text: LocaleFooter
 }
 
-export function Mobile({ lang }: Props) {
+export function Mobile({ lang, text }: Props) {
     return (
         <footer className="xl:hidden h-full min-h-[203px] flex flex-col justify-between px-4 py-8">
             <div className="flex justify-between">
                 <div className="w-full flex flex-col">
                     <img className="w-[96px]" src="/images/text-logo-1.png" alt="" />
                     <div className="flex flex-wrap gap-8 gap-y-0">
-                        <Button className="text-sm" contents="홈" href={`/${lang}`} />
-                        <Button className="text-sm" contents="산책인 등록" href={`/${lang}/register-walker`} />
-                        <Button className="text-sm" contents="산책 맡기기" href={`/${lang}/boards`} />
-                        <Button className="text-sm" contents="로그인" href={`/${lang}/signin`} />
+                        <Button className="text-sm" contents={text.home} href={`/${lang}`} />
+                        <Button className="text-sm" contents={text.registerWalker} href={`/${lang}/register-walker`} />
+                        <Button className="text-sm" contents={text.boards} href={`/${lang}/boards`} />
+                        <Button className="text-sm" contents={text.login} href={`/${lang}/signin`} />
                     </div>
                 </div>
             </div>

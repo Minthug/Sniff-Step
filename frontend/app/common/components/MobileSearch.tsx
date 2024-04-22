@@ -1,12 +1,14 @@
 import React from 'react'
 import { container } from '../styles'
 import { AiOutlineSearch } from 'react-icons/ai'
+import { LocaleHeader } from '@/app/types/locales'
 
 interface Props {
+    text: LocaleHeader
     setOnMobileSearch: (onMobileSearch: boolean) => void
 }
 
-export function MobileSearch({ setOnMobileSearch }: Props) {
+export function MobileSearch({ text, setOnMobileSearch }: Props) {
     return (
         <div
             className={`
@@ -19,7 +21,7 @@ export function MobileSearch({ setOnMobileSearch }: Props) {
                     className="w-full pl-4 pr-[70px] py-3 text-[14px] text-[#898989] border bg-white rounded-[100px] outline-none"
                     onChange={() => {}}
                     type="text"
-                    placeholder="동네 검색으로 산책인을 찾아보세요"
+                    placeholder={text.findMyLocal}
                 />
                 <div className="absolute top-[50%] right-4 translate-y-[-50%] w-[40px] h-[40px] flex justify-center items-center cursor-pointer">
                     <AiOutlineSearch className="text-[#898989]" />
@@ -32,7 +34,7 @@ export function MobileSearch({ setOnMobileSearch }: Props) {
                     `}
                 onClick={() => setOnMobileSearch(false)}
             >
-                취소
+                {text.cancel}
             </button>
         </div>
     )

@@ -1,14 +1,16 @@
 import { D2CodingBold } from '@/app/fonts'
+import { LocaleHeader } from '@/app/types/locales'
 import { useRouter } from 'next/navigation'
 import React, { HTMLAttributes } from 'react'
 
 interface Props {
     lang: string
+    text: LocaleHeader
     onMobileMenu: boolean
     setOnMobileMenu: (onMobileMenu: boolean) => void
 }
 
-export function MobileCategories({ lang, onMobileMenu, setOnMobileMenu }: Props) {
+export function MobileCategories({ lang, text, onMobileMenu, setOnMobileMenu }: Props) {
     const router = useRouter()
 
     return (
@@ -35,9 +37,9 @@ export function MobileCategories({ lang, onMobileMenu, setOnMobileMenu }: Props)
             >
                 {onMobileMenu && (
                     <>
-                        <MobileCategory onClick={() => router.push(`/${lang}/register-walker`)}>산책인 등록</MobileCategory>
-                        <MobileCategory onClick={() => router.push(`/${lang}/boards`)}>산책 맡기기</MobileCategory>
-                        <MobileCategory onClick={() => router.push(`/${lang}/signin`)}>로그인</MobileCategory>
+                        <MobileCategory onClick={() => router.push(`/${lang}/register-walker`)}>{text.registerWalker}</MobileCategory>
+                        <MobileCategory onClick={() => router.push(`/${lang}/boards`)}>{text.boards}</MobileCategory>
+                        <MobileCategory onClick={() => router.push(`/${lang}/signin`)}>{text.login}</MobileCategory>
                     </>
                 )}
             </div>

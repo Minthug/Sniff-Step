@@ -2,12 +2,12 @@
 
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { LocaleHome, Locales } from '@/app/types/locales'
 import { container } from '@/app/common'
-import { Home, Locales } from '@/app/types/locales'
 
 interface Props {
     lang: Locales
-    text: Home
+    text: LocaleHome
 }
 
 export function MobileFirstSection({ lang, text }: Props) {

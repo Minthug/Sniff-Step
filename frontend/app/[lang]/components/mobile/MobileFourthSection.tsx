@@ -2,13 +2,13 @@
 
 import React, { useRef } from 'react'
 import Link from 'next/link'
-import { Home, Locales } from '@/app/types/locales'
+import { LocaleHome, Locales } from '@/app/types/locales'
 import { container } from '@/app/common'
 import { useIntersectionObserver } from '@/app/hooks'
 
 interface Props {
     lang: Locales
-    text: Home
+    text: LocaleHome
 }
 
 export function MobileFourthSection({ lang, text }: Props) {

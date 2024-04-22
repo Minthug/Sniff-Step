@@ -1,13 +1,13 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { Home, Locales } from '@/app/types/locales'
-import { container } from '@/app/common'
 import Link from 'next/link'
+import { LocaleHome, Locales } from '@/app/types/locales'
+import { container } from '@/app/common'
 
 interface Props {
     lang: Locales
-    text: Home
+    text: LocaleHome
 }
 
 export function FirstSection({ lang, text }: Props) {

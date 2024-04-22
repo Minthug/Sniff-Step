@@ -1,14 +1,14 @@
 'use client'
 
 import React, { useRef } from 'react'
-import { Home } from '@/app/types/locales'
+import { LocaleHome } from '@/app/types/locales'
 import { container } from '@/app/common'
 import { MdAppRegistration, MdPhoneInTalk } from 'react-icons/md'
 import { FaWpforms } from 'react-icons/fa6'
 import { useIntersectionObserver } from '@/app/hooks'
 
 interface Props {
-    text: Home
+    text: LocaleHome
 }
 
 export function ThirdSection({ text }: Props) {

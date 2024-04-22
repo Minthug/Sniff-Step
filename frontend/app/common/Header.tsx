@@ -6,12 +6,14 @@ import { AiOutlineSearch } from 'react-icons/ai'
 import { useRouter } from 'next/navigation'
 import { MobileCategories, MobileMenu, MobileSearch } from './components'
 import Button from './components/Button'
+import { LocaleHeader } from '../types/locales'
 
 interface Props {
     lang: 'ko' | 'en'
+    text: LocaleHeader
 }
 
-export function Header({ lang }: Props) {
+export function Header({ lang, text }: Props) {
     const [onMobileMenu, setOnMobileMenu] = useState(false)
     const [onMobileSearch, setOnMobileSearch] = useState(false)
     const router = useRouter()
@@ -31,20 +33,20 @@ export function Header({ lang }: Props) {
                     onClick={() => router.push(`/${lang}`)}
                 />
                 <div className="flex gap-10 items-center">
-                    <Button contents="산책인 등록" href={`/${lang}/register-walker`} />
-                    <Button contents="산책 맡기기" href={`/${lang}/boards`} />
+                    <Button contents={text.registerWalker} href={`/${lang}/register-walker`} />
+                    <Button contents={text.boards} href={`/${lang}/boards`} />
                     <div className="relative">
                         <input
                             className="w-[400px] pl-8 pr-[60px] py-4 text-[18px] text-[#898989] border bg-white rounded-[100px] outline-none"
                             onChange={() => {}}
                             type="text"
-                            placeholder="동네 검색으로 산책인을 찾아보세요!"
+                            placeholder={text.findMyLocal}
                         />
                         <div className="absolute top-[50%] right-4 translate-y-[-50%] w-[40px] h-[40px] flex justify-center items-center cursor-pointer">
                             <AiOutlineSearch className="text-[#898989]" />
                         </div>
                     </div>
-                    <Button contents="로그인" href={`/${lang}/signin`} />
+                    <Button contents={text.login} href={`/${lang}/signin`} />
                 </div>
             </div>
 
@@ -55,7 +57,7 @@ export function Header({ lang }: Props) {
                     fixed top-0 w-full flex justify-between items-center py-2 bg-[#fcfcfc] z-20
                 `}
             >
-                {onMobileSearch && <MobileSearch setOnMobileSearch={setOnMobileSearch} />}
+                {onMobileSearch && <MobileSearch text={text} setOnMobileSearch={setOnMobileSearch} />}
                 <img
                     className="w-[160px] h-[60px] cursor-pointer object-contain translate-x-[-20px]"
                     src="/images/text-logo.png"
@@ -67,7 +69,7 @@ export function Header({ lang }: Props) {
                     setOnMobileSearch={setOnMobileSearch}
                     setOnMobileMenu={setOnMobileMenu}
                 />
-                <MobileCategories lang={lang} onMobileMenu={onMobileMenu} setOnMobileMenu={setOnMobileMenu} />
+                <MobileCategories lang={lang} text={text} onMobileMenu={onMobileMenu} setOnMobileMenu={setOnMobileMenu} />
             </div>
         </>
     )

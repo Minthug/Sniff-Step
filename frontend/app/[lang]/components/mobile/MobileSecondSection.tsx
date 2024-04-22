@@ -1,12 +1,12 @@
 'use client'
 
 import React, { useRef } from 'react'
+import { LocaleHome } from '@/app/types/locales'
 import { container } from '@/app/common'
 import { useIntersectionObserver } from '@/app/hooks'
-import { Home } from '@/app/types/locales'
 
 interface Props {
-    text: Home
+    text: LocaleHome
 }
 
 export function MobileSecondSection({ text }: Props) {
