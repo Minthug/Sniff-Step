@@ -1,14 +1,16 @@
-import { container } from '@/app/common'
-import { D2CodingBold } from '@/app/fonts'
-import { Locales } from '@/app/types/locales'
-import Link from 'next/link'
+'use client'
+
 import React, { useEffect, useState } from 'react'
+import { Home, Locales } from '@/app/types/locales'
+import { container } from '@/app/common'
+import Link from 'next/link'
 
 interface Props {
     lang: Locales
+    text: Home
 }
 
-export function FirstSection({ lang }: Props) {
+export function FirstSection({ lang, text }: Props) {
     const [loading, setLoading] = useState(true)
 
     function opacityChange(element: HTMLElement | null, opacity: string, time: number) {
@@ -91,19 +93,18 @@ export function FirstSection({ lang }: Props) {
                     2xl:text-[52px]
                     h-full flex justify-center flex-col gap-2 pb-[150px] text-[40px] font-[800] z-10 transition-all duration-500 whitespace-pre`}
                 >
-                    <div>반려견을 위한</div>
-                    <div>우리 동네 산책 커뮤니티</div>
+                    <div>{text.section1.catchPhrase1}</div>
+                    <div>{text.section1.catchPhrase2}</div>
                     <Link
                         href={`/${lang}/boards`}
                         className={`
-                                ${D2CodingBold.className}
                                 hover:bg-green-600 hover:text-gray-100
                                 active:bg-green-700
                                 2xl:text-[20px]
                                 py-4 mt-4 bg-[#10b94e] rounded-lg font-[500] text-[18px] text-center text-white
                         `}
                     >
-                        산책인 공고 구경하기
+                        {text.Link}
                     </Link>
                 </div>
             </div>

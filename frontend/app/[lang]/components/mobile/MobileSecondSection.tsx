@@ -1,8 +1,15 @@
+'use client'
+
 import React, { useRef } from 'react'
 import { container } from '@/app/common'
 import { useIntersectionObserver } from '@/app/hooks'
+import { Home } from '@/app/types/locales'
 
-export function MobileSecondSection() {
+interface Props {
+    text: Home
+}
+
+export function MobileSecondSection({ text }: Props) {
     const target = useRef<HTMLDivElement>(null)
     const target2 = useRef<HTMLImageElement>(null)
     const target3 = useRef<HTMLDivElement>(null)
@@ -15,9 +22,9 @@ export function MobileSecondSection() {
                     ref={target}
                     className="h-full flex flex-col mx-auto font-[600] leading-[1.4] transition-opacity duration-[1s] opacity-0 text-center"
                 >
-                    <div className="pb-[40px] text-[#10b94e] text-[32px] font-[700]">동네 산책인 등록</div>
-                    <div className="text-[28px]">더 가깝게,</div>
-                    <div className="text-[28px]">우리 동네 산책 대행인</div>
+                    <div className="pb-[40px] text-[#10b94e] text-[32px] font-[700]">{text.section2.title}</div>
+                    <div className="text-[28px]">{text.section2.catchPhrase1}</div>
+                    <div className="text-[28px]">{text.section2.catchPhrase2}</div>
                 </div>
                 <img
                     ref={target2}
@@ -27,9 +34,9 @@ export function MobileSecondSection() {
                 />
                 <div
                     ref={target3}
-                    className="w-[320px] h-full flex flex-col items-center text-center text-[18px] text-[#212632] font-[600] leading-[1.6] transition-opacity duration-[1s] opacity-0"
+                    className="w-[320px] h-full flex flex-col items-center text-center text-[18px] text-black font-[600] leading-[1.6] transition-opacity duration-[1s] opacity-0 whitespace-break-spaces"
                 >
-                    등록된 산책 대행인들을 만나보세요! <br /> 당신의 반려견을 위한 산책인 <br /> 커뮤니티를 만들어 볼 수 있어요.
+                    {text.section2.description}
                 </div>
             </div>
         </div>
