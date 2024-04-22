@@ -1,5 +1,4 @@
 import React from 'react'
-import Button from '../components/Button'
 import { Desktop } from './Desktop'
 import { Mobile } from './Mobile'
 
