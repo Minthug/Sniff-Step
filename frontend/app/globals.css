@@ -34,3 +34,7 @@ input[type='checkbox']:checked:before {
     color: rgb(255, 255, 255) !important;
     background: #ff6497;
 }
+
+#descriptionModal::-webkit-scrollbar {
+    display: none;
+}

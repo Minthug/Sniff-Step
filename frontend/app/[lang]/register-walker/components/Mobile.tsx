@@ -1,6 +1,8 @@
+'use client'
+
 import React from 'react'
 import { container } from '@/app/common'
-import { Locales } from '@/app/types/locales'
+import { LocaleRegisterWalker, Locales } from '@/app/types/locales'
 import { FileChange, RegisterWalker } from '@/app/hooks'
 import { ChooseImageFile, ChooseWalkDates, ChooseWalkTimes, DescriptionModal, DescriptionTextarea } from '.'
 import { AiOutlineSearch } from 'react-icons/ai'
@@ -8,6 +10,7 @@ import { styles } from '../resource'
 
 interface Props {
     lang: Locales
+    text: LocaleRegisterWalker
     fileChangeState: FileChange
     registerWalkerState: RegisterWalker
 }

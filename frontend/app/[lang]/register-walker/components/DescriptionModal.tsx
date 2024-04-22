@@ -11,14 +11,16 @@ export function DescriptionModal({ descriptionExample, setShowDescriptionModal, 
     return (
         <>
             <div onClick={() => setShowDescriptionModal(false)} className="fixed top-0 left-0 w-full h-full bg-[#222] opacity-[60%] z-20" />
-            <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-[450px] w-full px-4 z-20">
-                <button
-                    onClick={() => setShowDescriptionModal(false)}
-                    className="absolute top-2 right-6 w-[40px] h-[40px] flex justify-center items-center"
-                >
-                    <AiOutlineClose className="text-[#000] text-[24px]" />
-                </button>
-                <div className="h-[500px] flex px-8 py-8 rounded-t-sm overflow-y-scroll bg-white whitespace-pre-wrap">
+            <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-[450px] w-full z-20 px-[40px]">
+                <div className="relative w-full h-[60px] bg-white shadow-sm">
+                    <button
+                        onClick={() => setShowDescriptionModal(false)}
+                        className="absolute top-[10px] right-[10px] w-[40px] h-[40px] flex justify-center items-center"
+                    >
+                        <AiOutlineClose className="text-[#000] text-[24px]" />
+                    </button>
+                </div>
+                <div id="descriptionModal" className="h-[500px] flex px-8 py-4 rounded-t-sm overflow-y-scroll bg-white whitespace-pre-wrap">
                     {descriptionExample}
                 </div>
                 <button

@@ -1,6 +1,6 @@
 export type Locales = 'en' | 'ko'
 
-export type Pages = 'home' | 'header' | 'footer'
+export type Pages = 'home' | 'header' | 'footer' | 'register-walker'
 
 export interface LocaleHome {
     section1: {
@@ -44,4 +44,16 @@ export interface LocaleFooter {
     registerWalker: string
     boards: string
     login: string
+}
+
+export interface LocaleRegisterWalker {
+    titlePlaceholder: string
+    paragraph1: string
+    paragraph2: string
+    paragraph3: string
+    paragraph4: string
+    paragraph5: string
+    templateButton: string
+    register: string
+    fileSizeError: string
 }
