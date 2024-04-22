@@ -1,8 +1,8 @@
 export type Locales = 'en' | 'ko'
 
-export type Pages = 'home'
+export type Pages = 'home' | 'header' | 'footer'
 
-export interface Home {
+export interface LocaleHome {
     section1: {
         catchPhrase1: string
         catchPhrase2: string
@@ -29,4 +29,19 @@ export interface Home {
     }
 
     Link: string
+}
+
+export interface LocaleHeader {
+    registerWalker: string
+    boards: string
+    findMyLocal: string
+    login: string
+    cancel: string
+}
+
+export interface LocaleFooter {
+    home: string
+    registerWalker: string
+    boards: string
+    login: string
 }
