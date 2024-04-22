@@ -15,14 +15,14 @@ export default function page({ params: { lang } }: Props) {
     return (
         <div className="relative">
             <Header lang={lang} />
-            <FirstSection />
+            <FirstSection lang={lang} />
             <SecondSection />
             <ThirdSection />
-            <FourthSection />
-            <MobileFirstSection />
+            <FourthSection lang={lang} />
+            <MobileFirstSection lang={lang} />
             <MobileSecondSection />
             <MobileThirdSection />
-            <MobileFourthSection />
+            <MobileFourthSection lang={lang} />
             <Footer lang={lang} />
         </div>
     )

@@ -1,8 +1,14 @@
 import { container } from '@/app/common'
 import { D2CodingBold } from '@/app/fonts'
+import { Locales } from '@/app/types/locales'
+import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 
-export function MobileFirstSection() {
+interface Props {
+    lang: Locales
+}
+
+export function MobileFirstSection({ lang }: Props) {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
@@ -25,16 +31,17 @@ export function MobileFirstSection() {
                     >
                         <div>반려견을 위한</div>
                         <div>우리 동네 산책 커뮤니티</div>
-                        <button
+                        <Link
+                            href={`/${lang}/boards`}
                             className={`
                                 ${D2CodingBold.className}
                                 hover:bg-green-600 hover:text-gray-100
                                 active:bg-green-700
-                                py-3 mt-4 bg-[#10b94e] rounded-lg font-[500] text-[18px] text-white
+                                py-3 mt-4 bg-[#10b94e] rounded-lg font-[500] text-[18px] text-white text-center
                         `}
                         >
                             산책인 공고 구경하기
-                        </button>
+                        </Link>
                     </div>
                 </div>
             </div>

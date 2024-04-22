@@ -1,8 +1,14 @@
 import { container } from '@/app/common'
 import { D2CodingBold } from '@/app/fonts'
+import { Locales } from '@/app/types/locales'
+import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 
-export function FirstSection() {
+interface Props {
+    lang: Locales
+}
+
+export function FirstSection({ lang }: Props) {
     const [loading, setLoading] = useState(true)
 
     function opacityChange(element: HTMLElement | null, opacity: string, time: number) {
@@ -87,17 +93,18 @@ export function FirstSection() {
                 >
                     <div>반려견을 위한</div>
                     <div>우리 동네 산책 커뮤니티</div>
-                    <button
+                    <Link
+                        href={`/${lang}/boards`}
                         className={`
                                 ${D2CodingBold.className}
                                 hover:bg-green-600 hover:text-gray-100
                                 active:bg-green-700
                                 2xl:text-[20px]
-                                py-4 mt-4 bg-[#10b94e] rounded-lg font-[500] text-[18px] text-white
+                                py-4 mt-4 bg-[#10b94e] rounded-lg font-[500] text-[18px] text-center text-white
                         `}
                     >
                         산책인 공고 구경하기
-                    </button>
+                    </Link>
                 </div>
             </div>
             <div className="flex-1 flex justify-center items-center">

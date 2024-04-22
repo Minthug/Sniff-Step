@@ -10,7 +10,7 @@ export function ThirdSection() {
     useIntersectionObserver([target, target2])
 
     return (
-        <div className={`${container.home.desktop} h-full flex items-center`}>
+        <div className={`${container.home.desktop} h-full flex items-center px-[144px]`}>
             <div className="w-full flex flex-col gap-20 py-[100px]">
                 <div ref={target} className="flex flex-col gap-2 transition-opacity duration-[1s] opacity-0">
                     <div className="text-[#10b94e] font-[600] text-[32px]">이용방법</div>
