@@ -1,0 +1,28 @@
+{
+    "section1": {
+        "catchPhrase1": "For Your Pet,",
+        "catchPhrase2": "Local Walking Community"
+    },
+
+    "section2": {
+        "title": "Walker Registration",
+        "catchPhrase1": "More Closer,",
+        "catchPhrase2": "Local Walking Services",
+        "description": "Meet our registered walkers! \n Create a walking community for your pet."
+    },
+
+    "section3": {
+        "title": "How to Use",
+        "catchPhrase1": "Simple Posting",
+        "catchPhrase2": "Free Communication",
+        "box1": "Register as a Walker",
+        "box2": "Free communication method",
+        "box3": "Flexible Format"
+    },
+
+    "section4": {
+        "title": "Start Using Sniff and Step Today!"
+    },
+
+    "Link": "Browse Walker Listings"
+}

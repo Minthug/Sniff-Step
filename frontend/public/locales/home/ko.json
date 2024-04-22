@@ -1,0 +1,28 @@
+{
+    "section1": {
+        "catchPhrase1": "반려견을 위한",
+        "catchPhrase2": "우리 동네 산책 커뮤니티"
+    },
+
+    "section2": {
+        "title": "산책인 등록",
+        "catchPhrase1": "더 가깝게,",
+        "catchPhrase2": "우리 동네 산책대행",
+        "description": "등록된 산책 대행인들을 만나보세요! \n 당신의 반려견을 위한 산책인 \n 커뮤니티를 만들어 볼 수 있어요."
+    },
+
+    "section3": {
+        "title": "이용방법",
+        "catchPhrase1": "간단한 게시물 등록",
+        "catchPhrase2": "자유로운 소통",
+        "box1": "산책인 등록",
+        "box2": "소통 방식 및 시간 설정",
+        "box3": "자유로운 형식"
+    },
+
+    "section4": {
+        "title": "지금 바로 스니프 앤 스텝을 이용해보세요!"
+    },
+
+    "Link": "산책인 공고 구경하기"
+}
