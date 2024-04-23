@@ -12,9 +12,10 @@ export function SigninInput({ value, placeholder, type, className, onChange }: P
     return (
         <input
             className={`
-            xl:placeholder:text-[14px]
-            placeholder:text-[12px]
-            w-full p-4 outline-none border border-gray-300 rounded-lg text-[14px] ${className}`}
+                xl:placeholder:text-[14px]
+                placeholder:text-[12px]
+                w-full p-4 outline-none border border-gray-300 rounded-lg text-[14px] ${className}
+            `}
             value={value}
             placeholder={placeholder}
             type={type}
