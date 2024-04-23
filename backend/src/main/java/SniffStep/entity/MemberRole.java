@@ -8,13 +8,8 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.util.stream.Stream;
 
-public enum MemberRole implements GrantedAuthority {
+public enum MemberRole {
 
     USER, ADMIN;
 
-
-    @Override
-    public String getAuthority() {
-        return this.name();
-    }
 }

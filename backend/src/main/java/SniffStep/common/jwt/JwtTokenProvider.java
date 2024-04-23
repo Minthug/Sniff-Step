@@ -1,6 +1,6 @@
 package SniffStep.common.jwt;
 
-import SniffStep.common.jwt.dto.TokenResponseDTO;
+import SniffStep.common.jwt.dto.TokenDTO;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -37,7 +37,7 @@ public class JwtTokenProvider {
         this.secretKey = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public TokenResponseDTO generateTokenDto(Authentication authentication) {
+    public TokenDTO generateTokenDto(Authentication authentication) {
         // bring authorities
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -59,7 +59,7 @@ public class JwtTokenProvider {
                 .signWith(secretKey, SignatureAlgorithm.HS512)
                 .compact();
 
-        return TokenResponseDTO.builder()
+        return TokenDTO.builder()
                 .grantType(BEARER_TYPE)
                 .accessToken(accessToken)
                 .accessTokenExpiresIn(accessTokenExpiresIn.getTime())
@@ -108,66 +108,4 @@ public class JwtTokenProvider {
             return e.getClaims();
         }
     }
-
-
-    //    public JwtTokenProvider(Environment env, CustomMemberDetailsService customMemberDetailsService) {
-//        this.secretKey = env.getProperty("jwt.secret-key");
-//        this.customMemberDetailsService = customMemberDetailsService;
-//    }
-
-
-//    public Claims extractAllClaims(String token) {
-//        return Jwts.parserBuilder()
-//                .setSigningKey(getSigningKey(secretKey))
-//                .build()
-//                .parseClaimsJws(token)
-//                .getBody();
-//    }
-//
-//    public String getUsername(String token) {
-//        return extractAllClaims(token).get("username", String.class);
-//    }
-//
-//    public Key getSigningKey(String secretKey) {
-//        byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
-//        return Keys.hmacShaKeyFor(keyBytes);
-//    }
-//
-//    public Boolean isTokenExpired(String token) {
-//        Date expiration = extractAllClaims(token).getExpiration();
-//        return expiration.before(new Date());
-//    }
-//
-//    public String generateAccessToken(String username) {
-//        String token = doGenerateToken(username, ACCESS_TOKEN_EXPIRE_TIME.getValue());
-//        log.debug("generateAccessToken: {}", token);
-//        return token;
-//    }
-//
-//    public String generateRefreshToken(String username) {
-//        return doGenerateToken(username, REFRESH_TOKEN_EXPIRE_TIME.getValue());
-//    }
-//
-//    public String doGenerateToken(String username, Long expireTime) {
-//        Claims claims = Jwts.claims();
-//        claims.put("username", username);
-//
-//        return Jwts.builder()
-//                .setClaims(claims)
-//                .setIssuedAt(new Date(System.currentTimeMillis()))
-//                .setExpiration(new Date(System.currentTimeMillis() + expireTime))
-//                .signWith(getSigningKey(secretKey), SignatureAlgorithm.HS512)
-//                .compact();
-//    }
-//
-//    public boolean validateToken(String accessToken, UserDetails userDetails) {
-//        String username = getUsername(accessToken);
-//        return (username.equals(userDetails.getUsername()) && !isTokenExpired(accessToken));
-//    }
-//
-//    public long getRemainMilliseconds(String token) {
-//        Date expiration = extractAllClaims(token).getExpiration();
-//        Date now = new Date();
-//        return expiration.getTime() - now.getTime();
-//    }
 }

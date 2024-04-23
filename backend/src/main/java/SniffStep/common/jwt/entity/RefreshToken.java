@@ -1,37 +1,33 @@
 package SniffStep.common.jwt.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.redis.core.RedisHash;
-import org.springframework.data.redis.core.TimeToLive;
 
+@Entity
 @Getter
-@RedisHash("refreshToken")
 @NoArgsConstructor
 public class RefreshToken {
 
     @Id
-    private String id;
+    @Column(name = "refresh_token_key")
+    private String key;
 
-    private String refreshToken;
-
-    @TimeToLive
-    private Long expiration;
+    @Column(name = "refresh_token_value")
+    private String value;
 
     @Builder
-    public RefreshToken(String id, String refreshToken, Long expiration) {
-        this.id = id;
-        this.refreshToken = refreshToken;
-        this.expiration = expiration;
+    public RefreshToken(String key, String value) {
+        this.key = key;
+        this.value = value;
     }
 
-    public static RefreshToken createRefreshToken(String id, String refreshToken, Long remainingMilliseconds) {
-        return RefreshToken.builder()
-                .id(id)
-                .refreshToken(refreshToken)
-                .expiration(remainingMilliseconds / 1_000)
-                .build();
+    public RefreshToken updateValue(String refreshToken) {
+        this.value = value;
+        return this;
     }
 }
