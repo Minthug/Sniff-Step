@@ -1,0 +1,13 @@
+{
+    "goHome": "Home",
+    "title": "스니프 앤 스탭 로그인",
+    "signinGoogle": "구글 아이디로 로그인",
+    "email": "이메일 입력",
+    "emailPlaceholder": "이메일 주소를 입력하세요",
+    "password": "비밀번호 입력",
+    "passwordPlaceholder": "비밀번호를 입력하세요",
+    "findPassword": "비밀번호 찾기",
+    "signin": "로그인",
+    "signup": "회원가입",
+    "signupIntroduce": "아직 스니프 앤 스탭 회원이 아니신가요?"
+}

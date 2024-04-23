@@ -1,0 +1,13 @@
+{
+    "goHome": "Home",
+    "title": "Sign in to Sniff & Step",
+    "signinGoogle": "Sign in with Google",
+    "email": "Username or Email",
+    "emailPlaceholder": "Enter your username or email",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "findPassword": "Find Password",
+    "signin": "Sign in",
+    "signupIntroduce": "Don't have an account?",
+    "signup": "Sign Up"
+}
