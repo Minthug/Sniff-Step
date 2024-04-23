@@ -1,33 +1,35 @@
 import React from 'react'
+import { LocaleSignup } from '@/app/types/locales'
 import { GoogleLogin, SeparateLine, SigninButton, SigninLogo, container } from '@/app/common'
 import { useRouter } from 'next/navigation'
 
 interface Props {
     lang: string
+    text: LocaleSignup
 }
 
-export function Mobile({ lang }: Props) {
+export function Mobile({ lang, text }: Props) {
     const router = useRouter()
     return (
         <div className={container.autentication.mobile.section}>
             <div className={container.autentication.mobile.main}>
                 <SigninLogo lang={lang} />
                 <GoogleLogin className="active:bg-gray-800" theme="dark">
-                    Sign up with Google
+                    {text.signupGoogle}
                 </GoogleLogin>
                 <SeparateLine>or</SeparateLine>
                 <SigninButton onClick={() => router.push(`/${lang}/signup/email-password`)} className="active:bg-slate-100 text-[14px]">
-                    Sign up with Email
+                    {text.signupEmail}
                 </SigninButton>
                 <div className="flex flex-wrap justify-center mb-4 text-center text-[12px] mt-8">
-                    By creating an account you agree with our&nbsp;
-                    <button className="underline select-none">Terms of Service</button>,&nbsp;
-                    <button className="underline select-none">Privacy Policy</button>
+                    {text.introduceTermsOfService}&nbsp;
+                    <button className="underline select-none">{text.termsOfService}</button>,&nbsp;
+                    <button className="underline select-none">{text.privacyPolicy}</button>
                 </div>
                 <div className="flex flex-wrap justify-center text-center text-[12px]">
-                    Already have an account?&nbsp;
+                    {text.introduceAlreadyHaveAccount}&nbsp;
                     <button className="underline select-none" onClick={() => router.push(`/${lang}/signin`)}>
-                        Sign In
+                        {text.signin}
                     </button>
                 </div>
             </div>

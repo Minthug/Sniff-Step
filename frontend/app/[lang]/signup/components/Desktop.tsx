@@ -4,12 +4,14 @@ import { D2CodingBold } from '@/app/fonts'
 import { FaLongArrowAltLeft } from 'react-icons/fa'
 import { GoogleLogin, SeparateLine, SigninButton, container } from '@/app/common'
 import { useRouter } from 'next/navigation'
+import { LocaleSignup } from '@/app/types/locales'
 
 interface Props {
     lang: string
+    text: LocaleSignup
 }
 
-export function Desktop({ lang }: Props) {
+export function Desktop({ lang, text }: Props) {
     const router = useRouter()
     return (
         <div className={container.autentication.desktop.section}>
@@ -19,7 +21,7 @@ export function Desktop({ lang }: Props) {
                     href={`/${lang}/signin`}
                 >
                     <FaLongArrowAltLeft className="w-[20px] h-[20px]" />
-                    <div className={`${D2CodingBold.className} text-[14px]`}>Login</div>
+                    <div className={`${D2CodingBold.className} text-[14px]`}>{text.signin}</div>
                 </Link>
                 <video
                     className="w-full h-full object-contain select-none bg-[#a6bee4]"
@@ -31,19 +33,21 @@ export function Desktop({ lang }: Props) {
                 <img className="absolute bottom-4 w-[140px] object-cover" src="/images/text-logo.png" alt="" />
             </div>
             <div className={container.autentication.desktop.main}>
-                <div className={`${D2CodingBold.className} text-[28px] font-bold mb-8`}>Sign up to Sniff & Step</div>
-                <GoogleLogin theme="dark">Sign up with Google</GoogleLogin>
-                <SeparateLine>or</SeparateLine>
-                <SigninButton onClick={() => router.push(`/${lang}/signup/email-password`)}>Sign up with Email</SigninButton>
-                <div className="flex flex-wrap justify-center mb-4 text-[12px] mt-8">
-                    By creating an account you agree with our&nbsp;
-                    <button className="underline select-none">Terms of Service</button>,&nbsp;
-                    <button className="underline select-none">Privacy Policy</button>
+                <div className={`${D2CodingBold.className} text-[28px] font-bold mb-8`}>{text.title}</div>
+                <GoogleLogin theme="dark">{text.signupGoogle}</GoogleLogin>
+                <SeparateLine className="mb-4">or</SeparateLine>
+                <SigninButton onClick={() => router.push(`/${lang}/signup/email-password`)}>{text.signupEmail}</SigninButton>
+                <div className="flex flex-wrap justify-center mb-4 text-[12px] mt-8 px-[60px]">
+                    {text.introduceTermsOfService}
+                    &nbsp;
+                    <button className="underline select-none">{text.termsOfService}</button>
+                    ,&nbsp;
+                    <button className="underline select-none">{text.privacyPolicy}</button>
                 </div>
                 <div className="flex justify-center text-[14px]">
-                    Already have an account?&nbsp;
+                    {text.introduceAlreadyHaveAccount}&nbsp;
                     <button className="underline select-none" onClick={() => router.push(`/${lang}/signin`)}>
-                        Sign In
+                        {text.signin}
                     </button>
                 </div>
             </div>

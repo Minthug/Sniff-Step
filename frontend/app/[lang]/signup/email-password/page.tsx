@@ -1,21 +1,34 @@
 'use client'
 
-import React from 'react'
-import { Locales } from '@/app/types/locales'
+import React, { useEffect, useState } from 'react'
+import { LocaleSignup, Locales } from '@/app/types/locales'
 import { useSignup } from '@/app/hooks'
 import { Desktop, Mobile } from './components'
+import { getLocales } from '@/app/utils/getLocales'
 
 interface Props {
     params: { lang: Locales }
 }
 
 export default function page({ params: { lang } }: Props) {
+    const [text, setText] = useState<LocaleSignup>()
     const signupStates = useSignup()
+
+    useEffect(() => {
+        getLocales<LocaleSignup>('signup', lang).then(setText)
+    }, [])
+
+    if (!text)
+        return (
+            <div className="h-[calc(100vh-93px)] flex justify-center items-center">
+                <div className="w-24 h-24 animate-spin rounded-full border-4 border-solid border-current border-e-transparent" />
+            </div>
+        )
 
     return (
         <>
-            <Desktop lang={lang} signupStates={signupStates} />
-            <Mobile lang={lang} signupStates={signupStates} />
+            <Desktop lang={lang} text={text} signupStates={signupStates} />
+            <Mobile lang={lang} text={text} signupStates={signupStates} />
         </>
     )
 }
