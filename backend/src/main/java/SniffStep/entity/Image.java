@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class Image extends BaseTime {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "image_id")
     public Long id;
 
