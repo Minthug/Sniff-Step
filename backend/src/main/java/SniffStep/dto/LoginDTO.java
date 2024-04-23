@@ -1,12 +1,16 @@
 package SniffStep.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-@Getter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class LoginDTO {
-    private String email;
-    private String password;
 
+    @NotNull
+    private String email;
+
+    @NotNull
+    private String password;
 }
