@@ -1,6 +1,6 @@
 export type Locales = 'en' | 'ko'
 
-export type Pages = 'home' | 'header' | 'footer' | 'register-walker' | 'boards' | 'signin'
+export type Pages = 'home' | 'header' | 'footer' | 'register-walker' | 'boards' | 'signin' | 'signup'
 
 export interface LocaleHome {
     section1: {
@@ -89,4 +89,27 @@ export interface LocaleSignin {
     signin: string
     signup: string
     signupIntroduce: string
+}
+
+export interface LocaleSignup {
+    title: string
+    signupGoogle: string
+    signupEmail: string
+    introduceTermsOfService: string
+    termsOfService: string
+    privacyPolicy: string
+    introduceAlreadyHaveAccount: string
+    signin: string
+
+    beforeSignup: string
+    nickname: string
+    nicknamePlaceholder: string
+    email: string
+    emailPlaceholder: string
+    password: string
+    passwordPlaceholder: string
+    phoneNumber: string
+    phoneNumberPlaceholder: string
+    agreeTerms: string
+    signup: string
 }

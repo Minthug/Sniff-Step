@@ -1,0 +1,22 @@
+{
+    "title": "Sign up to Sniff & Step",
+    "signupGoogle": "Sign up with Google",
+    "signupEmail": "Sign up with Email",
+    "introduceTermsOfService": "By Creating an account, you agree with our",
+    "termsOfService": "Terms of Service",
+    "privacyPolicy": "Privacy Policy",
+    "introduceAlreadyHaveAccount": "Already have an account?",
+    "signin": "Sign in",
+
+    "beforeSignup": "Before Signup",
+    "nickname": "Nickname",
+    "nicknamePlaceholder": "Enter your nickname",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email address",
+    "password": "Password",
+    "passwordPlaceholder": "Please use at least 6 characters including a number and a letter",
+    "phoneNumber": "Phone Number",
+    "phoneNumberPlaceholder": "01012341234",
+    "agreeTerms": "I agreed with Sniff & Steps",
+    "signup": "Sign up"
+}
