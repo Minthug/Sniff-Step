@@ -1,6 +1,6 @@
 export type Locales = 'en' | 'ko'
 
-export type Pages = 'home' | 'header' | 'footer' | 'register-walker'
+export type Pages = 'home' | 'header' | 'footer' | 'register-walker' | 'boards'
 
 export interface LocaleHome {
     section1: {
@@ -56,4 +56,23 @@ export interface LocaleRegisterWalker {
     templateButton: string
     register: string
     fileSizeError: string
+}
+
+export interface LocaleBoards {
+    banner: {
+        desktop: {
+            catchPhrase1: string
+            catchPhrase2: string
+            catchPhrase3: string
+            catchPhrase4: string
+        }
+        mobile: {
+            catchPhrase1: string
+            catchPhrase2: string
+            catchPhrase3: string
+            catchPhrase4: string
+        }
+    }
+
+    title: string
 }

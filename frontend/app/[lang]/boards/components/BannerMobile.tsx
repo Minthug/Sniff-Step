@@ -1,6 +1,11 @@
+import { LocaleBoards } from '@/app/types/locales'
 import React from 'react'
 
-export function BannerMobile() {
+interface Props {
+    text: LocaleBoards
+}
+
+export function BannerMobile({ text }: Props) {
     return (
         <div
             className={`xl:hidden sm:px-24 relative h-[320px] flex flex-col justify-center items-center mt-[76px] px-4 bg-[#69d28c] overflow-hidden`}
@@ -12,7 +17,7 @@ export function BannerMobile() {
                             text-[32px] font-[700] text-white
                         `}
                 >
-                    동네에서 만나는
+                    {text.banner.mobile.catchPhrase1}
                 </div>
                 <div
                     className={`
@@ -20,7 +25,7 @@ export function BannerMobile() {
                         text-[40px] font-[700] text-white
                     `}
                 >
-                    내 반려견 산책인
+                    {text.banner.mobile.catchPhrase2}
                 </div>
                 <div
                     className={`
@@ -28,9 +33,9 @@ export function BannerMobile() {
                         text-[14px] text-white
                     `}
                 >
-                    우리 반려견들에게 필요한 산책인들과&nbsp;
+                    {text.banner.mobile.catchPhrase3}
                     <br className="sm:hidden" />
-                    다양한 커넥션을 만들어보세요
+                    {text.banner.mobile.catchPhrase4}
                 </div>
             </div>
             <div className="absolute top-[10px] right-[240px] w-[200px] h-[200px] bg-[#dcfbde] rounded-full" />

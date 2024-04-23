@@ -1,18 +1,20 @@
 import { container } from '@/app/common'
 import { Board } from '@/app/types/board'
+import { LocaleBoards } from '@/app/types/locales'
 import { Locale } from '@/i18n.config'
 import Link from 'next/link'
 import React from 'react'
 
 interface Props {
     lang: Locale
+    text: LocaleBoards
     boards: Board[]
 }
 
-export function Desktop({ lang, boards }: Props) {
+export function Desktop({ lang, text, boards }: Props) {
     return (
         <div className={`${container.main.desktop} items-center px-[108px]`}>
-            <div className="my-[60px] text-[32px] font-[500]">현재 등록된 게시물</div>
+            <div className="my-[60px] text-[32px] font-[500]">{text.title}</div>
             <div className="max-w-[1600px] grid grid-cols-3 gap-8">
                 {boards.map((board) => (
                     <Link
