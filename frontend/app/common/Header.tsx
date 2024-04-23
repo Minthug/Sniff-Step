@@ -37,7 +37,7 @@ export function Header({ lang, text }: Props) {
                     <Button contents={text.boards} href={`/${lang}/boards`} />
                     <div className="relative">
                         <input
-                            className="w-[400px] pl-8 pr-[60px] py-4 text-[18px] text-[#898989] border bg-white rounded-[100px] outline-none"
+                            className="w-[400px] pl-8 pr-[60px] py-4 text-[16px] text-black border bg-white rounded-[100px] outline-none"
                             onChange={() => {}}
                             type="text"
                             placeholder={text.findMyLocal}
