@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class BoardResponseDTO {
 
     private Long id;

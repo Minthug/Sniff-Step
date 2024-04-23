@@ -2,10 +2,8 @@ package SniffStep.dto;
 
 import SniffStep.entity.Image;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
 public class ImageResponseDTO {
 
     private Long imageId;

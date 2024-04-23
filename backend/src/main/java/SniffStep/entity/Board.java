@@ -37,16 +37,16 @@ public class Board extends BaseTime {
 
     private String activityTime;
 
-    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<Image> images = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member author;
 
-//    @Enumerated(EnumType.STRING)
-//    @Column(name = "board_type")
-//    private BoardType boardType;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "board_type")
+    private BoardType boardType;
 
     @Builder
     public Board(String title, String description, String activityLocation, String activityDate, String activityTime) {

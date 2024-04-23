@@ -14,8 +14,8 @@ server:
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
-    username: minthug
-    password: g1138745x
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     properties:
@@ -26,7 +26,7 @@ spring:
         format_sql: true
         default_batch_fetch_size: 100
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
   thymeleaf:
     prefix: classpath:templates/
     suffix: .html

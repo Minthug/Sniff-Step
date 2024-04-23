@@ -2,20 +2,17 @@ package SniffStep.service;
 
 import SniffStep.common.exception.BusinessLogicException;
 import SniffStep.common.exception.ExceptionCode;
-import SniffStep.common.exception.NotFoundException;
 import SniffStep.dto.BoardPatchDTO;
 import SniffStep.dto.BoardRequestDTO;
 import SniffStep.dto.BoardResponseDTO;
 import SniffStep.dto.BoardTotalResponseDTO;
 import SniffStep.entity.Board;
 import SniffStep.entity.Member;
-import SniffStep.mapper.BoardRequestMapper;
 import SniffStep.repository.BoardRepository;
 import SniffStep.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

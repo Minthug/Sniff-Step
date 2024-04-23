@@ -52,10 +52,11 @@ public class ImageService {
             Image image = findById(id);
             image.updatePost(saveBoard);
             imageRepository.save(image);
-            saveImageUrlList.add(image.getS3Url());
         }
         return saveImageUrlList;
     }
+
+
 
     private Image findById(Long id) {
         return imageRepository.findById(id)
@@ -144,7 +145,7 @@ public class ImageService {
 
 
     public boolean verifyContentType(String contentType) {
-        if (contentType.contains("image/jpeg") || contentType.contains("image/png") || contentType.contains("image/gif")) {
+        if (contentType.contains("image/jpg") || contentType.contains("image/jpeg") || contentType.contains("image/png") || contentType.contains("image/gif")) {
             return true;
         } else {
             return false;
