@@ -19,6 +19,7 @@ export function SigninButton({ theme = 'light', children, className, onClick }: 
                     xl:text-[16px]
                     ${D2CodingBold.className}
                     ${theme === 'light' ? 'bg-white' : 'bg-gray-900'}
+                    ${theme === 'light' ? 'hover:bg-gray-100' : 'hover:bg-gray-700'}
                     w-full flex gap-4 justify-center items-center mb-4 p-4 rounded-[100px] text-[14px] select-none shadow-sm
                     ${className}
                 `}

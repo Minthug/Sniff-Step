@@ -21,7 +21,7 @@ export function MobileCategories({ lang, text, onMobileMenu, setOnMobileMenu }: 
                     height: onMobileMenu ? '100%' : 0,
                     minHeight: onMobileMenu ? 'calc(100vh - 56px)' : 0
                 }}
-                className={`absolute left-0 top-[76px] h-[100%] w-full bg-[#222] opacity-[60%] z-10`}
+                className={`absolute left-0 top-[75px] h-[100%] w-full bg-[#222] opacity-[60%] z-10`}
             ></div>
             <div
                 style={{
@@ -32,7 +32,7 @@ export function MobileCategories({ lang, text, onMobileMenu, setOnMobileMenu }: 
                 }}
                 className={`
                     ${D2CodingBold.className}
-                    absolute left-0 top-[76px] w-full items-center bg-neutral-50 text-[18px] z-10
+                    absolute left-0 top-[75px] w-full items-center bg-neutral-50 text-[18px] z-10
                 `}
             >
                 {onMobileMenu && (
