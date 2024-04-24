@@ -29,9 +29,6 @@ public class Member extends BaseTime {
     private String introduce;
 
     private String phoneNumber;
-
-//    private String profileImage;
-
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -41,8 +38,6 @@ public class Member extends BaseTime {
     @Enumerated(EnumType.STRING)
     private MemberType type;
 
-    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
-    private List<Board> boardList = new ArrayList<>();
 
     @Builder
     public Member(Long id, String email, String name, String nickname, String introduce, String phoneNumber, String password, MemberRole role, MemberType type) {

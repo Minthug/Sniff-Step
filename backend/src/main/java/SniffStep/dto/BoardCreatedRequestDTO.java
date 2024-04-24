@@ -15,7 +15,6 @@ import java.util.List;
 @Data
 public class BoardCreatedRequestDTO {
 
-    @NotBlank(message = "제목을 입력해주세요.")
     private String title;
     private String description;
     private String activityLocation;
