@@ -1,7 +1,7 @@
 import { Board } from '@/app/types/board'
 
 export async function getBoardById(id: string): Promise<Board> {
-    const res = await fetch(`http://localhost:3000/api/boards/${id}`, {
+    const res = await fetch(`${process.env.NODE_NEXT_BACKEND_URL}/api/boards/${id}`, {
         cache: 'no-cache'
     })
 
