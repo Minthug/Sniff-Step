@@ -18,6 +18,7 @@ export function Mobile({ lang, text }: Props) {
                         <Button className="text-sm" contents={text.registerWalker} href={`/${lang}/register-walker`} />
                         <Button className="text-sm" contents={text.boards} href={`/${lang}/boards`} />
                         <Button className="text-sm" contents={text.login} href={`/${lang}/signin`} />
+                        <Button className="text-sm" contents={text.language} href={`/${lang === 'en' ? 'ko' : 'en'}`} />
                     </div>
                 </div>
             </div>

@@ -19,6 +19,7 @@ export function Desktop({ lang, text }: Props) {
                     <Button contents={text.registerWalker} href={`/${lang}/register-walker`} />
                     <Button contents={text.boards} href={`/${lang}/boards`} />
                     <Button contents={text.login} href={`/${lang}/signin`} />
+                    <Button contents={text.language} href={`/${lang === 'en' ? 'ko' : 'en'}`} />
                 </div>
             </div>
             <div className="flex justify-between text-[12px] text-gray-400">
@@ -27,7 +28,7 @@ export function Desktop({ lang, text }: Props) {
                     <div>Terms</div>
                     <div>Privacy</div>
                 </div>
-                <div className="flex gap-4">
+                <div className="flex items-center gap-4">
                     <div>@Minthug</div>
                     <div>@VVSOGI</div>
                 </div>

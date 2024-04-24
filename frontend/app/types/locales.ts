@@ -44,6 +44,7 @@ export interface LocaleFooter {
     registerWalker: string
     boards: string
     login: string
+    language: string
 }
 
 export interface LocaleRegisterWalker {
