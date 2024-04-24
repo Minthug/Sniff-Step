@@ -1,16 +1,19 @@
 package SniffStep.dto;
 
 import SniffStep.entity.Image;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public class ImageResponseDTO {
 
-    private Long imageId;
-    private String s3Url;
+    private Long id;
+    private String originName;
+    private String uniqueName;
 
-    public ImageResponseDTO(Image image) {
-        this.imageId = image.getId();
-        this.s3Url = image.getS3Url();
+    public static ImageResponseDTO toDto(Image image) {
+        return new ImageResponseDTO(image.getId(), image.getOriginName(), image.getUniqueName());
     }
+
 }

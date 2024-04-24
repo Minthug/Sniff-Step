@@ -1,15 +1,17 @@
 package SniffStep.entity;
 
 import SniffStep.common.BaseTime;
+import SniffStep.common.exception.UnsupportedFileTypeException;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.Arrays;
+import java.util.UUID;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Image extends BaseTime {
 
     @Id
@@ -17,25 +19,49 @@ public class Image extends BaseTime {
     @Column(name = "image_id")
     public Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_id")
-    private Board board;
+    @Column(nullable = false)
+    private String uniqueName;
 
     @Column(name = "image_name")
-    private String name;
+    private String originName;
 
-    @Column(name = "image_url")
-    private String s3Url;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "board_id", nullable = false)
+    private Board board;
 
-    @Column(name = "image_file_path")
-    private String s3FilePath;
 
-    @Builder
-    public Image(String name, String s3Url, String s3FilePath) {
-        this.name = name;
-        this.s3Url = s3Url;
-        this.s3FilePath = s3FilePath;
+    private final static String[] supportedExtensions = new String[]{"jpg", "jpeg", "png", "gif"};
+
+    public Image(String originName) {
+        this.originName = originName;
+        this.uniqueName = generateUniqueName(extractExtension(originName));
     }
+
+    private String extractExtension(String originName) {
+        try {
+            String ext = originName.substring(originName.lastIndexOf(",") + 1);
+            if (isSupportedFormat(ext)) return ext;
+        } catch (StringIndexOutOfBoundsException ignored) {
+            throw new UnsupportedFileTypeException();
+        }
+        throw new UnsupportedFileTypeException();
+    }
+
+    private boolean isSupportedFormat(String ext) {
+        return Arrays.stream(supportedExtensions).anyMatch(supportedExt -> supportedExt.equals(ext));
+    }
+
+    public void initBoard(Board board) {
+        if (this.board == null) {
+            this.board = board;
+        }
+    }
+
+    private String generateUniqueName(String extension) {
+        return UUID.randomUUID().toString() + "." + extension;
+    }
+
+
 
     public void updatePost(Board board) {
         this.board = board;
