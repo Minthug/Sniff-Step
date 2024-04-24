@@ -1,6 +1,6 @@
 package SniffStep.controller;
 
-import SniffStep.dto.BoardRequestDTO;
+import SniffStep.dto.BoardCreatedRequestDTO;
 import SniffStep.dto.BoardResponseDTO;
 import SniffStep.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class BoardController {
 
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/newBoard")
-    public ResponseEntity<BoardResponseDTO> saveBoard(@RequestBody BoardRequestDTO boardRequestDTO) {
+    public ResponseEntity<BoardResponseDTO> saveBoard(@RequestBody BoardCreatedRequestDTO boardRequestDTO) {
         return ResponseEntity.ok(boardService.saveBoard(boardRequestDTO));
     }
 }
