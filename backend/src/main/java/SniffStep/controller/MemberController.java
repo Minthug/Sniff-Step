@@ -1,39 +1,53 @@
 package SniffStep.controller;
 
-import SniffStep.common.jwt.JwtTokenProvider;
+import SniffStep.common.Response;
+import SniffStep.common.config.guard.Login;
+import SniffStep.dto.MemberUpdateDTO;
+import SniffStep.entity.Member;
 import SniffStep.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 
-@Slf4j
 @RestController
 @RequestMapping("/v1/members")
 @RequiredArgsConstructor
 public class MemberController {
 
     private final MemberService memberService;
-    private final JwtTokenProvider jwtTokenProvider;
 
-//    @GetMapping("/list")
-//    public ResponseResult<List<MemberDTO>> getList() {
-//        return success(memberMapper.toDtoList(memberService.findAll()));
-//    }
-//
-//    @GetMapping("/{id}")
-//    public ResponseResult<MemberDTO> findOne(@PathVariable Long id) {
-//        return success(memberMapper.toDto(memberService.findById(id)));
-//    }
-//
-//    @PatchMapping("/{id}")
-//    public ResponseResult<MemberDTO> update(@RequestBody @Valid MemberUpdateDTO memberUpdateDTO,
-//                                            @PathVariable(value = "id") Long id) {
-//        return success(memberMapper.toDto(memberService.update(memberUpdateDTO, id)));
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public ResponseResult<MemberDTO> delete(@PathVariable Long id) {
-//        return success(memberMapper.toDto(memberService.delete(id)));
-//    }
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/list")
+    public Response findAllMember() {
+        return Response.success(memberService.findAllMember());
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{id}")
+    public Response findMember(@PathVariable(value = "id") Long id) {
+        return Response.success(memberService.findMember(id));
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping()
+    public Response editMember(@RequestBody MemberUpdateDTO memberUpdateDTO,
+                               @Login Member member) {
+        memberService.editMember(member, memberUpdateDTO);
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(member.getNickname(),
+                memberUpdateDTO.getPassword());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        return Response.success();
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping()
+    public Response deleteMember(@Login Member member) {
+        memberService.deleteMember(member);
+        return Response.success();
+    }
 }

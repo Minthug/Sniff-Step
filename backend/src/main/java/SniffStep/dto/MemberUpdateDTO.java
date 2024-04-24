@@ -1,21 +1,13 @@
 package SniffStep.dto;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@NoArgsConstructor
 public class MemberUpdateDTO {
     private String nickname;
     private String introduce;
     private String password;
-    
-    @Builder
-    public MemberUpdateDTO(String nickname, String introduce, String password) {
-        this.nickname = nickname;
-        this.introduce = introduce;
-        this.password = password;
-    }
+
 }
