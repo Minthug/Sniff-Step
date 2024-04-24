@@ -12,8 +12,7 @@ import java.util.List;
 
 @Entity
 @Getter
-@NoArgsConstructor
-@Table(name = "member")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseTime {
 
     @Id
@@ -65,10 +64,10 @@ public class Member extends BaseTime {
         return this;
     }
 
-    public Member updateMember(MemberUpdateDTO memberUpdateDTO) {
-        this.nickname = memberUpdateDTO.getNickname();
-        this.introduce = memberUpdateDTO.getIntroduce();
-        this.password = memberUpdateDTO.getPassword();
-        return this;
+    public void updateMember(String nickname, String introduce, String password) {
+        this.nickname = nickname;
+        this.introduce = introduce;
+        this.password = password;
+        onPreUpdate();
     }
 }

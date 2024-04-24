@@ -4,6 +4,7 @@ import SniffStep.common.jwt.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -47,6 +48,11 @@ public class webSecurityConfig {
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/v1/auth/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/v1/members").hasAnyAuthority("USER", "ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/v1/members/{id}").hasAnyAuthority("USER", "ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/api/v1/members/{id}").hasAnyAuthority("USER", "ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/v1/members/{id}").hasAnyAuthority("USER", "ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/v1/boards").hasAnyAuthority("USER", "ADMIN")
                 .anyRequest().authenticated()
 
                 .and()
@@ -54,38 +60,4 @@ public class webSecurityConfig {
 
         return http.build();
     }
-
-
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//
-//        http
-//                .cors().and().csrf().disable()
-//                .headers().frameOptions().disable();
-//
-//        http
-//                .authorizeHttpRequests()
-//                .requestMatchers(new AntPathRequestMatcher("/v1/auth/signup", "POST")).permitAll()
-//                .requestMatchers(new AntPathRequestMatcher("/v1/auth/signin", "POST")).permitAll()
-//                .requestMatchers(new AntPathRequestMatcher("/v1/boards/newBoard", "POST")).permitAll()
-//                .requestMatchers(new AntPathRequestMatcher("/v1/images", "POST")).permitAll()
-//                .requestMatchers("/v1/auth/signup", "/v1/auth/signin", "/v1/auth/refresh", "/v1/auth/reissue", "/v1/members/*", "/v1/boards/*", "/v1/images/*").permitAll()
-//                .requestMatchers("/logout").authenticated()
-//                .anyRequest().hasAnyRole("USER", "ADMIN");
-//
-//        http
-//                .logout().disable()
-//                .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//
-//        http
-//                .exceptionHandling()
-//                .accessDeniedHandler(jwtAccessDeniedHandler)
-//                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-//
-//                .and()
-//                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
-//
-//        return http.build();
-//    }
 }
