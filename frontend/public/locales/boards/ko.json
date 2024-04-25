@@ -1,18 +1,6 @@
 {
-    "banner": {
-        "desktop": {
-            "catchPhrase1": "동네에서 만나는",
-            "catchPhrase2": "나만의 반려견 산책인",
-            "catchPhrase3": "우리 반려견들에게 필요한 산책인들과",
-            "catchPhrase4": "다양한 커넥션을 만들어보세요"
-        },
-        "mobile": {
-            "catchPhrase1": "동네에서 만나는",
-            "catchPhrase2": "내 반려견 산책인",
-            "catchPhrase3": "우리 반려견들에게 필요한 산책인들과",
-            "catchPhrase4": "다양한 커넥션을 만들어보세요"
-        }
-    },
-
-    "title": "현재 등록된 게시물"
+    "address": "활동할 주소)",
+    "availableTime": "산책이 가능한 시간대)",
+    "description": "견주님들께 산책에 대한 경험 및 자세한 플랜을 설명해보세요!",
+    "boardsButton": "목록으로 돌아가기"
 }

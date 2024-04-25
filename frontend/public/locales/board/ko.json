@@ -1,0 +1,18 @@
+{
+    "banner": {
+        "desktop": {
+            "catchPhrase1": "동네에서 만나는",
+            "catchPhrase2": "나만의 반려견 산책인",
+            "catchPhrase3": "우리 반려견들에게 필요한 산책인들과",
+            "catchPhrase4": "다양한 커넥션을 만들어보세요"
+        },
+        "mobile": {
+            "catchPhrase1": "동네에서 만나는",
+            "catchPhrase2": "내 반려견 산책인",
+            "catchPhrase3": "우리 반려견들에게 필요한 산책인들과",
+            "catchPhrase4": "다양한 커넥션을 만들어보세요"
+        }
+    },
+
+    "title": "현재 등록된 게시물"
+}
