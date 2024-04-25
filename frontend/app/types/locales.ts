@@ -1,6 +1,6 @@
 export type Locales = 'en' | 'ko'
 
-export type Pages = 'home' | 'header' | 'footer' | 'register-walker' | 'boards' | 'signin' | 'signup'
+export type Pages = 'home' | 'header' | 'footer' | 'register-walker' | 'boards' | 'signin' | 'signup' | 'board'
 
 export interface LocaleHome {
     section1: {
@@ -76,6 +76,13 @@ export interface LocaleBoards {
     }
 
     title: string
+}
+
+export interface LocaleBoard {
+    address: string
+    availableTime: string
+    description: string
+    boardsButton: string
 }
 
 export interface LocaleSignin {
