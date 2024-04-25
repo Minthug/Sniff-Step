@@ -1,6 +1,6 @@
 import React from 'react'
 import { container } from '@/app/common'
-import { Locales } from '@/app/types/locales'
+import { LocaleBoard, Locales } from '@/app/types/locales'
 import { FaThumbsUp } from 'react-icons/fa6'
 import { changeDayToKorean, changeTimeToKorean } from '@/app/utils/changeDateUtils'
 import { Board } from '@/app/types/board'
@@ -8,11 +8,12 @@ import Link from 'next/link'
 
 interface Props {
     lang: Locales
+    text: LocaleBoard
     board: Board
     dates: string[]
 }
 
-export function Mobile({ lang, board, dates }: Props) {
+export function Mobile({ lang, text, board, dates }: Props) {
     const {
         title, //
         nickname,
@@ -58,12 +59,12 @@ export function Mobile({ lang, board, dates }: Props) {
                 <div className="text-[14px] text-gray-400">{createdAt}</div>
             </div>
             <div className="flex flex-wrap gap-4 mb-8">
-                <div className="text-[18px] font-[500]">1. 활동할 주소)</div>
+                <div className="text-[18px] font-[500]">1. {text.address}</div>
                 <div className="text-[18px] font-[500] border-b-2 mb-[2px] border-red-600">{address}</div>
             </div>
             <div className="flex flex-col gap-8 mb-8">
                 <div className="flex flex-wrap items-center gap-4">
-                    <div className="text-[18px] font-[500]">2. 산책 가능한 시간대)</div>
+                    <div className="text-[18px] font-[500]">2. {text.availableTime}</div>
                     <div className="text-[18px] font-[500] border-b-2 border-red-600">{changeTimeToKorean(lang, availableTime)}</div>
                 </div>
                 <div className="flex flex-wrap gap-4">
@@ -79,7 +80,7 @@ export function Mobile({ lang, board, dates }: Props) {
             </div>
             <div className="mb-4">
                 <div className="flex items-center justify-between text-[18px] font-[500] mb-4">
-                    <div className="text-[18px] font-[500]">3. 견주님들께 산책에 대한 경험 및 자세한 플랜을 설명해보세요!</div>
+                    <div className="text-[18px] font-[500]">3. {text.description}</div>
                 </div>
                 <div className="w-full h-full min-h-[300px] p-4 border rounded-md resize-none outline-none whitespace-pre-wrap bg-white">
                     {description}
@@ -93,7 +94,7 @@ export function Mobile({ lang, board, dates }: Props) {
                         `}
                 href={`/${lang}/boards`}
             >
-                <div className="flex gap-2 items-center cursor-pointer font-[700]">목록으로 돌아가기</div>
+                <div className="flex gap-2 items-center cursor-pointer font-[700]">{text.boardsButton}</div>
             </Link>
         </div>
     )
