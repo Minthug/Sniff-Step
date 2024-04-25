@@ -10,7 +10,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
@@ -21,8 +23,9 @@ public class BoardController {
     private final BoardService boardService;
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/create")
-    public Response createBoard(@Valid @RequestBody BoardCreatedRequestDTO request,
+    @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Response createBoard(@Valid @ModelAttribute BoardCreatedRequestDTO request,
+                                @RequestParam(value = "images", required = false) MultipartFile[] images,
                                 @Login Member member) {
         boardService.createBoard(request, member);
         return Response.success();
@@ -30,7 +33,7 @@ public class BoardController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}")
-    public Response findBorad(@PathVariable(value = "id") Long id) {
+    public Response findBoard(@PathVariable(value = "id") Long id) {
         return Response.success(boardService.findBoard(id));
     }
 
