@@ -17,8 +17,6 @@ export default async function page({ params: { lang, id } }: Props) {
         const dates = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
         const text = await getLocales<LocaleBoard>('board', lang)
 
-        console.log(text)
-
         return (
             <div className={container.section}>
                 <Desktop lang={lang} text={text} board={board} dates={dates} />
