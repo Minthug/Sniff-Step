@@ -36,19 +36,20 @@ public class Image extends BaseTime {
         this.originName = originName;
         this.uniqueName = generateUniqueName(extractExtension(originName));
     }
-
     private String extractExtension(String originName) {
-        try {
-            String ext = originName.substring(originName.lastIndexOf(",") + 1);
-            if (isSupportedFormat(ext)) return ext;
-        } catch (StringIndexOutOfBoundsException ignored) {
-            throw new UnsupportedFileTypeException();
+        int dotIndex = originName.lastIndexOf(".");
+        if (dotIndex == -1 || dotIndex == originName.length() - 1) {
+            throw new UnsupportedFileTypeException("Invalid or missing file extension.");
         }
-        throw new UnsupportedFileTypeException();
+        String extension = originName.substring(dotIndex + 1).toLowerCase();
+        if (!isSupportedFormat(extension)) {
+            throw new UnsupportedFileTypeException("Unsupported file type: " + extension);
+        }
+        return extension;
     }
 
-    private boolean isSupportedFormat(String ext) {
-        return Arrays.stream(supportedExtensions).anyMatch(supportedExt -> supportedExt.equals(ext));
+    private boolean isSupportedFormat(String extension) {
+        return Arrays.asList(supportedExtensions).contains(extension);
     }
 
     public void initBoard(Board board) {
@@ -60,8 +61,6 @@ public class Image extends BaseTime {
     private String generateUniqueName(String extension) {
         return UUID.randomUUID().toString() + "." + extension;
     }
-
-
 
     public void updatePost(Board board) {
         this.board = board;

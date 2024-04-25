@@ -1,40 +1,30 @@
-//package SniffStep.controller;
-//
-//import SniffStep.dto.ImageResponseDTO;
-//import SniffStep.service.ImageService;
-//import lombok.RequiredArgsConstructor;
-//import org.springframework.http.HttpStatus;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.web.bind.annotation.*;
-//import org.springframework.web.multipart.MultipartFile;
-//
-//import java.io.IOException;
-//import java.util.List;
-//
-//
-//@RestController
-//@RequiredArgsConstructor
-//@RequestMapping("/v1/images")
-//public class PostImageController {
-//
-//    private final ImageService imageService;
-//
-//    @PostMapping
-//    public ResponseEntity saveFile(@RequestPart(value = "files") List<MultipartFile> multipartFiles) throws IOException {
-//
-//        List<ImageResponseDTO> imageResponse = imageService.addFile(multipartFiles);
-//        return new ResponseEntity(imageResponse, HttpStatus.CREATED);
-//    }
-//
-//    @GetMapping("/{id}")
-//    public ResponseEntity findFile(@PathVariable(value = "id") Long id) {
-//        String url = imageService.findUrlById(id);
-//        return new ResponseEntity(url, HttpStatus.OK);
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity deleteFile(@PathVariable(value = "id") Long id) {
-//        imageService.deleteFile(id);
-//        return new ResponseEntity(HttpStatus.NO_CONTENT);
-//    }
-//}
+package SniffStep.controller;
+
+import SniffStep.service.AwsService;
+import SniffStep.service.MemberService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/v1/images")
+public class PostImageController {
+
+    private final AwsService awsService;
+    private final MemberService memberService;
+
+    @GetMapping("/image")
+    public List<String> getImage() {
+        List<String> list = awsService.getFileList("image");
+        return list;
+    }
+
+//    @GetMapping("/testBoard")
+//    public List<String> getBoardImages(@PathVariable(""))
+}
