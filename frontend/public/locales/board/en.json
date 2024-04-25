@@ -1,18 +1,6 @@
 {
-    "banner": {
-        "desktop": {
-            "catchPhrase1": "Meet in Your Neighborhood,",
-            "catchPhrase2": "Your Personal Dog Walker",
-            "catchPhrase3": "Connect with the walkers our dogs need,",
-            "catchPhrase4": "and build various connections"
-        },
-        "mobile": {
-            "catchPhrase1": "Meet in Your Neighborhood,",
-            "catchPhrase2": "Your Dog Walker",
-            "catchPhrase3": "Connect with the walkers our dogs need,",
-            "catchPhrase4": "and build various connections"
-        }
-    },
-
-    "title": "Current Listings"
+    "address": "Address for Activity)",
+    "availableTime": "Available Walking Times)",
+    "description": "Explain to pet owners about your walking experience and detailed plans!",
+    "boardsButton": "Return to List"
 }
