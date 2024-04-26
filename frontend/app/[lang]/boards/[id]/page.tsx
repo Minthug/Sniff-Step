@@ -27,7 +27,12 @@ export default async function page({ params: { lang, id } }: Props) {
         const { status, message } = JSON.parse(error.message)
 
         return (
-            <div className={`${container.section} h-[480px] flex gap-4 flex-col justify-center items-center`}>
+            <div
+                className={`
+                    xl:h-[calc(100vh-92px)]
+                    ${container.section} h-screen flex gap-4 flex-col justify-center items-center
+                `}
+            >
                 <div className={`${D2CodingBold.className} flex gap-4 text-[48px] font-[700]`}>
                     <div>{message}</div>
                     <div>{status}</div>

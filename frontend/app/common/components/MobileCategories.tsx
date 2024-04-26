@@ -32,7 +32,7 @@ export function MobileCategories({ lang, text, onMobileMenu, setOnMobileMenu }: 
                 }}
                 className={`
                     ${D2CodingBold.className}
-                    absolute left-0 top-[75px] w-full items-center bg-neutral-50 text-[18px] z-10
+                    absolute left-0 top-[75px] w-full items-center bg-[#fcfcfc] text-[18px] z-10
                 `}
             >
                 {onMobileMenu && (
