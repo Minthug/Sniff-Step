@@ -1,5 +1,5 @@
 import React from 'react'
-import { D2CodingBold } from '../fonts'
+import { D2CodingBold } from '../../fonts'
 
 interface Props {
     theme?: 'light' | 'dark'
