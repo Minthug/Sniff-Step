@@ -4,7 +4,7 @@ import { D2CodingBold } from '@/app/fonts'
 import { LocaleSignin } from '@/app/types/locales'
 import { useRouter } from 'next/navigation'
 import { LoginStates } from '@/app/hooks'
-import { GoogleLogin, SeparateLine, SigninButton, SigninInput, SigninLogo, container } from '@/app/common'
+import { GoogleButton, SeparateLine, LargeButton, Input, TextLogo, container } from '@/app/common'
 import { FaLongArrowAltLeft } from 'react-icons/fa'
 
 interface Props {
@@ -31,12 +31,12 @@ export function Desktop({ lang, text, loginStates }: Props) {
                 <img className="absolute bottom-4 w-[140px] object-cover" src="/images/text-logo.png" alt="" />
             </div>
             <div className={container.autentication.desktop.main}>
-                <SigninLogo lang={lang} />
-                <GoogleLogin>{text.signinGoogle}</GoogleLogin>
+                <TextLogo lang={lang} />
+                <GoogleButton>{text.signinGoogle}</GoogleButton>
                 <SeparateLine>or</SeparateLine>
                 <div className="my-4">
                     <div className={`font-[600] mb-1 tracking-wide`}>{text.email}</div>
-                    <SigninInput value={email} placeholder={text.emailPlaceholder} type="text" onChange={changeEmail} />
+                    <Input value={email} placeholder={text.emailPlaceholder} type="text" onChange={changeEmail} />
                 </div>
                 <div className="mb-8">
                     <div className="flex justify-between">
@@ -48,11 +48,11 @@ export function Desktop({ lang, text, loginStates }: Props) {
                             {text.findPassword}
                         </button>
                     </div>
-                    <SigninInput value={password} placeholder={text.passwordPlaceholder} type="password" onChange={changePassword} />
+                    <Input value={password} placeholder={text.passwordPlaceholder} type="password" onChange={changePassword} />
                 </div>
-                <SigninButton theme="dark" onClick={() => {}}>
+                <LargeButton theme="dark" onClick={() => {}}>
                     {text.signin}
-                </SigninButton>
+                </LargeButton>
                 <div className="flex gap-2 text-[12px] justify-center">
                     <div>{text.signupIntroduce}</div>
                     <button className="underline select-none" onClick={() => router.push(`/${lang}/signup`)}>

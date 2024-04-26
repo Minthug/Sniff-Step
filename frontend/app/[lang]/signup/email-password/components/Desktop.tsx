@@ -5,7 +5,7 @@ import { LocaleSignup, Locales } from '@/app/types/locales'
 import { SignupStates } from '@/app/hooks/useSignup'
 import { D2CodingBold } from '@/app/fonts'
 import { FaLongArrowAltLeft } from 'react-icons/fa'
-import { SigninButton, SigninInput, container } from '@/app/common'
+import { LargeButton, Input, container } from '@/app/common'
 
 interface Props {
     lang: Locales
@@ -53,20 +53,20 @@ export function Desktop({ lang, text, signupStates }: Props) {
                 <div className="flex gap-4 mb-4">
                     <div className="w-full">
                         <div className={`${D2CodingBold.className} mb-2`}>{text.nickname}</div>
-                        <SigninInput value={nickName} placeholder={text.nicknamePlaceholder} type="text" onChange={changeNickname} />
+                        <Input value={nickName} placeholder={text.nicknamePlaceholder} type="text" onChange={changeNickname} />
                     </div>
                 </div>
                 <div className="mb-4">
                     <div className={`${D2CodingBold.className} mb-2`}>{text.email}</div>
-                    <SigninInput value={email} placeholder={text.emailPlaceholder} type="text" onChange={changeEmail} />
+                    <Input value={email} placeholder={text.emailPlaceholder} type="text" onChange={changeEmail} />
                 </div>
                 <div className="mb-4">
                     <div className={`${D2CodingBold.className} mb-2`}>{text.password}</div>
-                    <SigninInput value={password} placeholder={text.passwordPlaceholder} type="password" onChange={changePassword} />
+                    <Input value={password} placeholder={text.passwordPlaceholder} type="password" onChange={changePassword} />
                 </div>
                 <div className="mb-4">
                     <div className={`${D2CodingBold.className} mb-2`}>{text.phoneNumber}</div>
-                    <SigninInput value={phoneNumber} placeholder={text.phoneNumberPlaceholder} type="text" onChange={changePhoneNumber} />
+                    <Input value={phoneNumber} placeholder={text.phoneNumberPlaceholder} type="text" onChange={changePhoneNumber} />
                 </div>
                 <div className="flex items-center gap-4 mb-8">
                     <input onChange={changeIsAgreed} className="w-[20px] h-[20px]" type="checkbox" />
@@ -76,9 +76,9 @@ export function Desktop({ lang, text, signupStates }: Props) {
                         <button className="underline select-none">{text.privacyPolicy}</button>
                     </div>
                 </div>
-                <SigninButton theme="dark" onClick={() => {}}>
+                <LargeButton theme="dark" onClick={() => {}}>
                     {text.signup}
-                </SigninButton>
+                </LargeButton>
                 <div className="flex justify-center items-center text-[12px]">
                     {text.introduceAlreadyHaveAccount}&nbsp;
                     <button className="underline select-none" onClick={() => router.push(`/${lang}/signin`)}>

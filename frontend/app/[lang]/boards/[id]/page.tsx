@@ -1,10 +1,9 @@
 import React from 'react'
-import { container } from '@/app/common'
+import { Button, container } from '@/app/common'
 import { LocaleBoard, Locales } from '@/app/types/locales'
 import { getBoardById } from './utils/getBoardById'
 import { D2CodingBold } from '@/app/fonts'
 import { Desktop, Mobile } from './components'
-import Button from '@/app/common/components/Button'
 import { getLocales } from '@/app/utils/getLocales'
 
 interface Props {

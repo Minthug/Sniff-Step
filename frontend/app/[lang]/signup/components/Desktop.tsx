@@ -2,7 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import { D2CodingBold } from '@/app/fonts'
 import { FaLongArrowAltLeft } from 'react-icons/fa'
-import { GoogleLogin, SeparateLine, SigninButton, container } from '@/app/common'
+import { GoogleButton, SeparateLine, LargeButton, container } from '@/app/common'
 import { useRouter } from 'next/navigation'
 import { LocaleSignup } from '@/app/types/locales'
 
@@ -34,9 +34,9 @@ export function Desktop({ lang, text }: Props) {
             </div>
             <div className={container.autentication.desktop.main}>
                 <div className={`${D2CodingBold.className} text-[28px] font-bold mb-8`}>{text.title}</div>
-                <GoogleLogin theme="dark">{text.signupGoogle}</GoogleLogin>
+                <GoogleButton theme="dark">{text.signupGoogle}</GoogleButton>
                 <SeparateLine className="mb-4">or</SeparateLine>
-                <SigninButton onClick={() => router.push(`/${lang}/signup/email-password`)}>{text.signupEmail}</SigninButton>
+                <LargeButton onClick={() => router.push(`/${lang}/signup/email-password`)}>{text.signupEmail}</LargeButton>
                 <div className="flex flex-wrap justify-center mb-4 text-[12px] mt-8 px-[60px]">
                     {text.introduceTermsOfService}
                     &nbsp;

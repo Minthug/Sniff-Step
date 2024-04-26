@@ -1,6 +1,6 @@
 import React from 'react'
 import { D2CodingBold } from '@/app/fonts'
-import { GoogleLogin, SeparateLine, SigninButton, SigninInput, SigninLogo, container } from '@/app/common'
+import { GoogleButton, SeparateLine, LargeButton, Input, TextLogo, container } from '@/app/common'
 import { useRouter } from 'next/navigation'
 import { LoginStates } from '@/app/hooks'
 import { LocaleSignin } from '@/app/types/locales'
@@ -18,12 +18,12 @@ export function Mobile({ lang, text, loginStates }: Props) {
     return (
         <div className={container.autentication.mobile.section}>
             <div className={container.autentication.mobile.main}>
-                <SigninLogo lang={lang} />
-                <GoogleLogin className="mb-4 active:bg-slate-100">{text.signinGoogle}</GoogleLogin>
+                <TextLogo lang={lang} />
+                <GoogleButton className="mb-4 active:bg-slate-100">{text.signinGoogle}</GoogleButton>
                 <SeparateLine className="mb-0 text-[12px]">or</SeparateLine>
                 <div className="my-4">
                     <div className={`${D2CodingBold.className} mb-1 text-[14px]`}>{text.email}</div>
-                    <SigninInput value={email} placeholder={text.emailPlaceholder} type="text" onChange={changeEmail} />
+                    <Input value={email} placeholder={text.emailPlaceholder} type="text" onChange={changeEmail} />
                 </div>
                 <div className="mb-8">
                     <div className="flex justify-between">
@@ -38,11 +38,11 @@ export function Mobile({ lang, text, loginStates }: Props) {
                             {text.findPassword}
                         </button>
                     </div>
-                    <SigninInput value={password} placeholder={text.passwordPlaceholder} type="password" onChange={changePassword} />
+                    <Input value={password} placeholder={text.passwordPlaceholder} type="password" onChange={changePassword} />
                 </div>
-                <SigninButton className="active:bg-gray-800" theme="dark" onClick={() => {}}>
+                <LargeButton className="active:bg-gray-800" theme="dark" onClick={() => {}}>
                     {text.signin}
-                </SigninButton>
+                </LargeButton>
                 <div className="flex gap-2 text-[12px] justify-center">
                     <div>{text.signupIntroduce}</div>
                     <button className="underline select-none active:bg-slate-100" onClick={() => router.push(`/${lang}/signup`)}>
