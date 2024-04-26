@@ -1,12 +1,12 @@
 'use client'
 
 import React, { useState } from 'react'
-import { container } from './styles'
+import { container } from '../styles'
 import { AiOutlineSearch } from 'react-icons/ai'
 import { useRouter } from 'next/navigation'
-import { MobileCategories, MobileMenu, MobileSearch } from './components'
-import Button from './components/Button'
-import { LocaleHeader } from '../types/locales'
+import Button from '../components/Button'
+import { LocaleHeader } from '../../types/locales'
+import { MobileCategories, MobileMenu, MobileSearch } from '.'
 
 interface Props {
     lang: 'ko' | 'en'
