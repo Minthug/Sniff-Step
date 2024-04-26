@@ -1,4 +1,4 @@
 export * from './Header'
-export * from './MobileCategories'
-export * from './MobileMenu'
-export * from './MobileSearch'
+export * from './components/MobileCategories'
+export * from './components/MobileMenu'
+export * from './components/MobileSearch'

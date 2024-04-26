@@ -1,5 +1,5 @@
 import React from 'react'
-import { container } from '../styles'
+import { container } from '../../styles'
 import { AiOutlineSearch } from 'react-icons/ai'
 import { LocaleHeader } from '@/app/types/locales'
 
