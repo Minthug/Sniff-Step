@@ -15,10 +15,10 @@ export default function Desktop({ lang, text }: Props) {
     return (
         <div
             className={`
-    ${container.header} 
-    xl:flex
-    justify-between items-center pb-4 pt-4 hidden
-`}
+                ${container.header} 
+                xl:flex
+                justify-between items-center pb-4 pt-4 hidden
+            `}
         >
             <img
                 className="w-[220px] h-[60px] cursor-pointer object-contain translate-x-[-20px]"
