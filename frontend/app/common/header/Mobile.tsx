@@ -14,6 +14,7 @@ interface Props {
 
 export default function Mobile({ lang, text, onMobileMenu, onMobileSearch, setOnMobileMenu, setOnMobileSearch }: Props) {
     const router = useRouter()
+
     return (
         <div
             className={`
