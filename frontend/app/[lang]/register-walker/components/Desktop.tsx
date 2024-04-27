@@ -19,12 +19,14 @@ export function Desktop({ lang, text, fileChangeState, registerWalkerState }: Pr
     const {
         days,
         times,
+        title,
         description,
         descriptionSizeError,
         descriptionExample,
         showDescriptionModal,
         handleDayChange,
         handleTimeChange,
+        handleTitleChange,
         changeDayToKorean,
         changeTimeToKorean,
         handleDescriptionChange,
@@ -35,9 +37,11 @@ export function Desktop({ lang, text, fileChangeState, registerWalkerState }: Pr
         <div className={container.main.desktop}>
             <div className="mb-8 border-b">
                 <input
+                    type="text"
+                    value={title}
                     className="w-full bg-[transparent] outline-none text-[48px] placeholder:text-[#d9d9d9]"
                     placeholder={text.titlePlaceholder}
-                    type="text"
+                    onChange={handleTitleChange}
                 />
             </div>
             <div>

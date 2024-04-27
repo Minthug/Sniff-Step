@@ -20,12 +20,14 @@ export function Mobile({ lang, fileChangeState, registerWalkerState }: Props) {
     const {
         days,
         times,
+        title,
         description,
         descriptionSizeError,
         descriptionExample,
         showDescriptionModal,
         handleDayChange,
         handleTimeChange,
+        handleTitleChange,
         changeDayToKorean,
         changeTimeToKorean,
         handleDescriptionChange,
@@ -35,9 +37,11 @@ export function Mobile({ lang, fileChangeState, registerWalkerState }: Props) {
         <div className={container.main.mobile}>
             <div className="mb-4 border-b">
                 <input
+                    type="text"
+                    value={title}
                     className="w-full bg-[transparent] outline-none text-[20px] placeholder:text-[#d9d9d9]"
                     placeholder="ex) 문래동 댕댕이 산책 시켜드립니다 👍"
-                    type="text"
+                    onChange={handleTitleChange}
                 />
             </div>
             <div>

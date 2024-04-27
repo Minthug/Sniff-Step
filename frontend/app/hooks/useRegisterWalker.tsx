@@ -6,12 +6,14 @@ export const MAX_DESCRIPTION_SIZE = 3000
 export interface RegisterWalker {
     days: { [key: string]: boolean }
     times: { [key: string]: boolean }
+    title: string
     description: string
     descriptionSizeError: boolean
     descriptionExample: string
     showDescriptionModal: boolean
     handleDayChange: (event: React.ChangeEvent<HTMLInputElement>) => void
     handleTimeChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+    handleTitleChange: (event: React.ChangeEvent<HTMLInputElement>) => void
     changeDayToKorean: (lang: string, day: string) => string
     changeTimeToKorean: (lang: string, time: string) => string
     handleDescriptionChange: (value: string) => void
@@ -23,6 +25,7 @@ export interface Props {
 }
 
 export function useRegisterWalker({ lang }: Props): RegisterWalker {
+    const [title, setTitle] = useState('')
     const [days, setDays] = useState<{ [key: string]: boolean }>({
         mon: false,
         tue: false,
@@ -41,6 +44,7 @@ export function useRegisterWalker({ lang }: Props): RegisterWalker {
     const [description, setDescription] = useState('')
     const [descriptionSizeError, setDescriptionSizeError] = useState(false)
     const [showDescriptionModal, setShowDescriptionModal] = useState(false)
+
     const descriptionExample = getRegisterWalkerDescription(lang)
 
     const handleDayChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,6 +61,11 @@ export function useRegisterWalker({ lang }: Props): RegisterWalker {
             ...prevTimes,
             [name]: checked
         }))
+    }
+
+    const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = event.target
+        setTitle(value)
     }
 
     const changeDayToKorean = (lang: string, day: string) => {
@@ -108,6 +117,7 @@ export function useRegisterWalker({ lang }: Props): RegisterWalker {
 
     return {
         days,
+        title,
         times,
         description,
         descriptionSizeError,
@@ -115,6 +125,7 @@ export function useRegisterWalker({ lang }: Props): RegisterWalker {
         showDescriptionModal,
         handleDayChange,
         handleTimeChange,
+        handleTitleChange,
         changeDayToKorean,
         changeTimeToKorean,
         handleDescriptionChange,
