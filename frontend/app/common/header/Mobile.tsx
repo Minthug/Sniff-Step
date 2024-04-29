@@ -16,7 +16,7 @@ export default function Mobile({ lang, text, onMobileMenu, onMobileSearch, setOn
     const router = useRouter()
 
     return (
-        <div className={`${container.header.mobile}`}>
+        <div className={container.header.mobile}>
             {onMobileSearch && <MobileSearch text={text} setOnMobileSearch={setOnMobileSearch} />}
             <img
                 className="w-[160px] h-[60px] cursor-pointer object-contain translate-x-[-20px]"
