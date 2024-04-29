@@ -13,13 +13,7 @@ export default function Desktop({ lang, text }: Props) {
     const router = useRouter()
 
     return (
-        <div
-            className={`
-                ${container.header} 
-                xl:flex
-                justify-between items-center pb-4 pt-4 hidden
-            `}
-        >
+        <div className={`${container.header.desktop}`}>
             <img
                 className="w-[220px] h-[60px] cursor-pointer object-contain translate-x-[-20px]"
                 src="/images/text-logo-1.png"

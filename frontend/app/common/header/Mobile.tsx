@@ -16,13 +16,7 @@ export default function Mobile({ lang, text, onMobileMenu, onMobileSearch, setOn
     const router = useRouter()
 
     return (
-        <div
-            className={`
-                ${container.header}
-                xl:hidden
-                fixed top-0 w-full flex justify-between items-center py-2 bg-[#fcfcfc] z-20
-            `}
-        >
+        <div className={`${container.header.mobile}`}>
             {onMobileSearch && <MobileSearch text={text} setOnMobileSearch={setOnMobileSearch} />}
             <img
                 className="w-[160px] h-[60px] cursor-pointer object-contain translate-x-[-20px]"
