@@ -47,7 +47,7 @@ public class webSecurityConfig {
 
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/v1/auth/**").permitAll()
+                .requestMatchers("/v1/auth/**", "/v1/upload/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/members").hasAnyAuthority("USER", "ADMIN")
                 .requestMatchers(HttpMethod.GET, "/api/v1/members/{id}").hasAnyAuthority("USER", "ADMIN")
                 .requestMatchers(HttpMethod.PATCH, "/api/v1/members/{id}").hasAnyAuthority("USER", "ADMIN")
@@ -56,6 +56,8 @@ public class webSecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/v1/boards/{id}").hasAnyAuthority("USER", "ADMIN")
                 .requestMatchers(HttpMethod.PATCH, "/api/v1/boards/{id}").hasAnyAuthority("USER", "ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/v1/boards/{id}").hasAnyAuthority("USER", "ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/v1/s3/").hasAnyAuthority("USER", "ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/v1/s3/resource").hasAnyAuthority("USER", "ADMIN")
                 .anyRequest().authenticated()
 
                 .and()

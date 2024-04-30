@@ -1,19 +1,22 @@
 package SniffStep.service;
 
+import SniffStep.dto.AwsS3;
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.ListObjectsV2Request;
-import com.amazonaws.services.s3.model.ListObjectsV2Result;
-import com.amazonaws.services.s3.model.S3ObjectSummary;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
-@Service
 @Slf4j
+@Service
 @RequiredArgsConstructor
 public class AwsService {
 
@@ -22,30 +25,68 @@ public class AwsService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
 
-    @Value("${cloud.aws.s3.region}")
-    private String region;
+    public List<AwsS3> uploadFiles(String fileType, List<MultipartFile> multipartFiles) {
+        List<AwsS3> s3files = new ArrayList<>();
 
-    public String getThumbnailPath(String path) {
-        return amazonS3Client.getUrl(bucketName, path).toString();
+        String uploadFilePath = fileType + "/" + getFolderName();
+
+        for (MultipartFile multipartFile : multipartFiles) {
+            String originalFileName = multipartFile.getOriginalFilename();
+            String uploadFileName = getUuidFileName(originalFileName);
+            String uploadFileUrl = "";
+
+            ObjectMetadata objectMetadata = new ObjectMetadata();
+            objectMetadata.setContentLength(multipartFile.getSize());
+            objectMetadata.setContentType(multipartFile.getContentType());
+
+            try (InputStream inputStream = multipartFile.getInputStream()) {
+                String keyName = uploadFilePath + "/" + uploadFileName;
+
+                amazonS3Client.putObject(
+                        new PutObjectRequest(bucketName, keyName, inputStream, objectMetadata));
+
+                uploadFileUrl = amazonS3Client.getUrl(bucketName, keyName).toString();
+            } catch (IOException e) {
+                e.printStackTrace();
+                log.error("File upload failed", e);
+            }
+                s3files.add(
+                        AwsS3.builder()
+                                .originalFileName(originalFileName)
+                                .uploadFileName(uploadFileName)
+                                .uploadFilePath(uploadFilePath)
+                                .uploadFileUrl(uploadFileUrl)
+                                .build());
+        }
+        return s3files;
     }
 
-    public List<String> getFileList(String directory) {
-        List<String> fileList = new ArrayList<>();
+    public String deleteFile(String uploadFilePath, String uuidFileName) {
+        String result = "success";
 
-        ListObjectsV2Request listObjectsV2Request = new ListObjectsV2Request()
-                .withBucketName(bucketName)
-                .withPrefix(directory + "/");
-
-        ListObjectsV2Result result = amazonS3Client.listObjectsV2(listObjectsV2Request);
-        List<S3ObjectSummary> objectSummaries = result.getObjectSummaries();
-
-        for (S3ObjectSummary objectSummary : objectSummaries) {
-            String key = objectSummary.getKey();
-            if (!key.equals(directory + "/") && !key.contains("closed")) {
-                fileList.add("https://" + bucketName + ".s3." + region + ".amazonaws.com/" + key);
-
+        try {
+            String keyName = uploadFilePath + "/" + uuidFileName;
+            boolean isObjectExist = amazonS3Client.doesObjectExist(bucketName, keyName);
+            if (isObjectExist) {
+                amazonS3Client.deleteObject(bucketName, keyName);
+            } else {
+                result = "fail";
             }
+        } catch (Exception e) {
+            log.debug("Delete File failed", e);
         }
-        return fileList;
+        return result;
+    }
+
+    private String getFolderName() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd", Locale.getDefault());
+        Date date = new Date();
+        String str = sdf.format(date);
+        return str.replace("-", "/");
+    }
+
+    private String getUuidFileName(String fileName) {
+        String ext = fileName.substring(fileName.indexOf(".") + 1);
+        return UUID.randomUUID().toString() + "." + ext;
     }
 }

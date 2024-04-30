@@ -25,7 +25,7 @@ public class Image extends BaseTime {
     @Column(name = "image_name")
     private String originName;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "board_id", nullable = false)
     private Board board;
 
