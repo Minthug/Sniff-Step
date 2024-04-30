@@ -17,7 +17,7 @@ public class ImageService implements FileService {
 
     private final ImageRepository imageRepository;
 
-    private String location = "/Users/minthug/Desktop/image/";
+    private String location = "/app/images";
 
     @Override
     public void upload(MultipartFile file, String filename) {

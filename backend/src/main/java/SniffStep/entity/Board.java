@@ -25,7 +25,7 @@ import static java.util.stream.Collectors.toList;
 public class Board extends BaseTime {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "board_id")
     private Long id;
 
@@ -39,7 +39,7 @@ public class Board extends BaseTime {
 
     private String activityTime;
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Image> images;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
