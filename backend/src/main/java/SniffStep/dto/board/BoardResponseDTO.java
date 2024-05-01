@@ -18,8 +18,6 @@ public class BoardResponseDTO {
     private String title;
     private String description;
     private String activityLocation;
-    private String activityDate;
-    private String activityTime;
 
     private List<ImageResponseDTO> images;
     private LocalDateTime createAt;
@@ -31,8 +29,6 @@ public class BoardResponseDTO {
                 board.getTitle(),
                 board.getDescription(),
                 board.getActivityLocation(),
-                board.getActivityDate(),
-                board.getActivityTime(),
                 board.getImages().stream().map(i -> ImageResponseDTO.toDto(i)).toList(),
                 board.getCreatedAt()
         );
