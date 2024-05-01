@@ -1,7 +1,7 @@
 import { Board } from '@/app/types/board'
 
 export async function getBoards(): Promise<Board[]> {
-    const res = await fetch(`${process.env.NODE_NEXT_BACKEND_URL}/api/boards`, {
+    const res = await fetch(`${process.env.NODE_BACKEND_URL}/boards`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -9,6 +9,6 @@ export async function getBoards(): Promise<Board[]> {
         cache: 'no-cache'
     })
 
-    const { data: boards } = await res.json()
-    return boards
+    const { data } = await res.json()
+    return data
 }

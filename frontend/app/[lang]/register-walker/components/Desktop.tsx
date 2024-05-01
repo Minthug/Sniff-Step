@@ -52,7 +52,7 @@ export function Desktop({ lang, text, fileChangeState, registerWalkerState }: Pr
                 </div>
                 <div className="mb-8">
                     <div className="text-[18px] font-[500] mb-4">2. {text.paragraph2}</div>
-                    <button className="relative w-full max-w-[480px] h-[40px] pr-8 text-[16px] text-start border-2 border-gray-400 rounded-md overflow-hidden text-ellipsis whitespace-nowrap">
+                    <button className="relative w-full max-w-[480px] h-[40px] pr-8 text-[16px] text-start border border-gray-300 bg-white rounded-md overflow-hidden text-ellipsis whitespace-nowrap">
                         <AiOutlineSearch className="absolute top-1/2 right-[4px] translate-y-[-50%] text-[#898989] text-[24px]" />
                     </button>
                 </div>
