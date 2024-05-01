@@ -1,14 +1,9 @@
 package SniffStep.entity;
 
 import SniffStep.common.BaseTime;
-import SniffStep.dto.MemberUpdateDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter

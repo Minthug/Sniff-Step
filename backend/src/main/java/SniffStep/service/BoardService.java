@@ -3,15 +3,15 @@ package SniffStep.service;
 import SniffStep.common.exception.BusinessLogicException;
 import SniffStep.common.exception.ExceptionCode;
 import SniffStep.common.exception.MemberNotFoundException;
-import SniffStep.dto.BoardCreatedRequestDTO;
-import SniffStep.dto.BoardPatchDTO;
-import SniffStep.dto.BoardResponseDTO;
+import SniffStep.dto.board.*;
 import SniffStep.entity.Board;
 import SniffStep.entity.Image;
 import SniffStep.entity.Member;
 import SniffStep.repository.BoardRepository;
-import SniffStep.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,14 +27,13 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final ImageService imageService;
     private final FileService fileService;
-    private final MemberRepository memberRepository;
 
     @Transactional
     public void createBoard(BoardCreatedRequestDTO request, Member member) {
         List<Image> images = request.getImages().stream()
                 .map(i -> new Image(i.getOriginalFilename()))
                 .collect(Collectors.toList());
-        Board board = new Board(request.getTitle(), request.getDescription(), request.getActivityLocation(), request.getActivityDate(), request.getActivityTime(), images, member);
+        Board board = new Board(request.getTitle(), request.getDescription(), request.getActivityLocation(), images, member);
         boardRepository.save(board);
 
         uploadImages(board.getImages(), request.getImages());
@@ -47,6 +46,26 @@ public class BoardService {
 
         Member member = board.getMember();
         return BoardResponseDTO.toDto(member.getName(), board);
+    }
+
+    @Transactional(readOnly = true)
+    public BoardFindAllWithPagingResponseDTO findAllBoards(Integer page) {
+        PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("id").descending());
+        Page<Board> boards = boardRepository.findAll(pageRequest);
+        List<BoardFindAllResponseDTO> boardsWithDto = boards.stream()
+                .map(BoardFindAllResponseDTO::toDto)
+                .collect(Collectors.toList());
+        return BoardFindAllWithPagingResponseDTO.toDto(boardsWithDto, new PageInfoDTO(boards));
+    }
+
+    @Transactional(readOnly = true)
+    public BoardFindAllWithPagingResponseDTO searchBoards(String keyword, Integer page) {
+        PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("id").descending());
+        Page<Board> boards = boardRepository.findAllByTitleContaining(keyword, pageRequest);
+        List<BoardFindAllResponseDTO> boardsWithDto = boards.stream()
+                .map(BoardFindAllResponseDTO::toDto)
+                .collect(Collectors.toList());
+        return BoardFindAllWithPagingResponseDTO.toDto(boardsWithDto, new PageInfoDTO(boards));
     }
 
     @Transactional

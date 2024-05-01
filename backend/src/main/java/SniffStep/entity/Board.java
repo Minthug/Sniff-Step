@@ -1,7 +1,7 @@
 package SniffStep.entity;
 
 import SniffStep.common.BaseTime;
-import SniffStep.dto.BoardPatchDTO;
+import SniffStep.dto.board.BoardPatchDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,6 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,9 +34,9 @@ public class Board extends BaseTime {
 
     private String activityLocation;
 
-    private String activityDate;
-
-    private String activityTime;
+//    private String activityDate;
+//
+//    private String activityTime;
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Image> images;
@@ -47,14 +46,28 @@ public class Board extends BaseTime {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
 
-    public Board(String title, String description, String activityLocation, String activityDate, String activityTime, List<Image> images, Member member) {
+    @Enumerated(EnumType.STRING)
+    @Column(name = "board_type")
+    private BoardType boardType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "activity_date")
+    private ActivityDate activityDate;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "activity_time")
+    private ActivityTime activityTime;
+
+    public Board(String title, String description, String activityLocation, List<Image> images, Member member) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.activityLocation = activityLocation;
+        this.images = images;
+        this.member = member;
+        this.boardType = boardType;
         this.activityDate = activityDate;
         this.activityTime = activityTime;
-        this.images = new ArrayList<>();
-        this.member = member;
         addImages(images);
     }
 
@@ -64,8 +77,6 @@ public class Board extends BaseTime {
         this.description = patch.getDescription();
         ImageUpdatedResult result = findImageUpdatedResult(patch.getAddedImages(), patch.getDeletedImages());
         this.activityLocation = patch.getActivityLocation();
-        this.activityDate = patch.getActivityDate();
-        this.activityTime = patch.getActivityTime();
         addImages(result.getAddedImages());
         deleteImages(result.getDeletedImages());
         onPreUpdate();

@@ -1,4 +1,4 @@
-package SniffStep.dto;
+package SniffStep.dto.board;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

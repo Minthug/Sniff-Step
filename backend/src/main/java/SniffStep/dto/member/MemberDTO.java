@@ -1,7 +1,6 @@
-package SniffStep.dto;
+package SniffStep.dto.member;
 
 import SniffStep.entity.Member;
-import SniffStep.entity.MemberRole;
 import lombok.*;
 
 @Getter
