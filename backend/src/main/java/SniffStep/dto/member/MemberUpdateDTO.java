@@ -1,4 +1,4 @@
-package SniffStep.dto;
+package SniffStep.dto.member;
 
 import lombok.*;
 

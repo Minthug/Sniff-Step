@@ -1,15 +1,13 @@
 package SniffStep.controller;
 
 import SniffStep.common.Response;
-import SniffStep.common.jwt.dto.TokenDTO;
 import SniffStep.common.jwt.dto.TokenRequestDTO;
-import SniffStep.dto.MemberRequestDTO;
-import SniffStep.dto.SignUpRequestDTO;
+import SniffStep.dto.member.MemberRequestDTO;
+import SniffStep.dto.auth.SignUpRequestDTO;
 import SniffStep.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import static SniffStep.common.Response.success;

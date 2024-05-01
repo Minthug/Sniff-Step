@@ -1,9 +1,8 @@
 package SniffStep.service;
 
-import SniffStep.common.exception.ExceptionCode;
 import SniffStep.common.exception.MemberNotFoundException;
-import SniffStep.dto.MemberDTO;
-import SniffStep.dto.MemberUpdateDTO;
+import SniffStep.dto.member.MemberDTO;
+import SniffStep.dto.member.MemberUpdateDTO;
 import SniffStep.entity.Member;
 import SniffStep.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;

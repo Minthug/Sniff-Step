@@ -1,8 +1,7 @@
-package SniffStep.dto;
+package SniffStep.dto.board;
 
-import SniffStep.common.BaseTime;
+import SniffStep.dto.ImageResponseDTO;
 import SniffStep.entity.Board;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 import java.time.LocalDateTime;

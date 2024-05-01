@@ -2,7 +2,7 @@ package SniffStep.controller;
 
 import SniffStep.common.Response;
 import SniffStep.common.config.guard.Login;
-import SniffStep.dto.MemberUpdateDTO;
+import SniffStep.dto.member.MemberUpdateDTO;
 import SniffStep.entity.Member;
 import SniffStep.service.MemberService;
 import lombok.RequiredArgsConstructor;

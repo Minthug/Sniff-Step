@@ -2,8 +2,8 @@ package SniffStep.controller;
 
 import SniffStep.common.Response;
 import SniffStep.common.config.guard.Login;
-import SniffStep.dto.BoardCreatedRequestDTO;
-import SniffStep.dto.BoardPatchDTO;
+import SniffStep.dto.board.BoardCreatedRequestDTO;
+import SniffStep.dto.board.BoardPatchDTO;
 import SniffStep.entity.Member;
 import SniffStep.service.BoardService;
 import jakarta.validation.Valid;
@@ -32,9 +32,22 @@ public class BoardController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/{id}")
+    @GetMapping("/find/{id}")
     public Response findBoard(@PathVariable(value = "id") Long id) {
         return Response.success(boardService.findBoard(id));
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/findAll")
+    public Response findAllBoards(@RequestParam(defaultValue = "0") Integer page) {
+        return Response.success(boardService.findAllBoards(page));
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/search/{keyword}")
+    public Response searchBoards(@PathVariable(value = "keyword") String keyword,
+                                 @RequestParam(defaultValue = "0") Integer page) {
+        return Response.success(boardService.searchBoards(keyword, page));
     }
 
     @ResponseStatus(HttpStatus.OK)

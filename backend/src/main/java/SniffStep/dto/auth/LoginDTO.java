@@ -1,4 +1,4 @@
-package SniffStep.dto;
+package SniffStep.dto.auth;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
