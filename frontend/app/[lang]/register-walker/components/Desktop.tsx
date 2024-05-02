@@ -30,7 +30,8 @@ export function Desktop({ lang, text, fileChangeState, registerWalkerState }: Pr
         changeDayToKorean,
         changeTimeToKorean,
         handleDescriptionChange,
-        setShowDescriptionModal
+        setShowDescriptionModal,
+        handleRegisterWalker
     } = registerWalkerState
 
     return (
@@ -96,6 +97,7 @@ export function Desktop({ lang, text, fileChangeState, registerWalkerState }: Pr
             )}
             <div className="mb-8">
                 <button
+                    onClick={() => handleRegisterWalker(file)}
                     className={`
                         w-full h-[60px] bg-green-900  text-[#fff] rounded-md
                         hover:bg-green-700 active:bg-green-800 mb-8

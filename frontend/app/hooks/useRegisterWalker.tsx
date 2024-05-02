@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Locales } from '../types/locales'
 import { getRegisterWalkerDescription } from '../config/registerWalker'
+import useToken from './useToken'
 export const MAX_DESCRIPTION_SIZE = 3000
 
 export interface RegisterWalker {
@@ -18,6 +19,7 @@ export interface RegisterWalker {
     changeTimeToKorean: (lang: string, time: string) => string
     handleDescriptionChange: (value: string) => void
     setShowDescriptionModal: (value: boolean) => void
+    handleRegisterWalker: (file: File | null) => void
 }
 
 export interface Props {
@@ -25,7 +27,9 @@ export interface Props {
 }
 
 export function useRegisterWalker({ lang }: Props): RegisterWalker {
+    const { accessToken } = useToken()
     const [title, setTitle] = useState('')
+    const [address, setAddress] = useState('안산시 상록구 건건로')
     const [days, setDays] = useState<{ [key: string]: boolean }>({
         mon: false,
         tue: false,
@@ -115,6 +119,29 @@ export function useRegisterWalker({ lang }: Props): RegisterWalker {
         setDescription(value)
     }
 
+    const handleRegisterWalker = (file: File | null) => {
+        const data = new FormData()
+        if (file) data.append('file', file)
+
+        data.append('title', title)
+        data.append('address', address)
+        data.append('description', description)
+        Object.entries(days).forEach(([key, value]) => {
+            if (value) data.append('activityDate', key.toUpperCase())
+        })
+        Object.entries(times).forEach(([key, value]) => {
+            if (value) data.append('activityTime', key.toUpperCase())
+        })
+
+        fetch('/api/register-walker', {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            },
+            body: data
+        })
+    }
+
     return {
         days,
         title,
@@ -129,6 +156,7 @@ export function useRegisterWalker({ lang }: Props): RegisterWalker {
         changeDayToKorean,
         changeTimeToKorean,
         handleDescriptionChange,
-        setShowDescriptionModal
+        setShowDescriptionModal,
+        handleRegisterWalker
     }
 }
