@@ -1,11 +1,11 @@
 import React from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { LocaleSignup, Locales } from '@/app/types/locales'
 import { SignupStates } from '@/app/hooks/useSignup'
 import { D2CodingBold } from '@/app/fonts'
 import { FaLongArrowAltLeft } from 'react-icons/fa'
 import { LargeButton, Input, container } from '@/app/common'
+import { useRouter } from 'next/navigation'
 
 interface Props {
     lang: Locales
@@ -16,17 +16,24 @@ interface Props {
 export function Desktop({ lang, text, signupStates }: Props) {
     const router = useRouter()
     const {
-        name,
-        nickName,
+        nickname,
         email,
         password,
         phoneNumber,
-        changeName,
+        nicknameError,
+        emailError,
+        passwordError,
+        passwordLengthError,
+        passwordLetterError,
+        phoneNumberError,
+        isAgreedError,
         changeNickname,
         changeEmail,
         changePassword,
         changePhoneNumber,
-        changeIsAgreed
+        changeIsAgreed,
+        handleLogin,
+        handleRegister
     } = signupStates
 
     return (
@@ -53,21 +60,27 @@ export function Desktop({ lang, text, signupStates }: Props) {
                 <div className="flex gap-4 mb-4">
                     <div className="w-full">
                         <div className={`${D2CodingBold.className} mb-2`}>{text.nickname}</div>
-                        <Input value={nickName} placeholder={text.nicknamePlaceholder} type="text" onChange={changeNickname} />
+                        <Input value={nickname} placeholder={text.nicknamePlaceholder} type="text" onChange={changeNickname} />
                     </div>
                 </div>
+                {nicknameError && <div className="text-red-500 text-[12px] mb-4">{text.nicknameError}</div>}
                 <div className="mb-4">
                     <div className={`${D2CodingBold.className} mb-2`}>{text.email}</div>
                     <Input value={email} placeholder={text.emailPlaceholder} type="text" onChange={changeEmail} />
                 </div>
+                {emailError && <div className="text-red-500 text-[12px] mb-4">{text.emailError}</div>}
                 <div className="mb-4">
                     <div className={`${D2CodingBold.className} mb-2`}>{text.password}</div>
                     <Input value={password} placeholder={text.passwordPlaceholder} type="password" onChange={changePassword} />
                 </div>
+                {passwordError && <div className="text-red-500 text-[12px] mb-4">{text.passwordError}</div>}
+                {passwordLengthError && <div className="text-red-500 text-[12px] mb-4">{text.passwordLengthError}</div>}
+                {passwordLetterError && <div className="text-red-500 text-[12px] mb-4">{text.passwordLetterError}</div>}
                 <div className="mb-4">
                     <div className={`${D2CodingBold.className} mb-2`}>{text.phoneNumber}</div>
                     <Input value={phoneNumber} placeholder={text.phoneNumberPlaceholder} type="text" onChange={changePhoneNumber} />
                 </div>
+                {phoneNumberError && <div className="text-red-500 text-[12px] mb-4">{text.phoneNumberError}</div>}
                 <div className="flex items-center gap-4 mb-8">
                     <input onChange={changeIsAgreed} className="w-[20px] h-[20px]" type="checkbox" />
                     <div className="flex flex-wrap text-[12px]">
@@ -76,14 +89,24 @@ export function Desktop({ lang, text, signupStates }: Props) {
                         <button className="underline select-none">{text.privacyPolicy}</button>
                     </div>
                 </div>
-                <LargeButton theme="dark" onClick={() => {}}>
+                {isAgreedError && <div className="text-red-500 text-[12px] mb-4">{text.isAgreedError}</div>}
+                <LargeButton
+                    theme="dark"
+                    onClick={async () => {
+                        const isRegister = await handleRegister()
+                        if (isRegister) {
+                            await handleLogin()
+                            router.push(`/${lang}/`)
+                        }
+                    }}
+                >
                     {text.signup}
                 </LargeButton>
                 <div className="flex justify-center items-center text-[12px]">
                     {text.introduceAlreadyHaveAccount}&nbsp;
-                    <button className="underline select-none" onClick={() => router.push(`/${lang}/signin`)}>
+                    <Link className="underline select-none" href={`/${lang}/signin`}>
                         {text.signin}
-                    </button>
+                    </Link>
                 </div>
             </div>
         </div>
