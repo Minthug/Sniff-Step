@@ -18,5 +18,13 @@
     "phoneNumber": "Phone Number",
     "phoneNumberPlaceholder": "01012341234",
     "agreeTerms": "I agreed with Sniff & Steps",
-    "signup": "Sign up"
+    "signup": "Sign up",
+
+    "nicknameError": "Please provide a nickname",
+    "emailError": "Please respect the format of your email",
+    "passwordError": "Please write your password",
+    "passwordLengthError": "Password must be at least 6 characters long",
+    "passwordLetterError": "Password must contain letters and numbers",
+    "phoneNumberError": "Please enter your cell phone number",
+    "isAgreedError": "Please agree to the terms."
 }

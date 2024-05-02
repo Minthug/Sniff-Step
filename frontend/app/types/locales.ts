@@ -120,4 +120,12 @@ export interface LocaleSignup {
     phoneNumberPlaceholder: string
     agreeTerms: string
     signup: string
+
+    nicknameError: string
+    emailError: string
+    passwordError: string
+    passwordLengthError: string
+    passwordLetterError: string
+    phoneNumberError: string
+    isAgreedError: string
 }
