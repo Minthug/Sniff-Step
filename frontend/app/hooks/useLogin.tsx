@@ -5,6 +5,7 @@ export interface LoginStates {
     password: string
     changeEmail: (e: React.ChangeEvent<HTMLInputElement>) => void
     changePassword: (e: React.ChangeEvent<HTMLInputElement>) => void
+    handleLogin: () => void
 }
 
 export function useLogin(): LoginStates {
@@ -15,10 +16,21 @@ export function useLogin(): LoginStates {
 
     const changePassword = (e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)
 
+    const handleLogin = async () => {
+        const res = await fetch('/api/signin/email-password', {
+            method: 'POST',
+            body: JSON.stringify({
+                email,
+                password
+            })
+        })
+    }
+
     return {
         email,
         password,
         changeEmail,
-        changePassword
+        changePassword,
+        handleLogin
     }
 }

@@ -16,6 +16,8 @@ export default function page({ params: { lang } }: Props) {
 
     useEffect(() => {
         getLocales<LocaleSignin>('signin', lang).then(setText)
+        localStorage.removeItem('accessToken')
+        localStorage.removeItem('refreshToken')
     }, [])
 
     if (!text)
