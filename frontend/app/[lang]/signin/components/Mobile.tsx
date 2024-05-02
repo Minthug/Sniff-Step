@@ -1,4 +1,5 @@
 import React from 'react'
+import Link from 'next/link'
 import { D2CodingBold } from '@/app/fonts'
 import { GoogleButton, SeparateLine, LargeButton, Input, TextLogo, container } from '@/app/common'
 import { useRouter } from 'next/navigation'
@@ -13,7 +14,17 @@ interface Props {
 
 export function Mobile({ lang, text, loginStates }: Props) {
     const router = useRouter()
-    const { email, password, changeEmail, changePassword } = loginStates
+    const {
+        email,
+        password,
+        emailError,
+        passwordError,
+        passwordLengthError,
+        passwordLetterError,
+        changeEmail,
+        changePassword,
+        handleLogin
+    } = loginStates
 
     return (
         <div className={container.autentication.mobile.section}>
@@ -25,6 +36,7 @@ export function Mobile({ lang, text, loginStates }: Props) {
                     <div className={`${D2CodingBold.className} mb-1 text-[14px]`}>{text.email}</div>
                     <Input value={email} placeholder={text.emailPlaceholder} type="text" onChange={changeEmail} />
                 </div>
+                {emailError && <div className="text-red-500 text-[12px] mb-4">{text.emailError}</div>}
                 <div className="mb-8">
                     <div className="flex justify-between">
                         <div className={`${D2CodingBold.className} mb-1 text-[14px]`}>{text.password}</div>
@@ -39,15 +51,25 @@ export function Mobile({ lang, text, loginStates }: Props) {
                         </button>
                     </div>
                     <Input value={password} placeholder={text.passwordPlaceholder} type="password" onChange={changePassword} />
+                    {passwordError && <div className="text-red-500 text-[12px] my-4">{text.passwordError}</div>}
+                    {passwordLengthError && <div className="text-red-500 text-[12px] mb-4">{text.passwordLengthError}</div>}
+                    {passwordLetterError && <div className="text-red-500 text-[12px]">{text.passwordLetterError}</div>}
                 </div>
-                <LargeButton className="active:bg-gray-800" theme="dark" onClick={() => {}}>
+                <LargeButton
+                    className="active:bg-gray-800"
+                    theme="dark"
+                    onClick={async () => {
+                        const isCanLogin = await handleLogin()
+                        if (isCanLogin) router.push(`/${lang}/`)
+                    }}
+                >
                     {text.signin}
                 </LargeButton>
                 <div className="flex gap-2 text-[12px] justify-center">
                     <div>{text.signupIntroduce}</div>
-                    <button className="underline select-none active:bg-slate-100" onClick={() => router.push(`/${lang}/signup`)}>
+                    <Link className="underline select-none active:bg-slate-100" href={`/${lang}/signup`}>
                         {text.signup}
-                    </button>
+                    </Link>
                 </div>
             </div>
         </div>
