@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Locales } from '../types/locales'
 import { getRegisterWalkerDescription } from '../config/registerWalker'
-import useToken from './useToken'
 export const MAX_DESCRIPTION_SIZE = 3000
 
 export interface RegisterWalker {
@@ -27,7 +26,6 @@ export interface Props {
 }
 
 export function useRegisterWalker({ lang }: Props): RegisterWalker {
-    const { accessToken } = useToken()
     const [title, setTitle] = useState('')
     const [address, setAddress] = useState('안산시 상록구 건건로')
     const [days, setDays] = useState<{ [key: string]: boolean }>({
@@ -120,6 +118,7 @@ export function useRegisterWalker({ lang }: Props): RegisterWalker {
     }
 
     const handleRegisterWalker = (file: File | null) => {
+        const accessToken = localStorage.getItem('accessToken')
         const data = new FormData()
         if (file) data.append('file', file)
 

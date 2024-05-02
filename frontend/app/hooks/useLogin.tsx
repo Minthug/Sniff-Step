@@ -9,7 +9,8 @@ export interface LoginStates {
     passwordLetterError: boolean
     changeEmail: (e: React.ChangeEvent<HTMLInputElement>) => void
     changePassword: (e: React.ChangeEvent<HTMLInputElement>) => void
-    handleLogin: () => Promise<boolean>
+    handleGetProfile: (accessToken: string) => Promise<void>
+    handleLogin: () => Promise<string>
 }
 
 export function useLogin(): LoginStates {
@@ -30,6 +31,24 @@ export function useLogin(): LoginStates {
         setPasswordError(false)
         setPasswordLengthError(false)
         setPasswordLetterError(false)
+    }
+
+    const handleGetProfile = async (accessToken: string) => {
+        const res = await fetch('/api/auth/profile', {
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        })
+
+        if (!res.ok) {
+            const { message } = await res.json()
+            console.error(message)
+            return
+        }
+
+        const { data } = await res.json()
+        const { id } = data
+        localStorage.setItem('userId', id)
     }
 
     const handleLogin = async () => {
@@ -62,14 +81,14 @@ export function useLogin(): LoginStates {
                         break
                 }
             })
-            return false
+            throw new Error('login failed')
         }
 
         const { data } = await res.json()
         const { accessToken, refreshToken } = data
         localStorage.setItem('accessToken', accessToken)
         localStorage.setItem('refreshToken', refreshToken)
-        return true
+        return accessToken
     }
 
     return {
@@ -81,6 +100,7 @@ export function useLogin(): LoginStates {
         passwordLetterError,
         changeEmail,
         changePassword,
+        handleGetProfile,
         handleLogin
     }
 }

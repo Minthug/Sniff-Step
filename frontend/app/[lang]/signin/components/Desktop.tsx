@@ -24,6 +24,7 @@ export function Desktop({ lang, text, loginStates }: Props) {
         passwordLetterError,
         changeEmail,
         changePassword,
+        handleGetProfile,
         handleLogin
     } = loginStates
 
@@ -67,8 +68,13 @@ export function Desktop({ lang, text, loginStates }: Props) {
                 <LargeButton
                     theme="dark"
                     onClick={async () => {
-                        const isCanLogin = await handleLogin()
-                        if (isCanLogin) router.push(`/${lang}/`)
+                        try {
+                            const accessToken = await handleLogin()
+                            await handleGetProfile(accessToken)
+                            router.push(`/${lang}`)
+                        } catch (err) {
+                            console.log(err)
+                        }
                     }}
                 >
                     {text.signin}
