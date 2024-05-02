@@ -97,6 +97,11 @@ export interface LocaleSignin {
     signin: string
     signup: string
     signupIntroduce: string
+
+    emailError: string
+    passwordError: string
+    passwordLengthError: string
+    passwordLetterError: string
 }
 
 export interface LocaleSignup {

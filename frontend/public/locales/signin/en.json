@@ -9,5 +9,10 @@
     "findPassword": "Find Password",
     "signin": "Sign in",
     "signupIntroduce": "Don't have an account?",
-    "signup": "Sign Up"
+    "signup": "Sign Up",
+
+    "emailError": "Please respect the format of your email",
+    "passwordError": "Please write your password",
+    "passwordLengthError": "Password must be at least 6 characters long",
+    "passwordLetterError": "Password must contain letters and numbers"
 }
