@@ -1,4 +1,5 @@
 import React from 'react'
+import Link from 'next/link'
 import { D2CodingBold } from '@/app/fonts'
 import { LargeButton, Input, TextLogo, container } from '@/app/common'
 import { LocaleSignup, Locales } from '@/app/types/locales'
@@ -83,9 +84,9 @@ export function Mobile({ lang, text, signupStates }: Props) {
                 </LargeButton>
                 <div className="flex justify-center items-center text-[12px]">
                     {text.introduceAlreadyHaveAccount}&nbsp;
-                    <button className="underline select-none active:bg-slate-100" onClick={() => router.push(`/${lang}/signin`)}>
+                    <Link className="underline select-none active:bg-slate-100" href={`/${lang}/signin`}>
                         {text.signin}
-                    </button>
+                    </Link>
                 </div>
             </div>
         </div>

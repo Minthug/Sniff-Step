@@ -1,4 +1,5 @@
 import React from 'react'
+import Link from 'next/link'
 import { LocaleSignup } from '@/app/types/locales'
 import { GoogleButton, SeparateLine, LargeButton, TextLogo, container } from '@/app/common'
 import { useRouter } from 'next/navigation'
@@ -28,9 +29,9 @@ export function Mobile({ lang, text }: Props) {
                 </div>
                 <div className="flex flex-wrap justify-center text-center text-[12px]">
                     {text.introduceAlreadyHaveAccount}&nbsp;
-                    <button className="underline select-none" onClick={() => router.push(`/${lang}/signin`)}>
+                    <Link className="underline select-none" href={`/${lang}/signin`}>
                         {text.signin}
-                    </button>
+                    </Link>
                 </div>
             </div>
         </div>

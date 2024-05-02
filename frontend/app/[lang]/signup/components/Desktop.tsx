@@ -46,9 +46,9 @@ export function Desktop({ lang, text }: Props) {
                 </div>
                 <div className="flex justify-center text-[14px]">
                     {text.introduceAlreadyHaveAccount}&nbsp;
-                    <button className="underline select-none" onClick={() => router.push(`/${lang}/signin`)}>
+                    <Link className="underline select-none" href={`/${lang}/signin`}>
                         {text.signin}
-                    </button>
+                    </Link>
                 </div>
             </div>
         </div>
