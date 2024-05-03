@@ -17,18 +17,28 @@ public class Image extends BaseTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "image_id")
-    public Long id;
+    private Long id;
 
-    @Column(nullable = false)
     private String uniqueName;
 
     @Column(name = "image_name")
     private String originName;
 
+    private String s3Url;
+
+    private String s3FilePath;
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "board_id", nullable = false)
+    @JoinColumn(name = "board_id")
     private Board board;
 
+
+    @Builder
+    public Image(String originName, String s3Url, String s3FilePath) {
+        this.originName = originName;
+        this.s3Url = s3Url;
+        this.s3FilePath = s3FilePath;
+    }
 
     private final static String[] supportedExtensions = new String[]{"jpg", "jpeg", "png", "gif"};
 
