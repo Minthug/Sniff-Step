@@ -14,23 +14,15 @@ export function BannerMobile({ text }: Props) {
                 <div
                     className={`
                             sm:text-[32px]
-                            text-[32px] font-[700] text-white
+                            text-[32px] font-[700] text-white text-center mb-2
                         `}
                 >
                     {text.banner.mobile.catchPhrase1}
                 </div>
                 <div
                     className={`
-                        sm:text-[54px]
-                        text-[40px] font-[700] text-white
-                    `}
-                >
-                    {text.banner.mobile.catchPhrase2}
-                </div>
-                <div
-                    className={`
                         sm:text-[18px]
-                        text-[14px] text-white
+                        text-[14px] text-white text-center
                     `}
                 >
                     {text.banner.mobile.catchPhrase3}

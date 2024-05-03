@@ -32,7 +32,10 @@ export function Mobile({ lang, boards }: Props) {
                                 `}
                         />
                         <div className="relative h-[317px] mb-2">
-                            <img className="w-full h-full rounded-md rounded-b-none object-cover" src={board.imageUrl} />
+                            <img
+                                className="w-full h-full rounded-md rounded-b-none object-contain"
+                                src={board.image || '/images/text-logo-1.png'}
+                            />
                         </div>
                         <div className="flex gap-4 px-4 pb-4">
                             <img
