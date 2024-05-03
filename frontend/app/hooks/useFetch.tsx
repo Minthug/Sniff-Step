@@ -1,11 +1,11 @@
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { useRouter } from 'next/router'
 
-export const useAuthenticatedFetch = () => {
+export const useFetch = () => {
     const router = useRouter()
     const [isFetching, setIsFetching] = useState(false)
 
-    const authenticatedFetch = async (url: string, options: RequestInit) => {
+    const customFetch = async (url: string, options: RequestInit) => {
         const accessToken = localStorage.getItem('accessToken')
         const refreshToken = localStorage.getItem('refreshToken')
         const userId = localStorage.getItem('userId')
@@ -50,5 +50,5 @@ export const useAuthenticatedFetch = () => {
         }
     }
 
-    return { isFetching, authenticatedFetch }
+    return { isFetching, customFetch }
 }

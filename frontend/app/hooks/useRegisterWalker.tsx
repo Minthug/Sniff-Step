@@ -1,6 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Locales } from '../types/locales'
 import { getRegisterWalkerDescription } from '../config/registerWalker'
+import { useFetch } from './useFetch'
+import { useRouter } from 'next/navigation'
 export const MAX_DESCRIPTION_SIZE = 3000
 
 export interface RegisterWalker {
@@ -11,6 +13,11 @@ export interface RegisterWalker {
     descriptionSizeError: boolean
     descriptionExample: string
     showDescriptionModal: boolean
+    titleError: boolean
+    addressError: boolean
+    dateError: boolean
+    timeError: boolean
+    descriptionError: boolean
     handleDayChange: (event: React.ChangeEvent<HTMLInputElement>) => void
     handleTimeChange: (event: React.ChangeEvent<HTMLInputElement>) => void
     handleTitleChange: (event: React.ChangeEvent<HTMLInputElement>) => void
@@ -26,6 +33,9 @@ export interface Props {
 }
 
 export function useRegisterWalker({ lang }: Props): RegisterWalker {
+    const { customFetch } = useFetch()
+    const router = useRouter()
+
     const [title, setTitle] = useState('')
     const [address, setAddress] = useState('안산시 상록구 건건로')
     const [days, setDays] = useState<{ [key: string]: boolean }>({
@@ -46,10 +56,16 @@ export function useRegisterWalker({ lang }: Props): RegisterWalker {
     const [description, setDescription] = useState('')
     const [descriptionSizeError, setDescriptionSizeError] = useState(false)
     const [showDescriptionModal, setShowDescriptionModal] = useState(false)
+    const [titleError, setTitleError] = useState(false)
+    const [addressError, setAddressError] = useState(false)
+    const [dateError, setDateError] = useState(false)
+    const [timeError, setTimeError] = useState(false)
+    const [descriptionError, setDescriptionError] = useState(false)
 
     const descriptionExample = getRegisterWalkerDescription(lang)
 
     const handleDayChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setDateError(false)
         const { name, checked } = event.target
         setDays((prevDays) => ({
             ...prevDays,
@@ -58,6 +74,7 @@ export function useRegisterWalker({ lang }: Props): RegisterWalker {
     }
 
     const handleTimeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setTimeError(false)
         const { name, checked } = event.target
         setTimes((prevTimes) => ({
             ...prevTimes,
@@ -66,6 +83,7 @@ export function useRegisterWalker({ lang }: Props): RegisterWalker {
     }
 
     const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setTitleError(false)
         const { value } = event.target
         setTitle(value)
     }
@@ -109,6 +127,7 @@ export function useRegisterWalker({ lang }: Props): RegisterWalker {
     }
 
     const handleDescriptionChange = (value: string) => {
+        setDescriptionError(false)
         setDescriptionSizeError(false)
         if (value.length > MAX_DESCRIPTION_SIZE) {
             value = value.slice(0, MAX_DESCRIPTION_SIZE)
@@ -117,7 +136,29 @@ export function useRegisterWalker({ lang }: Props): RegisterWalker {
         setDescription(value)
     }
 
-    const handleRegisterWalker = (file: File | null) => {
+    const handleRegisterError = (message: string[]) => {
+        message.find((msg: string) => {
+            switch (msg) {
+                case 'title should not be empty':
+                    setTitleError(true)
+                    return
+                case 'address should not be empty':
+                    setAddressError(true)
+                    return
+                case 'activityDate should not be empty':
+                    setDateError(true)
+                    return
+                case 'activityTime should not be empty':
+                    setTimeError(true)
+                    return
+                case 'description should not be empty':
+                    setDescriptionError(true)
+                    return
+            }
+        })
+    }
+
+    const handleRegisterWalker = async (file: File | null) => {
         const accessToken = localStorage.getItem('accessToken')
         const data = new FormData()
         if (file) data.append('file', file)
@@ -132,13 +173,20 @@ export function useRegisterWalker({ lang }: Props): RegisterWalker {
             if (value) data.append('activityTime', key.toUpperCase())
         })
 
-        fetch('/api/register-walker', {
+        const res = await customFetch('/api/register-walker', {
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${accessToken}`
             },
             body: data
         })
+
+        if (!res?.ok) {
+            const { message } = await res?.json()
+            return handleRegisterError(message)
+        }
+
+        router.push(`/${lang}/boards`)
     }
 
     return {
@@ -149,6 +197,11 @@ export function useRegisterWalker({ lang }: Props): RegisterWalker {
         descriptionSizeError,
         descriptionExample,
         showDescriptionModal,
+        titleError,
+        addressError,
+        dateError,
+        timeError,
+        descriptionError,
         handleDayChange,
         handleTimeChange,
         handleTitleChange,
