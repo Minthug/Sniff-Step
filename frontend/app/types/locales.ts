@@ -57,6 +57,11 @@ export interface LocaleRegisterWalker {
     templateButton: string
     register: string
     fileSizeError: string
+    titleError: string
+    addressError: string
+    dateError: string
+    timeError: string
+    descriptionError: string
 }
 
 export interface LocaleBoards {

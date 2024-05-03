@@ -7,5 +7,11 @@
     "paragraph5": "견주님들께 산책에 대한 경험 및 자세한 플랜을 설명해보세요!",
     "templateButton": "예시 템플릿 가져오기",
     "register": "게시글 등록하기",
-    "fileSizeError": "파일 크기가 너무 큽니다. 100MB 이하로 업로드해주세요."
+
+    "fileSizeError": "파일 크기가 너무 큽니다. 100MB 이하로 업로드해주세요.",
+    "titleError": "제목을 입력해야 합니다",
+    "addressError": "주소를 입력해야 합니다",
+    "dateError": "산책 요일을 선택해야 합니다",
+    "timeError": "산책 시간을 선택해야 합니다",
+    "descriptionError": "설명을 입력해야 합니다"
 }
