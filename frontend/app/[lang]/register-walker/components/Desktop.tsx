@@ -24,6 +24,11 @@ export function Desktop({ lang, text, fileChangeState, registerWalkerState }: Pr
         descriptionSizeError,
         descriptionExample,
         showDescriptionModal,
+        titleError,
+        addressError,
+        dateError,
+        timeError,
+        descriptionError,
         handleDayChange,
         handleTimeChange,
         handleTitleChange,
@@ -51,17 +56,17 @@ export function Desktop({ lang, text, fileChangeState, registerWalkerState }: Pr
                     <ChooseImageFile file={file} handleFileChange={handleFileChange} />
                     {fileSizeError && <div className="text-[12px] text-[#ff0000]">{text.fileSizeError}</div>}
                 </div>
-                <div className="mb-8">
+                <div id="address" className="mb-8">
                     <div className="text-[18px] font-[500] mb-4">2. {text.paragraph2}</div>
                     <button className="relative w-full max-w-[480px] h-[40px] pr-8 text-[16px] text-start border border-gray-300 bg-white rounded-md overflow-hidden text-ellipsis whitespace-nowrap">
                         <AiOutlineSearch className="absolute top-1/2 right-[4px] translate-y-[-50%] text-[#898989] text-[24px]" />
                     </button>
                 </div>
-                <div className="mb-8">
+                <div id="date" className="mb-8">
                     <div className="text-[18px] font-[500] mb-4">3. {text.paragraph3}</div>
                     <ChooseWalkDates days={days} lang={lang} handleDayChange={handleDayChange} changeDayToKorean={changeDayToKorean} />
                 </div>
-                <div className="mb-8">
+                <div id="time" className="mb-8">
                     <div className="text-[18px] font-[500] mb-4">4. {text.paragraph4}</div>
                     <ChooseWalkTimes
                         times={times}
@@ -70,7 +75,7 @@ export function Desktop({ lang, text, fileChangeState, registerWalkerState }: Pr
                         changeTimeToKorean={changeTimeToKorean}
                     />
                 </div>
-                <div className="mb-8">
+                <div id="description" className="mb-8">
                     <div className="flex items-center justify-between text-[18px] font-[500] mb-4">
                         <div>5. {text.paragraph5}</div>
                         <button
@@ -105,6 +110,11 @@ export function Desktop({ lang, text, fileChangeState, registerWalkerState }: Pr
                 >
                     {text.register}
                 </button>
+                {titleError && <div className="text-[12px] text-[#ff0000]">{text.titleError}</div>}
+                {addressError && <div className="text-[12px] text-[#ff0000]">{text.addressError}</div>}
+                {dateError && <div className="text-[12px] text-[#ff0000]">{text.dateError}</div>}
+                {timeError && <div className="text-[12px] text-[#ff0000]">{text.timeError}</div>}
+                {descriptionError && <div className="text-[12px] text-[#ff0000]">{text.descriptionError}</div>}
             </div>
         </div>
     )
