@@ -20,8 +20,6 @@ public class BoardPatchDTO {
     private String description;
 
     private String activityLocation;
-    private String activityDate;
-    private String activityTime;
 
    private List<MultipartFile> addedImages = new ArrayList<>();
 

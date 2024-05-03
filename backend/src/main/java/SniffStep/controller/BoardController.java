@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
@@ -25,11 +24,11 @@ public class BoardController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Response createBoard(@Valid @ModelAttribute BoardCreatedRequestDTO request,
-                                @RequestParam(value = "images", required = false) MultipartFile[] images,
                                 @Login Member member) {
         boardService.createBoard(request, member);
         return Response.success();
     }
+
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/find/{id}")
@@ -51,7 +50,7 @@ public class BoardController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PatchMapping("/{id}")
+    @PatchMapping("/patch/{id}")
     public Response editBoard(@PathVariable(value = "id") Long id,
                               @Valid @ModelAttribute BoardPatchDTO request,
                               @Login Member member) {
@@ -60,7 +59,7 @@ public class BoardController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public Response deleteBoard(@PathVariable(value = "id") Long id,
                                 @Login Member member) {
         boardService.deleteBoard(id, member);

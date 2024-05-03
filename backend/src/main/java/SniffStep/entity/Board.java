@@ -11,8 +11,10 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -33,10 +35,6 @@ public class Board extends BaseTime {
     private String description;
 
     private String activityLocation;
-
-//    private String activityDate;
-//
-//    private String activityTime;
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Image> images;
@@ -59,15 +57,11 @@ public class Board extends BaseTime {
     private ActivityTime activityTime;
 
     public Board(String title, String description, String activityLocation, List<Image> images, Member member) {
-        this.id = id;
         this.title = title;
         this.description = description;
         this.activityLocation = activityLocation;
-        this.images = images;
+        this.images = new ArrayList<>();
         this.member = member;
-        this.boardType = boardType;
-        this.activityDate = activityDate;
-        this.activityTime = activityTime;
         addImages(images);
     }
 
@@ -112,10 +106,18 @@ public class Board extends BaseTime {
     }
 
     private void addImages(List<Image> added) {
-        added.forEach(i -> {
-            images.add(i);
-            i.initBoard(this);
-        });
+        List<Image> toBeAdded = added.stream()
+                .peek(i -> i.initBoard(this))
+                .collect(Collectors.toList());
+        images.addAll(toBeAdded);
+//        added.forEach(i -> {
+//            images.add(i);
+//            i.initBoard(this);
+//        });
+    }
+
+    public void saveMember(Member member) {
+        this.member = member;
     }
 
     private void deleteImages(List<Image> deletedImages) {

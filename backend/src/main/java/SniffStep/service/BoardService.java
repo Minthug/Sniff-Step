@@ -26,7 +26,6 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final ImageService imageService;
-    private final FileService fileService;
 
     @Transactional
     public void createBoard(BoardCreatedRequestDTO request, Member member) {
@@ -92,13 +91,18 @@ public class BoardService {
     }
 
     private void deleteImages(List<Image> images) {
-        images.forEach(i -> fileService.delete(i.getUniqueName()));
+        images.forEach(i -> imageService.delete(i.getUniqueName()));
     }
 
 
     private void uploadImages(List<Image> images, List<MultipartFile> filesImages) {
-        IntStream.range(0, images.size())
-                .forEach(i -> imageService.upload(filesImages.get(i), images.get(i).getUniqueName()));
+
+        try {
+            IntStream.range(0, filesImages.size())
+                    .forEach(i ->  imageService.upload(filesImages.get(i), images.get(i).getUniqueName()));
+        } catch (BusinessLogicException e) {
+            throw new RuntimeException("이미지 업로드 중 오류가 발생했습니다.", e);
+        }
     }
 }
 

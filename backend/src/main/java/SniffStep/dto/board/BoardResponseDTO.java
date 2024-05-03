@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
@@ -28,7 +29,7 @@ public class BoardResponseDTO {
                 board.getTitle(),
                 board.getDescription(),
                 board.getActivityLocation(),
-                board.getImages().stream().map(i -> ImageResponseDTO.toDto(i)).toList(),
+                board.getImages().stream().map(i -> ImageResponseDTO.toDto(i)).collect(Collectors.toList()),
                 board.getCreatedAt()
         );
     }
