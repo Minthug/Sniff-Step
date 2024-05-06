@@ -1,6 +1,7 @@
 export interface Board {
     id: string
     userId: string
+    nickname: string
     title: string
     email: string
     description: string
