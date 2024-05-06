@@ -14,23 +14,16 @@ interface Props {
 }
 
 export function Mobile({ lang, text, board, dates }: Props) {
-    const {
-        title, //
-        nickname,
-        address,
-        description,
-        imageUrl,
-        profileUrl,
-        availableDate,
-        availableTime,
-        ownerSatisfaction,
-        createdAt
-    } = board
+    const { title, nickname, description, likeNumber, activityDate, activityTime, createdAt, image, profileUrl, address } = board
 
     return (
         <div className={container.main.mobile}>
             <div className="w-full h-[400px] flex justify-center items-center mb-4 rounded-lg">
-                <img className="w-[400px] h-full object-cover rounded-lg" src={imageUrl} alt={imageUrl} />
+                <img
+                    className="w-[400px] h-full object-cover rounded-lg"
+                    src={image || '/images/text-logo-1.png'}
+                    alt={image || '/images/text-logo-1.png'}
+                />
             </div>
             <div className="w-full flex justify-between mb-4 pb-4 border-b select-none">
                 <div className="flex items-center gap-4">
@@ -49,7 +42,7 @@ export function Mobile({ lang, text, board, dates }: Props) {
                     >
                         <div className="flex gap-2 items-center cursor-pointer">
                             <FaThumbsUp />
-                            {ownerSatisfaction}
+                            {likeNumber}
                         </div>
                     </div>
                 </div>
@@ -58,20 +51,26 @@ export function Mobile({ lang, text, board, dates }: Props) {
                 <div className="text-[28px] font-[500]">{title}</div>
                 <div className="text-[14px] text-gray-400">{createdAt}</div>
             </div>
-            <div className="flex flex-wrap gap-4 mb-8">
+            <div className="flex flex-wrap gap-2 mb-8">
                 <div className="text-[18px] font-[500]">1. {text.address}</div>
                 <div className="text-[18px] font-[500] border-b-2 mb-[2px] border-red-600">{address}</div>
             </div>
-            <div className="flex flex-col gap-8 mb-8">
-                <div className="flex flex-wrap items-center gap-4">
+            <div className="flex flex-col gap-4 mb-8">
+                <div className="flex flex-wrap items-center gap-3">
                     <div className="text-[18px] font-[500]">2. {text.availableTime}</div>
-                    <div className="text-[18px] font-[500] border-b-2 border-red-600">{changeTimeToKorean(lang, availableTime)}</div>
+                    {activityTime.map((time) => {
+                        return (
+                            <div key={time} className="text-[18px] font-[500] border-b-2 border-red-600">
+                                {changeTimeToKorean(lang, time)}
+                            </div>
+                        )
+                    })}
                 </div>
                 <div className="flex flex-wrap gap-4">
                     {dates.map((date) => {
                         return (
                             <div className="flex items-center" key={date}>
-                                <input type="checkbox" defaultChecked={availableDate.includes(date)} disabled />
+                                <input type="checkbox" defaultChecked={activityDate.includes(date.toUpperCase())} disabled />
                                 <div>{changeDayToKorean(lang, date)}</div>
                             </div>
                         )

@@ -28,11 +28,11 @@ export const changeTimeToKorean = (lang: string, time: string) => {
     if (lang === 'en') return time.toUpperCase()
 
     switch (time) {
-        case 'morning':
+        case 'MORNING':
             return '오전'
-        case 'afternoon':
+        case 'AFTERNOON':
             return '오후'
-        case 'evening':
+        case 'EVENING':
             return '저녁'
         default:
             return ''
