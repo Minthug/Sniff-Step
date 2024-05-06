@@ -2,8 +2,8 @@ package SniffStep.controller;
 
 import SniffStep.common.Response;
 import SniffStep.common.jwt.dto.TokenRequestDTO;
-import SniffStep.dto.member.MemberRequestDTO;
 import SniffStep.dto.auth.SignUpRequestDTO;
+import SniffStep.dto.member.MemberRequestDTO;
 import SniffStep.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -38,4 +38,5 @@ public class AuthController {
     public Response reissue(@RequestBody TokenRequestDTO tokenRequestDTO) {
         return success(authService.reissue(tokenRequestDTO));
     }
+
 }

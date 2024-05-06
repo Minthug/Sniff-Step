@@ -25,6 +25,7 @@ public class Member extends BaseTime {
 
     private String phoneNumber;
     private String password;
+    private String provider;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "member_role")
@@ -35,7 +36,7 @@ public class Member extends BaseTime {
 
 
     @Builder
-    public Member(Long id, String email, String name, String nickname, String introduce, String phoneNumber, String password, MemberRole role, MemberType type) {
+    public Member(Long id, String email, String name, String nickname, String introduce, String phoneNumber, String password, MemberRole role, MemberType type, String provider) {
         this.id = id;
         this.email = email;
         this.name = name;
@@ -45,6 +46,7 @@ public class Member extends BaseTime {
         this.password = password;
         this.role = role;
         this.type = type;
+        this.provider = provider;
     }
 
 
@@ -59,5 +61,15 @@ public class Member extends BaseTime {
         this.introduce = introduce;
         this.password = password;
         onPreUpdate();
+    }
+
+    public String getRoleKey() {
+        return this.role.getKey();
+    }
+
+    public Member update(String name, String email) {
+        this.name = name;
+        this.email = email;
+        return this;
     }
 }

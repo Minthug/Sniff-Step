@@ -43,35 +43,4 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         return null;
     }
 
-
-//    private String getToken(HttpServletRequest request) {
-//        String headerAuth = request.getHeader("Authorization");
-//        if (!StringUtils.isEmpty(headerAuth) && StringUtils.startsWith(headerAuth, "Bearer ")) {
-//            return headerAuth.substring(7);
-//        }
-//        return "";
-//    }
-//
-//    private void checkLogout(String accessToken) {
-//        if (logoutTokenRedisRepository.existsById(accessToken)) {
-//            throw new IllegalArgumentException("Already logged out member");
-//        }
-//    }
-//
-//    private void validateAccessToken(String accessToken, UserDetails userDetails) {
-//        if (!jwtTokenProvider.validateToken(accessToken, userDetails)) {
-//            throw new IllegalArgumentException("Invalid access token");
-//        }
-//    }
-//
-//    private void successfulAuthentication(HttpServletRequest request, UserDetails userDetails) {
-//        SecurityContext context = SecurityContextHolder.createEmptyContext();
-//
-//        UsernamePasswordAuthenticationToken authenticationToken =
-//                new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-//        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-//        context.setAuthentication(authenticationToken);
-//
-//        SecurityContextHolder.setContext(context);
-//    }
 }

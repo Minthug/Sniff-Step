@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+        }
+        .google-button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #4285F4;
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        .google-button:hover {
+            background-color: #3367D6;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Login with Google</h2>
+    <a class="google-button" th:href="@{/oauth2/authorization/google}">
+        <i class="fab fa-google"></i> Sign in with Google
+    </a>
+</div>
+</body>
+</html>
