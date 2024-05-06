@@ -53,12 +53,6 @@ export function Desktop({ lang, text, loginStates }: Props) {
                 <div className="mb-8">
                     <div className="flex justify-between">
                         <div className={`font-[600] mb-1 tracking-wide`}>{text.password}</div>
-                        <button
-                            onClick={() => router.push(`/${lang}/find-password`)}
-                            className={`font-[600] text-[12px] underline select-none`}
-                        >
-                            {text.findPassword}
-                        </button>
                     </div>
                     <Input value={password} placeholder={text.passwordPlaceholder} type="password" onChange={changePassword} />
                     {passwordError && <div className="text-red-500 text-[12px] my-4">{text.passwordError}</div>}

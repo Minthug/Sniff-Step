@@ -40,15 +40,6 @@ export function Mobile({ lang, text, loginStates }: Props) {
                 <div className="mb-8">
                     <div className="flex justify-between">
                         <div className={`${D2CodingBold.className} mb-1 text-[14px]`}>{text.password}</div>
-                        <button
-                            onClick={() => router.push(`/${lang}/find-password`)}
-                            className={`
-                                    ${D2CodingBold.className} text-[12px] underline select-none
-                                    active:bg-slate-100
-                                `}
-                        >
-                            {text.findPassword}
-                        </button>
                     </div>
                     <Input value={password} placeholder={text.passwordPlaceholder} type="password" onChange={changePassword} />
                     {passwordError && <div className="text-red-500 text-[12px] my-4">{text.passwordError}</div>}
