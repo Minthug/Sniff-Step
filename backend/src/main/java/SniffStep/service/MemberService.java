@@ -35,6 +35,12 @@ public class MemberService {
         return MemberDTO.toDto(member);
     }
 
+    @Transactional(readOnly = true)
+    public MemberDTO findByEmail(String email) {
+        Member member = memberRepository.findByEmail(email).orElseThrow(MemberNotFoundException::new);
+        return MemberDTO.toDto(member);
+    }
+
     @Transactional
     public void editMember(Member member, MemberUpdateDTO memberUpdateDTO) {
         member.updateMember(

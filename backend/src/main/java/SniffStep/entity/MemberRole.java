@@ -1,15 +1,24 @@
 package SniffStep.entity;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.GrantedAuthority;
 
-import java.util.stream.Stream;
+@Getter
+@RequiredArgsConstructor
+public enum MemberRole implements GrantedAuthority {
 
-public enum MemberRole {
+    USER("ROLE_MEMBER", "유저"),
+    ADMIN("ROLE_ADMIN", "관리자"),
+    SOCIAL("ROLE_SOCIAL", "소셜");
 
-    USER, ADMIN;
+    private final String key;
+    private final String title;
 
+
+    @Override
+    public String getAuthority() {
+        return this.name();
+    }
 }

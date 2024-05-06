@@ -4,8 +4,8 @@ import SniffStep.common.jwt.JwtTokenProvider;
 import SniffStep.common.jwt.dto.TokenDTO;
 import SniffStep.common.jwt.dto.TokenRequestDTO;
 import SniffStep.common.jwt.entity.RefreshToken;
-import SniffStep.dto.member.MemberRequestDTO;
 import SniffStep.dto.auth.SignUpRequestDTO;
+import SniffStep.dto.member.MemberRequestDTO;
 import SniffStep.entity.Member;
 import SniffStep.entity.MemberRole;
 import SniffStep.repository.MemberRepository;
@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -27,6 +28,7 @@ public class AuthService {
     private final PasswordEncoder encoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
+
 
     @Transactional
     public void signup(SignUpRequestDTO signUpRequestDTO) {

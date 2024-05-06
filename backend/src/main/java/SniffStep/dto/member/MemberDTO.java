@@ -14,6 +14,7 @@ public class MemberDTO {
     private String phoneNumber;
 
 
+
     public static MemberDTO toDto(Member member) {
         return new MemberDTO(member.getEmail(), member.getName(), member.getNickname(), member.getIntroduce(), member.getPhoneNumber());
     }
