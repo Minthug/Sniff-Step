@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Locales } from '../types/locales'
 import { getRegisterWalkerDescription } from '../config/registerWalker'
 import { useFetch } from './useFetch'

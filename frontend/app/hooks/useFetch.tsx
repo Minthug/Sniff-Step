@@ -28,7 +28,7 @@ export const useFetch = () => {
                 // 액세스 토큰이 만료된 경우 토큰을 갱신합니다.
                 const res = await fetch(`/api/auth/refresh/${userId}`, {
                     method: 'GET',
-                    headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + refreshToken }
+                    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${refreshToken}` }
                 })
                 const { accessToken: newAccessToken } = await res.json()
                 if (newAccessToken) {
@@ -38,7 +38,8 @@ export const useFetch = () => {
                     return fetch(url, options)
                 } else {
                     // 토큰 갱신에 실패한 경우 로그인 페이지로 리디렉션합니다.
-                    router.push('/signin')
+                    setIsFetching(false)
+                    return router.push('/signin')
                 }
             }
 
