@@ -37,7 +37,7 @@ export function useRegisterWalker({ lang }: Props): RegisterWalker {
     const router = useRouter()
 
     const [title, setTitle] = useState('')
-    const [address, setAddress] = useState('안산시 상록구 건건로')
+    const [address, setAddress] = useState('경기도 군포시 번영로 382')
     const [days, setDays] = useState<{ [key: string]: boolean }>({
         mon: false,
         tue: false,
@@ -181,12 +181,13 @@ export function useRegisterWalker({ lang }: Props): RegisterWalker {
             body: data
         })
 
-        if (!res?.ok) {
-            const { message } = await res?.json()
-            return handleRegisterError(message)
+        if (res) {
+            if (!res.ok) {
+                const { message } = await res?.json()
+                return handleRegisterError(message)
+            }
+            router.push(`/${lang}/boards`)
         }
-
-        router.push(`/${lang}/boards`)
     }
 
     return {

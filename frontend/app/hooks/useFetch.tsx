@@ -11,7 +11,7 @@ export const useFetch = () => {
         const userId = localStorage.getItem('userId')
 
         if (!accessToken) {
-            router.push('/login')
+            router.push('/signin')
             return
         }
 
@@ -38,7 +38,7 @@ export const useFetch = () => {
                     return fetch(url, options)
                 } else {
                     // 토큰 갱신에 실패한 경우 로그인 페이지로 리디렉션합니다.
-                    router.push('/login')
+                    router.push('/signin')
                 }
             }
 
