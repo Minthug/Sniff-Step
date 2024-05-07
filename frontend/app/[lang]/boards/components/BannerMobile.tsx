@@ -26,7 +26,7 @@ export function BannerMobile({ text }: Props) {
                     `}
                 >
                     {text.banner.mobile.catchPhrase3}
-                    <br className="sm:hidden" />
+                    <br />
                     {text.banner.mobile.catchPhrase4}
                 </div>
             </div>
