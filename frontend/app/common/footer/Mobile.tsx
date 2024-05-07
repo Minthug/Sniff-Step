@@ -1,6 +1,6 @@
 import React from 'react'
-import { LocaleFooter } from '@/app/types/locales'
 import { Button, container } from '..'
+import { LocaleFooter } from '@/app/types/locales'
 
 interface Props {
     lang: string

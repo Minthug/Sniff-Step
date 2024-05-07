@@ -1,4 +1,4 @@
-export * from './header'
+export * from './header/Header'
 export * from './footer/Footer'
 export * from './styles'
 export * from './buttons'
