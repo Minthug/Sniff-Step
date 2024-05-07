@@ -45,9 +45,9 @@ export function Desktop({ lang, text, fileChangeState, registerWalkerState }: Pr
                 <input
                     type="text"
                     value={title}
+                    onChange={handleTitleChange}
                     className="w-full bg-[transparent] outline-none text-[48px] placeholder:text-[#d9d9d9]"
                     placeholder={text.titlePlaceholder}
-                    onChange={handleTitleChange}
                 />
             </div>
             <div>

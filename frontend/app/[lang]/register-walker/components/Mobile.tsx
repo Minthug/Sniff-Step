@@ -46,9 +46,9 @@ export function Mobile({ lang, text, fileChangeState, registerWalkerState }: Pro
                 <input
                     type="text"
                     value={title}
+                    onChange={handleTitleChange}
                     className="w-full bg-[transparent] outline-none text-[20px] placeholder:text-[#d9d9d9]"
                     placeholder={text.titlePlaceholder}
-                    onChange={handleTitleChange}
                 />
             </div>
             <div>

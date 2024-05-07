@@ -13,7 +13,7 @@ export function ChooseImageFile({ file, handleFileChange }: Props) {
             onClick={() => document.getElementById('file')?.click()}
         >
             {file && <img className="absolute w-full h-full object-contain bg-white" src={URL.createObjectURL(file)} alt="images" />}
-            <input id="file" className="hidden" type="file" accept="image/png, image/gif, image/jpeg" onChange={handleFileChange} />
+            <input type="file" id="file" accept="image/png, image/gif, image/jpeg" onChange={handleFileChange} className="hidden" />
             <FaPlus className="text-[#fff] text-[128px]" />
         </button>
     )
