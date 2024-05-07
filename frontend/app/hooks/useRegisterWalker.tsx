@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { Locales } from '../types/locales'
-import { getRegisterWalkerDescription } from '../config/registerWalker'
+import { Locales } from '@/app/types/locales'
+import { getRegisterWalkerDescription } from '@/app/config/registerWalker'
 import { useFetch } from './useFetch'
 import { useRouter } from 'next/navigation'
 export const MAX_DESCRIPTION_SIZE = 3000

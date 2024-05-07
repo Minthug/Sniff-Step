@@ -1,4 +1,4 @@
-import { Locales } from '../types/locales'
+import { Locales } from '@/app/types/locales'
 
 export const getRegisterWalkerDescription = (lang: Locales) => {
     if (lang === 'en') return enDescription

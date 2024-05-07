@@ -1,5 +1,5 @@
 import React from 'react'
-import { LocaleFooter, LocaleHeader, LocaleHome, Locales } from '../types/locales'
+import { LocaleFooter, LocaleHeader, LocaleHome, Locales } from '@/app/types/locales'
 import {
     DesktopFirst,
     DesktopFourth,
@@ -11,8 +11,8 @@ import {
     MobileFourth,
     Footer,
     Header
-} from '../common'
-import { getLocales } from '../utils/getLocales'
+} from '@/app/common'
+import { getLocales } from '@/app/utils/getLocales'
 
 interface Props {
     params: { lang: Locales }

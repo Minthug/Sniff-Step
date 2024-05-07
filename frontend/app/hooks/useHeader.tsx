@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Locales } from '../types/locales'
+import { Locales } from '@/app/types/locales'
 import { useRouter } from 'next/navigation'
 
 export interface HeaderStates {
