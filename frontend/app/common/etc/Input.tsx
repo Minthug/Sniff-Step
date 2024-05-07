@@ -11,15 +11,15 @@ interface Props {
 export function Input({ value, placeholder, type, className, onChange }: Props) {
     return (
         <input
+            type={type}
+            value={value}
+            onChange={onChange}
             className={`
                 xl:placeholder:text-[14px]
                 placeholder:text-[12px]
                 w-full p-4 outline-none border border-gray-300 rounded-lg text-[14px] ${className}
             `}
-            value={value}
             placeholder={placeholder}
-            type={type}
-            onChange={onChange}
         />
     )
 }
