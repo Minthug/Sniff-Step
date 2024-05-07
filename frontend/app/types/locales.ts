@@ -81,6 +81,7 @@ export interface LocaleBoards {
     }
 
     title: string
+    noBoard: string
 }
 
 export interface LocaleBoard {
