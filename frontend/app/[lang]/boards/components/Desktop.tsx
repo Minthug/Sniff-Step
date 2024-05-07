@@ -13,8 +13,8 @@ interface Props {
 
 export function Desktop({ lang, text, boards }: Props) {
     return (
-        <div className={`${container.main.desktop} items-center px-[108px]`}>
-            <div className="my-[60px] text-[32px] font-[500]">{text.title}</div>
+        <div className={`${container.main.desktop} ${boards.length <= 0 && 'min-h-full'} items-center px-[108px]`}>
+            <div className="my-[60px] text-[32px] font-[500]">{boards.length > 0 ? text.title : text.noBoard}</div>
             <div className="max-w-[1600px] grid grid-cols-3 gap-8">
                 {boards.map((board) => (
                     <Link

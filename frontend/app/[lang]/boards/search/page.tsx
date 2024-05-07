@@ -51,7 +51,7 @@ export default function page({ params: { lang } }: Props) {
             <BannerMobile text={text} />
             <div className={`${container.section} px-[16px]`}>
                 <Desktop text={text} lang={lang} boards={boards} />
-                <Mobile lang={lang} boards={boards} />
+                <Mobile text={text} lang={lang} boards={boards} />
             </div>
         </div>
     )
