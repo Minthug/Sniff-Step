@@ -34,14 +34,14 @@ export function Mobile({ lang, text, loginStates }: Props) {
                 <SeparateLine className="mb-0 text-[12px]">or</SeparateLine>
                 <div className="my-4">
                     <div className={`${D2CodingBold.className} mb-1 text-[14px]`}>{text.email}</div>
-                    <Input value={email} placeholder={text.emailPlaceholder} type="text" onChange={changeEmail} />
+                    <Input type="text" value={email} onChange={changeEmail} placeholder={text.emailPlaceholder} />
                 </div>
                 {emailError && <div className="text-red-500 text-[12px] mb-4">{text.emailError}</div>}
                 <div className="mb-8">
                     <div className="flex justify-between">
                         <div className={`${D2CodingBold.className} mb-1 text-[14px]`}>{text.password}</div>
                     </div>
-                    <Input value={password} placeholder={text.passwordPlaceholder} type="password" onChange={changePassword} />
+                    <Input type="password" value={password} onChange={changePassword} placeholder={text.passwordPlaceholder} />
                     {passwordError && <div className="text-red-500 text-[12px] my-4">{text.passwordError}</div>}
                     {passwordLengthError && <div className="text-red-500 text-[12px] mb-4">{text.passwordLengthError}</div>}
                     {passwordLetterError && <div className="text-red-500 text-[12px]">{text.passwordLetterError}</div>}
