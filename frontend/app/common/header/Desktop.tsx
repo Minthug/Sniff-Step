@@ -1,9 +1,9 @@
 import React from 'react'
-import { useRouter } from 'next/navigation'
-import { LocaleHeader, Locales } from '@/app/types/locales'
 import { container, Button } from '..'
-import { AiOutlineSearch } from 'react-icons/ai'
+import { LocaleHeader, Locales } from '@/app/types/locales'
 import { HeaderStates } from '@/app/hooks/useHeader'
+import { AiOutlineSearch } from 'react-icons/ai'
+import { useRouter } from 'next/navigation'
 
 interface Props {
     lang: Locales
@@ -13,7 +13,7 @@ interface Props {
 
 export default function Desktop({ lang, text, headerStates }: Props) {
     const router = useRouter()
-    const { search, changeSearch } = headerStates
+    const { search, changeSearch, handleSearch } = headerStates
 
     return (
         <div className={container.header.desktop}>
@@ -40,7 +40,7 @@ export default function Desktop({ lang, text, headerStates }: Props) {
                     />
                     <button
                         type="submit"
-                        onClick={() => router.push(`/${lang}/boards/search?keyword=${search}&reload=true`)}
+                        onClick={() => handleSearch(lang)}
                         className="absolute top-[50%] right-4 translate-y-[-50%] w-[40px] h-[40px] flex justify-center items-center cursor-pointer"
                     >
                         <AiOutlineSearch className="text-[#898989]" />

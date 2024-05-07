@@ -1,10 +1,10 @@
 'use client'
 
-import React, { useState } from 'react'
-import { LocaleHeader } from '../../types/locales'
+import React from 'react'
 import Desktop from './Desktop'
 import Mobile from './Mobile'
 import useHeader from '@/app/hooks/useHeader'
+import { LocaleHeader } from '@/app/types/locales'
 
 interface Props {
     lang: 'ko' | 'en'
@@ -12,8 +12,6 @@ interface Props {
 }
 
 export function Header({ lang, text }: Props) {
-    const [onMobileMenu, setOnMobileMenu] = useState(false)
-    const [onMobileSearch, setOnMobileSearch] = useState(false)
     const headerStates = useHeader()
 
     return (
