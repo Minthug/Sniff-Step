@@ -60,29 +60,29 @@ export function Desktop({ lang, text, signupStates }: Props) {
                 <div className="flex gap-4 mb-4">
                     <div className="w-full">
                         <div className={`${D2CodingBold.className} mb-2`}>{text.nickname}</div>
-                        <Input value={nickname} placeholder={text.nicknamePlaceholder} type="text" onChange={changeNickname} />
+                        <Input type="text" value={nickname} onChange={changeNickname} placeholder={text.nicknamePlaceholder} />
                     </div>
                 </div>
                 {nicknameError && <div className="text-red-500 text-[12px] mb-4">{text.nicknameError}</div>}
                 <div className="mb-4">
                     <div className={`${D2CodingBold.className} mb-2`}>{text.email}</div>
-                    <Input value={email} placeholder={text.emailPlaceholder} type="text" onChange={changeEmail} />
+                    <Input type="text" value={email} onChange={changeEmail} placeholder={text.emailPlaceholder} />
                 </div>
                 {emailError && <div className="text-red-500 text-[12px] mb-4">{text.emailError}</div>}
                 <div className="mb-4">
                     <div className={`${D2CodingBold.className} mb-2`}>{text.password}</div>
-                    <Input value={password} placeholder={text.passwordPlaceholder} type="password" onChange={changePassword} />
+                    <Input type="password" value={password} onChange={changePassword} placeholder={text.passwordPlaceholder} />
                 </div>
                 {passwordError && <div className="text-red-500 text-[12px] mb-4">{text.passwordError}</div>}
                 {passwordLengthError && <div className="text-red-500 text-[12px] mb-4">{text.passwordLengthError}</div>}
                 {passwordLetterError && <div className="text-red-500 text-[12px] mb-4">{text.passwordLetterError}</div>}
                 <div className="mb-4">
                     <div className={`${D2CodingBold.className} mb-2`}>{text.phoneNumber}</div>
-                    <Input value={phoneNumber} placeholder={text.phoneNumberPlaceholder} type="text" onChange={changePhoneNumber} />
+                    <Input type="text" value={phoneNumber} onChange={changePhoneNumber} placeholder={text.phoneNumberPlaceholder} />
                 </div>
                 {phoneNumberError && <div className="text-red-500 text-[12px] mb-4">{text.phoneNumberError}</div>}
                 <div className="flex items-center gap-4 mb-8">
-                    <input onChange={changeIsAgreed} className="w-[20px] h-[20px]" type="checkbox" />
+                    <input type="checkbox" className="w-[20px] h-[20px]" onChange={changeIsAgreed} />
                     <div className="flex flex-wrap text-[12px]">
                         <div>{text.agreeTerms}&nbsp;</div>
                         <button className="underline select-none">{text.termsOfService}</button>,&nbsp;
