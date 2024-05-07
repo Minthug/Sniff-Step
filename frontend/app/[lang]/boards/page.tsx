@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default async function page({ params: { lang } }: Props) {
-    const boards = await getBoards()
+    const { data, total } = await getBoards()
     const boardsText = await getLocales<LocaleBoards>('boards', lang)
 
     return (
@@ -18,8 +18,8 @@ export default async function page({ params: { lang } }: Props) {
             <BannerDesktop text={boardsText} />
             <BannerMobile text={boardsText} />
             <div className={`${container.section} px-[16px]`}>
-                <Desktop text={boardsText} lang={lang} boards={boards} />
-                <Mobile lang={lang} boards={boards} />
+                <Desktop text={boardsText} lang={lang} boards={data} />
+                <Mobile lang={lang} boards={data} />
             </div>
         </div>
     )

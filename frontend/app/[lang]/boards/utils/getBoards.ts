@@ -1,14 +1,14 @@
 import { Board } from '@/app/types/board'
 
-export async function getBoards(): Promise<Board[]> {
+export async function getBoards(): Promise<{ data: Board[]; total: number }> {
     const res = await fetch(`${process.env.NODE_BACKEND_URL}/boards`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
         },
-        cache: 'no-cache'
+        cache: 'no-store'
     })
 
-    const { data } = await res.json()
+    const data = await res.json()
     return data
 }
