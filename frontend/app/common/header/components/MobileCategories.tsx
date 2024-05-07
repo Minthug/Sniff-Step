@@ -7,16 +7,16 @@ interface Props {
     lang: string
     text: LocaleHeader
     onMobileMenu: boolean
-    setOnMobileMenu: (onMobileMenu: boolean) => void
+    changeOnMobileMenu: () => void
 }
 
-export function MobileCategories({ lang, text, onMobileMenu, setOnMobileMenu }: Props) {
+export function MobileCategories({ lang, text, onMobileMenu, changeOnMobileMenu }: Props) {
     const router = useRouter()
 
     return (
         <>
             <div
-                onClick={() => setOnMobileMenu(!onMobileMenu)}
+                onClick={changeOnMobileMenu}
                 style={{
                     height: onMobileMenu ? '100%' : 0,
                     minHeight: onMobileMenu ? 'calc(100vh - 56px)' : 0
