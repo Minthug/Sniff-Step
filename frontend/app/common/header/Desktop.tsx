@@ -16,7 +16,12 @@ export default function Desktop({ lang, text, headerStates }: Props) {
     const { search, changeSearch, handleSearch } = headerStates
 
     return (
-        <div className={container.header.desktop}>
+        <div
+            className={`
+                xl:flex 
+                max-w-[1230px] justify-between items-center pb-4 pt-4 mx-auto hidden
+            `}
+        >
             <img
                 className="w-[220px] h-[60px] cursor-pointer object-contain translate-x-[-20px]"
                 src="/images/text-logo-1.png"
@@ -25,12 +30,7 @@ export default function Desktop({ lang, text, headerStates }: Props) {
             <div className="flex gap-10 items-center">
                 <Button contents={text.registerWalker} href={`/${lang}/register-walker`} />
                 <Button contents={text.boards} href={`/${lang}/boards`} />
-                <form
-                    onSubmit={(e) => {
-                        e.preventDefault()
-                    }}
-                    className="relative"
-                >
+                <form onSubmit={(e) => e.preventDefault()} className="relative">
                     <input
                         type="text"
                         value={search}

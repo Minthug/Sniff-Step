@@ -1,5 +1,7 @@
 export * from './header/Header'
 export * from './footer/Footer'
+export * from './home/desktop'
+export * from './home/mobile'
 export * from './styles'
 export * from './buttons'
 export * from './etc'

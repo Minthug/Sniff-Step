@@ -1,5 +1,4 @@
 import React, { HTMLAttributes } from 'react'
-import { container } from '..'
 import { LocaleHeader, Locales } from '@/app/types/locales'
 import { HeaderStates } from '@/app/hooks/useHeader'
 import { useRouter } from 'next/navigation'
@@ -31,7 +30,12 @@ export default function Mobile({ lang, text, headerStates }: Props) {
     const { search, onMobileMenu, onMobileSearch, changeSearch, changeOnMobileMenu, changeOnMobileSearch, handleSearch } = headerStates
 
     return (
-        <div className={container.header.mobile}>
+        <div
+            className={`
+                xl:hidden 
+                fixed top-0 w-full flex justify-between items-center px-2 py-2 bg-[#fcfcfc] z-20
+            `}
+        >
             <img
                 className="w-[160px] h-[60px] cursor-pointer object-contain translate-x-[-20px]"
                 src="/images/text-logo.png"
@@ -51,15 +55,6 @@ export default function Mobile({ lang, text, headerStates }: Props) {
             </div>
 
             <div
-                onClick={changeOnMobileMenu}
-                style={{
-                    height: onMobileMenu ? '100%' : 0,
-                    minHeight: onMobileMenu ? 'calc(100vh - 56px)' : 0
-                }}
-                className={`absolute left-0 top-[75px] h-[100%] w-full bg-[#222] opacity-[60%] z-10`}
-            ></div>
-
-            <div
                 style={{
                     height: onMobileMenu ? '151px' : '0px',
                     opacity: onMobileMenu ? 1 : 0,
@@ -68,7 +63,7 @@ export default function Mobile({ lang, text, headerStates }: Props) {
                 }}
                 className={`
                     ${D2CodingBold.className}
-                    absolute left-0 top-[75px] w-full items-center bg-[#fcfcfc] text-[18px] z-10
+                    absolute left-0 top-[75px] w-full items-center bg-[#fcfcfc] text-[18px] z-[20]
                 `}
             >
                 {onMobileMenu && (
@@ -80,19 +75,25 @@ export default function Mobile({ lang, text, headerStates }: Props) {
                 )}
             </div>
 
+            {onMobileMenu && (
+                <div
+                    onClick={changeOnMobileMenu}
+                    style={{
+                        height: '100%',
+                        minHeight: 'calc(100vh - 56px)'
+                    }}
+                    className={`absolute left-0 top-[75px] h-[100%] w-full bg-[#222] opacity-[60%] z-10`}
+                />
+            )}
+
             {onMobileSearch && (
                 <div
                     className={`
-                        ${container.header.mobile}
-                        absolute flex gap-4 justify-between items-center left-0 w-full h-full py-2 bg-neutral-50 z-10
+                        xl:hidden 
+                        fixed top-0 w-full flex justify-between items-center px-2 py-2 bg-[#fcfcfc] z-20
                     `}
                 >
-                    <form
-                        onSubmit={(e) => {
-                            e.preventDefault()
-                        }}
-                        className="relative w-full"
-                    >
+                    <form onSubmit={(e) => e.preventDefault()} className="relative w-full">
                         <input
                             type="text"
                             value={search}
@@ -110,8 +111,8 @@ export default function Mobile({ lang, text, headerStates }: Props) {
                     </form>
                     <button
                         className={`
-                                hover:bg-slate-100 active:bg-slate-200
-                                w-[50px] h-[40px] font-bold rounded-s
+                            hover:bg-slate-100 active:bg-slate-200
+                            w-[50px] h-[40px] font-bold rounded-s
                         `}
                         onClick={changeOnMobileSearch}
                     >

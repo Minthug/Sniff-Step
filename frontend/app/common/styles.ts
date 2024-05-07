@@ -1,9 +1,5 @@
 export const container = {
     section: 'xl:px-24 xl:mb-32 px-4 mb-16',
-    header: {
-        mobile: 'xl:hidden fixed top-0 w-full flex justify-between items-center px-2 py-2 bg-[#fcfcfc] z-20',
-        desktop: 'xl:flex max-w-[1230px] justify-between items-center pb-4 pt-4 mx-auto hidden'
-    },
     main: {
         mobile: 'xl:hidden h-full min-h-screen mt-[76px]',
         desktop: 'xl:flex h-full max-w-[1230px] mx-auto min-h-screen flex-col hidden'
