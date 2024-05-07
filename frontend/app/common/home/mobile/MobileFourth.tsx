@@ -1,26 +1,28 @@
 'use client'
 
 import React, { useRef } from 'react'
-import Link from 'next/link'
 import { LocaleHome, Locales } from '@/app/types/locales'
-import { container } from '@/app/common'
 import { useIntersectionObserver } from '@/app/hooks'
+import Link from 'next/link'
 
 interface Props {
     lang: Locales
     text: LocaleHome
 }
 
-export function MobileFourthSection({ lang, text }: Props) {
+export function MobileFourth({ lang, text }: Props) {
     const target = useRef<HTMLDivElement>(null)
     useIntersectionObserver([target], 1)
 
     return (
         <div
             ref={target}
-            className={`${container.home.mobile} w-full flex justify-center flex-col mt-[40px] mb-[144px] transition-opacity duration-[1s] opacity-0`}
+            className={`
+                xl:hidden 
+                w-full flex justify-center flex-col mt-[40px] mb-[144px] px-[20px] transition-opacity duration-[1s] opacity-0
+            `}
         >
-            <div className="flex justify-center text-[14px] font-[700] mt-[32px]">{text.section4.title}</div>
+            <div className="sm:text-[24px] flex justify-center text-[14px] font-[700] mt-[32px]">{text.section4.title}</div>
             <Link
                 href={`/${lang}/boards`}
                 className={`

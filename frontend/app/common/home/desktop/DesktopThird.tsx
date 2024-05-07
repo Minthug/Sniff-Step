@@ -2,22 +2,26 @@
 
 import React, { useRef } from 'react'
 import { LocaleHome } from '@/app/types/locales'
-import { container } from '@/app/common'
+import { useIntersectionObserver } from '@/app/hooks'
 import { MdAppRegistration, MdPhoneInTalk } from 'react-icons/md'
 import { FaWpforms } from 'react-icons/fa6'
-import { useIntersectionObserver } from '@/app/hooks'
 
 interface Props {
     text: LocaleHome
 }
 
-export function ThirdSection({ text }: Props) {
+export function DesktopThird({ text }: Props) {
     const target = useRef<HTMLDivElement>(null)
     const target2 = useRef<HTMLDivElement>(null)
     useIntersectionObserver([target, target2])
 
     return (
-        <div className={`${container.home.desktop} h-full flex items-center px-[144px]`}>
+        <div
+            className={`
+                xl:flex 
+                max-w-[1230px] h-full items-center px-[144px] mx-auto hidden
+            `}
+        >
             <div className="w-full flex flex-col gap-20 py-[100px]">
                 <div ref={target} className="flex flex-col gap-2 transition-opacity duration-[1s] opacity-0">
                     <div className="text-[#10b94e] font-[600] text-[32px]">{text.section3.title}</div>

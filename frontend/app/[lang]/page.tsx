@@ -1,8 +1,17 @@
 import React from 'react'
 import { LocaleFooter, LocaleHeader, LocaleHome, Locales } from '../types/locales'
-import { Footer, Header } from '../common'
-import { FirstSection, SecondSection, ThirdSection, FourthSection } from './components/desktop'
-import { MobileFirstSection, MobileSecondSection, MobileThirdSection, MobileFourthSection } from './components/mobile'
+import {
+    DesktopFirst,
+    DesktopFourth,
+    DesktopSecond,
+    DesktopThird,
+    MobileFirst,
+    MobileSecond,
+    MobileThird,
+    MobileFourth,
+    Footer,
+    Header
+} from '../common'
 import { getLocales } from '../utils/getLocales'
 
 interface Props {
@@ -18,15 +27,15 @@ export default async function page({ params: { lang } }: Props) {
         <div className="relative">
             <Header lang={lang} text={headerText} />
 
-            <FirstSection lang={lang} text={homeText} />
-            <SecondSection text={homeText} />
-            <ThirdSection text={homeText} />
-            <FourthSection lang={lang} text={homeText} />
+            <DesktopFirst lang={lang} text={homeText} />
+            <DesktopSecond text={homeText} />
+            <DesktopThird text={homeText} />
+            <DesktopFourth lang={lang} text={homeText} />
 
-            <MobileFirstSection lang={lang} text={homeText} />
-            <MobileSecondSection text={homeText} />
-            <MobileThirdSection text={homeText} />
-            <MobileFourthSection lang={lang} text={homeText} />
+            <MobileFirst lang={lang} text={homeText} />
+            <MobileSecond text={homeText} />
+            <MobileThird text={homeText} />
+            <MobileFourth lang={lang} text={homeText} />
 
             <Footer lang={lang} text={footerText} />
         </div>

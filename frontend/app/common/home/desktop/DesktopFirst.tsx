@@ -1,16 +1,15 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import Link from 'next/link'
 import { LocaleHome, Locales } from '@/app/types/locales'
-import { container } from '@/app/common'
+import Link from 'next/link'
 
 interface Props {
     lang: Locales
     text: LocaleHome
 }
 
-export function FirstSection({ lang, text }: Props) {
+export function DesktopFirst({ lang, text }: Props) {
     const [loading, setLoading] = useState(true)
 
     function opacityChange(element: HTMLElement | null, opacity: string, time: number) {
@@ -32,7 +31,7 @@ export function FirstSection({ lang, text }: Props) {
     }, [])
 
     return (
-        <div className={`${container.home.desktop} relative h-[calc(100vh-93px)] flex gap-[100px] select-none`}>
+        <div className={`xl:flex max-w-[1230px] mx-auto hidden relative h-[calc(100vh-93px)] gap-[100px] select-none`}>
             <div className="relative flex-1">
                 <div>
                     <img

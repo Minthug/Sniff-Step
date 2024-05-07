@@ -1,16 +1,15 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import Link from 'next/link'
 import { LocaleHome, Locales } from '@/app/types/locales'
-import { container } from '@/app/common'
+import Link from 'next/link'
 
 interface Props {
     lang: Locales
     text: LocaleHome
 }
 
-export function MobileFirstSection({ lang, text }: Props) {
+export function MobileFirst({ lang, text }: Props) {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
@@ -18,7 +17,12 @@ export function MobileFirstSection({ lang, text }: Props) {
     }, [])
 
     return (
-        <div className={`${container.home.mobile} relative min-h-[calc(100vh-76px)] h-full flex items-center select-none mt-[76px]`}>
+        <div
+            className={`
+                xl:hidden 
+                relative min-h-[calc(100vh-76px)] h-full flex items-center px-[20px] mt-[76px] select-none
+            `}
+        >
             <div className="relative flex-1">
                 <div className="flex flex-col gap-[40px]">
                     <div className="flex-1 flex justify-center items-center">

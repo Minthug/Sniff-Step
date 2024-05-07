@@ -2,21 +2,25 @@
 
 import React, { useRef } from 'react'
 import { LocaleHome } from '@/app/types/locales'
-import { container } from '@/app/common'
 import { useIntersectionObserver } from '@/app/hooks'
 
 interface Props {
     text: LocaleHome
 }
 
-export function MobileSecondSection({ text }: Props) {
+export function MobileSecond({ text }: Props) {
     const target = useRef<HTMLDivElement>(null)
     const target2 = useRef<HTMLImageElement>(null)
     const target3 = useRef<HTMLDivElement>(null)
     useIntersectionObserver([target, target2, target3])
 
     return (
-        <div className={`${container.home.mobile} relative mt-[80px]`}>
+        <div
+            className={`
+                xl:hidden 
+                relative mt-[80px] px-[20px]
+            `}
+        >
             <div className="flex-1 flex flex-col items-center">
                 <div
                     ref={target}

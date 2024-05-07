@@ -2,14 +2,13 @@
 
 import React, { useRef } from 'react'
 import { LocaleHome } from '@/app/types/locales'
-import { container } from '@/app/common'
 import { useIntersectionObserver } from '@/app/hooks'
 
 interface Props {
     text: LocaleHome
 }
 
-export function SecondSection({ text }: Props) {
+export function DesktopSecond({ text }: Props) {
     const target = useRef<HTMLDivElement>(null)
     const target2 = useRef<HTMLDivElement>(null)
     const target3 = useRef<HTMLDivElement>(null)
@@ -17,7 +16,7 @@ export function SecondSection({ text }: Props) {
     useIntersectionObserver([target, target2, target3, target4])
 
     return (
-        <div className={`${container.home.desktop} relative h-full flex`}>
+        <div className={`xl:flex relative max-w-[1230px] h-full mx-auto hidden`}>
             <div className="flex-1 flex flex-col">
                 <div ref={target2} className="relative w-fit flex mx-auto transition-opacity duration-[1s] opacity-0">
                     <img className="relative w-[500px] z-10" src="/images/main/iPhone_clay_shadow.png" alt="" />

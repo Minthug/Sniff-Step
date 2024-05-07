@@ -2,22 +2,26 @@
 
 import React, { useRef } from 'react'
 import { LocaleHome } from '@/app/types/locales'
-import { container } from '@/app/common'
+import { useIntersectionObserver } from '@/app/hooks'
 import { MdAppRegistration, MdPhoneInTalk } from 'react-icons/md'
 import { FaWpforms } from 'react-icons/fa6'
-import { useIntersectionObserver } from '@/app/hooks'
 
 interface Props {
     text: LocaleHome
 }
 
-export function MobileThirdSection({ text }: Props) {
+export function MobileThird({ text }: Props) {
     const target = useRef<HTMLDivElement>(null)
     const target2 = useRef<HTMLDivElement>(null)
     useIntersectionObserver([target, target2])
 
     return (
-        <div className={`${container.home.mobile} h-full flex items-center mt-[80px]`}>
+        <div
+            className={`
+                xl:hidden 
+                h-full flex items-center mt-[80px] px-[20px]
+            `}
+        >
             <div className="w-full flex flex-col gap-[40px]">
                 <div ref={target} className="flex flex-col items-center text-center gap-2 transition-opacity duration-[1s] opacity-0">
                     <div className="text-[28px] font-[600] leading-[1.4]">
