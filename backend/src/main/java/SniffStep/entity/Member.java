@@ -14,7 +14,7 @@ public class Member extends BaseTime {
     @GeneratedValue
     @Column(name = "member_id")
     private Long id;
-
+    private String loginId;
     private String email;
 
     private String name;
@@ -26,6 +26,7 @@ public class Member extends BaseTime {
     private String phoneNumber;
     private String password;
     private String provider;
+    private String providerId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "member_role")
@@ -34,22 +35,21 @@ public class Member extends BaseTime {
     @Enumerated(EnumType.STRING)
     private MemberType type;
 
-
     @Builder
-    public Member(Long id, String email, String name, String nickname, String introduce, String phoneNumber, String password, MemberRole role, MemberType type, String provider) {
+    public Member(Long id, String loginId, String email, String name, String nickname, String introduce, String phoneNumber, String password, String provider, String providerId, MemberRole role, MemberType type) {
         this.id = id;
+        this.loginId = loginId;
         this.email = email;
         this.name = name;
         this.nickname = nickname;
         this.introduce = introduce;
         this.phoneNumber = phoneNumber;
         this.password = password;
+        this.provider = provider;
+        this.providerId = providerId;
         this.role = role;
         this.type = type;
-        this.provider = provider;
     }
-
-
 
     public Member hashPassword(PasswordEncoder passwordEncoder) {
         this.password = passwordEncoder.encode(this.password);

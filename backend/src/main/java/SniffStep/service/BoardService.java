@@ -1,5 +1,6 @@
 package SniffStep.service;
 
+import SniffStep.common.exception.BoardNotFoundException;
 import SniffStep.common.exception.BusinessLogicException;
 import SniffStep.common.exception.ExceptionCode;
 import SniffStep.common.exception.MemberNotFoundException;
@@ -69,7 +70,7 @@ public class BoardService {
 
     @Transactional
     public void editBoard(Long id, BoardPatchDTO request, Member member) {
-        Board board = boardRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
+        Board board = boardRepository.findById(id).orElseThrow(BoardNotFoundException::new);
         validateBoardWriter(board, member);
         Board.ImageUpdatedResult result = board.updateBoard(request);
         uploadImages(result.getAddedImages(), result.getAddedImageFiles());

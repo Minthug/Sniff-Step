@@ -4,6 +4,7 @@ import SniffStep.common.jwt.JwtAccessDeniedHandler;
 import SniffStep.common.jwt.JwtAuthenticationEntryPoint;
 import SniffStep.common.jwt.JwtSecurityConfig;
 import SniffStep.common.jwt.JwtTokenProvider;
+import SniffStep.entity.MemberRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -56,12 +57,6 @@ public class webSecurityConfig {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
-
-                .and()
-                .headers()
-                .frameOptions()
-                .sameOrigin()
-
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/v1/auth/**", "/v1/upload/**", "/v1/boards/find/", "/v1/boards/findAll").permitAll()
@@ -76,6 +71,28 @@ public class webSecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/v1/s3/").hasAnyAuthority("USER", "ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/v1/s3/resource").hasAnyAuthority("USER", "ADMIN")
                 .anyRequest().authenticated()
+
+
+                .and()
+                .formLogin()
+                .loginPage("/oauth-login/login")
+                .loginProcessingUrl("/oauth-login/loginProc")
+                .usernameParameter("loginId")
+                .passwordParameter("password")
+                .defaultSuccessUrl("/oauth-login")
+                .failureUrl("/oauth-login")
+                .permitAll()
+
+                .and()
+                .oauth2Login()
+                .loginPage("/oauth-login/login")
+                .defaultSuccessUrl("/oauth-login")
+                .failureUrl("/oauth-login/login")
+                .permitAll()
+
+                .and()
+                .logout()
+                .logoutUrl("/oauth-login/logout")
 
 
                 .and()

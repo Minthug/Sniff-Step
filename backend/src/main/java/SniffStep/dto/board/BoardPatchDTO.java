@@ -8,7 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
