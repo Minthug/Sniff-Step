@@ -25,7 +25,8 @@ export function Desktop({ lang, text, loginStates }: Props) {
         changeEmail,
         changePassword,
         handleGetProfile,
-        handleLogin
+        handleLogin,
+        handleGoogleLogin
     } = loginStates
 
     return (
@@ -43,7 +44,7 @@ export function Desktop({ lang, text, loginStates }: Props) {
             </div>
             <div className={container.autentication.desktop.main}>
                 <TextLogo lang={lang} />
-                <GoogleButton>{text.signinGoogle}</GoogleButton>
+                <GoogleButton onClick={handleGoogleLogin}>{text.signinGoogle}</GoogleButton>
                 <SeparateLine>or</SeparateLine>
                 <div className="my-4">
                     <div className={`font-[600] mb-1 tracking-wide`}>{text.email}</div>

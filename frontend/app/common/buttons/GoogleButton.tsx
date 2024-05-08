@@ -5,9 +5,10 @@ interface Props {
     theme?: 'light' | 'dark'
     children: React.ReactNode
     className?: string
+    onClick?: () => void
 }
 
-export function GoogleButton({ theme = 'light', children, className }: Props) {
+export function GoogleButton({ theme = 'light', children, className, onClick }: Props) {
     return (
         <button
             style={{
@@ -22,6 +23,7 @@ export function GoogleButton({ theme = 'light', children, className }: Props) {
                 ${theme === 'light' ? 'bg-white' : 'bg-gray-900'}
                 ${className}
             `}
+            onClick={onClick}
         >
             <img className="w-[18px] h-[18px] object-cover" src="/images/googleIcon.webp" alt="" />
             {children}

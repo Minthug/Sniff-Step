@@ -11,6 +11,7 @@ export interface LoginStates {
     changePassword: (e: React.ChangeEvent<HTMLInputElement>) => void
     handleGetProfile: (accessToken: string) => Promise<void>
     handleLogin: () => Promise<string>
+    handleGoogleLogin: () => Promise<void>
 }
 
 export function useLogin(): LoginStates {
@@ -31,6 +32,15 @@ export function useLogin(): LoginStates {
         setPasswordError(false)
         setPasswordLengthError(false)
         setPasswordLetterError(false)
+    }
+
+    const handleGoogleLogin = async () => {
+        const res = await fetch('/api/signin/google', {
+            method: 'GET'
+        })
+
+        const { url } = await res.json()
+        window.open(url)
     }
 
     const handleGetProfile = async (accessToken: string) => {
@@ -101,6 +111,7 @@ export function useLogin(): LoginStates {
         changeEmail,
         changePassword,
         handleGetProfile,
-        handleLogin
+        handleLogin,
+        handleGoogleLogin
     }
 }
