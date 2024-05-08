@@ -5,6 +5,7 @@ import SniffStep.common.jwt.dto.TokenRequestDTO;
 import SniffStep.dto.auth.SignUpRequestDTO;
 import SniffStep.dto.member.MemberRequestDTO;
 import SniffStep.service.AuthService;
+import SniffStep.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

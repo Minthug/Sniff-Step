@@ -10,7 +10,9 @@ import SniffStep.entity.Member;
 import SniffStep.entity.MemberRole;
 import SniffStep.repository.MemberRepository;
 import SniffStep.repository.RefreshTokenRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -103,4 +105,5 @@ public class AuthService {
         //7. create Token
         return tokenDto;
     }
+
 }

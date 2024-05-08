@@ -1,6 +1,8 @@
 package SniffStep.dto.auth;
 
 
+import SniffStep.entity.Member;
+import SniffStep.entity.MemberRole;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -27,5 +29,13 @@ public class SignUpRequestDTO {
 
     private String phoneNumber;
 
+    public Member toEntity() {
+        return Member.builder()
+                .email(this.email)
+                .password(this.password)
+                .name(this.name)
+                .role(MemberRole.USER)
+                .build();
+    }
 
 }

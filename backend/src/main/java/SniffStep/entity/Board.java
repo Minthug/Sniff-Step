@@ -110,10 +110,6 @@ public class Board extends BaseTime {
                 .peek(i -> i.initBoard(this))
                 .collect(Collectors.toList());
         images.addAll(toBeAdded);
-//        added.forEach(i -> {
-//            images.add(i);
-//            i.initBoard(this);
-//        });
     }
 
     public void saveMember(Member member) {
