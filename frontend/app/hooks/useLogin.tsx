@@ -38,7 +38,6 @@ export function useLogin(): LoginStates {
         const res = await fetch('/api/signin/google', {
             method: 'GET'
         })
-
         const { url } = await res.json()
         window.open(url)
     }

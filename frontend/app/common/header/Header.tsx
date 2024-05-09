@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import Desktop from './Desktop'
 import Mobile from './Mobile'
 import useHeader from '@/app/hooks/useHeader'
@@ -13,6 +13,20 @@ interface Props {
 
 export function Header({ lang, text }: Props) {
     const headerStates = useHeader()
+
+    useEffect(() => {
+        if (localStorage.getItem('accessToken')) return
+
+        fetch('/api/auth/google-profile', {
+            credentials: 'include'
+        }).then(async (res) => {
+            const { data } = await res.json()
+            if (data) {
+                const accessToken = data.value
+                localStorage.setItem('accessToken', accessToken)
+            }
+        })
+    }, [])
 
     return (
         <>
