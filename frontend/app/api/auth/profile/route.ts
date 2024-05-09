@@ -5,7 +5,8 @@ export async function GET(req: NextRequest) {
         method: 'GET',
         headers: {
             authorization: req.headers.get('authorization') || ''
-        }
+        },
+        cache: 'no-store'
     })
 
     if (!res.ok) {
