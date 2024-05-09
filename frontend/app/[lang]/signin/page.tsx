@@ -18,6 +18,12 @@ export default function page({ params: { lang } }: Props) {
         getLocales<LocaleSignin>('signin', lang).then(setText)
         localStorage.removeItem('accessToken')
         localStorage.removeItem('refreshToken')
+        localStorage.removeItem('userId')
+        fetch('/api/auth/google-profile', {
+            method: 'DELETE'
+        }).then(async (res) => {
+            console.log(res)
+        })
     }, [])
 
     if (!text)
