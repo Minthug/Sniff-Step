@@ -1,20 +1,25 @@
 package SniffStep.service;
 
+import SniffStep.common.exception.BoardNotFoundException;
 import SniffStep.common.exception.BusinessLogicException;
 import SniffStep.common.exception.ExceptionCode;
-import SniffStep.dto.BoardPatchDTO;
-import SniffStep.dto.BoardRequestDTO;
-import SniffStep.dto.BoardResponseDTO;
-import SniffStep.dto.BoardTotalResponseDTO;
+import SniffStep.common.exception.MemberNotFoundException;
+import SniffStep.dto.board.*;
 import SniffStep.entity.Board;
+import SniffStep.entity.Image;
 import SniffStep.entity.Member;
 import SniffStep.repository.BoardRepository;
-import SniffStep.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
@@ -22,60 +27,83 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final ImageService imageService;
-    private final MemberRepository memberRepository;
 
-
-    public BoardResponseDTO saveBoard(BoardRequestDTO boardRequest) {
-        // Principal에서 가져온 username을 이용해 member를 찾습니다.
-        String name = SecurityContextHolder.getContext().getAuthentication().getName();
-        Member member = memberRepository.findByName(name);
-
-        Board newBoard = boardRequest.toEntity();
-        newBoard.saveMember(member);
-
-        Board savedBoard = boardRepository.save(newBoard);
-        List<Long> imageId = boardRequest.getImageId();
-        List<String> savedImgUrlList = imageService.saveBoard(savedBoard, imageId);
-
-        return new BoardResponseDTO(savedBoard, savedImgUrlList);
-    }
-
-    public BoardResponseDTO patchBoard(BoardPatchDTO patch, Long id) {
-        Board board = boardRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
-        board.updateBoard(id, patch);
+    @Transactional
+    public void createBoard(BoardCreatedRequestDTO request, Member member) {
+        List<Image> images = request.getImages().stream()
+                .map(i -> new Image(i.getOriginalFilename()))
+                .collect(Collectors.toList());
+        Board board = new Board(request.getTitle(), request.getDescription(), request.getActivityLocation(), images, member);
         boardRepository.save(board);
-        List<String> imgUrlList = imageService.findUrlByBoardId(id);
-        return new BoardResponseDTO(board, imgUrlList);
+
+        uploadImages(board.getImages(), request.getImages());
     }
 
-    public BoardTotalResponseDTO findById(Long id) {
-        Board board = boardRepository.findById(id).get();
 
-        List<String> imgUrlList = imageService.findUrlByBoardId(board.getId());
+    @Transactional(readOnly = true)
+    public BoardResponseDTO findBoard(Long id) {
+        Board board = boardRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
 
-        BoardTotalResponseDTO response = BoardTotalResponseDTO.builder()
-                .id(board.getId())
-                .memberId(board.getAuthor().getId())
-                .nickname(board.getAuthor().getNickname())
-                .title(board.getTitle())
-                .activityTime(board.getActivityTime())
-                .description(board.getDescription())
-                .activityLocation(board.getActivityLocation())
-                .activityDate(board.getActivityDate())
-                .imgUrlList(imgUrlList)
-                .build();
-
-        return response;
+        Member member = board.getMember();
+        return BoardResponseDTO.toDto(member.getName(), board);
     }
 
-    public void delete(Long id) {
-        Board board = boardRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id = " + id));
+    @Transactional(readOnly = true)
+    public BoardFindAllWithPagingResponseDTO findAllBoards(Integer page) {
+        PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("id").descending());
+        Page<Board> boards = boardRepository.findAll(pageRequest);
+        List<BoardFindAllResponseDTO> boardsWithDto = boards.stream()
+                .map(BoardFindAllResponseDTO::toDto)
+                .collect(Collectors.toList());
+        return BoardFindAllWithPagingResponseDTO.toDto(boardsWithDto, new PageInfoDTO(boards));
+    }
+
+    @Transactional(readOnly = true)
+    public BoardFindAllWithPagingResponseDTO searchBoards(String keyword, Integer page) {
+        PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("id").descending());
+        Page<Board> boards = boardRepository.findAllByTitleContaining(keyword, pageRequest);
+        List<BoardFindAllResponseDTO> boardsWithDto = boards.stream()
+                .map(BoardFindAllResponseDTO::toDto)
+                .collect(Collectors.toList());
+        return BoardFindAllWithPagingResponseDTO.toDto(boardsWithDto, new PageInfoDTO(boards));
+    }
+
+    @Transactional
+    public void editBoard(Long id, BoardPatchDTO request, Member member) {
+        Board board = boardRepository.findById(id).orElseThrow(BoardNotFoundException::new);
+        validateBoardWriter(board, member);
+        Board.ImageUpdatedResult result = board.updateBoard(request);
+        uploadImages(result.getAddedImages(), result.getAddedImageFiles());
+        deleteImages(result.getDeletedImages());
+    }
+
+    @Transactional
+    public void deleteBoard(Long id, Member member) {
+        Board board = boardRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
+        validateBoardWriter(board, member);
+        deleteImages(board.getImages());
         boardRepository.delete(board);
     }
 
-    public Board verifyBoard(Long id) {
-        return boardRepository.findById(id)
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
+    private void validateBoardWriter(Board board, Member member) {
+        if (!board.isOwnBoard(member)) {
+            throw new MemberNotFoundException();
+        }
+    }
+
+    private void deleteImages(List<Image> images) {
+        images.forEach(i -> imageService.delete(i.getUniqueName()));
+    }
+
+
+    private void uploadImages(List<Image> images, List<MultipartFile> filesImages) {
+
+        try {
+            IntStream.range(0, filesImages.size())
+                    .forEach(i ->  imageService.upload(filesImages.get(i), images.get(i).getUniqueName()));
+        } catch (BusinessLogicException e) {
+            throw new RuntimeException("이미지 업로드 중 오류가 발생했습니다.", e);
+        }
     }
 }
 

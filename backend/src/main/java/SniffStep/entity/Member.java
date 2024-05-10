@@ -1,26 +1,20 @@
 package SniffStep.entity;
 
 import SniffStep.common.BaseTime;
-import SniffStep.dto.MemberUpdateDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @Getter
-@NoArgsConstructor
-@Table(name = "member")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseTime {
 
     @Id
     @GeneratedValue
     @Column(name = "member_id")
     private Long id;
-
+    private String loginId;
     private String email;
 
     private String name;
@@ -30,10 +24,9 @@ public class Member extends BaseTime {
     private String introduce;
 
     private String phoneNumber;
-
-//    private String profileImage;
-
     private String password;
+    private String provider;
+    private String providerId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "member_role")
@@ -42,33 +35,41 @@ public class Member extends BaseTime {
     @Enumerated(EnumType.STRING)
     private MemberType type;
 
-    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
-    private List<Board> boardList = new ArrayList<>();
-
     @Builder
-    public Member(Long id, String email, String name, String nickname, String introduce, String phoneNumber, String password, MemberRole role, MemberType type) {
+    public Member(Long id, String loginId, String email, String name, String nickname, String introduce, String phoneNumber, String password, String provider, String providerId, MemberRole role, MemberType type) {
         this.id = id;
+        this.loginId = loginId;
         this.email = email;
         this.name = name;
         this.nickname = nickname;
         this.introduce = introduce;
         this.phoneNumber = phoneNumber;
         this.password = password;
+        this.provider = provider;
+        this.providerId = providerId;
         this.role = role;
         this.type = type;
     }
-
-
 
     public Member hashPassword(PasswordEncoder passwordEncoder) {
         this.password = passwordEncoder.encode(this.password);
         return this;
     }
 
-    public Member updateMember(MemberUpdateDTO memberUpdateDTO) {
-        this.nickname = memberUpdateDTO.getNickname();
-        this.introduce = memberUpdateDTO.getIntroduce();
-        this.password = memberUpdateDTO.getPassword();
+    public void updateMember(String nickname, String introduce, String password) {
+        this.nickname = nickname;
+        this.introduce = introduce;
+        this.password = password;
+        onPreUpdate();
+    }
+
+    public String getRoleKey() {
+        return this.role.getKey();
+    }
+
+    public Member update(String name, String email) {
+        this.name = name;
+        this.email = email;
         return this;
     }
 }

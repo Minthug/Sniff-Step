@@ -3,5 +3,7 @@
     "boards": "Boards",
     "findMyLocal": "Find Walkers in Your Area!",
     "login": "Login",
+    "logout": "Logout",
+    "mypage": "My Page",
     "cancel": "Cancel"
 }

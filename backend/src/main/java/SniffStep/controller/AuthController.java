@@ -1,23 +1,18 @@
 package SniffStep.controller;
 
-import SniffStep.common.HttpResponseEntity;
-import SniffStep.common.HttpResponseEntity.ResponseResult;
-import SniffStep.common.jwt.JwtTokenProvider;
-import SniffStep.common.jwt.dto.TokenDTO;
-import SniffStep.dto.MemberRequestDTO;
-import SniffStep.dto.MemberResponseDTO;
-import SniffStep.dto.SignUpRequestDTO;
+import SniffStep.common.Response;
+import SniffStep.common.jwt.dto.TokenRequestDTO;
+import SniffStep.dto.auth.SignUpRequestDTO;
+import SniffStep.dto.member.MemberRequestDTO;
 import SniffStep.service.AuthService;
 import SniffStep.service.MemberService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
-import static SniffStep.common.HttpResponseEntity.success;
+import static SniffStep.common.Response.success;
+
 
 @RequiredArgsConstructor
 @RestController
@@ -26,13 +21,23 @@ public class AuthController {
 
     private final AuthService authService;
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/signup")
-    public ResponseResult signup(@RequestBody SignUpRequestDTO signUpRequestDTO) {
+    public Response signup(@Valid @RequestBody SignUpRequestDTO signUpRequestDTO) {
+        authService.signup(signUpRequestDTO);
         return success();
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/login")
-    public ResponseEntity<TokenDTO> login(@RequestBody MemberRequestDTO memberRequestDTO) {
-        return ResponseEntity.ok(authService.login(memberRequestDTO));
+    public Response login(@Valid @RequestBody MemberRequestDTO memberRequestDTO) {
+        return success(authService.login(memberRequestDTO));
     }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/reissue")
+    public Response reissue(@RequestBody TokenRequestDTO tokenRequestDTO) {
+        return success(authService.reissue(tokenRequestDTO));
+    }
+
 }

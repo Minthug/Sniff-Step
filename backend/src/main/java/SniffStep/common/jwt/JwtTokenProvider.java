@@ -108,4 +108,12 @@ public class JwtTokenProvider {
             return e.getClaims();
         }
     }
+
+    public String getUid(String accessToken) {
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(accessToken).getBody().getSubject();
+    }
+
+    public String getRole(String accessToken) {
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(accessToken).getBody().get("role", String.class);
+    }
 }

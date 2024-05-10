@@ -1,6 +1,6 @@
 export type Locales = 'en' | 'ko'
 
-export type Pages = 'home' | 'header' | 'footer' | 'register-walker' | 'boards' | 'signin' | 'signup'
+export type Pages = 'home' | 'header' | 'footer' | 'register-walker' | 'boards' | 'signin' | 'signup' | 'board'
 
 export interface LocaleHome {
     section1: {
@@ -36,6 +36,8 @@ export interface LocaleHeader {
     boards: string
     findMyLocal: string
     login: string
+    logout: string
+    mypage: string
     cancel: string
 }
 
@@ -44,6 +46,7 @@ export interface LocaleFooter {
     registerWalker: string
     boards: string
     login: string
+    language: string
 }
 
 export interface LocaleRegisterWalker {
@@ -56,6 +59,11 @@ export interface LocaleRegisterWalker {
     templateButton: string
     register: string
     fileSizeError: string
+    titleError: string
+    addressError: string
+    dateError: string
+    timeError: string
+    descriptionError: string
 }
 
 export interface LocaleBoards {
@@ -75,6 +83,14 @@ export interface LocaleBoards {
     }
 
     title: string
+    noBoard: string
+}
+
+export interface LocaleBoard {
+    address: string
+    availableTime: string
+    description: string
+    boardsButton: string
 }
 
 export interface LocaleSignin {
@@ -89,6 +105,11 @@ export interface LocaleSignin {
     signin: string
     signup: string
     signupIntroduce: string
+
+    emailError: string
+    passwordError: string
+    passwordLengthError: string
+    passwordLetterError: string
 }
 
 export interface LocaleSignup {
@@ -112,4 +133,12 @@ export interface LocaleSignup {
     phoneNumberPlaceholder: string
     agreeTerms: string
     signup: string
+
+    nicknameError: string
+    emailError: string
+    passwordError: string
+    passwordLengthError: string
+    passwordLetterError: string
+    phoneNumberError: string
+    isAgreedError: string
 }

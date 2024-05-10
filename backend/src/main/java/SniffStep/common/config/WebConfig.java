@@ -21,7 +21,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     private final MessageSource messageSource;
 
-    private String location = "/Users/minthug/Desktop/image/";
+    private String location = "/app/images";
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

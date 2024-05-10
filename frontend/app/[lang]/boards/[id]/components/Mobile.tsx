@@ -1,6 +1,6 @@
 import React from 'react'
 import { container } from '@/app/common'
-import { Locales } from '@/app/types/locales'
+import { LocaleBoard, Locales } from '@/app/types/locales'
 import { FaThumbsUp } from 'react-icons/fa6'
 import { changeDayToKorean, changeTimeToKorean } from '@/app/utils/changeDateUtils'
 import { Board } from '@/app/types/board'
@@ -8,28 +8,22 @@ import Link from 'next/link'
 
 interface Props {
     lang: Locales
+    text: LocaleBoard
     board: Board
     dates: string[]
 }
 
-export function Mobile({ lang, board, dates }: Props) {
-    const {
-        title, //
-        nickname,
-        address,
-        description,
-        imageUrl,
-        profileUrl,
-        availableDate,
-        availableTime,
-        ownerSatisfaction,
-        createdAt
-    } = board
+export function Mobile({ lang, text, board, dates }: Props) {
+    const { title, nickname, description, likeNumber, activityDate, activityTime, createdAt, image, profileUrl, address } = board
 
     return (
         <div className={container.main.mobile}>
             <div className="w-full h-[400px] flex justify-center items-center mb-4 rounded-lg">
-                <img className="w-[400px] h-full object-cover rounded-lg" src={imageUrl} alt={imageUrl} />
+                <img
+                    className="w-[400px] h-full object-cover rounded-lg"
+                    src={image || '/images/text-logo-1.png'}
+                    alt={image || '/images/text-logo-1.png'}
+                />
             </div>
             <div className="w-full flex justify-between mb-4 pb-4 border-b select-none">
                 <div className="flex items-center gap-4">
@@ -48,7 +42,7 @@ export function Mobile({ lang, board, dates }: Props) {
                     >
                         <div className="flex gap-2 items-center cursor-pointer">
                             <FaThumbsUp />
-                            {ownerSatisfaction}
+                            {likeNumber}
                         </div>
                     </div>
                 </div>
@@ -57,20 +51,26 @@ export function Mobile({ lang, board, dates }: Props) {
                 <div className="text-[28px] font-[500]">{title}</div>
                 <div className="text-[14px] text-gray-400">{createdAt}</div>
             </div>
-            <div className="flex flex-wrap gap-4 mb-8">
-                <div className="text-[18px] font-[500]">1. 활동할 주소)</div>
+            <div className="flex flex-wrap gap-2 mb-8">
+                <div className="text-[18px] font-[500]">1. {text.address}</div>
                 <div className="text-[18px] font-[500] border-b-2 mb-[2px] border-red-600">{address}</div>
             </div>
-            <div className="flex flex-col gap-8 mb-8">
-                <div className="flex flex-wrap items-center gap-4">
-                    <div className="text-[18px] font-[500]">2. 산책 가능한 시간대)</div>
-                    <div className="text-[18px] font-[500] border-b-2 border-red-600">{changeTimeToKorean(lang, availableTime)}</div>
+            <div className="flex flex-col gap-4 mb-8">
+                <div className="flex flex-wrap items-center gap-3">
+                    <div className="text-[18px] font-[500]">2. {text.availableTime}</div>
+                    {activityTime.map((time) => {
+                        return (
+                            <div key={time} className="text-[18px] font-[500] border-b-2 border-red-600">
+                                {changeTimeToKorean(lang, time)}
+                            </div>
+                        )
+                    })}
                 </div>
                 <div className="flex flex-wrap gap-4">
                     {dates.map((date) => {
                         return (
                             <div className="flex items-center" key={date}>
-                                <input type="checkbox" defaultChecked={availableDate.includes(date)} disabled />
+                                <input type="checkbox" defaultChecked={activityDate.includes(date.toUpperCase())} disabled />
                                 <div>{changeDayToKorean(lang, date)}</div>
                             </div>
                         )
@@ -79,7 +79,7 @@ export function Mobile({ lang, board, dates }: Props) {
             </div>
             <div className="mb-4">
                 <div className="flex items-center justify-between text-[18px] font-[500] mb-4">
-                    <div className="text-[18px] font-[500]">3. 견주님들께 산책에 대한 경험 및 자세한 플랜을 설명해보세요!</div>
+                    <div className="text-[18px] font-[500]">3. {text.description}</div>
                 </div>
                 <div className="w-full h-full min-h-[300px] p-4 border rounded-md resize-none outline-none whitespace-pre-wrap bg-white">
                     {description}
@@ -93,7 +93,7 @@ export function Mobile({ lang, board, dates }: Props) {
                         `}
                 href={`/${lang}/boards`}
             >
-                <div className="flex gap-2 items-center cursor-pointer font-[700]">목록으로 돌아가기</div>
+                <div className="flex gap-2 items-center cursor-pointer font-[700]">{text.boardsButton}</div>
             </Link>
         </div>
     )
