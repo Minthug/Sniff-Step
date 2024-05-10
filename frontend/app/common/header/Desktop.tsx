@@ -1,5 +1,5 @@
 import React from 'react'
-import { container, Button } from '..'
+import { Button } from '..'
 import { LocaleHeader, Locales } from '@/app/types/locales'
 import { HeaderStates } from '@/app/hooks/useHeader'
 import { AiOutlineSearch } from 'react-icons/ai'
@@ -13,13 +13,13 @@ interface Props {
 
 export default function Desktop({ lang, text, headerStates }: Props) {
     const router = useRouter()
-    const { search, changeSearch, handleSearch } = headerStates
+    const { loading, search, accessToken, changeSearch, handleSearch } = headerStates
 
     return (
         <div
             className={`
                 xl:flex 
-                max-w-[1230px] justify-between items-center pb-4 pt-4 mx-auto hidden
+                max-w-[1230px] h-[92px] justify-between items-center pb-4 pt-4 mx-auto hidden
             `}
         >
             <img
@@ -46,7 +46,13 @@ export default function Desktop({ lang, text, headerStates }: Props) {
                         <AiOutlineSearch className="text-[#898989]" />
                     </button>
                 </form>
-                <Button contents={text.login} href={`/${lang}/signin`} />
+                {!loading &&
+                    (!accessToken ? (
+                        <Button contents={text.login} href={`/${lang}/signin`} />
+                    ) : (
+                        <Button contents={text.mypage} href={`/${lang}/mypage`} />
+                    ))}
+                {!loading && accessToken && <Button contents={text.logout} href={`/${lang}/signin`} />}
             </div>
         </div>
     )

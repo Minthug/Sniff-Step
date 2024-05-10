@@ -3,5 +3,7 @@
     "boards": "산책 맡기기",
     "findMyLocal": "동네 검색으로 산책인을 찾아보세요!",
     "login": "로그인",
+    "logout": "로그아웃",
+    "mypage": "마이 페이지",
     "cancel": "취소"
 }

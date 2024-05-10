@@ -36,6 +36,8 @@ export interface LocaleHeader {
     boards: string
     findMyLocal: string
     login: string
+    logout: string
+    mypage: string
     cancel: string
 }
 
