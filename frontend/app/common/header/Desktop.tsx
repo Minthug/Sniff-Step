@@ -23,13 +23,16 @@ export default function Desktop({ lang, text, headerStates }: Props) {
             `}
         >
             <img
-                className="w-[220px] h-[60px] cursor-pointer object-contain translate-x-[-20px]"
+                className="w-[220px] h-[60px] cursor-pointer object-contain"
                 src="/images/text-logo-1.png"
                 onClick={() => router.push(`/${lang}`)}
             />
-            <div className="flex gap-10 items-center">
+
+            <div className="flex gap-8 items-center">
                 <Button contents={text.registerWalker} href={`/${lang}/register-walker`} />
                 <Button contents={text.boards} href={`/${lang}/boards`} />
+
+                {!loading && accessToken && <Button contents={text.mypage} href={`/${lang}/mypage`} />}
                 <form onSubmit={(e) => e.preventDefault()} className="relative">
                     <input
                         type="text"
@@ -46,12 +49,7 @@ export default function Desktop({ lang, text, headerStates }: Props) {
                         <AiOutlineSearch className="text-[#898989]" />
                     </button>
                 </form>
-                {!loading &&
-                    (!accessToken ? (
-                        <Button contents={text.login} href={`/${lang}/signin`} />
-                    ) : (
-                        <Button contents={text.mypage} href={`/${lang}/mypage`} />
-                    ))}
+                {!loading && !accessToken && <Button contents={text.login} href={`/${lang}/signin`} />}
                 {!loading && accessToken && <Button contents={text.logout} href={`/${lang}/signin`} />}
             </div>
         </div>

@@ -16,6 +16,7 @@ export function Button({ contents, href, className }: Props) {
         <button
             className={`
                         ${D2CodingLight.className}
+                        cursor-pointer
                         [&>div]:hover:w-full
                         relative py-2 text-[18px] font-[700]
                         ${className}
