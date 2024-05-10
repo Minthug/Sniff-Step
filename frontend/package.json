@@ -10,8 +10,10 @@
   },
   "dependencies": {
     "@formatjs/intl-localematcher": "^0.5.4",
+    "@types/formidable": "^3.4.5",
     "@types/negotiator": "^0.6.3",
     "@types/react-textarea-autosize": "^8.0.0",
+    "formidable": "^3.5.1",
     "negotiator": "^0.6.3",
     "next": "14.1.4",
     "react": "^18",

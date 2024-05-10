@@ -1,6 +1,7 @@
 import React from 'react'
+import Link from 'next/link'
 import { LocaleSignup } from '@/app/types/locales'
-import { GoogleLogin, SeparateLine, SigninButton, SigninLogo, container } from '@/app/common'
+import { GoogleButton, SeparateLine, LargeButton, TextLogo, container } from '@/app/common'
 import { useRouter } from 'next/navigation'
 
 interface Props {
@@ -13,14 +14,14 @@ export function Mobile({ lang, text }: Props) {
     return (
         <div className={container.autentication.mobile.section}>
             <div className={container.autentication.mobile.main}>
-                <SigninLogo lang={lang} />
-                <GoogleLogin className="active:bg-gray-800" theme="dark">
+                <TextLogo lang={lang} />
+                <GoogleButton className="active:bg-gray-800" theme="dark">
                     {text.signupGoogle}
-                </GoogleLogin>
+                </GoogleButton>
                 <SeparateLine>or</SeparateLine>
-                <SigninButton onClick={() => router.push(`/${lang}/signup/email-password`)} className="active:bg-slate-100 text-[14px]">
+                <LargeButton onClick={() => router.push(`/${lang}/signup/email-password`)} className="active:bg-slate-100 text-[14px]">
                     {text.signupEmail}
-                </SigninButton>
+                </LargeButton>
                 <div className="flex flex-wrap justify-center mb-4 text-center text-[12px] mt-8">
                     {text.introduceTermsOfService}&nbsp;
                     <button className="underline select-none">{text.termsOfService}</button>,&nbsp;
@@ -28,9 +29,9 @@ export function Mobile({ lang, text }: Props) {
                 </div>
                 <div className="flex flex-wrap justify-center text-center text-[12px]">
                     {text.introduceAlreadyHaveAccount}&nbsp;
-                    <button className="underline select-none" onClick={() => router.push(`/${lang}/signin`)}>
+                    <Link className="underline select-none" href={`/${lang}/signin`}>
                         {text.signin}
-                    </button>
+                    </Link>
                 </div>
             </div>
         </div>

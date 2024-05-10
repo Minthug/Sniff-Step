@@ -14,5 +14,6 @@
         }
     },
 
-    "title": "Current Listings"
+    "title": "Current Listings",
+    "noBoards": "No boards found"
 }

@@ -3,15 +3,18 @@ import Link from 'next/link'
 import { Locale } from '@/i18n.config'
 import { Board } from '@/app/types/board'
 import { container } from '@/app/common'
+import { LocaleBoards } from '@/app/types/locales'
 
 interface Props {
+    text: LocaleBoards
     lang: Locale
     boards: Board[]
 }
 
-export function Mobile({ lang, boards }: Props) {
+export function Mobile({ text, lang, boards }: Props) {
     return (
-        <div className={`${container.main.mobile} mt-[16px]`}>
+        <div className={`${container.main.mobile} ${boards.length <= 0 && 'min-h-full'} mt-[16px]`}>
+            {boards.length <= 0 && <div className="w-full my-[60px] text-center text-[24px] font-[500]">{text.noBoard}</div>}
             <div
                 className={`
                     sm:grid-cols-2
@@ -32,7 +35,10 @@ export function Mobile({ lang, boards }: Props) {
                                 `}
                         />
                         <div className="relative h-[317px] mb-2">
-                            <img className="w-full h-full rounded-md rounded-b-none object-cover" src={board.imageUrl} />
+                            <img
+                                className="w-full h-full rounded-md rounded-b-none object-contain"
+                                src={board.image || '/images/text-logo-1.png'}
+                            />
                         </div>
                         <div className="flex gap-4 px-4 pb-4">
                             <img

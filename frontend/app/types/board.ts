@@ -1,15 +1,17 @@
 export interface Board {
     id: string
-    title: string
+    userId: string
     nickname: string
-    address: string
+    title: string
+    email: string
     description: string
-    activityLocation: string
-    ownerSatisfaction: number
-    imageUrl: string
-    profileUrl: string
-    availableDate: string[]
-    availableTime: string
+    likeNumber: 0
+    imagePath: string
+    activityDate: string[]
+    activityTime: string[]
     createdAt: string
     updatedAt: string
+    image: string
+    profileUrl: string | null
+    address: string
 }
