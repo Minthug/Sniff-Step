@@ -16,9 +16,7 @@ public class Member extends BaseTime {
     @GeneratedValue
     @Column(name = "member_id")
     private Long id;
-    private String loginId;
     private String email;
-
     private String name;
 
     private String nickname;
@@ -28,6 +26,7 @@ public class Member extends BaseTime {
     private String phoneNumber;
     private String password;
 
+    private String imageUrl;
     private String socialId;
     private String refreshToken;
 
