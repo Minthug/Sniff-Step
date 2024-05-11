@@ -9,16 +9,11 @@ import org.springframework.security.core.GrantedAuthority;
 @RequiredArgsConstructor
 public enum MemberRole implements GrantedAuthority {
 
-    USER("ROLE_MEMBER", "유저"),
-    ADMIN("ROLE_ADMIN", "관리자"),
-    SOCIAL("ROLE_SOCIAL", "소셜");
+    GUEST("ROLE_GUEST"),
+    USER("ROLE_MEMBER"),
+    ADMIN("ROLE_ADMIN"),
+    SOCIAL("ROLE_SOCIAL");
 
     private final String key;
-    private final String title;
 
-
-    @Override
-    public String getAuthority() {
-        return this.name();
-    }
 }
