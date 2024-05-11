@@ -1,4 +1,4 @@
-package SniffStep.common.jwt;
+package SniffStep.common.jwt.service;
 
 import SniffStep.repository.MemberRepository;
 import com.auth0.jwt.JWT;
