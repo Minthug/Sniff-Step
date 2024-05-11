@@ -57,9 +57,6 @@ public class MemberService {
         memberRepository.delete(member);
     }
 
-    public boolean checkLoginIdDuplicate(String loginId) {
-        return memberRepository.existsByLoginId(loginId);
-    }
 
     public Member getLoginMemberById(Long memberId) {
         if (memberId == null) {
@@ -70,11 +67,4 @@ public class MemberService {
         return findMember.orElse(null);
     }
 
-    public void securityLogin(SignUpRequestDTO signUpRequestDTO) {
-        if (memberRepository.existsByLoginId(signUpRequestDTO.getEmail())) {
-            return;
-        }
-        signUpRequestDTO.setPassword(passwordEncoder.encode(signUpRequestDTO.getPassword()));
-        memberRepository.save(signUpRequestDTO.toEntity());
-    }
 }

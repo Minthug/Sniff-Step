@@ -7,7 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 @Getter
 @RequiredArgsConstructor
-public enum MemberRole implements GrantedAuthority {
+public enum MemberRole {
 
     GUEST("ROLE_GUEST"),
     USER("ROLE_MEMBER"),
