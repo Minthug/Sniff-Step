@@ -7,6 +7,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseTime {
 
@@ -25,35 +27,20 @@ public class Member extends BaseTime {
 
     private String phoneNumber;
     private String password;
-    private String provider;
-    private String providerId;
+
+    private String socialId;
+    private String refreshToken;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "member_role")
     private MemberRole role;
 
     @Enumerated(EnumType.STRING)
-    private MemberType type;
+    private MemberType memberType;
 
-    @Builder
-    public Member(Long id, String loginId, String email, String name, String nickname, String introduce, String phoneNumber, String password, String provider, String providerId, MemberRole role, MemberType type) {
-        this.id = id;
-        this.loginId = loginId;
-        this.email = email;
-        this.name = name;
-        this.nickname = nickname;
-        this.introduce = introduce;
-        this.phoneNumber = phoneNumber;
-        this.password = password;
-        this.provider = provider;
-        this.providerId = providerId;
-        this.role = role;
-        this.type = type;
-    }
 
-    public Member hashPassword(PasswordEncoder passwordEncoder) {
+    public void hashPassword(PasswordEncoder passwordEncoder) {
         this.password = passwordEncoder.encode(this.password);
-        return this;
     }
 
     public void updateMember(String nickname, String introduce, String password) {
@@ -71,5 +58,13 @@ public class Member extends BaseTime {
         this.name = name;
         this.email = email;
         return this;
+    }
+
+    public void updateRefreshToken(String updateRefreshToken) {
+        this.refreshToken = updateRefreshToken;
+    }
+
+    public void authorizeUser() {
+        this.role = MemberRole.USER;
     }
 }
