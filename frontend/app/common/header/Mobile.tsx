@@ -33,26 +33,62 @@ export default function Mobile({ lang, text, headerStates }: Props) {
         <div
             className={`
                 xl:hidden 
-                fixed top-0 w-full flex justify-between items-center px-2 py-2 bg-[#fcfcfc] z-20
+                fixed top-0 w-full min-h-[76px] flex items-center px-2 py-2 bg-[#fcfcfc] z-20
             `}
         >
-            <img
-                className="w-[160px] h-[60px] cursor-pointer object-contain translate-x-[-20px]"
-                src="/images/text-logo.png"
-                onClick={() => router.push(`/${lang}`)}
-            />
+            {!onMobileSearch && (
+                <div className="w-full flex justify-between items-center">
+                    <img
+                        className="w-[160px] h-[30px] cursor-pointer object-contain"
+                        src="/images/text-logo-fit.png"
+                        onClick={() => router.push(`/${lang}`)}
+                    />
+                    <div className="flex gap-4">
+                        <div
+                            className="w-[40px] h-[40px] flex justify-center items-center cursor-pointer select-none"
+                            onClick={changeOnMobileSearch}
+                        >
+                            <AiOutlineSearch className="text-[24px]" />
+                        </div>
+                        <div
+                            className="w-[40px] h-[40px] flex justify-center items-center cursor-pointer select-none"
+                            onClick={changeOnMobileMenu}
+                        >
+                            <AiOutlineMenu className="text-[24px]" />
+                        </div>
+                    </div>
+                </div>
+            )}
 
-            <div className="flex gap-4">
-                <div
-                    className="w-[40px] h-[40px] flex justify-center items-center cursor-pointer select-none"
-                    onClick={changeOnMobileSearch}
-                >
-                    <AiOutlineSearch className="text-[24px]" />
+            {onMobileSearch && (
+                <div className="w-full h-full flex justify-between items-center gap-4 bg-[#fcfcfc] z-[50]">
+                    <form onSubmit={(e) => e.preventDefault()} className="relative w-full">
+                        <input
+                            type="text"
+                            value={search}
+                            onChange={changeSearch}
+                            className="w-full pl-4 pr-[70px] py-3 text-[14px] border bg-white rounded-[10px] outline-none"
+                            placeholder={text.findMyLocal}
+                        />
+                        <button
+                            type="submit"
+                            onClick={() => handleSearch(lang)}
+                            className="absolute top-[50%] right-4 translate-y-[-50%] w-[40px] h-[40px] flex justify-center items-center cursor-pointer"
+                        >
+                            <AiOutlineSearch className="w-[20px] h-[20px] text-[#898989]" />
+                        </button>
+                    </form>
+                    <button
+                        className={`
+                            hover:bg-slate-100 active:bg-slate-200
+                            min-w-fit h-[40px] font-bold rounded-s px-2
+                        `}
+                        onClick={changeOnMobileSearch}
+                    >
+                        {text.cancel}
+                    </button>
                 </div>
-                <div className="w-[40px] h-[40px] flex justify-center items-center cursor-pointer select-none" onClick={changeOnMobileMenu}>
-                    <AiOutlineMenu className="text-[24px]" />
-                </div>
-            </div>
+            )}
 
             <div
                 style={{
@@ -84,41 +120,6 @@ export default function Mobile({ lang, text, headerStates }: Props) {
                     }}
                     className={`absolute left-0 top-[75px] h-[100%] w-full bg-[#222] opacity-[60%] z-10`}
                 />
-            )}
-
-            {onMobileSearch && (
-                <div
-                    className={`
-                        xl:hidden 
-                        fixed top-0 w-full flex justify-between items-center px-2 py-2 bg-[#fcfcfc] z-20
-                    `}
-                >
-                    <form onSubmit={(e) => e.preventDefault()} className="relative w-full">
-                        <input
-                            type="text"
-                            value={search}
-                            onChange={changeSearch}
-                            className="w-full pl-4 pr-[70px] py-3 text-[14px] border bg-white rounded-[100px] outline-none"
-                            placeholder={text.findMyLocal}
-                        />
-                        <button
-                            type="submit"
-                            onClick={() => handleSearch(lang)}
-                            className="absolute top-[50%] right-4 translate-y-[-50%] w-[40px] h-[40px] flex justify-center items-center cursor-pointer"
-                        >
-                            <AiOutlineSearch className="text-[#898989]" />
-                        </button>
-                    </form>
-                    <button
-                        className={`
-                            hover:bg-slate-100 active:bg-slate-200
-                            w-[50px] h-[40px] font-bold rounded-s
-                        `}
-                        onClick={changeOnMobileSearch}
-                    >
-                        {text.cancel}
-                    </button>
-                </div>
             )}
         </div>
     )
