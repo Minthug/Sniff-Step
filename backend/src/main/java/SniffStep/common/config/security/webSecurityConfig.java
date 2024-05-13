@@ -3,10 +3,6 @@ package SniffStep.common.config.security;
 import SniffStep.common.config.oauth.CustomOAuth2UserService;
 import SniffStep.common.config.oauth.handler.OAuth2LoginFailureHandler;
 import SniffStep.common.config.oauth.handler.OAuth2LoginSuccessHandler;
-import SniffStep.common.jwt.JwtAccessDeniedHandler;
-import SniffStep.common.jwt.JwtAuthenticationEntryPoint;
-import SniffStep.common.jwt.JwtSecurityConfig;
-import SniffStep.common.jwt.JwtTokenProvider;
 import SniffStep.common.jwt.filter.CustomJsonUsernamePasswordAuthenticationFilter;
 import SniffStep.common.jwt.filter.JwtAuthenticationProcessingFilter;
 import SniffStep.common.jwt.handler.LoginFailureHandler;
@@ -25,13 +21,10 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
-import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 @Configuration
@@ -112,11 +105,12 @@ public class webSecurityConfig {
 
     @Bean
     public CustomJsonUsernamePasswordAuthenticationFilter customJsonUsernamePasswordAuthenticationFilter() {
-        CustomJsonUsernamePasswordAuthenticationFilter customJsonUsernamePasswordAuthenticationFilter = new CustomJsonUsernamePasswordAuthenticationFilter(objectMapper);
-        customJsonUsernamePasswordAuthenticationFilter().setAuthenticationManager(authenticationManager());
-        customJsonUsernamePasswordAuthenticationFilter().setAuthenticationSuccessHandler(loginSuccessHandler());
-        customJsonUsernamePasswordAuthenticationFilter().setAuthenticationFailureHandler(loginFailureHandler());
-        return customJsonUsernamePasswordAuthenticationFilter;
+        CustomJsonUsernamePasswordAuthenticationFilter customJsonUsernamePasswordLoginFilter =
+                new CustomJsonUsernamePasswordAuthenticationFilter(objectMapper);
+        customJsonUsernamePasswordLoginFilter.setAuthenticationManager(authenticationManager());
+        customJsonUsernamePasswordLoginFilter.setAuthenticationSuccessHandler(loginSuccessHandler());
+        customJsonUsernamePasswordLoginFilter.setAuthenticationFailureHandler(loginFailureHandler());
+        return customJsonUsernamePasswordLoginFilter;
     }
 
     @Bean

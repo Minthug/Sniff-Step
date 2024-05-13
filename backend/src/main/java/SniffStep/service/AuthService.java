@@ -10,9 +10,8 @@ import SniffStep.entity.Member;
 import SniffStep.entity.MemberRole;
 import SniffStep.repository.MemberRepository;
 import SniffStep.repository.RefreshTokenRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -23,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AuthService {
 
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
@@ -30,32 +30,32 @@ public class AuthService {
     private final PasswordEncoder encoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
+//    private final GoogleOAuth googleOAuth;
+//    private final HttpServletResponse response;
 
 
     @Transactional
-    public void signup(SignUpRequestDTO signUpRequestDTO) {
-        validateSignUpInfo(signUpRequestDTO);
-        Member member = createSignupFormOfUser(signUpRequestDTO);
-        memberRepository.save(member);
-    }
+    public void signup(SignUpRequestDTO signUpRequestDTO) throws Exception {
+        if (memberRepository.findByEmail(signUpRequestDTO.getEmail()).isPresent()) {
+            throw new Exception("이미 존재하는 이메일입니다.");
+        }
 
-    private Member createSignupFormOfUser(SignUpRequestDTO signUpRequestDTO) {
+        if (memberRepository.findByNickname(signUpRequestDTO.getNickname()).isPresent()) {
+            throw new Exception("이미 존재하는 닉네임입니다.");
+        }
+
         Member member = Member.builder()
                 .email(signUpRequestDTO.getEmail())
-                .password(encoder.encode(signUpRequestDTO.getPassword()))
-                .name(signUpRequestDTO.getName())
+                .password(signUpRequestDTO.getPassword())
                 .nickname(signUpRequestDTO.getNickname())
+                .name(signUpRequestDTO.getName())
                 .introduce(signUpRequestDTO.getIntroduce())
                 .phoneNumber(signUpRequestDTO.getPhoneNumber())
                 .role(MemberRole.USER)
                 .build();
-        return member;
-    }
 
-    private void validateSignUpInfo(SignUpRequestDTO signUpRequestDTO) {
-        if (memberRepository.existsByEmail(signUpRequestDTO.getEmail())) {
-            throw new RuntimeException("Already existed email");
-        }
+        member.hashPassword(encoder);
+        memberRepository.save(member);
     }
 
     @Transactional
@@ -106,4 +106,21 @@ public class AuthService {
         return tokenDto;
     }
 
+//    public void request(MemberType memberType) throws IOException {
+//        String redirectUrl;
+//        switch (memberType) {
+//            case GOOGLE: {
+//                redirectUrl = googleOAuth.getOauthRedirectUrl();
+//            }
+//            break;
+//            default: {
+//                throw new IllegalArgumentException("알 수 없는 소셜 로그인 형식입니다");
+//            }
+//        }
+//        response.sendRedirect(redirectUrl);
+//    }
+//
+//    public OAuth2UserInfo oAuth2UserInfo(MemberType memberType, String code) throws IOException {
+//
+//    }
 }

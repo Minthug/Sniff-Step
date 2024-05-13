@@ -29,6 +29,7 @@ public class Member extends BaseTime {
     private String imageUrl;
     private String socialId;
     private String refreshToken;
+    private String provider;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "member_role")

@@ -7,11 +7,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
+@Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class SignUpRequestDTO {
 
     @NotBlank(message = "Email cannot be blank")
@@ -28,14 +28,5 @@ public class SignUpRequestDTO {
     private String introduce;
 
     private String phoneNumber;
-
-    public Member toEntity() {
-        return Member.builder()
-                .email(this.email)
-                .password(this.password)
-                .name(this.name)
-                .role(MemberRole.USER)
-                .build();
-    }
 
 }

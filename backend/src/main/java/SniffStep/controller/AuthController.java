@@ -5,7 +5,6 @@ import SniffStep.common.jwt.dto.TokenRequestDTO;
 import SniffStep.dto.auth.SignUpRequestDTO;
 import SniffStep.dto.member.MemberRequestDTO;
 import SniffStep.service.AuthService;
-import SniffStep.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,7 +22,7 @@ public class AuthController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/signup")
-    public Response signup(@Valid @RequestBody SignUpRequestDTO signUpRequestDTO) {
+    public Response signup(@RequestBody SignUpRequestDTO signUpRequestDTO) throws Exception {
         authService.signup(signUpRequestDTO);
         return success();
     }
@@ -39,5 +38,4 @@ public class AuthController {
     public Response reissue(@RequestBody TokenRequestDTO tokenRequestDTO) {
         return success(authService.reissue(tokenRequestDTO));
     }
-
 }
