@@ -1,7 +1,6 @@
 import React from 'react'
 import { container } from '@/app/common'
 import { LocaleBoard, Locales } from '@/app/types/locales'
-import { FaThumbsUp } from 'react-icons/fa6'
 import { changeDayToKorean, changeTimeToKorean } from '@/app/utils/changeDateUtils'
 import { Board } from '@/app/types/board'
 import Link from 'next/link'
@@ -31,20 +30,6 @@ export function Desktop({ lang, text, board, dates }: Props) {
                         <div>
                             <div className="text-[18px] font-[600]">{nickname}</div>
                             <div className="text-[14px]">{address}</div>
-                        </div>
-                    </div>
-                    <div>
-                        <div
-                            className={`
-                                hover:bg-gray-100
-                                active:bg-gray-200
-                                flex gap-4 items-center px-4 py-2 border rounded-md cursor-pointer bg-white
-                            `}
-                        >
-                            <div className="flex gap-2 items-center cursor-pointer">
-                                <FaThumbsUp />
-                                {likeNumber}
-                            </div>
                         </div>
                     </div>
                 </div>

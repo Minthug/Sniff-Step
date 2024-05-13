@@ -1,7 +1,6 @@
 import React from 'react'
 import { container } from '@/app/common'
 import { LocaleBoard, Locales } from '@/app/types/locales'
-import { FaThumbsUp } from 'react-icons/fa6'
 import { changeDayToKorean, changeTimeToKorean } from '@/app/utils/changeDateUtils'
 import { Board } from '@/app/types/board'
 import Link from 'next/link'
@@ -33,23 +32,10 @@ export function Mobile({ lang, text, board, dates }: Props) {
                         <div className="text-[14px]">{address}</div>
                     </div>
                 </div>
-                <div>
-                    <div
-                        className={`
-                                hover:bg-gray-100
-                                active:bg-gray-200
-                                flex gap-4 items-center px-4 py-2 border rounded-md cursor-pointer bg-white`}
-                    >
-                        <div className="flex gap-2 items-center cursor-pointer">
-                            <FaThumbsUp />
-                            {likeNumber}
-                        </div>
-                    </div>
-                </div>
             </div>
             <div className="flex flex-col justify-between mb-8">
                 <div className="text-[28px] font-[500]">{title}</div>
-                <div className="text-[14px] text-gray-400">{createdAt}</div>
+                <div className="text-[14px] text-gray-400">{new Date(createdAt).toLocaleString()}</div>
             </div>
             <div className="flex flex-wrap gap-2 mb-8">
                 <div className="text-[18px] font-[500]">1. {text.address}</div>
