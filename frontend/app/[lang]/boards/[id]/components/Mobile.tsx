@@ -20,8 +20,8 @@ export function Mobile({ lang, text, board, dates }: Props) {
             <div className="w-full h-[400px] flex justify-center items-center mb-4 rounded-lg">
                 <img
                     className="w-[400px] h-full object-cover rounded-lg"
-                    src={image || '/images/text-logo-1.png'}
-                    alt={image || '/images/text-logo-1.png'}
+                    src={image || '/images/text-logo-fit.png'}
+                    alt={image || '/images/text-logo-fit.png'}
                 />
             </div>
             <div className="w-full flex justify-between mb-4 pb-4 border-b select-none">

@@ -32,7 +32,7 @@ export function Desktop({ lang, text, boards }: Props) {
                         <div className="relative h-[304px] mb-2">
                             <img
                                 className="w-full h-full rounded-md rounded-b-none object-contain"
-                                src={board.image || '/images/text-logo-1.png'}
+                                src={board.image || '/images/text-logo-fit.png'}
                             />
                         </div>
                         <div className="flex gap-4 px-4 pb-4">
