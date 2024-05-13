@@ -13,7 +13,7 @@ interface Props {
 }
 
 export function Desktop({ lang, text, board, dates }: Props) {
-    const { title, nickname, description, likeNumber, activityDate, activityTime, createdAt, image, profileUrl, address } = board
+    const { title, nickname, description, activityDate, activityTime, createdAt, image, profileUrl, address } = board
     return (
         <div className={container.main.desktop}>
             <div>
