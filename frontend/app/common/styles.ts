@@ -4,19 +4,11 @@ export const container = {
         mobile: 'xl:hidden h-full min-h-screen mt-[76px]',
         desktop: 'xl:flex h-full max-w-[1230px] mx-auto min-h-screen flex-col hidden'
     },
-    home: {
-        mobile: 'xl:hidden px-[20px]',
-        desktop: 'xl:flex max-w-[1230px] mx-auto hidden'
-    },
-    footer: {
-        mobile: 'xl:hidden h-full min-h-[203px] flex flex-col justify-between px-4 py-8',
-        desktop: 'xl:flex max-w-[1230px] h-[203px] flex-col justify-between py-8 mx-auto hidden'
-    },
     autentication: {
         desktop: {
             section: 'xl:flex relative w-full h-full min-h-screen hidden',
             sidebar: 'w-[27.5%] min-w-[400px]',
-            main: 'pl-[160px] w-[720px] flex flex-col justify-center'
+            main: 'w-[720px] flex flex-col justify-center pl-[160px]'
         },
 
         mobile: {

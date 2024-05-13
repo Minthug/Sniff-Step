@@ -1,6 +1,6 @@
 import React from 'react'
-import { Button, container } from '..'
 import { LocaleFooter } from '@/app/types/locales'
+import { Button } from '..'
 
 interface Props {
     lang: string
@@ -9,10 +9,15 @@ interface Props {
 
 export function Mobile({ lang, text }: Props) {
     return (
-        <footer className={container.footer.mobile}>
+        <footer
+            className={`
+                xl:hidden 
+                h-full min-h-[203px] flex flex-col justify-between px-4 py-8
+            `}
+        >
             <div className="flex justify-between">
                 <div className="w-full flex flex-col">
-                    <img className="w-[96px]" src="/images/text-logo-1.png" alt="" />
+                    <img className="w-[96px]" src="/images/text-logo-fit.png" alt="" />
                     <div className="flex flex-wrap gap-8 gap-y-0">
                         <Button className="text-sm" contents={text.home} href={`/${lang}`} />
                         <Button className="text-sm" contents={text.registerWalker} href={`/${lang}/register-walker`} />

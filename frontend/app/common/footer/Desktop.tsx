@@ -1,6 +1,6 @@
 import React from 'react'
-import { Button, container } from '..'
 import { LocaleFooter } from '@/app/types/locales'
+import { Button } from '..'
 
 interface Props {
     lang: string
@@ -9,10 +9,15 @@ interface Props {
 
 export function Desktop({ lang, text }: Props) {
     return (
-        <footer className={container.footer.desktop}>
+        <footer
+            className={`
+                xl:flex 
+                max-w-[1230px] h-[203px] flex-col justify-between py-8 mx-auto hidden
+            `}
+        >
             <div className="flex justify-between items-center">
                 <div>
-                    <img className="w-[160px]" src="/images/text-logo-1.png" alt="" />
+                    <img className="w-[160px]" src="/images/text-logo-fit.png" alt="" />
                 </div>
                 <div className="flex gap-16">
                     <Button contents={text.home} href={`/${lang}`} />
