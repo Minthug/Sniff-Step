@@ -55,7 +55,7 @@ export function Desktop({ lang, text, signupStates }: Props) {
                 />
                 <img className="absolute bottom-4 w-[140px] object-cover" src="/images/text-logo-padding.png" alt="" />
             </div>
-            <div className={container.autentication.desktop.main}>
+            <div className={`${container.autentication.desktop.main} py-8`}>
                 <div className={`${D2CodingBold.className} text-[28px] mb-4`}>{text.title}</div>
                 <div className="flex gap-4 mb-4">
                     <div className="w-full">
