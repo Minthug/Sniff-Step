@@ -40,7 +40,7 @@ export function Desktop({ lang, text, loginStates }: Props) {
                     className="w-full h-full object-contain select-none bg-[#C9E2EB]"
                     src="https://cdn.dribbble.com/users/338126/screenshots/15483287/media/2f03c8290d612078b76883e579d4fd99.gif"
                 />
-                <img className="absolute bottom-4 w-[140px] object-cover" src="/images/text-logo.png" alt="" />
+                <img className="absolute left-4 bottom-4 w-[100px] object-cover" src="/images/text-logo-fit.png" alt="" />
             </div>
             <div className={container.autentication.desktop.main}>
                 <TextLogo lang={lang} />
