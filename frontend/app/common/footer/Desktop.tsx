@@ -16,9 +16,7 @@ export function Desktop({ lang, text }: Props) {
             `}
         >
             <div className="flex justify-between items-center">
-                <div>
-                    <img className="w-[160px]" src="/images/text-logo-fit.png" alt="" />
-                </div>
+                <img className="w-[120px]" src="/images/text-logo-fit.png" alt="" />
                 <div className="flex gap-16">
                     <Button contents={text.home} href={`/${lang}`} />
                     <Button contents={text.registerWalker} href={`/${lang}/register-walker`} />

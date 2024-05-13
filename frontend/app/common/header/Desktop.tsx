@@ -23,11 +23,10 @@ export default function Desktop({ lang, text, headerStates }: Props) {
             `}
         >
             <img
-                className="w-[220px] h-[60px] cursor-pointer object-contain"
+                className="w-[120px] h-[60px] cursor-pointer object-contain"
                 src="/images/text-logo-fit.png"
                 onClick={() => router.push(`/${lang}`)}
             />
-
             <div className="flex gap-8 items-center">
                 <Button contents={text.registerWalker} href={`/${lang}/register-walker`} />
                 <Button contents={text.boards} href={`/${lang}/boards`} />
