@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactTextareaAutosize from 'react-textarea-autosize'
-import { MAX_DESCRIPTION_SIZE } from '@/app/hooks/useRegisterWalker'
+import { MAX_DESCRIPTION_SIZE } from '@/app/hooks/useBoards'
 
 interface Props {
     description: string

@@ -10,18 +10,18 @@ import { ChooseImageFile, ChooseWalkDates, ChooseWalkTimes, DescriptionModal, De
 interface Props {
     lang: Locales
     text: LocaleRegisterWalker
+    boardId: string
     fileChangeState: FileChange
     registerWalkerState: RegisterWalker
 }
 
-export function Mobile({ lang, text, fileChangeState, registerWalkerState }: Props) {
+export function Mobile({ lang, text, boardId, fileChangeState, registerWalkerState }: Props) {
     const { file, fileSizeError, handleFileChange } = fileChangeState
     const {
         days,
         times,
         title,
         description,
-        descriptionSizeError,
         descriptionExample,
         showDescriptionModal,
         titleError,
@@ -29,6 +29,7 @@ export function Mobile({ lang, text, fileChangeState, registerWalkerState }: Pro
         dateError,
         timeError,
         descriptionError,
+        descriptionSizeError,
         handleDayChange,
         handleTimeChange,
         handleTitleChange,
@@ -36,7 +37,7 @@ export function Mobile({ lang, text, fileChangeState, registerWalkerState }: Pro
         changeTimeToKorean,
         handleDescriptionChange,
         setShowDescriptionModal,
-        handleRegisterWalker
+        handleUpdate
     } = registerWalkerState
 
     return (
@@ -102,7 +103,7 @@ export function Mobile({ lang, text, fileChangeState, registerWalkerState }: Pro
             )}
             <div className="mb-8">
                 <button
-                    onClick={() => handleRegisterWalker(file)}
+                    onClick={() => handleUpdate(file, boardId)}
                     className={`
                         w-full h-[60px] bg-green-900  text-[#fff] rounded-md
                         active:bg-green-800 mb-8
