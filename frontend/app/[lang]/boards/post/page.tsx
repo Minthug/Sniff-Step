@@ -2,9 +2,10 @@
 
 import React, { useEffect, useState } from 'react'
 import { LocaleRegisterWalker, Locales } from '@/app/types/locales'
-import { useRegisterWalker, useFileChange } from '@/app/hooks/'
+import { useBoards, useFileChange } from '@/app/hooks/'
 import { Desktop, Mobile } from './components'
 import { getLocales } from '@/app/utils/getLocales'
+import { container } from '@/app/common'
 
 interface Props {
     params: { lang: Locales }
@@ -12,7 +13,7 @@ interface Props {
 
 export default function page({ params: { lang } }: Props) {
     const fileChangeState = useFileChange()
-    const registerWalkerState = useRegisterWalker({ lang })
+    const registerWalkerState = useBoards({ lang })
     const [text, setText] = useState<LocaleRegisterWalker>()
 
     useEffect(() => {
@@ -27,9 +28,9 @@ export default function page({ params: { lang } }: Props) {
         )
 
     return (
-        <>
+        <section className={container.section}>
             <Desktop lang={lang} text={text} registerWalkerState={registerWalkerState} fileChangeState={fileChangeState} />
             <Mobile lang={lang} text={text} registerWalkerState={registerWalkerState} fileChangeState={fileChangeState} />
-        </>
+        </section>
     )
 }
