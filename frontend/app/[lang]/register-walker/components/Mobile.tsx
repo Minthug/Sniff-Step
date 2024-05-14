@@ -6,7 +6,6 @@ import { LocaleRegisterWalker, Locales } from '@/app/types/locales'
 import { FileChange, RegisterWalker } from '@/app/hooks'
 import { ChooseImageFile, ChooseWalkDates, ChooseWalkTimes, DescriptionModal, DescriptionTextarea } from '.'
 import { AiOutlineSearch } from 'react-icons/ai'
-import { styles } from '../resource'
 
 interface Props {
     lang: Locales
@@ -53,22 +52,22 @@ export function Mobile({ lang, text, fileChangeState, registerWalkerState }: Pro
             </div>
             <div>
                 <div className="mb-8">
-                    <div className={styles.subject.mobile}>1. {text.paragraph1}</div>
+                    <div className="mb-4 text-[16px] font-[500]">1. {text.paragraph1}</div>
                     <ChooseImageFile file={file} handleFileChange={handleFileChange} />
                     {fileSizeError && <div className="text-[12px] text-[#ff0000]">{text.fileSizeError}</div>}
                 </div>
                 <div className="mb-8">
-                    <div className={styles.subject.mobile}>2. {text.paragraph2}</div>
+                    <div className="mb-4 text-[16px] font-[500]">2. {text.paragraph2}</div>
                     <button className="relative w-full max-w-[480px] h-[40px] pr-8 text-[16px] text-start border border-gray-300 rounded-md overflow-hidden text-ellipsis whitespace-nowrap bg-white">
                         <AiOutlineSearch className="absolute top-1/2 right-[4px] translate-y-[-50%] text-gray-400 text-[24px]" />
                     </button>
                 </div>
                 <div className="mb-8">
-                    <div className={styles.subject.mobile}>3. {text.paragraph3}</div>
+                    <div className="mb-4 text-[16px] font-[500]">3. {text.paragraph3}</div>
                     <ChooseWalkDates days={days} lang={lang} handleDayChange={handleDayChange} changeDayToKorean={changeDayToKorean} />
                 </div>
                 <div className="mb-8">
-                    <div className={styles.subject.mobile}>4. {text.paragraph4}</div>
+                    <div className="mb-4 text-[16px] font-[500]">4. {text.paragraph4}</div>
                     <ChooseWalkTimes
                         times={times}
                         lang={lang}
@@ -77,7 +76,7 @@ export function Mobile({ lang, text, fileChangeState, registerWalkerState }: Pro
                     />
                 </div>
                 <div className="mb-8">
-                    <div className={`${styles.subject.mobile} flex flex-col justify-between gap-2`}>
+                    <div className={`flex flex-col justify-between mb-4 text-[16px] font-[500] gap-2`}>
                         <div className="mb-2">5. {text.paragraph5}</div>
                         <button
                             onClick={() => setShowDescriptionModal(!showDescriptionModal)}
