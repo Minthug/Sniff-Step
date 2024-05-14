@@ -104,7 +104,7 @@ export default function Mobile({ lang, text, headerStates }: Props) {
             >
                 {onMobileMenu && (
                     <>
-                        <MobileCategory onClick={() => router.push(`/${lang}/register-walker`)}>{text.registerWalker}</MobileCategory>
+                        <MobileCategory onClick={() => router.push(`/${lang}/boards/post`)}>{text.registerWalker}</MobileCategory>
                         <MobileCategory onClick={() => router.push(`/${lang}/boards`)}>{text.boards}</MobileCategory>
                         <MobileCategory onClick={() => router.push(`/${lang}/signin`)}>{text.login}</MobileCategory>
                     </>

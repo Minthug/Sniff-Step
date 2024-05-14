@@ -28,7 +28,7 @@ export default function Desktop({ lang, text, headerStates }: Props) {
                 onClick={() => router.push(`/${lang}`)}
             />
             <div className="flex gap-8 items-center">
-                <Button contents={text.registerWalker} href={`/${lang}/register-walker`} />
+                <Button contents={text.registerWalker} href={`/${lang}/boards/post`} />
                 <Button contents={text.boards} href={`/${lang}/boards`} />
 
                 {!loading && accessToken && <Button contents={text.mypage} href={`/${lang}/mypage`} />}
