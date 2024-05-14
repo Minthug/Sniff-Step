@@ -38,6 +38,11 @@ public class Member extends BaseTime {
     @Enumerated(EnumType.STRING)
     private MemberType memberType;
 
+    public Member(String name, String email, String imageUrl) {
+        this.name = name;
+        this.email = email;
+        this.imageUrl = imageUrl;
+    }
 
     public void hashPassword(PasswordEncoder passwordEncoder) {
         this.password = passwordEncoder.encode(this.password);

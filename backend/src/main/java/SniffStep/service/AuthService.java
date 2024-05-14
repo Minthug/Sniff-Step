@@ -30,8 +30,6 @@ public class AuthService {
     private final PasswordEncoder encoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
-//    private final GoogleOAuth googleOAuth;
-//    private final HttpServletResponse response;
 
 
     @Transactional
@@ -104,23 +102,5 @@ public class AuthService {
 
         //7. create Token
         return tokenDto;
-    }
-
-//    public void request(MemberType memberType) throws IOException {
-//        String redirectUrl;
-//        switch (memberType) {
-//            case GOOGLE: {
-//                redirectUrl = googleOAuth.getOauthRedirectUrl();
-//            }
-//            break;
-//            default: {
-//                throw new IllegalArgumentException("알 수 없는 소셜 로그인 형식입니다");
-//            }
-//        }
-//        response.sendRedirect(redirectUrl);
-//    }
-//
-//    public OAuth2UserInfo oAuth2UserInfo(MemberType memberType, String code) throws IOException {
-//
-//    }
+        }
 }
