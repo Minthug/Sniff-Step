@@ -1,9 +1,9 @@
 import React from 'react'
-import { Button } from '..'
+import { Button } from '@/app/common'
 import { LocaleHeader, Locales } from '@/app/types/locales'
 import { HeaderStates } from '@/app/hooks/useHeader'
-import { AiOutlineSearch } from 'react-icons/ai'
 import { useRouter } from 'next/navigation'
+import { AiOutlineSearch } from 'react-icons/ai'
 
 interface Props {
     lang: Locales
