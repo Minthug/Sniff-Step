@@ -34,6 +34,7 @@
         "body": [
             "import React from 'react'",
             "import { Locales } from '@/app/types/locales'",
+            "",
             "interface Props {",
             "    params: { lang: Locales }",
             "}",
