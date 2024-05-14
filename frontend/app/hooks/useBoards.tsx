@@ -25,14 +25,15 @@ export interface RegisterWalker {
     changeTimeToKorean: (lang: string, time: string) => string
     handleDescriptionChange: (value: string) => void
     setShowDescriptionModal: (value: boolean) => void
-    handleRegisterWalker: (file: File | null) => void
+    handlePost: (file: File | null) => void
+    handleUpdate: (file: File | null, id: string) => void
 }
 
 export interface Props {
     lang: Locales
 }
 
-export function useRegisterWalker({ lang }: Props): RegisterWalker {
+export function useBoards({ lang }: Props): RegisterWalker {
     const { customFetch } = useFetch()
     const router = useRouter()
 
@@ -158,7 +159,7 @@ export function useRegisterWalker({ lang }: Props): RegisterWalker {
         })
     }
 
-    const handleRegisterWalker = async (file: File | null) => {
+    const handlePost = async (file: File | null) => {
         const accessToken = localStorage.getItem('accessToken')
         const data = new FormData()
         if (file) data.append('file', file)
@@ -190,6 +191,8 @@ export function useRegisterWalker({ lang }: Props): RegisterWalker {
         }
     }
 
+    const handleUpdate = async (file: File | null, id: string) => {}
+
     return {
         days,
         title,
@@ -210,6 +213,7 @@ export function useRegisterWalker({ lang }: Props): RegisterWalker {
         changeTimeToKorean,
         handleDescriptionChange,
         setShowDescriptionModal,
-        handleRegisterWalker
+        handlePost,
+        handleUpdate
     }
 }

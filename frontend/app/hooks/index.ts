@@ -1,5 +1,5 @@
 export * from './useLogin'
 export * from './useFileChange'
-export * from './useRegisterWalker'
+export * from './useBoards'
 export * from './useSignup'
 export * from './useInterseactionObserver'
