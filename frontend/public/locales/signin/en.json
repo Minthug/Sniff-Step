@@ -14,5 +14,6 @@
     "emailError": "Please respect the format of your email",
     "passwordError": "Please write your password",
     "passwordLengthError": "Password must be at least 6 characters long",
-    "passwordLetterError": "Password must contain letters and numbers"
+    "passwordLetterError": "Password must contain letters and numbers",
+    "loginFailedError": "Login failed, please check your username and password"
 }

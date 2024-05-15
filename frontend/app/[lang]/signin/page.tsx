@@ -21,8 +21,6 @@ export default function page({ params: { lang } }: Props) {
         localStorage.removeItem('userId')
         fetch('/api/auth/google-profile', {
             method: 'DELETE'
-        }).then(async (res) => {
-            console.log(res)
         })
     }, [])
 

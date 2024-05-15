@@ -7,6 +7,7 @@ export interface LoginStates {
     passwordError: boolean
     passwordLengthError: boolean
     passwordLetterError: boolean
+    loginFailedError: boolean
     changeEmail: (e: React.ChangeEvent<HTMLInputElement>) => void
     changePassword: (e: React.ChangeEvent<HTMLInputElement>) => void
     handleGetProfile: (accessToken: string) => Promise<void>
@@ -21,10 +22,12 @@ export function useLogin(): LoginStates {
     const [passwordError, setPasswordError] = useState(false)
     const [passwordLengthError, setPasswordLengthError] = useState(false)
     const [passwordLetterError, setPasswordLetterError] = useState(false)
+    const [loginFailedError, setLoginFailedError] = useState(false)
 
     const changeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value)
         setEmailError(false)
+        setLoginFailedError(false)
     }
 
     const changePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,6 +35,7 @@ export function useLogin(): LoginStates {
         setPasswordError(false)
         setPasswordLengthError(false)
         setPasswordLetterError(false)
+        setLoginFailedError(false)
     }
 
     const handleGoogleLogin = async () => {
@@ -50,8 +54,6 @@ export function useLogin(): LoginStates {
         })
 
         if (!res.ok) {
-            const { message } = await res.json()
-            console.error(message)
             return
         }
 
@@ -71,7 +73,9 @@ export function useLogin(): LoginStates {
 
         if (!res.ok) {
             const { message } = await res.json()
-            message.forEach((msg: string) => {
+            const messages = [...message]
+
+            messages.forEach((msg: string) => {
                 switch (msg) {
                     case 'email must be an email':
                         setEmailError(true)
@@ -90,6 +94,7 @@ export function useLogin(): LoginStates {
                         break
                 }
             })
+            setLoginFailedError(true)
             throw new Error('login failed')
         }
 
@@ -107,6 +112,7 @@ export function useLogin(): LoginStates {
         passwordError,
         passwordLengthError,
         passwordLetterError,
+        loginFailedError,
         changeEmail,
         changePassword,
         handleGetProfile,

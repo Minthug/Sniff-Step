@@ -83,7 +83,7 @@ export interface LocaleBoards {
     }
 
     title: string
-    noBoard: string
+    noBoards: string
 }
 
 export interface LocaleBoard {
@@ -110,6 +110,7 @@ export interface LocaleSignin {
     passwordError: string
     passwordLengthError: string
     passwordLetterError: string
+    loginFailedError: string
 }
 
 export interface LocaleSignup {

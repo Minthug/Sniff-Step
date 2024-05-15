@@ -21,6 +21,7 @@ export function Mobile({ lang, text, loginStates }: Props) {
         passwordError,
         passwordLengthError,
         passwordLetterError,
+        loginFailedError,
         changeEmail,
         changePassword,
         handleLogin
@@ -45,6 +46,7 @@ export function Mobile({ lang, text, loginStates }: Props) {
                     {passwordError && <div className="text-red-500 text-[12px] my-4">{text.passwordError}</div>}
                     {passwordLengthError && <div className="text-red-500 text-[12px] mb-4">{text.passwordLengthError}</div>}
                     {passwordLetterError && <div className="text-red-500 text-[12px]">{text.passwordLetterError}</div>}
+                    {loginFailedError && <div className="text-red-500 text-[12px] my-4">{text.loginFailedError}</div>}
                 </div>
                 <LargeButton
                     className="active:bg-gray-800"
