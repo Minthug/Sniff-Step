@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { Locales } from '@/app/types/locales'
-import { getRegisterWalkerDescription } from '@/app/config/registerWalker'
+import { getPostDescription } from '@/app/config/post'
 import { useFetch } from './useFetch'
 import { useRouter } from 'next/navigation'
 export const MAX_DESCRIPTION_SIZE = 3000
 
-export interface RegisterWalker {
+export interface BoardState {
     days: { [key: string]: boolean }
     times: { [key: string]: boolean }
     title: string
@@ -33,7 +33,7 @@ export interface Props {
     lang: Locales
 }
 
-export function useBoards({ lang }: Props): RegisterWalker {
+export function useBoards({ lang }: Props): BoardState {
     const { customFetch } = useFetch()
     const router = useRouter()
 
@@ -63,7 +63,7 @@ export function useBoards({ lang }: Props): RegisterWalker {
     const [timeError, setTimeError] = useState(false)
     const [descriptionError, setDescriptionError] = useState(false)
 
-    const descriptionExample = getRegisterWalkerDescription(lang)
+    const descriptionExample = getPostDescription(lang)
 
     const handleDayChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setDateError(false)
@@ -137,7 +137,7 @@ export function useBoards({ lang }: Props): RegisterWalker {
         setDescription(value)
     }
 
-    const handleRegisterError = (message: string[]) => {
+    const handlePostError = (message: string[]) => {
         message.find((msg: string) => {
             switch (msg) {
                 case 'title should not be empty':
@@ -174,7 +174,7 @@ export function useBoards({ lang }: Props): RegisterWalker {
             if (value) data.append('activityTime', key.toUpperCase())
         })
 
-        const res = await customFetch('/api/register-walker', {
+        const res = await customFetch('/api/boards/post', {
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${accessToken}`
@@ -185,7 +185,7 @@ export function useBoards({ lang }: Props): RegisterWalker {
         if (res) {
             if (!res.ok) {
                 const { message } = await res?.json()
-                return handleRegisterError(message)
+                return handlePostError(message)
             }
             router.push(`/${lang}/boards`)
         }

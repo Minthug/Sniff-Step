@@ -1,6 +1,6 @@
 export type Locales = 'en' | 'ko'
 
-export type Pages = 'home' | 'header' | 'footer' | 'register-walker' | 'boards' | 'signin' | 'signup' | 'board'
+export type Pages = 'home' | 'header' | 'footer' | 'boards' | 'boards/post' | 'boards/board' | 'signin' | 'signup'
 
 export interface LocaleHome {
     section1: {
@@ -32,7 +32,7 @@ export interface LocaleHome {
 }
 
 export interface LocaleHeader {
-    registerWalker: string
+    post: string
     boards: string
     findMyLocal: string
     login: string
@@ -43,13 +43,13 @@ export interface LocaleHeader {
 
 export interface LocaleFooter {
     home: string
-    registerWalker: string
+    post: string
     boards: string
     login: string
     language: string
 }
 
-export interface LocaleRegisterWalker {
+export interface LocalePostBoard {
     titlePlaceholder: string
     paragraph1: string
     paragraph2: string
@@ -57,7 +57,7 @@ export interface LocaleRegisterWalker {
     paragraph4: string
     paragraph5: string
     templateButton: string
-    register: string
+    post: string
     fileSizeError: string
     titleError: string
     addressError: string
