@@ -1,10 +1,11 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import Desktop from './Desktop'
 import Mobile from './Mobile'
 import useHeader from '@/app/hooks/useHeader'
 import { LocaleHeader } from '@/app/types/locales'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 interface Props {
     lang: 'ko' | 'en'
@@ -13,6 +14,15 @@ interface Props {
 
 export function Header({ lang, text }: Props) {
     const headerStates = useHeader()
+    const searchParams = useSearchParams()
+    const router = useRouter()
+
+    useEffect(() => {
+        if (searchParams.get('reload')) {
+            router.replace(window.location.pathname)
+            router.refresh()
+        }
+    }, [searchParams])
 
     return (
         <>
