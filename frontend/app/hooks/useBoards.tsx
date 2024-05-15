@@ -10,7 +10,6 @@ export interface BoardState {
     times: { [key: string]: boolean }
     title: string
     description: string
-    descriptionSizeError: boolean
     descriptionExample: string
     showDescriptionModal: boolean
     titleError: boolean
@@ -18,6 +17,7 @@ export interface BoardState {
     dateError: boolean
     timeError: boolean
     descriptionError: boolean
+    descriptionSizeError: boolean
     handleDayChange: (event: React.ChangeEvent<HTMLInputElement>) => void
     handleTimeChange: (event: React.ChangeEvent<HTMLInputElement>) => void
     handleTitleChange: (event: React.ChangeEvent<HTMLInputElement>) => void
@@ -25,8 +25,10 @@ export interface BoardState {
     changeTimeToKorean: (lang: string, time: string) => string
     handleDescriptionChange: (value: string) => void
     setShowDescriptionModal: (value: boolean) => void
-    handlePost: (file: File | null) => void
-    handleUpdate: (file: File | null, id: string) => void
+    handlePost: (file: File | null) => Promise<void>
+    handleUpdate: (file: File | null, id: string) => Promise<void>
+    handleDelete: (id: string) => Promise<void>
+    isMyBoard: (boardId: string) => Promise<boolean>
 }
 
 export interface Props {
@@ -34,7 +36,7 @@ export interface Props {
 }
 
 export function useBoards({ lang }: Props): BoardState {
-    const { customFetch } = useFetch()
+    const { customFetch, isFetching } = useFetch()
     const router = useRouter()
 
     const [title, setTitle] = useState('')
@@ -160,6 +162,8 @@ export function useBoards({ lang }: Props): BoardState {
     }
 
     const handlePost = async (file: File | null) => {
+        if (isFetching) return
+
         const accessToken = localStorage.getItem('accessToken')
         const data = new FormData()
         if (file) data.append('file', file)
@@ -187,18 +191,40 @@ export function useBoards({ lang }: Props): BoardState {
                 const { message } = await res?.json()
                 return handlePostError(message)
             }
-            router.push(`/${lang}/boards`)
+            router.push(`/${lang}/boards?reload=true`)
         }
     }
 
     const handleUpdate = async (file: File | null, id: string) => {}
+
+    const handleDelete = async (id: string) => {
+        const res = await customFetch(`/api/boards/${id}`, {
+            method: 'DELETE'
+        })
+
+        if (!res) return
+
+        if (res.ok) {
+            router.push(`/${lang}/boards?reload=true`)
+        }
+    }
+
+    const isMyBoard = async (id: string) => {
+        const res = await customFetch(`/api/boards/${id}/owned`, {
+            method: 'GET'
+        })
+
+        if (res) {
+            const data = await res.json()
+            return data.data
+        }
+    }
 
     return {
         days,
         title,
         times,
         description,
-        descriptionSizeError,
         descriptionExample,
         showDescriptionModal,
         titleError,
@@ -206,6 +232,7 @@ export function useBoards({ lang }: Props): BoardState {
         dateError,
         timeError,
         descriptionError,
+        descriptionSizeError,
         handleDayChange,
         handleTimeChange,
         handleTitleChange,
@@ -214,6 +241,8 @@ export function useBoards({ lang }: Props): BoardState {
         handleDescriptionChange,
         setShowDescriptionModal,
         handlePost,
-        handleUpdate
+        handleUpdate,
+        handleDelete,
+        isMyBoard
     }
 }
