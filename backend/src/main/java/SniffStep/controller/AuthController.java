@@ -27,15 +27,14 @@ public class AuthController {
         return success();
     }
 
-    @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/login")
-    public Response login(@Valid @RequestBody MemberRequestDTO memberRequestDTO) {
-        return success(authService.login(memberRequestDTO));
+    @PostMapping("/sign-up")
+    public String signupV2(@RequestBody SignUpRequestDTO signUpRequestDTO) throws Exception {
+        authService.signup(signUpRequestDTO);
+        return "success";
     }
 
-    @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/reissue")
-    public Response reissue(@RequestBody TokenRequestDTO tokenRequestDTO) {
-        return success(authService.reissue(tokenRequestDTO));
+    @PostMapping("/login")
+    public String jwtTest() {
+        return "jwtTest";
     }
 }
