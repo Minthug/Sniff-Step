@@ -6,7 +6,7 @@ export async function GET() {
     const data = cookieStore.get('accessToken')
 
     if (!data) {
-        return NextResponse.json({ data: 'No data' })
+        return NextResponse.json({ message: 'Not found token' }, { status: 404 })
     }
 
     return NextResponse.json({ data })
