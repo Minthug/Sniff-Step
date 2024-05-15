@@ -23,7 +23,8 @@ public class CustomJsonUsernamePasswordAuthenticationFilter extends AbstractAuth
     private static final String CONTENT_TYPE = "application/json"; // JSON 형식으로 로그인 요청만 처리
     private static final String USERNAME_KEY = "email";
     private static final String PASSWORD_KEY = "password";
-    private static final AntPathRequestMatcher DEFAULT_ANT_PATH_REQUEST_MATCHER = new AntPathRequestMatcher(DEFAULT_LOGIN_REQUEST_URL, HTTP_METHOD); // "/login" + POST 온 요청에 매칭
+    private static final AntPathRequestMatcher DEFAULT_ANT_PATH_REQUEST_MATCHER =
+            new AntPathRequestMatcher(DEFAULT_LOGIN_REQUEST_URL, HTTP_METHOD); // "/login" + POST 온 요청에 매칭
 
     private final ObjectMapper objectMapper;
 

@@ -55,9 +55,9 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
     public void checkRefreshTokenAndReIssueAccessToken(HttpServletResponse response, String refreshToken) {
         memberRepository.findByRefreshToken(refreshToken)
-                .ifPresent(member -> {
-                    String reIssueRefreshToken = reIssueRefreshToken(member);
-                    jwtService.sendAccessAndRefreshToken(response, jwtService.createAccessToken(member.getEmail()),
+                .ifPresent(user -> {
+                    String reIssueRefreshToken = reIssueRefreshToken(user);
+                    jwtService.sendAccessAndRefreshToken(response, jwtService.createAccessToken(user.getEmail()),
                     reIssueRefreshToken);
                 });
     }
@@ -69,7 +69,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
         return reIssueRefreshToken;
     }
 
-    private void checkAccessTokenAndAuthentication(HttpServletRequest request, 
+    public void checkAccessTokenAndAuthentication(HttpServletRequest request,
                                                    HttpServletResponse response, 
                                                    FilterChain filterChain) throws ServletException, IOException {
         log.info("checkAccessTokenAndAuthentication() call");
@@ -82,7 +82,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private void saveAuthentication(Member myMember) {
+    public void saveAuthentication(Member myMember) {
         String password = myMember.getPassword();
         if (password == null) { // 소셜 로그인 유저의 비밀번호 임의 설정하여 소셜 로구ㅡ인 유저도 인증 되도록 설정
             password = PasswordUtil.generateRandomPassword();
