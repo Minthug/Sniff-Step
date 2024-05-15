@@ -1,8 +1,9 @@
 'use client'
 
+import React, { useEffect, useState } from 'react'
 import { Locales } from '@/app/types/locales'
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import { useBoards } from '@/app/hooks'
 import { IoMdSettings, IoMdArrowRoundBack } from 'react-icons/io'
 import { MdModeEdit, MdDelete } from 'react-icons/md'
 
@@ -11,14 +12,29 @@ interface Props {
     boardId: string
 }
 
+interface List {
+    name: string
+    icon: any
+    onClick: () => void
+}
+
 export default function Update({ lang, boardId }: Props) {
+    const [show, setShow] = useState(false)
     const [active, setActive] = useState(false)
+    const { handleDelete, isMyBoard } = useBoards({ lang })
+
     const router = useRouter()
-    const list = [
+    const list: List[] = [
         { name: 'go back', icon: IoMdArrowRoundBack, onClick: () => router.push(`/${lang}/boards`) },
         { name: 'update', icon: MdModeEdit, onClick: () => router.push(`/${lang}/boards/update/${boardId}`) },
-        { name: 'delete', icon: MdDelete, onclick: () => {} }
+        { name: 'delete', icon: MdDelete, onClick: () => handleDelete(boardId) }
     ]
+
+    useEffect(() => {
+        isMyBoard(boardId).then((result) => setShow(result))
+    }, [])
+
+    if (!show) return
 
     return (
         <div className="fixed bottom-[80px] right-[80px] translate-x-1/2 translate-y-1/2 w-[280px] h-[280px] flex justify-center items-center">

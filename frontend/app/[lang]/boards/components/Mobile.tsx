@@ -14,7 +14,7 @@ interface Props {
 export function Mobile({ text, lang, boards }: Props) {
     return (
         <div className={`${container.main.mobile} ${boards.length <= 0 && 'min-h-full'} mt-[16px]`}>
-            {boards.length <= 0 && <div className="w-full my-[60px] text-center text-[24px] font-[500]">{text.noBoard}</div>}
+            {boards.length <= 0 && <div className="w-full my-[60px] text-center text-[24px] font-[500]">{text.noBoards}</div>}
             <div
                 className={`
                     sm:grid-cols-2

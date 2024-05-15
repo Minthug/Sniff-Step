@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { container } from '@/app/common'
 import { LocalePostBoard, Locales } from '@/app/types/locales'
 import { FileChange, BoardState } from '@/app/hooks'
@@ -15,6 +15,7 @@ interface Props {
 }
 
 export function Desktop({ lang, text, fileChangeState, boardState }: Props) {
+    const [isSubmitting, setIsSubmitting] = useState(false)
     const { file, fileSizeError, handleFileChange } = fileChangeState
     const {
         days,
@@ -102,10 +103,16 @@ export function Desktop({ lang, text, fileChangeState, boardState }: Props) {
             )}
             <div className="mb-8">
                 <button
-                    onClick={() => handlePost(file)}
+                    disabled={isSubmitting}
+                    onClick={async () => {
+                        setIsSubmitting(true)
+                        await handlePost(file)
+                    }}
                     className={`
+                        hover:bg-green-700
+                        active:bg-green-800 mb-8
+                        disabled:cursor-not-allowed disabled:bg-gray-500
                         w-full h-[60px] bg-green-900  text-[#fff] rounded-md
-                        hover:bg-green-700 active:bg-green-800 mb-8
                     `}
                 >
                     {text.post}
