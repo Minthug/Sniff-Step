@@ -19,7 +19,7 @@ export function Desktop({ lang, text }: Props) {
                 <img className="w-[120px]" src="/images/text-logo-fit.png" alt="" />
                 <div className="flex gap-16">
                     <Button contents={text.home} href={`/${lang}`} />
-                    <Button contents={text.registerWalker} href={`/${lang}/register-walker`} />
+                    <Button contents={text.post} href={`/${lang}/boards/post`} />
                     <Button contents={text.boards} href={`/${lang}/boards`} />
                     <Button contents={text.login} href={`/${lang}/signin`} />
                     <Button contents={text.language} href={`/${lang === 'en' ? 'ko' : 'en'}`} />

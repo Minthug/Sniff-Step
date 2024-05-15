@@ -20,7 +20,7 @@ export function Mobile({ lang, text }: Props) {
                     <img className="w-[96px]" src="/images/text-logo-fit.png" alt="" />
                     <div className="flex flex-wrap gap-8 gap-y-0">
                         <Button className="text-sm" contents={text.home} href={`/${lang}`} />
-                        <Button className="text-sm" contents={text.registerWalker} href={`/${lang}/register-walker`} />
+                        <Button className="text-sm" contents={text.post} href={`/${lang}/boards/post`} />
                         <Button className="text-sm" contents={text.boards} href={`/${lang}/boards`} />
                         <Button className="text-sm" contents={text.login} href={`/${lang}/signin`} />
                         <Button className="text-sm" contents={text.language} href={`/${lang === 'en' ? 'ko' : 'en'}`} />
