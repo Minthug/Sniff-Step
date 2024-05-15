@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { LocaleRegisterWalker, Locales } from '@/app/types/locales'
+import { LocalePostBoard, Locales } from '@/app/types/locales'
 import { useBoards, useFileChange } from '@/app/hooks/'
 import { Desktop, Mobile } from './components'
 import { getLocales } from '@/app/utils/getLocales'
@@ -13,11 +13,11 @@ interface Props {
 
 export default function page({ params: { lang } }: Props) {
     const fileChangeState = useFileChange()
-    const registerWalkerState = useBoards({ lang })
-    const [text, setText] = useState<LocaleRegisterWalker>()
+    const boardState = useBoards({ lang })
+    const [text, setText] = useState<LocalePostBoard>()
 
     useEffect(() => {
-        getLocales<LocaleRegisterWalker>('register-walker', lang).then(setText)
+        getLocales<LocalePostBoard>('boards/post', lang).then(setText)
     }, [])
 
     if (!text)
@@ -29,8 +29,8 @@ export default function page({ params: { lang } }: Props) {
 
     return (
         <section className={container.section}>
-            <Desktop lang={lang} text={text} registerWalkerState={registerWalkerState} fileChangeState={fileChangeState} />
-            <Mobile lang={lang} text={text} registerWalkerState={registerWalkerState} fileChangeState={fileChangeState} />
+            <Desktop lang={lang} text={text} boardState={boardState} fileChangeState={fileChangeState} />
+            <Mobile lang={lang} text={text} boardState={boardState} fileChangeState={fileChangeState} />
         </section>
     )
 }

@@ -14,7 +14,7 @@ export default async function page({ params: { lang, id } }: Props) {
     try {
         const board = await getBoardById(id)
         const dates = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-        const text = await getLocales<LocaleBoard>('board', lang)
+        const text = await getLocales<LocaleBoard>('boards/board', lang)
 
         return (
             <div className={container.section}>

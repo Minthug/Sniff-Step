@@ -2,20 +2,20 @@
 
 import React from 'react'
 import { container } from '@/app/common'
-import { LocaleRegisterWalker, Locales } from '@/app/types/locales'
-import { FileChange, RegisterWalker } from '@/app/hooks'
+import { LocalePostBoard, Locales } from '@/app/types/locales'
+import { FileChange, BoardState } from '@/app/hooks'
 import { AiOutlineSearch } from 'react-icons/ai'
 import { ChooseImageFile, ChooseWalkDates, ChooseWalkTimes, DescriptionModal, DescriptionTextarea } from '.'
 
 interface Props {
     lang: Locales
-    text: LocaleRegisterWalker
+    text: LocalePostBoard
     boardId: string
     fileChangeState: FileChange
-    registerWalkerState: RegisterWalker
+    boardState: BoardState
 }
 
-export function Mobile({ lang, text, boardId, fileChangeState, registerWalkerState }: Props) {
+export function Mobile({ lang, text, boardId, fileChangeState, boardState }: Props) {
     const { file, fileSizeError, handleFileChange } = fileChangeState
     const {
         days,
@@ -38,7 +38,7 @@ export function Mobile({ lang, text, boardId, fileChangeState, registerWalkerSta
         handleDescriptionChange,
         setShowDescriptionModal,
         handleUpdate
-    } = registerWalkerState
+    } = boardState
 
     return (
         <div className={container.main.mobile}>
@@ -109,7 +109,7 @@ export function Mobile({ lang, text, boardId, fileChangeState, registerWalkerSta
                         active:bg-green-800 mb-8
                     `}
                 >
-                    {text.register}
+                    {text.post}
                 </button>
                 {titleError && <div className="text-[12px] text-[#ff0000]">{text.titleError}</div>}
                 {addressError && <div className="text-[12px] text-[#ff0000]">{text.addressError}</div>}
