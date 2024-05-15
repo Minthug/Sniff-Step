@@ -1,6 +1,6 @@
 import { Locales } from '@/app/types/locales'
 
-export const getRegisterWalkerDescription = (lang: Locales) => {
+export const getPostDescription = (lang: Locales) => {
     if (lang === 'en') return enDescription
     return koDescription
 }
