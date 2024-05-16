@@ -62,7 +62,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
                 });
     }
 
-    private String reIssueRefreshToken(Member member) {
+    public String reIssueRefreshToken(Member member) {
         String reIssueRefreshToken = jwtService.createRefreshToken();
         member.updateRefreshToken(reIssueRefreshToken);
         memberRepository.saveAndFlush(member);
