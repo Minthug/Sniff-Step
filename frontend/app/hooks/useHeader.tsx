@@ -38,6 +38,13 @@ export default function useHeader() {
                 const googleAccessToken = data.value
                 setAccessToken(googleAccessToken)
                 localStorage.setItem('accessToken', googleAccessToken)
+                const getGoogleProfile = await fetch('/api/auth/profile', {
+                    headers: {
+                        Authorization: `Bearer ${googleAccessToken}`
+                    }
+                })
+                const profile = await getGoogleProfile.json()
+                localStorage.setItem('userId', profile.data.id)
             }
         })
     }, [])

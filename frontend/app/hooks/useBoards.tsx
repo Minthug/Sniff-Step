@@ -210,6 +210,9 @@ export function useBoards({ lang }: Props): BoardState {
     }
 
     const isMyBoard = async (id: string) => {
+        const accessToken = localStorage.getItem('accessToken')
+        if (!accessToken) return false
+
         const res = await customFetch(`/api/boards/${id}/owned`, {
             method: 'GET'
         })
