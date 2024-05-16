@@ -24,7 +24,8 @@ export function Mobile({ lang, text, loginStates }: Props) {
         loginFailedError,
         changeEmail,
         changePassword,
-        handleLogin
+        handleLogin,
+        handleGetProfile
     } = loginStates
 
     return (
@@ -52,8 +53,13 @@ export function Mobile({ lang, text, loginStates }: Props) {
                     className="active:bg-gray-800"
                     theme="dark"
                     onClick={async () => {
-                        const isCanLogin = await handleLogin()
-                        if (isCanLogin) router.push(`/${lang}/`)
+                        try {
+                            const accessToken = await handleLogin()
+                            await handleGetProfile(accessToken)
+                            router.push(`/${lang}`)
+                        } catch (err) {
+                            console.log(err)
+                        }
                     }}
                 >
                     {text.signin}
