@@ -33,7 +33,7 @@ export default function Mobile({ lang, text, headerStates }: Props) {
         <div
             className={`
                 xl:hidden 
-                fixed top-0 w-full min-h-[76px] flex items-center px-2 py-2 bg-[#fcfcfc] z-20
+                fixed top-0 w-full min-h-[76px] flex items-center px-2 py-2 bg-[#fcfcfc] z-[100]
             `}
         >
             {!onMobileSearch && (

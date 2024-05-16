@@ -12,7 +12,7 @@ export function Mobile({ lang, text }: Props) {
         <footer
             className={`
                 xl:hidden 
-                h-full min-h-[203px] flex flex-col justify-between px-4 py-8
+                relative h-full min-h-[203px] flex flex-col justify-between px-4 py-8
             `}
         >
             <div className="flex justify-between">
