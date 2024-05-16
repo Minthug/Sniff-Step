@@ -4,7 +4,6 @@ import { LocaleBoard, Locales } from '@/app/types/locales'
 import { changeDayToKorean, changeTimeToKorean } from '@/app/utils/changeDateUtils'
 import { Board } from '@/app/types/board'
 import Link from 'next/link'
-import Update from './Update'
 
 interface Props {
     lang: Locales
@@ -14,10 +13,9 @@ interface Props {
 }
 
 export function Desktop({ lang, text, board, dates }: Props) {
-    const { id, title, nickname, description, activityDate, activityTime, createdAt, image, profileUrl, address } = board
+    const { title, nickname, description, activityDate, activityTime, createdAt, image, profileUrl, address } = board
     return (
         <div className={container.main.desktop}>
-            <Update lang={lang} boardId={id} />
             <div>
                 <div className="w-full h-[500px] flex justify-center items-center mb-4 rounded-lg">
                     <img

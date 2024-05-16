@@ -5,6 +5,7 @@ import { getBoardById } from './utils/getBoardById'
 import { D2CodingBold } from '@/app/fonts'
 import { Desktop, Mobile } from './components'
 import { getLocales } from '@/app/utils/getLocales'
+import Update from './components/Update'
 
 interface Props {
     params: { lang: Locales; id: string }
@@ -17,9 +18,12 @@ export default async function page({ params: { lang, id } }: Props) {
         const text = await getLocales<LocaleBoard>('boards/board', lang)
 
         return (
-            <div className={container.section}>
-                <Desktop lang={lang} text={text} board={board} dates={dates} />
-                <Mobile lang={lang} text={text} board={board} dates={dates} />
+            <div className="z-20">
+                <Update lang={lang} boardId={id} />
+                <div className={container.section}>
+                    <Desktop lang={lang} text={text} board={board} dates={dates} />
+                    <Mobile lang={lang} text={text} board={board} dates={dates} />
+                </div>
             </div>
         )
     } catch (error: any) {

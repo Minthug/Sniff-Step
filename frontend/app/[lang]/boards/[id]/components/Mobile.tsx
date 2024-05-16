@@ -17,14 +17,14 @@ export function Mobile({ lang, text, board, dates }: Props) {
 
     return (
         <div className={container.main.mobile}>
-            <div className="w-full h-[400px] flex justify-center items-center mb-4 rounded-lg">
+            <div className="w-full h-[400px] flex justify-center items-center mb-4 rounded-lg z-20">
                 <img
                     className="w-[400px] h-full object-cover rounded-lg"
                     src={image || '/images/text-logo-fit.png'}
                     alt={image || '/images/text-logo-fit.png'}
                 />
             </div>
-            <div className="w-full flex justify-between mb-4 pb-4 border-b select-none">
+            <div className="w-full flex justify-between mb-4 pb-4 border-b select-none z-20">
                 <div className="flex items-center gap-4">
                     <img className="w-[48px] h-[48px] border rounded-full" src={profileUrl || '/images/logo1-removebg-preview.png'} />
                     <div>
@@ -33,15 +33,15 @@ export function Mobile({ lang, text, board, dates }: Props) {
                     </div>
                 </div>
             </div>
-            <div className="flex flex-col justify-between mb-8">
+            <div className="flex flex-col justify-between mb-8 z-20">
                 <div className="text-[28px] font-[500]">{title}</div>
                 <div className="text-[14px] text-gray-400">{new Date(createdAt).toLocaleString()}</div>
             </div>
-            <div className="flex flex-wrap gap-2 mb-8">
+            <div className="flex flex-wrap gap-2 mb-8 z-20">
                 <div className="text-[18px] font-[500]">1. {text.address}</div>
                 <div className="text-[18px] font-[500] border-b-2 mb-[2px] border-red-600">{address}</div>
             </div>
-            <div className="flex flex-col gap-4 mb-8">
+            <div className="flex flex-col gap-4 mb-8 z-20">
                 <div className="flex flex-wrap items-center gap-3">
                     <div className="text-[18px] font-[500]">2. {text.availableTime}</div>
                     {activityTime.map((time) => {
@@ -63,7 +63,7 @@ export function Mobile({ lang, text, board, dates }: Props) {
                     })}
                 </div>
             </div>
-            <div className="mb-4">
+            <div className="mb-4 z-20">
                 <div className="flex items-center justify-between text-[18px] font-[500] mb-4">
                     <div className="text-[18px] font-[500]">3. {text.description}</div>
                 </div>
@@ -75,7 +75,7 @@ export function Mobile({ lang, text, board, dates }: Props) {
                 className={`
                             hover:bg-gray-100
                             active:bg-gray-200
-                            w-full flex gap-4 items-center justify-center py-4 border rounded-md cursor-pointer bg-white
+                            w-full flex gap-4 items-center justify-center py-4 border rounded-md cursor-pointer bg-white z-20
                         `}
                 href={`/${lang}/boards`}
             >

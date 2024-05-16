@@ -37,7 +37,12 @@ export default function Update({ lang, boardId }: Props) {
     if (!show) return
 
     return (
-        <div className="fixed bottom-[80px] right-[80px] translate-x-1/2 translate-y-1/2 w-[280px] h-[280px] flex justify-center items-center">
+        <div
+            style={{
+                width: active ? '280px' : '70px'
+            }}
+            className="fixed bottom-[80px] right-[80px] translate-x-1/2 translate-y-1/2 flex justify-center items-center transition-all duration-300 z-[30]"
+        >
             <div
                 onClick={() => setActive(!active)}
                 className={`
