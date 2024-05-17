@@ -5,6 +5,7 @@ import SniffStep.common.jwt.service.JwtService;
 import SniffStep.entity.Member;
 import SniffStep.entity.MemberRole;
 import SniffStep.repository.MemberRepository;
+import SniffStep.service.AuthService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +20,10 @@ public class OAuthService {
     private final SocialOAuth socialOAuth;
     private final MemberRepository memberRepository;
     private final JwtService jwtService;
+    private final AuthService authService;
 
     public String request(String type) throws IOException {
-        String redirectURL = socialOAuth.getOAuthRedirectURL();
+        String redirectURL = socialOAuth.getOAuthRedirectURL(type);
         return redirectURL;
     }
 
@@ -36,17 +38,10 @@ public class OAuthService {
         GoogleUser googleUser = socialOAuth.getUserInfo(userInfo);
 
         String email = googleUser.getEmail();
+        String name = googleUser.getName();
 
-        // 화원 정보 조회 또는 생성
-        Member member = memberRepository.findByEmail(email)
-                .orElseGet(() -> {
-                    Member newMember = Member.builder()
-                            .email(email)
-                            .name(googleUser.getName())
-                            .role(MemberRole.USER)
-                            .build();
-                    return memberRepository.save(newMember);
-                });
+        Member member = authService.registerOrUpdateMember(email, name);
+
 
         String accessToken = jwtService.createAccessToken(email);
 
@@ -55,7 +50,7 @@ public class OAuthService {
         jwtService.updateRefreshToken(email, refreshToken);
         memberRepository.save(member);
 
-        return new GetSocialOAuthRes(accessToken, member.getId(), refreshToken, googleOAuthToken.getTokenType());
+        return new GetSocialOAuthRes(accessToken, member.getId(), refreshToken, googleOAuthToken.getTokenType(), email, name);
 
     }
 }

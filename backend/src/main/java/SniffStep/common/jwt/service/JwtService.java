@@ -1,6 +1,6 @@
 package SniffStep.common.jwt.service;
 
-import SniffStep.common.jwt.dto.TokenDto;
+import SniffStep.dto.auth.SignUpRequestDTO;
 import SniffStep.repository.MemberRepository;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -132,4 +132,5 @@ public class JwtService {
             return false;
         }
     }
+
 }

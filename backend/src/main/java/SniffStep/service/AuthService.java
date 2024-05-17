@@ -70,4 +70,24 @@ public class AuthService {
 
         return new TokenDto(accessToken, refreshToken);
     }
+
+
+    // 새로 추가한 메서드
+    @Transactional
+    public Member registerOrUpdateMember(String email, String name) {
+        return memberRepository.findByEmail(email)
+                .map(member -> {
+                    member.updateName(name);
+                    return member;
+                })
+                .orElseGet(() ->{
+                    Member newMember = Member.builder()
+                            .email(email)
+                            .name(name)
+                            .role(MemberRole.USER)
+                            .build();
+                    return memberRepository.save(newMember);
+                });
+    }
+
 }

@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 
 public interface SocialOAuth {
 
-    String getOAuthRedirectURL();
+    String getOAuthRedirectURL(String type);
 
     ResponseEntity<String> requestAccessToken(String code, String type);
 

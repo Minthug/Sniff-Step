@@ -45,7 +45,7 @@ public class GoogleOauth implements SocialOAuth {
 
 
     @Override
-    public String getOAuthRedirectURL() {
+    public String getOAuthRedirectURL(String type) {
         Map<String, Object> params = new HashMap<>();
 
         params.put("scope", GOOGLE_DATA_ACCESS_SCOPE);
