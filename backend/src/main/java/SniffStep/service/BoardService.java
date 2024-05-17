@@ -25,85 +25,84 @@ import java.util.stream.IntStream;
 @RequiredArgsConstructor
 public class BoardService {
 
-    private final BoardRepository boardRepository;
-    private final ImageService imageService;
+        private final BoardRepository boardRepository;
+        private final ImageService imageService;
 
-    @Transactional
-    public void createBoard(BoardCreatedRequestDTO request, Member member) {
-        List<Image> images = request.getImages().stream()
-                .map(i -> new Image(i.getOriginalFilename()))
-                .collect(Collectors.toList());
-        Board board = new Board(request.getTitle(), request.getDescription(), request.getActivityLocation(), images, member);
-        boardRepository.save(board);
+        @Transactional
+        public void createBoard(BoardCreatedRequestDTO request, Member member) {
+            List<Image> images = request.getImages().stream()
+                    .map(i -> new Image(i.getOriginalFilename()))
+                    .collect(Collectors.toList());
+            Board board = new Board(request.getTitle(), request.getDescription(), request.getActivityLocation(), images, member);
+            boardRepository.save(board);
 
-        uploadImages(board.getImages(), request.getImages());
-    }
+            uploadImages(board.getImages(), request.getImages());
+        }
 
 
-    @Transactional(readOnly = true)
-    public BoardResponseDTO findBoard(Long id) {
-        Board board = boardRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
+        @Transactional(readOnly = true)
+        public BoardResponseDTO findBoard(Long id) {
+            Board board = boardRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
 
-        Member member = board.getMember();
-        return BoardResponseDTO.toDto(member.getName(), board);
-    }
+            Member member = board.getMember();
+            return BoardResponseDTO.toDto(member.getName(), board);
+        }
 
-    @Transactional(readOnly = true)
-    public BoardFindAllWithPagingResponseDTO findAllBoards(Integer page) {
-        PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("id").descending());
-        Page<Board> boards = boardRepository.findAll(pageRequest);
-        List<BoardFindAllResponseDTO> boardsWithDto = boards.stream()
-                .map(BoardFindAllResponseDTO::toDto)
-                .collect(Collectors.toList());
-        return BoardFindAllWithPagingResponseDTO.toDto(boardsWithDto, new PageInfoDTO(boards));
-    }
+        @Transactional(readOnly = true)
+        public BoardFindAllWithPagingResponseDTO findAllBoards(Integer page) {
+            PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("id").descending());
+            Page<Board> boards = boardRepository.findAll(pageRequest);
+            List<BoardFindAllResponseDTO> boardsWithDto = boards.stream()
+                    .map(BoardFindAllResponseDTO::toDto)
+                    .collect(Collectors.toList());
+            return BoardFindAllWithPagingResponseDTO.toDto(boardsWithDto, new PageInfoDTO(boards));
+        }
 
-    @Transactional(readOnly = true)
-    public BoardFindAllWithPagingResponseDTO searchBoards(String keyword, Integer page) {
-        PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("id").descending());
-        Page<Board> boards = boardRepository.findAllByTitleContaining(keyword, pageRequest);
-        List<BoardFindAllResponseDTO> boardsWithDto = boards.stream()
-                .map(BoardFindAllResponseDTO::toDto)
-                .collect(Collectors.toList());
-        return BoardFindAllWithPagingResponseDTO.toDto(boardsWithDto, new PageInfoDTO(boards));
-    }
+        @Transactional(readOnly = true)
+        public BoardFindAllWithPagingResponseDTO searchBoards(String keyword, Integer page) {
+            PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("id").descending());
+            Page<Board> boards = boardRepository.findAllByTitleContaining(keyword, pageRequest);
+            List<BoardFindAllResponseDTO> boardsWithDto = boards.stream()
+                    .map(BoardFindAllResponseDTO::toDto)
+                    .collect(Collectors.toList());
+            return BoardFindAllWithPagingResponseDTO.toDto(boardsWithDto, new PageInfoDTO(boards));
+        }
 
-    @Transactional
-    public void editBoard(Long id, BoardPatchDTO request, Member member) {
-        Board board = boardRepository.findById(id).orElseThrow(BoardNotFoundException::new);
-        validateBoardWriter(board, member);
-        Board.ImageUpdatedResult result = board.updateBoard(request);
-        uploadImages(result.getAddedImages(), result.getAddedImageFiles());
-        deleteImages(result.getDeletedImages());
-    }
+        @Transactional
+        public void editBoard(Long id, BoardPatchDTO request, Member member) {
+            Board board = boardRepository.findById(id).orElseThrow(BoardNotFoundException::new);
+            validateBoardWriter(board, member);
+            Board.ImageUpdatedResult result = board.updateBoard(request);
+            uploadImages(result.getAddedImages(), result.getAddedImageFiles());
+            deleteImages(result.getDeletedImages());
+        }
 
-    @Transactional
-    public void deleteBoard(Long id, Member member) {
-        Board board = boardRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
-        validateBoardWriter(board, member);
-        deleteImages(board.getImages());
-        boardRepository.delete(board);
-    }
+        @Transactional
+        public void deleteBoard(Long id, Member member) {
+            Board board = boardRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
+            validateBoardWriter(board, member);
+            deleteImages(board.getImages());
+            boardRepository.delete(board);
+        }
 
-    private void validateBoardWriter(Board board, Member member) {
-        if (!board.isOwnBoard(member)) {
-            throw new MemberNotFoundException();
+        private void validateBoardWriter(Board board, Member member) {
+            if (!board.isOwnBoard(member)) {
+                throw new MemberNotFoundException();
+            }
+        }
+
+        private void deleteImages(List<Image> images) {
+            images.forEach(i -> imageService.delete(i.getUniqueName()));
+        }
+
+
+        private void uploadImages(List<Image> images, List<MultipartFile> filesImages) {
+
+            try {
+                IntStream.range(0, filesImages.size())
+                        .forEach(i ->  imageService.upload(filesImages.get(i), images.get(i).getUniqueName()));
+            } catch (BusinessLogicException e) {
+                throw new RuntimeException("이미지 업로드 중 오류가 발생했습니다.", e);
+            }
         }
     }
-
-    private void deleteImages(List<Image> images) {
-        images.forEach(i -> imageService.delete(i.getUniqueName()));
-    }
-
-
-    private void uploadImages(List<Image> images, List<MultipartFile> filesImages) {
-
-        try {
-            IntStream.range(0, filesImages.size())
-                    .forEach(i ->  imageService.upload(filesImages.get(i), images.get(i).getUniqueName()));
-        } catch (BusinessLogicException e) {
-            throw new RuntimeException("이미지 업로드 중 오류가 발생했습니다.", e);
-        }
-    }
-}
-

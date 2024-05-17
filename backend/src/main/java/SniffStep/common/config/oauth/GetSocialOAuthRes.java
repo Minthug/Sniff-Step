@@ -13,4 +13,6 @@ public class GetSocialOAuthRes {
     private Long userNum;
     private String accessToken;
     private String tokenType;
+    private String email;
+    private String name;
 }

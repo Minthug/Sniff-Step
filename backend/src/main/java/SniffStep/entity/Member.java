@@ -72,4 +72,8 @@ public class Member extends BaseTime {
     public void authorizeUser() {
         this.role = MemberRole.USER;
     }
+
+    public void updateName(String name) {
+        this.name = name;
+    }
 }
