@@ -25,14 +25,17 @@ export function Mobile({ lang, text, loginStates }: Props) {
         changeEmail,
         changePassword,
         handleLogin,
-        handleGetProfile
+        handleGetProfile,
+        handleGoogleLogin
     } = loginStates
 
     return (
         <div className={container.autentication.mobile.section}>
             <div className={container.autentication.mobile.main}>
                 <TextLogo lang={lang} />
-                <GoogleButton className="mb-4 active:bg-slate-100">{text.signinGoogle}</GoogleButton>
+                <GoogleButton onClick={handleGoogleLogin} className="mb-4 active:bg-slate-100">
+                    {text.signinGoogle}
+                </GoogleButton>
                 <SeparateLine className="mb-0 text-[12px]">or</SeparateLine>
                 <div className="my-4">
                     <div className={`${D2CodingBold.className} mb-1 text-[14px]`}>{text.email}</div>

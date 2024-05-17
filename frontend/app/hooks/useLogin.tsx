@@ -43,7 +43,7 @@ export function useLogin(): LoginStates {
             method: 'GET'
         })
         const { url } = await res.json()
-        window.open(url)
+        window.open(url, '_self')
     }
 
     const handleGetProfile = async (accessToken: string) => {
