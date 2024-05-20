@@ -1,0 +1,17 @@
+{
+    "titlePlaceholder": "ex) 문래동 댕댕이 산책 시켜드립니다 👍",
+    "paragraph1": "본인을 표현할 수 있는 사진을 올려보세요!",
+    "paragraph2": "활동하실 주소를 정해주세요!",
+    "paragraph3": "활동하실 요일을 정해주세요!",
+    "paragraph4": "산책이 가능한 시간대를 정해주세요!",
+    "paragraph5": "견주님들께 산책에 대한 경험 및 자세한 플랜을 설명해보세요!",
+    "templateButton": "예시 템플릿 가져오기",
+    "update": "게시글 수정하기",
+
+    "fileSizeError": "파일 크기가 너무 큽니다. 100MB 이하로 업로드해주세요.",
+    "titleError": "제목을 입력해야 합니다",
+    "addressError": "주소를 입력해야 합니다",
+    "dateError": "산책 요일을 선택해야 합니다",
+    "timeError": "산책 시간을 선택해야 합니다",
+    "descriptionError": "설명을 입력해야 합니다"
+}

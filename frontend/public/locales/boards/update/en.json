@@ -1,0 +1,17 @@
+{
+    "titlePlaceholder": "e.g., Dog walking in Mullae-dong 👍",
+    "paragraph1": "Upload a photo that represents you!",
+    "paragraph2": "Set your working address!",
+    "paragraph3": "Choose the days you will be active!",
+    "paragraph4": "Determine the time of day you are available for walks!",
+    "paragraph5": "Explain to pet owners about your walking experience and detailed plans!",
+    "templateButton": "Get Example Template",
+    "update": "Update",
+
+    "fileSizeError": "Your file size is too large. Please upload 100 MB or less.",
+    "titleError": "You must enter a title",
+    "addressError": "You must enter an address",
+    "dateError": "You need to select a day of the week for your walk",
+    "timeError": "You need to select the time of the walk",
+    "descriptionError": "You need to enter a description"
+}

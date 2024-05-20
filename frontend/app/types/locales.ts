@@ -1,6 +1,6 @@
 export type Locales = 'en' | 'ko'
 
-export type Pages = 'home' | 'header' | 'footer' | 'boards' | 'boards/post' | 'boards/board' | 'signin' | 'signup'
+export type Pages = 'home' | 'header' | 'footer' | 'boards' | 'boards/post' | 'boards/update' | 'boards/board' | 'signin' | 'signup'
 
 export interface LocaleHome {
     section1: {
@@ -58,6 +58,23 @@ export interface LocalePostBoard {
     paragraph5: string
     templateButton: string
     post: string
+    fileSizeError: string
+    titleError: string
+    addressError: string
+    dateError: string
+    timeError: string
+    descriptionError: string
+}
+
+export interface LocaleUpdateBoard {
+    titlePlaceholder: string
+    paragraph1: string
+    paragraph2: string
+    paragraph3: string
+    paragraph4: string
+    paragraph5: string
+    templateButton: string
+    update: string
     fileSizeError: string
     titleError: string
     addressError: string
