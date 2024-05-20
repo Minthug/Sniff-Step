@@ -3,6 +3,8 @@ import { Locales } from '@/app/types/locales'
 import { getPostDescription } from '@/app/config/post'
 import { useFetch } from './useFetch'
 import { useRouter } from 'next/navigation'
+import { Board } from '../types/board'
+
 export const MAX_DESCRIPTION_SIZE = 3000
 
 export interface BoardState {
@@ -25,10 +27,12 @@ export interface BoardState {
     changeTimeToKorean: (lang: string, time: string) => string
     handleDescriptionChange: (value: string) => void
     setShowDescriptionModal: (value: boolean) => void
+    getBoardById: (id: string) => Promise<Board>
     handlePost: (file: File | null) => Promise<void>
     handleUpdate: (file: File | null, id: string) => Promise<void>
     handleDelete: (id: string) => Promise<void>
     isMyBoard: (boardId: string) => Promise<boolean>
+    adjustBoard: (board: Board) => void
 }
 
 export interface Props {
@@ -161,6 +165,22 @@ export function useBoards({ lang }: Props): BoardState {
         })
     }
 
+    const getBoardById = async (id: string) => {
+        const res = await customFetch(`/api/boards/${id}`, {
+            method: 'GET'
+        })
+
+        if (!res) return
+
+        if (!res.ok) {
+            const { message } = await res.json()
+            console.log(message)
+        }
+
+        const { data } = await res.json()
+        return data
+    }
+
     const handlePost = async (file: File | null) => {
         if (isFetching) return
 
@@ -223,6 +243,24 @@ export function useBoards({ lang }: Props): BoardState {
         }
     }
 
+    const adjustBoard = (board: Board) => {
+        setTitle(board.title)
+        setAddress(board.address)
+        setDescription(board.description)
+        setDays((prevDays) => {
+            Object.keys(prevDays).forEach((key) => {
+                prevDays[key] = board.activityDate.includes(key.toUpperCase())
+            })
+            return prevDays
+        })
+        setTimes((prevTimes) => {
+            Object.keys(prevTimes).forEach((key) => {
+                prevTimes[key] = board.activityTime.includes(key.toUpperCase())
+            })
+            return prevTimes
+        })
+    }
+
     return {
         days,
         title,
@@ -243,9 +281,11 @@ export function useBoards({ lang }: Props): BoardState {
         changeTimeToKorean,
         handleDescriptionChange,
         setShowDescriptionModal,
+        getBoardById,
         handlePost,
         handleUpdate,
         handleDelete,
-        isMyBoard
+        isMyBoard,
+        adjustBoard
     }
 }

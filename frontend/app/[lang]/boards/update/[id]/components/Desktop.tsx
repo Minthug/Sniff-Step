@@ -2,20 +2,21 @@
 
 import React from 'react'
 import { container } from '@/app/common'
-import { LocalePostBoard, Locales } from '@/app/types/locales'
+import { Board } from '@/app/types/board'
+import { LocaleUpdateBoard, Locales } from '@/app/types/locales'
 import { FileChange, BoardState } from '@/app/hooks'
 import { AiOutlineSearch } from 'react-icons/ai'
 import { ChooseImageFile, ChooseWalkDates, ChooseWalkTimes, DescriptionModal, DescriptionTextarea } from '.'
 
 interface Props {
     lang: Locales
-    text: LocalePostBoard
-    boardId: string
+    text: LocaleUpdateBoard
+    board: Board
     fileChangeState: FileChange
     boardState: BoardState
 }
 
-export function Desktop({ lang, text, boardId, fileChangeState, boardState }: Props) {
+export function Desktop({ lang, text, board, fileChangeState, boardState }: Props) {
     const { file, fileSizeError, handleFileChange } = fileChangeState
     const {
         days,
@@ -54,7 +55,7 @@ export function Desktop({ lang, text, boardId, fileChangeState, boardState }: Pr
             <div>
                 <div className="mb-8">
                     <div className="text-[18px] font-[500] mb-4">1. {text.paragraph1}</div>
-                    <ChooseImageFile file={file} handleFileChange={handleFileChange} />
+                    <ChooseImageFile image={board?.image} file={file} handleFileChange={handleFileChange} />
                     {fileSizeError && <div className="text-[12px] text-[#ff0000]">{text.fileSizeError}</div>}
                 </div>
                 <div id="address" className="mb-8">
@@ -103,13 +104,13 @@ export function Desktop({ lang, text, boardId, fileChangeState, boardState }: Pr
             )}
             <div className="mb-8">
                 <button
-                    onClick={() => handleUpdate(file, boardId)}
+                    onClick={() => handleUpdate(file, board.id)}
                     className={`
                         w-full h-[60px] bg-green-900  text-[#fff] rounded-md
                         hover:bg-green-700 active:bg-green-800 mb-8
                     `}
                 >
-                    {text.post}
+                    {text.update}
                 </button>
                 {titleError && <div className="text-[12px] text-[#ff0000]">{text.titleError}</div>}
                 {addressError && <div className="text-[12px] text-[#ff0000]">{text.addressError}</div>}
