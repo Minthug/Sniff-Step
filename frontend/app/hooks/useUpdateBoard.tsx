@@ -5,11 +5,12 @@ import { useFetch } from './useFetch'
 import { useRouter } from 'next/navigation'
 import { Board } from '../types/board'
 
-export const MAX_DESCRIPTION_SIZE = 3000
+const MAX_DESCRIPTION_SIZE = 3000
 
-export interface BoardState {
+export interface BoardUpdateState {
     days: { [key: string]: boolean }
     times: { [key: string]: boolean }
+    board: Board | undefined
     title: string
     description: string
     descriptionExample: string
@@ -28,19 +29,19 @@ export interface BoardState {
     handleDescriptionChange: (value: string) => void
     setShowDescriptionModal: (value: boolean) => void
     getBoardById: (id: string) => Promise<Board>
-    handlePost: (file: File | null) => Promise<void>
-    handleDelete: (id: string) => Promise<void>
-    isMyBoard: (boardId: string) => Promise<boolean>
+    handleUpdate: (file: File | null, id: string) => Promise<void>
+    adjustBoard: (board: Board) => void
 }
 
-export interface Props {
+interface Props {
     lang: Locales
 }
 
-export function useBoards({ lang }: Props): BoardState {
+export function useUpdateBoard({ lang }: Props): BoardUpdateState {
     const { customFetch, isFetching } = useFetch()
     const router = useRouter()
 
+    const [board, setBoard] = useState<Board>()
     const [title, setTitle] = useState('')
     const [address, setAddress] = useState('경기도 군포시 번영로 382')
     const [days, setDays] = useState<{ [key: string]: boolean }>({
@@ -141,7 +142,7 @@ export function useBoards({ lang }: Props): BoardState {
         setDescription(value)
     }
 
-    const handlePostError = (message: string[]) => {
+    const handleUpdateError = (message: string[]) => {
         message.find((msg: string) => {
             switch (msg) {
                 case 'title should not be empty':
@@ -176,16 +177,17 @@ export function useBoards({ lang }: Props): BoardState {
         }
 
         const { data } = await res.json()
+        setBoard(data)
         return data
     }
 
-    const handlePost = async (file: File | null) => {
-        if (isFetching) return
+    const handleUpdate = async (file: File | null, id: string) => {
+        if (isFetching || !board) return
 
-        const accessToken = localStorage.getItem('accessToken')
         const data = new FormData()
         if (file) data.append('file', file)
 
+        data.append('id', board.id)
         data.append('title', title)
         data.append('address', address)
         data.append('description', description)
@@ -196,53 +198,43 @@ export function useBoards({ lang }: Props): BoardState {
             if (value) data.append('activityTime', key.toUpperCase())
         })
 
-        const res = await customFetch('/api/boards/post', {
+        const res = await customFetch('/api/boards/update', {
             method: 'POST',
-            headers: {
-                Authorization: `Bearer ${accessToken}`
-            },
             body: data
         })
 
         if (res) {
             if (!res.ok) {
                 const { message } = await res?.json()
-                return handlePostError(message)
+                return handleUpdateError(message)
             }
             router.push(`/${lang}/boards?reload=true`)
         }
     }
 
-    const handleDelete = async (id: string) => {
-        const res = await customFetch(`/api/boards/${id}`, {
-            method: 'DELETE'
+    const adjustBoard = (board: Board) => {
+        setTitle(board.title)
+        setAddress(board.address)
+        setDescription(board.description)
+        setDays((prevDays) => {
+            Object.keys(prevDays).forEach((key) => {
+                prevDays[key] = board.activityDate.includes(key.toUpperCase())
+            })
+            return prevDays
         })
-
-        if (!res) return
-
-        if (res.ok) {
-            router.push(`/${lang}/boards?reload=true`)
-        }
-    }
-
-    const isMyBoard = async (id: string) => {
-        const accessToken = localStorage.getItem('accessToken')
-        if (!accessToken) return false
-
-        const res = await customFetch(`/api/boards/${id}/owned`, {
-            method: 'GET'
+        setTimes((prevTimes) => {
+            Object.keys(prevTimes).forEach((key) => {
+                prevTimes[key] = board.activityTime.includes(key.toUpperCase())
+            })
+            return prevTimes
         })
-
-        if (res) {
-            const data = await res.json()
-            return data.data
-        }
     }
 
     return {
         days,
         title,
         times,
+        board,
         description,
         descriptionExample,
         showDescriptionModal,
@@ -260,8 +252,7 @@ export function useBoards({ lang }: Props): BoardState {
         handleDescriptionChange,
         setShowDescriptionModal,
         getBoardById,
-        handlePost,
-        handleDelete,
-        isMyBoard
+        handleUpdate,
+        adjustBoard
     }
 }
