@@ -67,6 +67,7 @@ public class AuthService {
 
         // Refresh Token DB에 저장
         jwtService.updateRefreshToken(accessToken, refreshToken);
+        memberRepository.save(registerOrUpdateMember(member.getEmail(), member.getName()));
 
         return new TokenDto(accessToken, refreshToken);
     }
