@@ -5,7 +5,7 @@ import { container } from '@/app/common'
 import { Board } from '@/app/types/board'
 import { LocaleUpdateBoard, Locales } from '@/app/types/locales'
 import { getLocales } from '@/app/utils/getLocales'
-import { useFileChange, useBoards } from '@/app/hooks'
+import { useFileChange, useUpdateBoard } from '@/app/hooks'
 import { Desktop, Mobile } from './components'
 
 interface Props {
@@ -14,18 +14,14 @@ interface Props {
 
 export default function page({ params: { lang, id } }: Props) {
     const fileChangeState = useFileChange()
-    const boardState = useBoards({ lang })
+    const boardState = useUpdateBoard({ lang })
     const [text, setText] = useState<LocaleUpdateBoard>()
-    const [board, setBoard] = useState<Board>()
 
-    const { getBoardById, adjustBoard } = boardState
+    const { getBoardById, adjustBoard, board } = boardState
 
     useEffect(() => {
         getLocales<LocaleUpdateBoard>('boards/update', lang).then(setText)
-        getBoardById(id).then((data) => {
-            setBoard(data)
-            adjustBoard(data)
-        })
+        getBoardById(id).then(adjustBoard)
     }, [])
 
     if (!text || !board)

@@ -4,7 +4,7 @@ import React from 'react'
 import { container } from '@/app/common'
 import { Board } from '@/app/types/board'
 import { LocaleUpdateBoard, Locales } from '@/app/types/locales'
-import { FileChange, BoardState } from '@/app/hooks'
+import { FileChange, BoardUpdateState } from '@/app/hooks'
 import { AiOutlineSearch } from 'react-icons/ai'
 import { ChooseImageFile, ChooseWalkDates, ChooseWalkTimes, DescriptionModal, DescriptionTextarea } from '.'
 
@@ -13,7 +13,7 @@ interface Props {
     text: LocaleUpdateBoard
     board: Board
     fileChangeState: FileChange
-    boardState: BoardState
+    boardState: BoardUpdateState
 }
 
 export function Mobile({ lang, text, board, fileChangeState, boardState }: Props) {
