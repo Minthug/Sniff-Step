@@ -39,6 +39,7 @@ export function Desktop({ lang, text, boards }: Props) {
                             <img
                                 className="w-[40px] h-[40px] border rounded-full"
                                 src={board.profileUrl || '/images/logo1-removebg-preview.png'}
+                                referrerPolicy="no-referrer"
                             />
                             <div className="flex flex-col justify-center">
                                 <div className="w-[170px] whitespace-nowrap overflow-hidden text-ellipsis text-[14px]">{board.title}</div>
