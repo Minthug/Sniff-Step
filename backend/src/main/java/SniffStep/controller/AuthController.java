@@ -29,15 +29,10 @@ public class AuthController {
         return success();
     }
 
-    @PostMapping("/sign-up")
-    public String signupV2(@RequestBody SignUpRequestDTO signUpRequestDTO) throws Exception {
-        authService.signup(signUpRequestDTO);
-        return "success";
-    }
-
-
     @PostMapping("/login")
     public ResponseEntity<Response> login(@RequestBody LoginDTO loginDTO) {
         return ResponseEntity.ok(success(authService.login(loginDTO)));
     }
+
+
 }
