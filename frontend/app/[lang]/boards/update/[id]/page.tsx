@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react'
 import { container } from '@/app/common'
-import { Board } from '@/app/types/board'
 import { LocaleUpdateBoard, Locales } from '@/app/types/locales'
 import { getLocales } from '@/app/utils/getLocales'
 import { useFileChange, useUpdateBoard } from '@/app/hooks'
