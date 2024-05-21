@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,7 +68,7 @@ public class AuthService {
 
         // Refresh Token DB에 저장
         jwtService.updateRefreshToken(accessToken, refreshToken);
-        memberRepository.save(registerOrUpdateMember(member.getEmail(), member.getName()));
+        memberRepository.save(registerOrUpdateMember(member.getEmail(), member.getName(), member.getSocialId(), member.getProvider()));
 
         return new TokenDto(accessToken, refreshToken);
     }
@@ -75,16 +76,19 @@ public class AuthService {
 
     // 새로 추가한 메서드
     @Transactional
-    public Member registerOrUpdateMember(String email, String name) {
+    public Member registerOrUpdateMember(String email, String name, String providerId, String provider) {
         return memberRepository.findByEmail(email)
                 .map(member -> {
                     member.updateName(name);
+                    member.updateOAuthInfo(providerId, provider);
                     return member;
                 })
                 .orElseGet(() ->{
                     Member newMember = Member.builder()
                             .email(email)
                             .name(name)
+                            .socialId(providerId)
+                            .provider(provider)
                             .role(MemberRole.USER)
                             .build();
                     return memberRepository.save(newMember);

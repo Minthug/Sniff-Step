@@ -3,6 +3,7 @@ package SniffStep.common.config.oauth;
 import SniffStep.entity.Member;
 import SniffStep.entity.MemberType;
 import SniffStep.repository.MemberRepository;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,6 +23,7 @@ import java.util.Map;
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final MemberRepository memberRepository;
+    private final HttpSession httpSession;
 
 //    private static final String NAVER = "naver";
 //    private static final String KAKAO = "kakao";
