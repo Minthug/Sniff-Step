@@ -39,7 +39,7 @@ public class OAuthService {
         String email = googleUser.getEmail();
         String name = googleUser.getName();
         String providerId = googleUser.getId();
-        String provider = type;
+        String provider = "google";
 
         Member member = authService.registerOrUpdateMember(email, name, providerId, provider);
 
