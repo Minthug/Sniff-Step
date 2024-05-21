@@ -56,6 +56,7 @@ export interface LocalePostBoard {
     paragraph3: string
     paragraph4: string
     paragraph5: string
+    findAddressPlaceholder: string
     templateButton: string
     post: string
     fileSizeError: string
