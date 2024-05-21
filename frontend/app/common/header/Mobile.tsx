@@ -27,7 +27,8 @@ function MobileCategory({ children, onClick }: HTMLAttributes<HTMLButtonElement>
 
 export default function Mobile({ lang, text, headerStates }: Props) {
     const router = useRouter()
-    const { search, onMobileMenu, onMobileSearch, changeSearch, changeOnMobileMenu, changeOnMobileSearch, handleSearch } = headerStates
+    const { search, onMobileMenu, onMobileSearch, accessToken, changeSearch, changeOnMobileMenu, changeOnMobileSearch, handleSearch } =
+        headerStates
 
     return (
         <div
@@ -92,7 +93,7 @@ export default function Mobile({ lang, text, headerStates }: Props) {
 
             <div
                 style={{
-                    height: onMobileMenu ? '151px' : '0px',
+                    height: onMobileMenu ? '141px' : '0px',
                     opacity: onMobileMenu ? 1 : 0,
                     transition: onMobileMenu ? 'height 0.3s, opacity 0.3s' : 'height 0.5s',
                     padding: onMobileMenu ? '0 0 16px 0' : '0'
@@ -110,6 +111,30 @@ export default function Mobile({ lang, text, headerStates }: Props) {
                     </>
                 )}
             </div>
+
+            {accessToken && (
+                <div
+                    style={{
+                        height: onMobileMenu ? '184px' : '0px',
+                        opacity: onMobileMenu ? 1 : 0,
+                        transition: onMobileMenu ? 'height 0.3s, opacity 0.3s' : 'height 0.5s',
+                        padding: onMobileMenu ? '0 0 16px 0' : '0'
+                    }}
+                    className={`
+                                ${D2CodingBold.className}
+                                absolute left-0 top-[75px] w-full items-center bg-[#fcfcfc] text-[18px] z-[20]
+                            `}
+                >
+                    {onMobileMenu && (
+                        <>
+                            <MobileCategory onClick={() => router.push(`/${lang}/boards/post`)}>{text.post}</MobileCategory>
+                            <MobileCategory onClick={() => router.push(`/${lang}/boards`)}>{text.boards}</MobileCategory>
+                            <MobileCategory onClick={() => router.push(`/${lang}/mypage`)}>{text.mypage}</MobileCategory>
+                            <MobileCategory onClick={() => router.push(`/${lang}/signin`)}>{text.logout}</MobileCategory>
+                        </>
+                    )}
+                </div>
+            )}
 
             {onMobileMenu && (
                 <div
