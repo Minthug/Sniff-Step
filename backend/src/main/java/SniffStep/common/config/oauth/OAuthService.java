@@ -3,7 +3,6 @@ package SniffStep.common.config.oauth;
 
 import SniffStep.common.jwt.service.JwtService;
 import SniffStep.entity.Member;
-import SniffStep.entity.MemberRole;
 import SniffStep.repository.MemberRepository;
 import SniffStep.service.AuthService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -39,8 +38,10 @@ public class OAuthService {
 
         String email = googleUser.getEmail();
         String name = googleUser.getName();
+        String providerId = googleUser.getId();
+        String provider = type;
 
-        Member member = authService.registerOrUpdateMember(email, name);
+        Member member = authService.registerOrUpdateMember(email, name, providerId, provider);
 
 
         String accessToken = jwtService.createAccessToken(email);

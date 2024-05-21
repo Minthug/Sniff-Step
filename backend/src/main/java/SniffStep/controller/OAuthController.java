@@ -41,23 +41,20 @@ public class OAuthController {
      try {
          GetSocialOAuthRes res = oAuthService.oAuthLogin(code, type.toUpperCase());
 
-         String email = res.getEmail();
-         String name = res.getName();
+         response.setHeader("Authorization","Bearer " + res.getAccessToken());
+         response.setHeader("RefreshToken", res.getJwtToken());
 
-         Member member = memberRepository.findByEmail(email).orElseGet(() -> {
-             Member newMember = Member.builder()
-                     .email(email)
-                     .name(name)
-                     .role(MemberRole.USER)
-                     .build();
-             return memberRepository.save(newMember);
-         });
-         loginSuccessHandler.onAuthenticationSuccess(request, response, null);
+         return ResponseEntity.ok().build();
 
-         return ResponseEntity.ok(res);
      } catch (JsonProcessingException e) {
          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
      }
+    }
+
+    @GetMapping("/oauth2/authorization/{provider}")
+    public void oauth2Authorization(@PathVariable("provider") String provider, HttpServletResponse response) throws IOException {
+        String requestURL = oAuthService.request(provider);
+        response.sendRedirect(requestURL);
     }
 
     @GetMapping("/oauth2/code/google")

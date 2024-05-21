@@ -76,4 +76,9 @@ public class Member extends BaseTime {
     public void updateName(String name) {
         this.name = name;
     }
+
+    public void updateOAuthInfo(String socialId, String provider) {
+        this.socialId = socialId;
+        this.provider = provider;
+    }
 }
