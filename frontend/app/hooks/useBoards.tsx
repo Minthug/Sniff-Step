@@ -11,6 +11,8 @@ export interface BoardState {
     days: { [key: string]: boolean }
     times: { [key: string]: boolean }
     title: string
+    address: string
+    addressEnglish: string
     description: string
     descriptionExample: string
     showDescriptionModal: boolean
@@ -23,6 +25,7 @@ export interface BoardState {
     handleDayChange: (event: React.ChangeEvent<HTMLInputElement>) => void
     handleTimeChange: (event: React.ChangeEvent<HTMLInputElement>) => void
     handleTitleChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+    handleChangeAddress: (address: string, addressEnglish: string) => void
     changeDayToKorean: (lang: string, day: string) => string
     changeTimeToKorean: (lang: string, time: string) => string
     handleDescriptionChange: (value: string) => void
@@ -42,7 +45,8 @@ export function useBoards({ lang }: Props): BoardState {
     const router = useRouter()
 
     const [title, setTitle] = useState('')
-    const [address, setAddress] = useState('경기도 군포시 번영로 382')
+    const [address, setAddress] = useState('')
+    const [addressEnglish, setAddressEnglish] = useState('')
     const [days, setDays] = useState<{ [key: string]: boolean }>({
         mon: false,
         tue: false,
@@ -91,6 +95,12 @@ export function useBoards({ lang }: Props): BoardState {
         setTitleError(false)
         const { value } = event.target
         setTitle(value)
+    }
+
+    const handleChangeAddress = (address: string, addressEnglish: string) => {
+        setAddress(address)
+        setAddressEnglish(addressEnglish)
+        setAddressError(false)
     }
 
     const changeDayToKorean = (lang: string, day: string) => {
@@ -207,7 +217,8 @@ export function useBoards({ lang }: Props): BoardState {
         if (res) {
             if (!res.ok) {
                 const { message } = await res?.json()
-                return handlePostError(message)
+                handlePostError(message)
+                throw new Error('Post failed')
             }
             router.push(`/${lang}/boards?reload=true`)
         }
@@ -243,6 +254,8 @@ export function useBoards({ lang }: Props): BoardState {
         days,
         title,
         times,
+        address,
+        addressEnglish,
         description,
         descriptionExample,
         showDescriptionModal,
@@ -255,6 +268,7 @@ export function useBoards({ lang }: Props): BoardState {
         handleDayChange,
         handleTimeChange,
         handleTitleChange,
+        handleChangeAddress,
         changeDayToKorean,
         changeTimeToKorean,
         handleDescriptionChange,

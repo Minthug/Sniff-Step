@@ -4,8 +4,7 @@ import React, { useState } from 'react'
 import { container } from '@/app/common'
 import { LocalePostBoard, Locales } from '@/app/types/locales'
 import { FileChange, BoardState } from '@/app/hooks'
-import { ChooseImageFile, ChooseWalkDates, ChooseWalkTimes, DescriptionModal, DescriptionTextarea } from '.'
-import { AiOutlineSearch } from 'react-icons/ai'
+import { ChooseImageFile, ChooseWalkDates, ChooseWalkTimes, DescriptionModal, DescriptionTextarea, FindAddress } from '.'
 
 interface Props {
     lang: Locales
@@ -22,6 +21,8 @@ export function Mobile({ lang, text, fileChangeState, boardState }: Props) {
         times,
         title,
         description,
+        address,
+        addressEnglish,
         descriptionExample,
         showDescriptionModal,
         titleError,
@@ -33,6 +34,7 @@ export function Mobile({ lang, text, fileChangeState, boardState }: Props) {
         handleDayChange,
         handleTimeChange,
         handleTitleChange,
+        handleChangeAddress,
         changeDayToKorean,
         changeTimeToKorean,
         handleDescriptionChange,
@@ -59,9 +61,13 @@ export function Mobile({ lang, text, fileChangeState, boardState }: Props) {
                 </div>
                 <div className="mb-8">
                     <div className="mb-4 text-[16px] font-[500]">2. {text.paragraph2}</div>
-                    <button className="relative w-full max-w-[480px] h-[40px] pr-8 text-[16px] text-start border border-gray-300 rounded-md overflow-hidden text-ellipsis whitespace-nowrap bg-white">
-                        <AiOutlineSearch className="absolute top-1/2 right-[4px] translate-y-[-50%] text-gray-400 text-[24px]" />
-                    </button>
+                    <FindAddress
+                        lang={lang}
+                        text={text}
+                        address={address}
+                        addressEnglish={addressEnglish}
+                        handleChangeAddress={handleChangeAddress}
+                    />
                 </div>
                 <div className="mb-8">
                     <div className="mb-4 text-[16px] font-[500]">3. {text.paragraph3}</div>
@@ -106,7 +112,11 @@ export function Mobile({ lang, text, fileChangeState, boardState }: Props) {
                     disabled={isSubmitting}
                     onClick={async () => {
                         setIsSubmitting(true)
-                        await handlePost(file)
+                        try {
+                            await handlePost(file)
+                        } catch (error) {
+                            setIsSubmitting(false)
+                        }
                     }}
                     className={`
                         active:bg-green-800
