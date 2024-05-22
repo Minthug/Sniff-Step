@@ -1,12 +1,12 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { container } from '@/app/common'
 import { Board } from '@/app/types/board'
 import { LocaleUpdateBoard, Locales } from '@/app/types/locales'
 import { FileChange, BoardUpdateState } from '@/app/hooks'
-import { AiOutlineSearch } from 'react-icons/ai'
 import { ChooseImageFile, ChooseWalkDates, ChooseWalkTimes, DescriptionModal, DescriptionTextarea } from '.'
+import { FindAddress } from './FindAddress'
 
 interface Props {
     lang: Locales
@@ -17,11 +17,14 @@ interface Props {
 }
 
 export function Mobile({ lang, text, board, fileChangeState, boardState }: Props) {
+    const [isSubmitting, setIsSubmitting] = useState(false)
     const { file, fileSizeError, handleFileChange } = fileChangeState
     const {
         days,
         times,
         title,
+        address,
+        addressEnglish,
         description,
         descriptionExample,
         showDescriptionModal,
@@ -34,9 +37,10 @@ export function Mobile({ lang, text, board, fileChangeState, boardState }: Props
         handleDayChange,
         handleTimeChange,
         handleTitleChange,
+        handleDescriptionChange,
+        handleChangeAddress,
         changeDayToKorean,
         changeTimeToKorean,
-        handleDescriptionChange,
         setShowDescriptionModal,
         handleUpdate
     } = boardState
@@ -60,9 +64,13 @@ export function Mobile({ lang, text, board, fileChangeState, boardState }: Props
                 </div>
                 <div className="mb-8">
                     <div className="mb-4 text-[16px] font-[500]">2. {text.paragraph2}</div>
-                    <button className="relative w-full max-w-[480px] h-[40px] pr-8 text-[16px] text-start border border-gray-300 rounded-md overflow-hidden text-ellipsis whitespace-nowrap bg-white">
-                        <AiOutlineSearch className="absolute top-1/2 right-[4px] translate-y-[-50%] text-gray-400 text-[24px]" />
-                    </button>
+                    <FindAddress
+                        lang={lang}
+                        address={address}
+                        addressEnglish={addressEnglish}
+                        getAddress={board.address}
+                        handleChangeAddress={handleChangeAddress}
+                    />
                 </div>
                 <div className="mb-8">
                     <div className="mb-4 text-[16px] font-[500]">3. {text.paragraph3}</div>
@@ -104,10 +112,20 @@ export function Mobile({ lang, text, board, fileChangeState, boardState }: Props
             )}
             <div className="mb-8">
                 <button
-                    onClick={() => handleUpdate(file, board.id)}
+                    disabled={isSubmitting}
+                    onClick={async () => {
+                        setIsSubmitting(true)
+                        try {
+                            await handleUpdate(file, board.id)
+                        } catch (error) {
+                            setIsSubmitting(false)
+                        }
+                    }}
                     className={`
-                        w-full h-[60px] bg-green-900  text-[#fff] rounded-md
+                        hover:bg-green-700
                         active:bg-green-800 mb-8
+                        disabled:cursor-not-allowed disabled:bg-gray-500
+                        w-full h-[60px] bg-green-900  text-[#fff] rounded-md
                     `}
                 >
                     {text.update}
