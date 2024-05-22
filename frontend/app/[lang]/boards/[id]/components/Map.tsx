@@ -47,9 +47,10 @@ export function Map({ address }: Props) {
                 lat: 33.450701,
                 lng: 126.570667
             }}
-            className="w-full h-[350px] mb-4"
+            className="w-full h-[350px] mb-8"
             level={4}
             onCreate={setMap}
+            zoomable={false}
         />
     )
 }
