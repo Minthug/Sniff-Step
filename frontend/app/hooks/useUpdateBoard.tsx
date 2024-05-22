@@ -12,6 +12,8 @@ export interface BoardUpdateState {
     times: { [key: string]: boolean }
     board: Board | undefined
     title: string
+    address: string
+    addressEnglish: string
     description: string
     descriptionExample: string
     showDescriptionModal: boolean
@@ -24,9 +26,10 @@ export interface BoardUpdateState {
     handleDayChange: (event: React.ChangeEvent<HTMLInputElement>) => void
     handleTimeChange: (event: React.ChangeEvent<HTMLInputElement>) => void
     handleTitleChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+    handleChangeAddress: (address: string, addressEnglish: string) => void
+    handleDescriptionChange: (value: string) => void
     changeDayToKorean: (lang: string, day: string) => string
     changeTimeToKorean: (lang: string, time: string) => string
-    handleDescriptionChange: (value: string) => void
     setShowDescriptionModal: (value: boolean) => void
     getBoardById: (id: string) => Promise<Board>
     handleUpdate: (file: File | null, id: string) => Promise<void>
@@ -43,7 +46,8 @@ export function useUpdateBoard({ lang }: Props): BoardUpdateState {
 
     const [board, setBoard] = useState<Board>()
     const [title, setTitle] = useState('')
-    const [address, setAddress] = useState('경기도 군포시 번영로 382')
+    const [address, setAddress] = useState('')
+    const [addressEnglish, setAddressEnglish] = useState('')
     const [days, setDays] = useState<{ [key: string]: boolean }>({
         mon: false,
         tue: false,
@@ -164,6 +168,12 @@ export function useUpdateBoard({ lang }: Props): BoardUpdateState {
         })
     }
 
+    const handleChangeAddress = (address: string, addressEnglish: string) => {
+        setAddress(address)
+        setAddressEnglish(addressEnglish)
+        setAddressError(false)
+    }
+
     const getBoardById = async (id: string) => {
         const res = await customFetch(`/api/boards/${id}`, {
             method: 'GET'
@@ -235,6 +245,8 @@ export function useUpdateBoard({ lang }: Props): BoardUpdateState {
         title,
         times,
         board,
+        address,
+        addressEnglish,
         description,
         descriptionExample,
         showDescriptionModal,
@@ -247,9 +259,10 @@ export function useUpdateBoard({ lang }: Props): BoardUpdateState {
         handleDayChange,
         handleTimeChange,
         handleTitleChange,
+        handleChangeAddress,
+        handleDescriptionChange,
         changeDayToKorean,
         changeTimeToKorean,
-        handleDescriptionChange,
         setShowDescriptionModal,
         getBoardById,
         handleUpdate,
