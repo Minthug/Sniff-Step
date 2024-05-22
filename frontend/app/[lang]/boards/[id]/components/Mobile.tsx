@@ -3,6 +3,7 @@ import { container } from '@/app/common'
 import { LocaleBoard, Locales } from '@/app/types/locales'
 import { changeDayToKorean, changeTimeToKorean } from '@/app/utils/changeDateUtils'
 import { Board } from '@/app/types/board'
+import { Map } from '.'
 import Link from 'next/link'
 
 interface Props {
@@ -41,6 +42,7 @@ export function Mobile({ lang, text, board, dates }: Props) {
                 <div className="text-[18px] font-[500]">1. {text.address}</div>
                 <div className="text-[18px] font-[500] border-b-2 mb-[2px] border-red-600">{address}</div>
             </div>
+            <Map address={address} />
             <div className="flex flex-col gap-4 mb-8 z-20">
                 <div className="flex flex-wrap items-center gap-3">
                     <div className="text-[18px] font-[500]">2. {text.availableTime}</div>
