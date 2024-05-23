@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { LocaleSignup, Locales } from '@/app/types/locales'
 import { Desktop, Mobile } from './components'
 import { getLocales } from '@/app/utils/getLocales'
+import { useLogin } from '@/app/hooks'
 
 interface Props {
     params: { lang: Locales }
@@ -11,6 +12,7 @@ interface Props {
 
 export default function page({ params: { lang } }: Props) {
     const [text, setText] = useState<LocaleSignup>()
+    const loginStates = useLogin()
 
     useEffect(() => {
         getLocales<LocaleSignup>('signup', lang).then(setText)
@@ -25,8 +27,8 @@ export default function page({ params: { lang } }: Props) {
 
     return (
         <>
-            <Desktop lang={lang} text={text} />
-            <Mobile lang={lang} text={text} />
+            <Desktop lang={lang} text={text} loginStates={loginStates} />
+            <Mobile lang={lang} text={text} loginStates={loginStates} />
         </>
     )
 }

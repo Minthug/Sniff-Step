@@ -1,18 +1,22 @@
 import React from 'react'
-import Link from 'next/link'
+import { GoogleButton, SeparateLine, LargeButton, container } from '@/app/common'
+import { LocaleSignup } from '@/app/types/locales'
+import { LoginStates } from '@/app/hooks'
 import { D2CodingBold } from '@/app/fonts'
 import { FaLongArrowAltLeft } from 'react-icons/fa'
-import { GoogleButton, SeparateLine, LargeButton, container } from '@/app/common'
 import { useRouter } from 'next/navigation'
-import { LocaleSignup } from '@/app/types/locales'
+import Link from 'next/link'
 
 interface Props {
     lang: string
     text: LocaleSignup
+    loginStates: LoginStates
 }
 
-export function Desktop({ lang, text }: Props) {
+export function Desktop({ lang, text, loginStates }: Props) {
     const router = useRouter()
+    const { handleGoogleLogin } = loginStates
+
     return (
         <div className={container.autentication.desktop.section}>
             <div className={container.autentication.desktop.sidebar}>
@@ -34,7 +38,9 @@ export function Desktop({ lang, text }: Props) {
             </div>
             <div className={container.autentication.desktop.main}>
                 <div className={`${D2CodingBold.className} text-[28px] font-bold mb-8`}>{text.title}</div>
-                <GoogleButton theme="dark">{text.signupGoogle}</GoogleButton>
+                <GoogleButton theme="dark" onClick={handleGoogleLogin}>
+                    {text.signupGoogle}
+                </GoogleButton>
                 <SeparateLine className="mb-4">or</SeparateLine>
                 <LargeButton onClick={() => router.push(`/${lang}/signup/email-password`)}>{text.signupEmail}</LargeButton>
                 <div className="flex flex-wrap justify-center mb-4 text-[12px] mt-8 px-[60px]">

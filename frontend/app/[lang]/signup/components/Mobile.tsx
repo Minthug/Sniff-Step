@@ -1,21 +1,25 @@
 import React from 'react'
-import Link from 'next/link'
 import { LocaleSignup } from '@/app/types/locales'
 import { GoogleButton, SeparateLine, LargeButton, TextLogo, container } from '@/app/common'
+import { LoginStates } from '@/app/hooks'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 interface Props {
     lang: string
     text: LocaleSignup
+    loginStates: LoginStates
 }
 
-export function Mobile({ lang, text }: Props) {
+export function Mobile({ lang, text, loginStates }: Props) {
     const router = useRouter()
+    const { handleGoogleLogin } = loginStates
+
     return (
         <div className={container.autentication.mobile.section}>
             <div className={container.autentication.mobile.main}>
                 <TextLogo lang={lang} />
-                <GoogleButton className="active:bg-gray-800" theme="dark">
+                <GoogleButton className="active:bg-gray-800" theme="dark" onClick={handleGoogleLogin}>
                     {text.signupGoogle}
                 </GoogleButton>
                 <SeparateLine>or</SeparateLine>
