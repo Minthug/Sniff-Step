@@ -2,7 +2,9 @@ package SniffStep.common.config.oauth;
 
 import SniffStep.entity.Member;
 import SniffStep.entity.MemberType;
+import SniffStep.entity.OAuthUser;
 import SniffStep.repository.MemberRepository;
+import SniffStep.repository.OAuthUserRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +15,7 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.Map;
@@ -23,7 +26,7 @@ import java.util.Map;
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final MemberRepository memberRepository;
-    private final HttpSession httpSession;
+    private final OAuthUserRepository oAuthUserRepository;
 
 //    private static final String NAVER = "naver";
 //    private static final String KAKAO = "kakao";
@@ -69,9 +72,26 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         return MemberType.GOOGLE;
     }
 
-    private Member saveUser(OAuthAttributes attributes, MemberType memberType) {
+    @Transactional
+    public Member saveUser(OAuthAttributes attributes, MemberType memberType) {
         Member createdMember = attributes.toEntity(memberType, attributes.getOAuth2UserInfo());
-        return memberRepository.save(createdMember);
+
+        OAuthUser oAuthUser = OAuthUser.builder()
+                .email(createdMember.getEmail())
+                .provider(memberType.toString())
+                .providerId(attributes.getOAuth2UserInfo().getId())
+                .member(createdMember)
+                .build();
+
+        log.info("Saving OAuthUser: {}", oAuthUser);
+        OAuthUser savedOAuthUser = oAuthUserRepository.save(oAuthUser);
+        log.info("Saving OAuthUser: {}", savedOAuthUser);
+
+        log.info("Saving Member: {}", createdMember);
+        Member savedMember = memberRepository.save(createdMember);
+        log.info("Saved Member: {}", savedMember);
+
+        return savedMember;
     }
 
 }

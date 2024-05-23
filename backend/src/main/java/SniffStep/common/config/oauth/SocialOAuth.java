@@ -7,7 +7,7 @@ public interface SocialOAuth {
 
     String getOAuthRedirectURL(String type);
 
-    ResponseEntity<String> requestAccessToken(String code, String type);
+    GoogleOAuthToken requestAccessToken(String code, String type);
 
     GoogleOAuthToken getAccessToken(ResponseEntity<String> accessToken) throws JsonProcessingException;
 

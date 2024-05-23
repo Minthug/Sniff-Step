@@ -32,10 +32,11 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
             if (oAuth2User.getRole() == MemberRole.GUEST) {
                 String accessToken = jwtService.createAccessToken(oAuth2User.getEmail());
-                response.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
-                response.sendRedirect("oauth2/sign-up");
+                jwtService.sendAccessTokenCookie(response, accessToken);
+//                response.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
+                response.sendRedirect("localhost:3000");
 
-                jwtService.sendAccessAndRefreshToken(response, accessToken, null);
+//                jwtService.sendAccessAndRefreshToken(response, accessToken, null);
             } else {
                 loginSuccess(response, oAuth2User);
             }
@@ -47,10 +48,10 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     private void loginSuccess(HttpServletResponse response, CustomOAuth2User oAuth2User) throws IOException {
         String accessToken = jwtService.createAccessToken(oAuth2User.getEmail());
         String refreshToken = jwtService.createRefreshToken();
-        response.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
-        response.addHeader(jwtService.getRefreshHeader(), "Bearer " + refreshToken);
+//        response.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
+//        response.addHeader(jwtService.getRefreshHeader(), "Bearer " + refreshToken);
 
-        jwtService.sendAccessAndRefreshToken(response, accessToken, refreshToken);
+        jwtService.sendAccessAndRefreshTokenCookie(response, accessToken, refreshToken);
         jwtService.updateRefreshToken(oAuth2User.getEmail(), refreshToken);
     }
 }
