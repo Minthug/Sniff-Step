@@ -156,8 +156,10 @@ public class JwtService {
         public static void addCookie(HttpServletResponse response, String name, String value, long maxAge, boolean httpOnly) {
             Cookie cookie = new Cookie(name, value);
             cookie.setPath("/");
+            cookie.setSecure(true);
             cookie.setMaxAge((int) maxAge);
             cookie.setHttpOnly(httpOnly);
+//            cookie.setDomain("localhost:8080");
             response.addCookie(cookie);
         }
 

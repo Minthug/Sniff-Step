@@ -2,15 +2,13 @@ package SniffStep.controller;
 
 import SniffStep.common.config.oauth.GetSocialOAuthRes;
 import SniffStep.common.config.oauth.OAuthService;
-import SniffStep.common.jwt.handler.LoginSuccessHandler;
-import SniffStep.common.jwt.service.JwtService;
-import SniffStep.repository.MemberRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -21,9 +19,6 @@ import java.io.IOException;
 public class OAuthController {
 
     private final OAuthService oAuthService;
-    private final JwtService jwtService;
-    private final MemberRepository memberRepository;
-    private final LoginSuccessHandler loginSuccessHandler;
 
 
     @GetMapping("/{type}")
@@ -50,16 +45,14 @@ public class OAuthController {
     }
 
     @GetMapping("/oauth2/authorization/{provider}")
-    public String oauth2Authorization(@PathVariable("provider") String provider, HttpServletResponse response) throws IOException {
+    public void oauth2Authorization(@PathVariable("provider") String provider, HttpServletResponse response) throws IOException {
         String requestURL = oAuthService.request(provider);
         response.sendRedirect(requestURL);
-        return "redirect:/oauth2/code/google";
     }
 
     @GetMapping("/oauth2/code/google")
-    public String home()
-    {
-        return "home";
+    public String home() {
+        return "redirect:/";
     }
 
 }

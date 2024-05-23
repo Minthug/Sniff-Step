@@ -28,6 +28,7 @@ public class OAuthService {
 
     public GetSocialOAuthRes oAuthLogin(String code, String type) throws JsonProcessingException {
 
+
         // 액세스 토큰 요청
         GoogleOAuthToken googleOAuthToken = socialOAuth.requestAccessToken(code, type);
 

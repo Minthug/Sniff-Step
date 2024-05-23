@@ -27,22 +27,19 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         log.info("OAuth2 Login 성공");
 
-        try {
+
             CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
 
             if (oAuth2User.getRole() == MemberRole.GUEST) {
                 String accessToken = jwtService.createAccessToken(oAuth2User.getEmail());
-                jwtService.sendAccessTokenCookie(response, accessToken);
-//                response.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
-                response.sendRedirect("localhost:3000");
+                jwtService.sendAccessToken(response, accessToken);
+                response.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
+                response.sendRedirect("http://localhost:8080/api/test/main");
 
-//                jwtService.sendAccessAndRefreshToken(response, accessToken, null);
+                jwtService.sendAccessAndRefreshTokenCookie(response, accessToken, null);
             } else {
                 loginSuccess(response, oAuth2User);
             }
-        } catch (Exception e) {
-            throw e;
-        }
     }
 
     private void loginSuccess(HttpServletResponse response, CustomOAuth2User oAuth2User) throws IOException {
