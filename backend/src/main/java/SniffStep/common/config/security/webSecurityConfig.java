@@ -70,6 +70,8 @@ public class webSecurityConfig {
                 .and()
 
                 .oauth2Login()
+                .loginPage("/v1/auth/oauth2/authorization/{provider}")
+                .defaultSuccessUrl("/v1/auth/oauth2/code/google")
                 .successHandler(oAuth2LoginSuccessHandler)
                 .failureHandler(oAuth2LoginFailureHandler)
                 .userInfoEndpoint().userService(customOAuth2UserService);
