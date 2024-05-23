@@ -29,7 +29,7 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         String accessToken = jwtService.createAccessToken(email);
         String refreshToken = jwtService.createRefreshToken();
 
-        jwtService.sendAccessAndRefreshToken(response, accessToken, refreshToken);
+        jwtService.sendAccessAndRefreshTokenCookie(response, accessToken, refreshToken);
 
         memberRepository.findByEmail(email)
                 .ifPresent(member -> {

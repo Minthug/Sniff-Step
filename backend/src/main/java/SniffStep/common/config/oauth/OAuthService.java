@@ -28,9 +28,12 @@ public class OAuthService {
 
     public GetSocialOAuthRes oAuthLogin(String code, String type) throws JsonProcessingException {
 
-        // Access Token 요청
-        ResponseEntity<String> accessTokenResponse = socialOAuth.requestAccessToken(code, type);
-        GoogleOAuthToken googleOAuthToken = socialOAuth.getAccessToken(accessTokenResponse);
+        // 액세스 토큰 요청
+        GoogleOAuthToken googleOAuthToken = socialOAuth.requestAccessToken(code, type);
+
+        if (googleOAuthToken == null) {
+            throw new RuntimeException("액세스 토큰을 받아오지 못했습니다.");
+        }
 
         // 사용자 정보 요청
         ResponseEntity<String> userInfo = socialOAuth.requestUserInfo(googleOAuthToken);
@@ -41,7 +44,7 @@ public class OAuthService {
         String providerId = googleUser.getId();
         String provider = "google";
 
-        Member member = authService.registerOrUpdateMember(email, name, providerId, provider);
+        Member newMember = authService.registerOrUpdateMember(email, name, providerId, provider);
 
 
         String accessToken = jwtService.createAccessToken(email);
@@ -49,9 +52,9 @@ public class OAuthService {
         String refreshToken = jwtService.createRefreshToken();
 
         jwtService.updateRefreshToken(email, refreshToken);
-        memberRepository.save(member);
+        memberRepository.save(newMember);
 
-        return new GetSocialOAuthRes(accessToken, member.getId(), refreshToken, googleOAuthToken.getTokenType(), email, name);
+        return new GetSocialOAuthRes(accessToken, newMember.getId(), refreshToken, "Bearer ", email, name);
 
     }
 }

@@ -63,7 +63,7 @@ public class GoogleOauth implements SocialOAuth {
     }
 
     @Override
-    public ResponseEntity<String> requestAccessToken(String code, String type) {
+    public GoogleOAuthToken requestAccessToken(String code, String type) {
         String GOOGLE_TOKEN_REQUEST_URL = "https://oauth2.googleapis.com/token";
         RestTemplate restTemplate = new RestTemplate();
         Map<String, Object> params = new HashMap<>();
@@ -73,10 +73,16 @@ public class GoogleOauth implements SocialOAuth {
         params.put("redirect_uri", GOOGLE_SNS_CALLBACK_URL);
         params.put("grant_type", "authorization_code");
 
-        ResponseEntity<String> stringResponseEntity =
+        ResponseEntity<String> responseEntity =
                 restTemplate.postForEntity(GOOGLE_TOKEN_REQUEST_URL, params, String.class);
 
-        return stringResponseEntity;
+        try {
+            return getAccessToken(responseEntity);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+
+        }
+        return null;
     }
 
     @Override
@@ -89,9 +95,9 @@ public class GoogleOauth implements SocialOAuth {
     public ResponseEntity<String> requestUserInfo(GoogleOAuthToken googleOAuthToken) {
         String GOOGLE_USER_INFO_URL = "https://www.googleapis.com/oauth2/v2/userinfo";
         HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization","Bearer " + googleOAuthToken.getAccessToken());
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(headers);
-        headers.add("Authorization","Bearer " + googleOAuthToken.getAccessToken());
         ResponseEntity<String> exchange = restTemplate.exchange(GOOGLE_USER_INFO_URL, HttpMethod.GET, request, String.class);
         System.out.println(exchange.getBody());
         return exchange;

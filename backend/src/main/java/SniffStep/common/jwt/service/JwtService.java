@@ -4,6 +4,7 @@ import SniffStep.dto.auth.SignUpRequestDTO;
 import SniffStep.repository.MemberRepository;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Getter;
@@ -76,17 +77,35 @@ public class JwtService {
         log.info("Access Token, Refresh Token 헤더 설정 완료");
     }
 
+    public void sendAccessTokenCookie(HttpServletResponse response, String accessToken) {
+        CookieUtil.addCookie(response, accessHeader, accessToken, accessTokenExpirationPeriod / 1000, true);
+    }
+
+    public void sendRefreshTokenCookie(HttpServletResponse response, String refreshToken) {
+        CookieUtil.addCookie(response, refreshHeader, refreshToken, refreshTokenExpirationPeriod / 1000, true);
+    }
+
+    public void sendAccessAndRefreshTokenCookie(HttpServletResponse response, String accessToken, String refreshToken) {
+        sendAccessTokenCookie(response, accessToken);
+        sendRefreshTokenCookie(response, refreshToken);
+    }
+
+
 
     public Optional<String> extractRefreshToken(HttpServletRequest request) {
-        return Optional.ofNullable(request.getHeader(refreshHeader))
-                .filter(refreshToken -> refreshToken.startsWith(BEARER))
-                .map(refreshToken -> refreshToken.replace(BEARER, ""));
+        return CookieUtil.getCookie(request, refreshHeader)
+                .map(Cookie::getValue);
+//        return Optional.ofNullable(request.getHeader(refreshHeader))
+//                .filter(refreshToken -> refreshToken.startsWith(BEARER))
+//                .map(refreshToken -> refreshToken.replace(BEARER, ""));
     }
 
     public Optional<String> extractAccessToken(HttpServletRequest request) {
-        return Optional.ofNullable(request.getHeader(accessHeader))
-                .filter(accessToken -> accessToken.startsWith(BEARER))
-                .map(accessToken -> accessToken.replace(BEARER, ""));
+        return CookieUtil.getCookie(request, accessHeader)
+                .map(Cookie::getValue);
+//        return Optional.ofNullable(request.getHeader(accessHeader))
+//                .filter(accessToken -> accessToken.startsWith(BEARER))
+//                .map(accessToken -> accessToken.replace(BEARER, ""));
     }
 
     public Optional<String> extractEmail(String accessToken) {
@@ -133,4 +152,25 @@ public class JwtService {
         }
     }
 
+    private static class CookieUtil {
+        public static void addCookie(HttpServletResponse response, String name, String value, long maxAge, boolean httpOnly) {
+            Cookie cookie = new Cookie(name, value);
+            cookie.setPath("/");
+            cookie.setMaxAge((int) maxAge);
+            cookie.setHttpOnly(httpOnly);
+            response.addCookie(cookie);
+        }
+
+        public static Optional<Cookie> getCookie(HttpServletRequest request, String name) {
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if (cookie.getName().equals(name)) {
+                        return Optional.of(cookie);
+                    }
+                }
+            }
+                return Optional.empty();
+        }
+    }
 }

@@ -4,8 +4,6 @@ import SniffStep.common.config.oauth.GetSocialOAuthRes;
 import SniffStep.common.config.oauth.OAuthService;
 import SniffStep.common.jwt.handler.LoginSuccessHandler;
 import SniffStep.common.jwt.service.JwtService;
-import SniffStep.entity.Member;
-import SniffStep.entity.MemberRole;
 import SniffStep.repository.MemberRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,7 +32,7 @@ public class OAuthController {
         response.sendRedirect(requestURL);
     }
 
-    @GetMapping("/{type}/redirect")
+    @GetMapping("/oauth2/{type}/redirect")
     public ResponseEntity<?> callback(@PathVariable("type")String type, @RequestParam("code") String code,
                                       HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -52,9 +50,10 @@ public class OAuthController {
     }
 
     @GetMapping("/oauth2/authorization/{provider}")
-    public void oauth2Authorization(@PathVariable("provider") String provider, HttpServletResponse response) throws IOException {
+    public String oauth2Authorization(@PathVariable("provider") String provider, HttpServletResponse response) throws IOException {
         String requestURL = oAuthService.request(provider);
         response.sendRedirect(requestURL);
+        return "redirect:/oauth2/code/google";
     }
 
     @GetMapping("/oauth2/code/google")
