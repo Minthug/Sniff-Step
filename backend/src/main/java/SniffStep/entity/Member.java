@@ -28,6 +28,7 @@ public class Member extends BaseTime {
 
     private String imageUrl;
     private String socialId;
+    private String accessToken;
     private String refreshToken;
     private String provider;
 
@@ -67,6 +68,9 @@ public class Member extends BaseTime {
 
     public void updateRefreshToken(String updateRefreshToken) {
         this.refreshToken = updateRefreshToken;
+    }
+    public void updateAccessToken(String updateAccessToken) {
+        this.accessToken = updateAccessToken;
     }
 
     public void authorizeUser() {

@@ -25,8 +25,7 @@ public class MemberService {
 
     @Transactional(readOnly = true)
     public List<MemberDTO> findAllMember() {
-        List<Member> members = memberRepository.findAll();
-        return members.stream()
+        return memberRepository.findAll().stream()
                 .map(MemberDTO::toDto)
                 .collect(Collectors.toList());
 
@@ -34,8 +33,9 @@ public class MemberService {
 
     @Transactional(readOnly = true)
     public MemberDTO findMember(Long id) {
-        Member member = memberRepository.findById(id).orElseThrow(MemberNotFoundException::new);
-        return MemberDTO.toDto(member);
+        return memberRepository.findById(id)
+                .map(MemberDTO::toDto)
+                .orElseThrow(MemberNotFoundException::new);
     }
 
     @Transactional(readOnly = true)

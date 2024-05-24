@@ -19,4 +19,6 @@ public class GoogleOAuthToken {
     private String tokenType;
     @JsonProperty("id_token")
     private String idToken;
+    @JsonProperty("jwt_token")
+    private String jwtToken;
 }

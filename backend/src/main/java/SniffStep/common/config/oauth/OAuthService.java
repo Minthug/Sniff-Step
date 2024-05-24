@@ -7,12 +7,14 @@ import SniffStep.repository.MemberRepository;
 import SniffStep.service.AuthService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class OAuthService {
 
@@ -20,6 +22,8 @@ public class OAuthService {
     private final MemberRepository memberRepository;
     private final JwtService jwtService;
     private final AuthService authService;
+
+    private final GoogleOauth googleOAuth;
 
     public String request(String type) throws IOException {
         String redirectURL = socialOAuth.getOAuthRedirectURL(type);
@@ -30,7 +34,7 @@ public class OAuthService {
 
 
         // 액세스 토큰 요청
-        GoogleOAuthToken googleOAuthToken = socialOAuth.requestAccessToken(code, type);
+        GoogleOAuthToken googleOAuthToken = googleOAuth.requestAccessToken(code, type);
 
         if (googleOAuthToken == null) {
             throw new RuntimeException("액세스 토큰을 받아오지 못했습니다.");
@@ -52,11 +56,15 @@ public class OAuthService {
 
         String refreshToken = jwtService.createRefreshToken();
 
+
+        jwtService.updateAccessToken(email, accessToken);
         jwtService.updateRefreshToken(email, refreshToken);
         memberRepository.save(newMember);
 
-        return new GetSocialOAuthRes(accessToken, newMember.getId(), refreshToken, "Bearer ", email, name);
+        GetSocialOAuthRes res = new GetSocialOAuthRes(accessToken, newMember.getId(), refreshToken, "Bearer ", email, name);
+        log.info("GetSocialOAuthRes : {}", res);
 
+        return res;
     }
 }
 

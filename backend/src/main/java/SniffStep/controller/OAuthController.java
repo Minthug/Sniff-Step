@@ -6,9 +6,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -16,6 +16,7 @@ import java.io.IOException;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/auth")
+@Slf4j
 public class OAuthController {
 
     private final OAuthService oAuthService;
@@ -28,20 +29,10 @@ public class OAuthController {
     }
 
     @GetMapping("/oauth2/{type}/redirect")
-    public ResponseEntity<?> callback(@PathVariable("type")String type, @RequestParam("code") String code,
-                                      HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public ResponseEntity<?> callback(@PathVariable("type")String type, @RequestParam("code") String code) throws IOException {
 
-     try {
          GetSocialOAuthRes res = oAuthService.oAuthLogin(code, type.toUpperCase());
-
-         response.setHeader("Authorization","Bearer " + res.getAccessToken());
-         response.setHeader("RefreshToken", res.getJwtToken());
-
-         return ResponseEntity.ok().build();
-
-     } catch (JsonProcessingException e) {
-         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-     }
+         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
     @GetMapping("/oauth2/authorization/{provider}")

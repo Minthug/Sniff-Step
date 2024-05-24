@@ -11,7 +11,7 @@ public class GoogleUser {
 
     public String id;
     public String email;
-    public Boolean verifiedEmail;
+    public Boolean verified_email;
     public String name;
     public String givenName;
     public String familyName;

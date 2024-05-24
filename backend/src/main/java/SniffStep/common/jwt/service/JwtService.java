@@ -140,6 +140,14 @@ public class JwtService {
                 );
     }
 
+    public void updateAccessToken(String email, String accessToken) {
+        memberRepository.findByEmail(email)
+                .ifPresentOrElse(
+                        member -> member.updateAccessToken(accessToken),
+                        () -> log.error("해당하는 회원이 없습니다.")
+                );
+    }
+
     public boolean isTokenValid(String token) {
         try {
             JWT.require(Algorithm.HMAC512(secretKey))
