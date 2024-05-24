@@ -49,9 +49,9 @@ public class webSecurityConfig {
                 .and()
 
                 .authorizeHttpRequests()
-                .requestMatchers("/v1/auth/**", "/v1/upload/**", "/v1/boards/find/", "/v1/boards/findAll","/oauth2/{type}/redirect","/v1/auth/oauth2/authorization/{provider}", "/",
+                .requestMatchers("/v1/auth/**", "/v1/upload/**", "/v1/boards/find/", "/v1/boards/list","/oauth2/{type}/redirect","/v1/auth/oauth2/authorization/{provider}", "/",
                         "/css/**", "/images/**", "/js/**", "/h2-console/**", "/favicon.ico", "/error").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/v1/members").hasAnyAuthority("USER", "ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/v1/members/list").hasAnyAuthority("USER", "ADMIN")
                 .requestMatchers(HttpMethod.GET, "/api/v1/members/{id}").hasAnyAuthority("USER", "ADMIN")
                 .requestMatchers(HttpMethod.PATCH, "/api/v1/members/**").hasAnyAuthority("USER", "ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/v1/members/**").hasAnyAuthority("USER", "ADMIN")
@@ -70,8 +70,6 @@ public class webSecurityConfig {
                 .and()
 
                 .oauth2Login()
-                .loginPage("/v1/auth/oauth2/authorization/{provider}")
-                .defaultSuccessUrl("/v1/auth/oauth2/code/google")
                 .successHandler(oAuth2LoginSuccessHandler)
                 .failureHandler(oAuth2LoginFailureHandler)
                 .userInfoEndpoint().userService(customOAuth2UserService);

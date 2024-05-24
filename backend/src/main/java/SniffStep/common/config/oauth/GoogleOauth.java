@@ -2,6 +2,7 @@ package SniffStep.common.config.oauth;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -42,6 +44,12 @@ public class GoogleOauth implements SocialOAuth {
 
     // Google API로 요청을 보내고 받을 객체입니다.
     private final RestTemplate restTemplate;
+    
+    @Value("${jwt.secret-key}")
+    private String jwtSecret;
+    
+    @Value("${jwt.accessTokenExpireTime}")
+    private long jwtExpiration;
 
 
     @Override
@@ -107,6 +115,8 @@ public class GoogleOauth implements SocialOAuth {
     public GoogleUser getUserInfo(ResponseEntity<String> userInfo) throws JsonProcessingException {
 
         GoogleUser googleUser = objectMapper.readValue(userInfo.getBody(), GoogleUser.class);
+        
         return googleUser;
     }
+
 }
