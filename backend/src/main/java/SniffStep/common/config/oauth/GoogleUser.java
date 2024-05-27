@@ -13,8 +13,8 @@ public class GoogleUser {
     public String email;
     public Boolean verified_email;
     public String name;
-    public String givenName;
-    public String familyName;
+    public String given_name;
+    public String family_name;
     public String picture;
     public String locale;
 
