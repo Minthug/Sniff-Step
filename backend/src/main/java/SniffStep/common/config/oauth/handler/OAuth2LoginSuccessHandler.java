@@ -36,6 +36,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                 response.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
                 response.sendRedirect("http://localhost:8080/api/test/main");
 
+                jwtService.sendAccessAndRefreshToken(response, accessToken, null);
                 jwtService.sendAccessAndRefreshTokenCookie(response, accessToken, null);
             } else {
                 loginSuccess(response, oAuth2User);
@@ -45,8 +46,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     private void loginSuccess(HttpServletResponse response, CustomOAuth2User oAuth2User) throws IOException {
         String accessToken = jwtService.createAccessToken(oAuth2User.getEmail());
         String refreshToken = jwtService.createRefreshToken();
-//        response.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
-//        response.addHeader(jwtService.getRefreshHeader(), "Bearer " + refreshToken);
+        response.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
+        response.addHeader(jwtService.getRefreshHeader(), "Bearer " + refreshToken);
 
         jwtService.sendAccessAndRefreshTokenCookie(response, accessToken, refreshToken);
         jwtService.updateAccessToken(oAuth2User.getEmail(), accessToken);

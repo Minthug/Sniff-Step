@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class GoogleOauth implements SocialOAuth {
 
-    @Value("${https://accounts.google.com/o/oauth2/v2/auth}")
+    @Value("${security.oauth2.client.registration.google.end-point}")
     private String GOOGLE_SNS_LOGIN_URL;
 
     @Value("${security.oauth2.client.registration.google.client-id}")

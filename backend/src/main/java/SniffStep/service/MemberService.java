@@ -45,15 +45,20 @@ public class MemberService {
     }
 
     @Transactional
-    public void editMember(Member member, MemberUpdateDTO memberUpdateDTO) {
-        member.updateMember(
-                passwordEncoder.encode(memberUpdateDTO.getPassword()),
+    public void editMember(Long id, MemberUpdateDTO memberUpdateDTO) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new MemberNotFoundException());
+
+        member.updateMember(passwordEncoder.encode(memberUpdateDTO.getPassword()),
                 memberUpdateDTO.getNickname(),
                 memberUpdateDTO.getIntroduce());
-    }
 
+    }
     @Transactional
-    public void deleteMember(Member member) {
+    public void deleteMember(Long id) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new MemberNotFoundException());
+
         memberRepository.delete(member);
     }
 
