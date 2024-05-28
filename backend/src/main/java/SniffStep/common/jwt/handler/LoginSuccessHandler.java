@@ -2,6 +2,7 @@ package SniffStep.common.jwt.handler;
 
 
 import SniffStep.common.jwt.service.JwtService;
+import SniffStep.entity.JwtTokenType;
 import SniffStep.repository.MemberRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,8 +27,8 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) {
         String email = extractUsername(authentication);
-        String accessToken = jwtService.createAccessToken(email);
-        String refreshToken = jwtService.createRefreshToken();
+        String accessToken = jwtService.createToken(email, JwtTokenType.ACCESS_TOKEN);
+        String refreshToken = jwtService.createToken(email, JwtTokenType.REFRESH_TOKEN);
 
         jwtService.sendAccessAndRefreshTokenCookie(response, accessToken, refreshToken);
 

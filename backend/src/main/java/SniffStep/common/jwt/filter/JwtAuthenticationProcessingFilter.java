@@ -2,6 +2,7 @@ package SniffStep.common.jwt.filter;
 
 import SniffStep.common.jwt.service.JwtService;
 import SniffStep.common.utils.PasswordUtil;
+import SniffStep.entity.JwtTokenType;
 import SniffStep.entity.Member;
 import SniffStep.repository.MemberRepository;
 import jakarta.servlet.FilterChain;
@@ -57,13 +58,12 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
         memberRepository.findByRefreshToken(refreshToken)
                 .ifPresent(user -> {
                     String reIssueRefreshToken = reIssueRefreshToken(user);
-                    jwtService.sendAccessAndRefreshTokenCookie(response, jwtService.createAccessToken(user.getEmail()),
-                    reIssueRefreshToken);
+                    jwtService.sendAccessAndRefreshToken(response, reIssueRefreshToken, user.getEmail());
                 });
     }
 
     public String reIssueRefreshToken(Member member) {
-        String reIssueRefreshToken = jwtService.createRefreshToken();
+        String reIssueRefreshToken = jwtService.createToken(member.getEmail(), JwtTokenType.REFRESH_TOKEN);
         member.updateRefreshToken(reIssueRefreshToken);
         memberRepository.saveAndFlush(member);
         return reIssueRefreshToken;

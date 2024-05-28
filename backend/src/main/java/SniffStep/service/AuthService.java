@@ -4,6 +4,7 @@ import SniffStep.common.jwt.dto.TokenDto;
 import SniffStep.common.jwt.service.JwtService;
 import SniffStep.dto.auth.LoginDTO;
 import SniffStep.dto.auth.SignUpRequestDTO;
+import SniffStep.entity.JwtTokenType;
 import SniffStep.entity.Member;
 import SniffStep.entity.MemberRole;
 import SniffStep.repository.MemberRepository;
@@ -61,10 +62,10 @@ public class AuthService {
         }
 
         // Access Token 생성
-        String accessToken = jwtService.createAccessToken(member.getEmail());
+        String accessToken = jwtService.createToken(member.getEmail(), JwtTokenType.ACCESS_TOKEN);
 
         // Refresh Token 생성
-        String refreshToken = jwtService.createRefreshToken();
+        String refreshToken = jwtService.createToken(member.getEmail(), JwtTokenType.REFRESH_TOKEN);
 
         // Refresh Token DB에 저장
         jwtService.updateRefreshToken(accessToken, refreshToken);
