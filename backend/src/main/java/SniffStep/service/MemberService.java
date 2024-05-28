@@ -49,10 +49,11 @@ public class MemberService {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new MemberNotFoundException());
 
-        member.updateMember(passwordEncoder.encode(memberUpdateDTO.getPassword()),
-                memberUpdateDTO.getNickname(),
-                memberUpdateDTO.getIntroduce());
-
+        String encryptedPassword = null;
+        if (memberUpdateDTO.getPassword() != null) {
+            encryptedPassword = passwordEncoder.encode(memberUpdateDTO.getPassword());
+        }
+        member.updateMember(memberUpdateDTO.getNickname(), memberUpdateDTO.getIntroduce(), encryptedPassword);
     }
     @Transactional
     public void deleteMember(Long id) {

@@ -50,9 +50,16 @@ public class Member extends BaseTime {
     }
 
     public void updateMember(String nickname, String introduce, String password) {
-        this.nickname = nickname;
-        this.introduce = introduce;
-        this.password = password;
+        if (nickname != null) {
+            this.nickname = nickname;
+        }
+        if (introduce != null) {
+            this.introduce = introduce;
+        }
+        if (password != null) {
+            this.password = password;
+        }
+
         onPreUpdate();
     }
 

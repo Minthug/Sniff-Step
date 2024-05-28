@@ -5,6 +5,7 @@ import SniffStep.dto.member.MemberUpdateDTO;
 import SniffStep.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class MemberController {
 
     @GetMapping("/list")
     public ResponseEntity<List<MemberDTO>> findAllMember() {
-        List<MemberDTO> members =memberService.findAllMember();
+        List<MemberDTO> members = memberService.findAllMember();
         return ResponseEntity.ok(members);
     }
 
@@ -31,7 +32,7 @@ public class MemberController {
         return ResponseEntity.ok(member);
     }
 
-    @PatchMapping("/edit/{id}")
+    @PatchMapping(value = "/edit/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> editMember(@PathVariable(value = "id") Long id,
                                            @Valid @RequestBody MemberUpdateDTO memberUpdateDTO) {
         memberService.editMember(id, memberUpdateDTO);
