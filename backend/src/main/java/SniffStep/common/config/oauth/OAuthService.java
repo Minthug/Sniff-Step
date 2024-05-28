@@ -1,7 +1,9 @@
 package SniffStep.common.config.oauth;
 
 
+import SniffStep.common.jwt.dto.TokenDto;
 import SniffStep.common.jwt.service.JwtService;
+import SniffStep.entity.JwtTokenType;
 import SniffStep.entity.Member;
 import SniffStep.repository.MemberRepository;
 import SniffStep.service.AuthService;
@@ -32,7 +34,6 @@ public class OAuthService {
 
     public GetSocialOAuthRes oAuthLogin(String code, String type) throws JsonProcessingException {
 
-
         // 액세스 토큰 요청
         GoogleOAuthToken googleOAuthToken = googleOAuth.requestAccessToken(code, type);
 
@@ -52,16 +53,16 @@ public class OAuthService {
         Member newMember = authService.registerOrUpdateMember(email, name, providerId, provider);
 
 
-        String accessToken = jwtService.createAccessToken(email);
+        String accessToken = jwtService.createToken(email, JwtTokenType.ACCESS_TOKEN);
 
-        String refreshToken = jwtService.createRefreshToken();
+        String refreshToken = jwtService.createToken(email, JwtTokenType.REFRESH_TOKEN);
 
 
         jwtService.updateAccessToken(email, accessToken);
         jwtService.updateRefreshToken(email, refreshToken);
         memberRepository.save(newMember);
 
-        GetSocialOAuthRes res = new GetSocialOAuthRes(accessToken, newMember.getId(), refreshToken, "Bearer ", email, name);
+        GetSocialOAuthRes res = new GetSocialOAuthRes(newMember.getId(), accessToken, refreshToken, "Bearer ", email);
         log.info("GetSocialOAuthRes : {}", res);
 
         return res;
