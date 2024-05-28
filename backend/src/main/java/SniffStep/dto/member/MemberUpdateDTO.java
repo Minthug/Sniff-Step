@@ -5,6 +5,7 @@ import lombok.*;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Setter
 public class MemberUpdateDTO {
     private String nickname;
     private String introduce;

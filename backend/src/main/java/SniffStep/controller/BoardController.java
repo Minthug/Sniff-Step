@@ -4,6 +4,7 @@ import SniffStep.common.Response;
 import SniffStep.common.config.guard.Login;
 import SniffStep.dto.board.BoardCreatedRequestDTO;
 import SniffStep.dto.board.BoardPatchDTO;
+import SniffStep.entity.Board;
 import SniffStep.entity.Member;
 import SniffStep.service.BoardService;
 import jakarta.validation.Valid;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -21,49 +23,41 @@ public class BoardController {
 
     private final BoardService boardService;
 
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Response createBoard(@Valid @ModelAttribute BoardCreatedRequestDTO request,
-                                @Login Member member) {
+    public ResponseEntity<?> createBoard(@Valid @ModelAttribute BoardCreatedRequestDTO request, Member member) {
         boardService.createBoard(request, member);
-        return Response.success();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
 
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/find/{id}")
-    public Response findBoard(@PathVariable(value = "id") Long id) {
-        return Response.success(boardService.findBoard(id));
+    public ResponseEntity<?> findBoard(@PathVariable(value = "id") Long id) {
+        return ResponseEntity.ok(boardService.findBoard(id));
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/findAll")
-    public Response findAllBoards(@RequestParam(defaultValue = "0") Integer page) {
-        return Response.success(boardService.findAllBoards(page));
+    public ResponseEntity<?> findAllBoards(@RequestParam(defaultValue = "0") Integer page) {
+        return ResponseEntity.ok(boardService.findAllBoards(page));
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/search/{keyword}")
-    public Response searchBoards(@PathVariable(value = "keyword") String keyword,
+    public ResponseEntity<?> searchBoards(@PathVariable(value = "keyword") String keyword,
                                  @RequestParam(defaultValue = "0") Integer page) {
-        return Response.success(boardService.searchBoards(keyword, page));
+        return ResponseEntity.ok(boardService.searchBoards(keyword, page));
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/patch/{id}")
-    public Response editBoard(@PathVariable(value = "id") Long id,
-                              @Valid @ModelAttribute BoardPatchDTO request,
-                              @Login Member member) {
-        boardService.editBoard(id, request, member);
-        return Response.success();
+    public ResponseEntity<?> editBoard(@PathVariable(value = "id") Long id,
+                              @Valid @ModelAttribute BoardPatchDTO request) {
+        boardService.editBoard(id, request);
+        return ResponseEntity.ok().build();
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/delete/{id}")
-    public Response deleteBoard(@PathVariable(value = "id") Long id,
-                                @Login Member member) {
-        boardService.deleteBoard(id, member);
-        return Response.success();
+    public ResponseEntity<?> deleteBoard(@PathVariable(value = "id") Long id) {
+
+        boardService.deleteBoard(id);
+        return ResponseEntity.ok().build();
     }
 
 

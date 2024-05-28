@@ -1,23 +1,24 @@
 package SniffStep.service;
 
-import SniffStep.common.exception.BoardNotFoundException;
-import SniffStep.common.exception.BusinessLogicException;
-import SniffStep.common.exception.ExceptionCode;
-import SniffStep.common.exception.MemberNotFoundException;
+import SniffStep.common.exception.*;
 import SniffStep.dto.board.*;
 import SniffStep.entity.Board;
 import SniffStep.entity.Image;
 import SniffStep.entity.Member;
 import SniffStep.repository.BoardRepository;
+import SniffStep.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -27,18 +28,37 @@ public class BoardService {
 
         private final BoardRepository boardRepository;
         private final ImageService imageService;
+        private final MemberRepository memberRepository;
 
         @Transactional
         public void createBoard(BoardCreatedRequestDTO request, Member member) {
-            List<Image> images = request.getImages().stream()
-                    .map(i -> new Image(i.getOriginalFilename()))
-                    .collect(Collectors.toList());
-            Board board = new Board(request.getTitle(), request.getDescription(), request.getActivityLocation(), images, member);
-            boardRepository.save(board);
 
-            uploadImages(board.getImages(), request.getImages());
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+            if (principal instanceof UserDetails) {
+                UserDetails userDetails = (UserDetails) principal;
+                String username = userDetails.getUsername();
+
+                Optional<Member> optionalMember = memberRepository.findByEmail(username);
+                if (optionalMember.isPresent()) {
+                    member = optionalMember.get();
+
+                List<Image> images = request.getImages().stream()
+                        .map(i -> new Image(i.getOriginalFilename()))
+                        .collect(Collectors.toList());
+                Board board = new Board(request.getTitle(), request.getDescription(), request.getActivityLocation(), images, member);
+                boardRepository.save(board);
+
+                uploadImages(board.getImages(), request.getImages());
+                } else {
+                    throw new MemberNotFoundException();
+                }
+            } else {
+                throw new AccessDeniedException("인증되지 않은 사용자입니다.");
+
+            }
+
         }
-
 
         @Transactional(readOnly = true)
         public BoardResponseDTO findBoard(Long id) {
@@ -69,25 +89,43 @@ public class BoardService {
         }
 
         @Transactional
-        public void editBoard(Long id, BoardPatchDTO request, Member member) {
+        public void editBoard(Long id, BoardPatchDTO request) {
             Board board = boardRepository.findById(id).orElseThrow(BoardNotFoundException::new);
-            validateBoardWriter(board, member);
+            validateBoardWriter(board);
             Board.ImageUpdatedResult result = board.updateBoard(request);
             uploadImages(result.getAddedImages(), result.getAddedImageFiles());
             deleteImages(result.getDeletedImages());
         }
 
         @Transactional
-        public void deleteBoard(Long id, Member member) {
+        public void deleteBoard(Long id) {
             Board board = boardRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
-            validateBoardWriter(board, member);
+            validateBoardWriter(board);
             deleteImages(board.getImages());
             boardRepository.delete(board);
         }
 
-        private void validateBoardWriter(Board board, Member member) {
-            if (!board.isOwnBoard(member)) {
-                throw new MemberNotFoundException();
+        private void validateBoardWriter(Board board) {
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (principal instanceof UserDetails) {
+                UserDetails userDetails = (UserDetails) principal;
+                String username = userDetails.getUsername();
+
+                Optional<Member> optionalMember = memberRepository.findByNickname(username);
+                if (optionalMember.isPresent()) {
+                    Member member = optionalMember.get();
+                    if (!board.isOwnBoard(member)) {
+                        throw new AccessDeniedException("게시글 작성자만 수정할 수 있습니다.");
+                    } else {
+                        throw new MemberNotFoundException();
+                    }
+                } else {
+                    throw new AccessDeniedException("인증되지 않은 사용자입니다.");
+                }
+            } else if (principal instanceof String) {
+                throw new AccessDeniedException("인증되지 않은 사용자입니다.");
+            } else {
+                throw new AccessDeniedException("인증되지 않은 사용자입니다.");
             }
         }
 
