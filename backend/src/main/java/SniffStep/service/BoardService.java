@@ -110,10 +110,10 @@ public class BoardService {
             if (principal instanceof UserDetails) {
                 UserDetails userDetails = (UserDetails) principal;
 //                String username = userDetails.getUsername();
-                String email = userDetails.getUsername();
+                String username = userDetails.getUsername();
 
 
-                Optional<Member> optionalMember = memberRepository.findByEmail(email);
+                Optional<Member> optionalMember = memberRepository.findByEmail(username);
                 if (optionalMember.isPresent()) {
                     Member member = optionalMember.get();
                     if (!board.isOwnBoard(member)) {
