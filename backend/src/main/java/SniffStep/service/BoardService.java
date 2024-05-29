@@ -109,15 +109,15 @@ public class BoardService {
             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if (principal instanceof UserDetails) {
                 UserDetails userDetails = (UserDetails) principal;
-                String username = userDetails.getUsername();
+//                String username = userDetails.getUsername();
+                String email = userDetails.getUsername();
 
-                Optional<Member> optionalMember = memberRepository.findByNickname(username);
+
+                Optional<Member> optionalMember = memberRepository.findByEmail(email);
                 if (optionalMember.isPresent()) {
                     Member member = optionalMember.get();
                     if (!board.isOwnBoard(member)) {
                         throw new AccessDeniedException("게시글 작성자만 수정할 수 있습니다.");
-                    } else {
-                        throw new MemberNotFoundException();
                     }
                 } else {
                     throw new AccessDeniedException("인증되지 않은 사용자입니다.");
