@@ -62,7 +62,7 @@ public class OAuthService {
         jwtService.updateRefreshToken(email, refreshToken);
         memberRepository.save(newMember);
 
-        GetSocialOAuthRes res = new GetSocialOAuthRes(newMember.getId(), accessToken, refreshToken, "Bearer ", email);
+        GetSocialOAuthRes res = new GetSocialOAuthRes(newMember.getId(), accessToken, refreshToken, email, name);
         log.info("GetSocialOAuthRes : {}", res);
 
         return res;
