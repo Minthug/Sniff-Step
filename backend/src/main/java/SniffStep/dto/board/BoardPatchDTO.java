@@ -11,6 +11,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Setter
 public class BoardPatchDTO {
 
     @NotBlank(message = "제목을 입력해주세요.")

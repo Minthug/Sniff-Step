@@ -13,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -46,15 +48,16 @@ public class BoardController {
         return ResponseEntity.ok(boardService.searchBoards(keyword, page));
     }
 
-    @PatchMapping("/patch/{id}")
+    @PatchMapping(value = "/patch/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> editBoard(@PathVariable(value = "id") Long id,
-                              @Valid @ModelAttribute BoardPatchDTO request) {
+                                       @Valid @RequestBody BoardPatchDTO request,
+                                       @AuthenticationPrincipal UserDetails userDetails) {
         boardService.editBoard(id, request);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteBoard(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<?> deleteBoard(@PathVariable(value = "id") Long id, @AuthenticationPrincipal UserDetails userDetails) {
 
         boardService.deleteBoard(id);
         return ResponseEntity.ok().build();
