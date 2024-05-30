@@ -1,6 +1,5 @@
 package SniffStep.common.jwt.service;
 
-import SniffStep.dto.auth.SignUpRequestDTO;
 import SniffStep.entity.JwtTokenType;
 import SniffStep.repository.MemberRepository;
 import com.auth0.jwt.JWT;
@@ -65,22 +64,6 @@ public class JwtService {
                 .sign(Algorithm.HMAC512(secretKey));
     }
 
-//    public String createAccessToken(String email) {
-//        Date now = new Date();
-//        return JWT.create()
-//                .withSubject(ACCESS_TOKEN_SUBJECT)
-//                .withExpiresAt(new Date(now.getTime() + accessTokenExpirationPeriod))
-//                .withClaim(EMAIL_CLAIM, email)
-//                .sign(Algorithm.HMAC512(secretKey));
-//    }
-//
-//    public String createRefreshToken() {
-//        Date now = new Date();
-//        return JWT.create()
-//                .withSubject(REFRESH_TOKEN_SUBJECT)
-//                .withExpiresAt(new Date(now.getTime() + refreshTokenExpirationPeriod))
-//                .sign(Algorithm.HMAC512(secretKey));
-//    }
 
     public void sendAccessToken(HttpServletResponse response, String accessToken) {
         response.setStatus(HttpServletResponse.SC_OK);
@@ -113,16 +96,12 @@ public class JwtService {
 
 
     public Optional<String> extractRefreshToken(HttpServletRequest request) {
-//        return CookieUtil.getCookie(request, refreshHeader)
-//                .map(Cookie::getValue);
         return Optional.ofNullable(request.getHeader(refreshHeader))
                 .filter(refreshToken -> refreshToken.startsWith(BEARER))
                 .map(refreshToken -> refreshToken.replace(BEARER, ""));
     }
 
     public Optional<String> extractAccessToken(HttpServletRequest request) {
-//        return CookieUtil.getCookie(request, accessHeader)
-//                .map(Cookie::getValue);
         return Optional.ofNullable(request.getHeader(accessHeader))
                 .filter(accessToken -> accessToken.startsWith(BEARER))
                 .map(accessToken -> accessToken.replace(BEARER, ""));
@@ -187,7 +166,6 @@ public class JwtService {
             cookie.setSecure(true);
             cookie.setMaxAge((int) maxAge);
             cookie.setHttpOnly(httpOnly);
-            cookie.setDomain("localhost:8080");
             response.addCookie(cookie);
         }
 

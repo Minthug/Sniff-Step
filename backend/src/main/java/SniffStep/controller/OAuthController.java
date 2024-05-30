@@ -2,6 +2,7 @@ package SniffStep.controller;
 
 import SniffStep.common.config.oauth.GetSocialOAuthRes;
 import SniffStep.common.config.oauth.OAuthService;
+import SniffStep.common.jwt.service.JwtService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,6 +21,7 @@ import java.io.IOException;
 public class OAuthController {
 
     private final OAuthService oAuthService;
+    private final JwtService jwtService;
 
 
     @GetMapping("/{type}")
@@ -29,15 +31,17 @@ public class OAuthController {
     }
 
     @GetMapping("/oauth2/{type}/redirect")
-    public ResponseEntity<?> callback(@PathVariable("type")String type, @RequestParam("code") String code) throws IOException {
+    public void callback(@PathVariable("type")String type, @RequestParam("code") String code, HttpServletResponse response) throws IOException {
 
          GetSocialOAuthRes res = oAuthService.oAuthLogin(code, type.toUpperCase());
-         return new ResponseEntity<>(res, HttpStatus.OK);
+         jwtService.sendAccessAndRefreshTokenCookie(response, res.getAccessToken(), res.getRefreshToken());
+         response.sendRedirect("http://localhost:3000");
     }
 
     @GetMapping("/oauth2/authorization/{provider}")
     public void oauth2Authorization(@PathVariable("provider") String provider, HttpServletResponse response) throws IOException {
         String requestURL = oAuthService.request(provider);
+
         response.sendRedirect(requestURL);
     }
 

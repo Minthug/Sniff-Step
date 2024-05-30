@@ -5,7 +5,6 @@ import SniffStep.entity.MemberType;
 import SniffStep.entity.OAuthUser;
 import SniffStep.repository.MemberRepository;
 import SniffStep.repository.OAuthUserRepository;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,7 +22,7 @@ import java.util.Map;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
+public class CustomOAuthUserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final MemberRepository memberRepository;
     private final OAuthUserRepository oAuthUserRepository;
@@ -48,7 +47,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         Member createMember = getMember(extractAttributes, memberType);
 
-        return new CustomOAuth2User(
+        return new CustomOAuthUser(
                 Collections.singleton(new SimpleGrantedAuthority(createMember.getRole().getKey())),
                 attributes,
                 extractAttributes.getNameAttributeKey(),
@@ -59,7 +58,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
     private Member getMember(OAuthAttributes attributes, MemberType memberType) {
         Member findMember = memberRepository.findByMemberTypeAndSocialId(memberType,
-                attributes.getOAuth2UserInfo().getId()).orElse(null);
+                attributes.getOAuthUserInfo().getId()).orElse(null);
 
         if (findMember == null) {
             return saveUser(attributes, memberType);
@@ -74,12 +73,12 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
     @Transactional
     public Member saveUser(OAuthAttributes attributes, MemberType memberType) {
-        Member createdMember = attributes.toEntity(memberType, attributes.getOAuth2UserInfo());
+        Member createdMember = attributes.toEntity(memberType, attributes.getOAuthUserInfo());
 
         OAuthUser oAuthUser = OAuthUser.builder()
                 .email(createdMember.getEmail())
                 .provider(memberType.toString())
-                .providerId(attributes.getOAuth2UserInfo().getId())
+                .providerId(attributes.getOAuthUserInfo().getId())
                 .member(createdMember)
                 .build();
 

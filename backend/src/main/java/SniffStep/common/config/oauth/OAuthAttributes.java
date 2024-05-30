@@ -13,12 +13,12 @@ import java.util.UUID;
 public class OAuthAttributes {
 
     private String nameAttributeKey;
-    private OAuth2UserInfo oAuth2UserInfo;
+    private OAuthUserInfo oAuthUserInfo;
 
     @Builder
-    public OAuthAttributes(String nameAttributeKey, OAuth2UserInfo oAuth2UserInfo) {
+    public OAuthAttributes(String nameAttributeKey, OAuthUserInfo oAuthUserInfo) {
         this.nameAttributeKey = nameAttributeKey;
-        this.oAuth2UserInfo = oAuth2UserInfo;
+        this.oAuthUserInfo = oAuthUserInfo;
     }
 
     public static OAuthAttributes of(MemberType memberType, String userNameAttributeName,
@@ -29,20 +29,19 @@ public class OAuthAttributes {
     public static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
         return OAuthAttributes.builder()
                 .nameAttributeKey(userNameAttributeName)
-                .oAuth2UserInfo(new GoogleOAuth2UserInfo(attributes))
+                .oAuthUserInfo(new GoogleOAuthUserInfo(attributes))
                 .build();
     }
 
-    public Member toEntity(MemberType memberType, OAuth2UserInfo oAuth2UserInfo) {
+    public Member toEntity(MemberType memberType, OAuthUserInfo oAuthUserInfo) {
         return Member.builder()
                 .memberType(memberType)
-                .socialId(oAuth2UserInfo.getId())
+                .socialId(oAuthUserInfo.getId())
                 .email(UUID.randomUUID() + "@socialUser.com")
-                .nickname(oAuth2UserInfo.getNickname())
-                .imageUrl(oAuth2UserInfo.getImageUrl())
+                .nickname(oAuthUserInfo.getNickname())
+                .imageUrl(oAuthUserInfo.getImageUrl())
                 .role(MemberRole.GUEST)
                 .build();
 
     }
-
 }
