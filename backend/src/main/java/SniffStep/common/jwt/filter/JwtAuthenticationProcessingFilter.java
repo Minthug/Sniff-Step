@@ -30,8 +30,6 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
 
-//    private GrantedAuthoritiesMapper authoritiesMapper = new NullAuthoritiesMapper();
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
@@ -91,33 +89,6 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
                                 .ifPresent(this::saveAuthentication)));
 
         filterChain.doFilter(request, response);
-//            log.info("checkAccessTokenAndAuthentication() call");
-//            jwtService.extractAccessToken(request)
-//                    .filter(jwtService::isTokenValid)
-//                    .ifPresentOrElse(
-//                            accessToken -> jwtService.extractEmail(accessToken)
-//                                    .flatMap(memberRepository::findByEmail)
-//                                    .ifPresentOrElse(
-//                                            member -> {
-//                                                saveAuthentication(member);
-//                                                try {
-//                                                    filterChain.doFilter(request, response);
-//                                                } catch (IOException e) {
-//                                                    throw new RuntimeException(e);
-//                                                } catch (ServletException e) {
-//                                                    throw new RuntimeException(e);
-//                                                }
-//                                            },
-//                                            () -> {
-//                                                log.warn("Access token is valid but member not found");
-//                                                throw new RuntimeException("Access token is valid but member not found");
-//                                            }
-//                                    ),
-//                            () -> {
-//                                log.warn("Access token is invalid or not present");
-//                                throw new RuntimeException("Access token is invalid or not present");
-//                            }
-//                    );
     }
 
     public void saveAuthentication(Member member) {
