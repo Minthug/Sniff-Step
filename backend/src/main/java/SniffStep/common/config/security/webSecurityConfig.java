@@ -1,8 +1,8 @@
 package SniffStep.common.config.security;
 
-import SniffStep.common.config.oauth.CustomOAuthUserService;
-import SniffStep.common.config.oauth.handler.OAuthLoginFailureHandler;
-import SniffStep.common.config.oauth.handler.OAuthLoginSuccessHandler;
+import SniffStep.common.config.oauth.CustomOAuth2UserService;
+import SniffStep.common.config.oauth.handler.OAuth2LoginFailureHandler;
+import SniffStep.common.config.oauth.handler.OAuth2LoginSuccessHandler;
 import SniffStep.common.jwt.filter.CustomJsonUsernamePasswordAuthenticationFilter;
 import SniffStep.common.jwt.filter.JwtAuthenticationProcessingFilter;
 import SniffStep.common.jwt.handler.LoginFailureHandler;
@@ -37,9 +37,9 @@ public class webSecurityConfig {
     private final MemberRepository memberRepository;
     private final ObjectMapper objectMapper;
     private final LoginService loginService;
-    private final OAuthLoginSuccessHandler oAuthLoginSuccessHandler;
-    private final OAuthLoginFailureHandler oAuthLoginFailureHandler;
-    private final CustomOAuthUserService customOAuthUserService;
+    private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+    private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
+    private final CustomOAuth2UserService customOAuth2UserService;
 
 
     @Bean
@@ -69,9 +69,9 @@ public class webSecurityConfig {
                 .and()
                 .oauth2Login()
                 .loginPage("/v1/auth/oauth2/authorization/{provider}")
-                .successHandler(oAuthLoginSuccessHandler)
-                .failureHandler(oAuthLoginFailureHandler)
-                .userInfoEndpoint().userService(customOAuthUserService);
+                .successHandler(oAuth2LoginSuccessHandler)
+                .failureHandler(oAuth2LoginFailureHandler)
+                .userInfoEndpoint().userService(customOAuth2UserService);
 
 
 
@@ -119,10 +119,4 @@ public class webSecurityConfig {
         JwtAuthenticationProcessingFilter jwtAuthenticationProcessingFilter = new JwtAuthenticationProcessingFilter(jwtService, memberRepository);
         return jwtAuthenticationProcessingFilter;
     }
-
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
-
 }

@@ -2,9 +2,9 @@ package SniffStep.common.config.oauth;
 
 import java.util.Map;
 
-public class GoogleOAuthUserInfo extends OAuthUserInfo {
+public class GoogleOAuth2UserInfo extends OAuth2UserInfo {
 
-    public GoogleOAuthUserInfo(Map<String, Object> attributes) {
+    public GoogleOAuth2UserInfo(Map<String, Object> attributes) {
         super(attributes);
     }
 
