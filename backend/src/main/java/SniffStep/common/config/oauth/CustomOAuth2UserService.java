@@ -22,7 +22,7 @@ import java.util.Map;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class CustomOAuthUserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
+public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final MemberRepository memberRepository;
     private final OAuthUserRepository oAuthUserRepository;
@@ -47,7 +47,7 @@ public class CustomOAuthUserService implements OAuth2UserService<OAuth2UserReque
 
         Member createMember = getMember(extractAttributes, memberType);
 
-        return new CustomOAuthUser(
+        return new CustomOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority(createMember.getRole().getKey())),
                 attributes,
                 extractAttributes.getNameAttributeKey(),
@@ -58,7 +58,7 @@ public class CustomOAuthUserService implements OAuth2UserService<OAuth2UserReque
 
     private Member getMember(OAuthAttributes attributes, MemberType memberType) {
         Member findMember = memberRepository.findByMemberTypeAndSocialId(memberType,
-                attributes.getOAuthUserInfo().getId()).orElse(null);
+                attributes.getOAuth2UserInfo().getId()).orElse(null);
 
         if (findMember == null) {
             return saveUser(attributes, memberType);
@@ -73,12 +73,12 @@ public class CustomOAuthUserService implements OAuth2UserService<OAuth2UserReque
 
     @Transactional
     public Member saveUser(OAuthAttributes attributes, MemberType memberType) {
-        Member createdMember = attributes.toEntity(memberType, attributes.getOAuthUserInfo());
+        Member createdMember = attributes.toEntity(memberType, attributes.getOAuth2UserInfo());
 
         OAuthUser oAuthUser = OAuthUser.builder()
                 .email(createdMember.getEmail())
                 .provider(memberType.toString())
-                .providerId(attributes.getOAuthUserInfo().getId())
+                .providerId(attributes.getOAuth2UserInfo().getId())
                 .member(createdMember)
                 .build();
 
