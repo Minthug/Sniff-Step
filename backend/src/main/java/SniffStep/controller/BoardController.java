@@ -1,10 +1,7 @@
 package SniffStep.controller;
 
-import SniffStep.common.Response;
-import SniffStep.common.config.guard.Login;
 import SniffStep.dto.board.BoardCreatedRequestDTO;
 import SniffStep.dto.board.BoardPatchDTO;
-import SniffStep.entity.Board;
 import SniffStep.entity.Member;
 import SniffStep.service.BoardService;
 import jakarta.validation.Valid;

@@ -22,7 +22,7 @@ import java.util.Map;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
+public class CustomOAuthUserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final MemberRepository memberRepository;
     private final OAuthUserRepository oAuthUserRepository;
@@ -32,7 +32,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        log.info("CustomOAuth2UserService.loadUser() 실행 - OAuth2 로그인 요청 진입");
+        log.info("CustomOAuthUserService.loadUser() 실행 - OAuth2 로그인 요청 진입");
 
         OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
         OAuth2User oAuth2User = delegate.loadUser(userRequest);
@@ -47,7 +47,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         Member createMember = getMember(extractAttributes, memberType);
 
-        return new CustomOAuth2User(
+        return new CustomOAuthUser(
                 Collections.singleton(new SimpleGrantedAuthority(createMember.getRole().getKey())),
                 attributes,
                 extractAttributes.getNameAttributeKey(),

@@ -1,6 +1,6 @@
 package SniffStep.common.config.oauth.handler;
 
-import SniffStep.common.config.oauth.CustomOAuth2User;
+import SniffStep.common.config.oauth.CustomOAuthUser;
 import SniffStep.common.jwt.service.JwtService;
 import SniffStep.entity.JwtTokenType;
 import SniffStep.entity.MemberRole;
@@ -18,7 +18,7 @@ import java.io.IOException;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
+public class OAuthLoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private final JwtService jwtService;
 
@@ -27,7 +27,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         log.info("OAuth2 Login 성공");
 
 
-            CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
+            CustomOAuthUser oAuth2User = (CustomOAuthUser) authentication.getPrincipal();
 
             if (oAuth2User.getRole() == MemberRole.GUEST) {
                 String accessToken = jwtService.createToken(oAuth2User.getEmail(), JwtTokenType.ACCESS_TOKEN);
@@ -43,7 +43,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
             }
     }
 
-    private void loginSuccess(HttpServletResponse response, CustomOAuth2User oAuth2User) throws IOException {
+    private void loginSuccess(HttpServletResponse response, CustomOAuthUser oAuth2User) throws IOException {
         String accessToken = jwtService.createToken(oAuth2User.getEmail(), JwtTokenType.ACCESS_TOKEN);
         String refreshToken = jwtService.createToken(oAuth2User.getEmail(), JwtTokenType.REFRESH_TOKEN);
         response.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
