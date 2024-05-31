@@ -9,14 +9,14 @@ import java.util.Collection;
 import java.util.Map;
 
 @Getter
-public class CustomOAuth2User extends DefaultOAuth2User {
+public class CustomOAuthUser extends DefaultOAuth2User {
 
     private String email;
     private MemberRole role;
 
-    public CustomOAuth2User(Collection<? extends GrantedAuthority> authorities,
-                            Map<String, Object> attributes, String nameAttributeKey,
-                            String email, MemberRole role) {
+    public CustomOAuthUser(Collection<? extends GrantedAuthority> authorities,
+                           Map<String, Object> attributes, String nameAttributeKey,
+                           String email, MemberRole role) {
         super(authorities, attributes, nameAttributeKey);
         this.email = email;
         this.role = role;

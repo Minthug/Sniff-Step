@@ -18,7 +18,6 @@ import java.util.List;
 public class MemberController {
 
     private final MemberService memberService;
-    private final AuthenticationManager authenticationManager;
 
     @GetMapping("/list")
     public ResponseEntity<List<MemberDTO>> findAllMember() {

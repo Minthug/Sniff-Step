@@ -1,8 +1,8 @@
 package SniffStep.common.config.security;
 
-import SniffStep.common.config.oauth.CustomOAuth2UserService;
-import SniffStep.common.config.oauth.handler.OAuth2LoginFailureHandler;
-import SniffStep.common.config.oauth.handler.OAuth2LoginSuccessHandler;
+import SniffStep.common.config.oauth.CustomOAuthUserService;
+import SniffStep.common.config.oauth.handler.OAuthLoginFailureHandler;
+import SniffStep.common.config.oauth.handler.OAuthLoginSuccessHandler;
 import SniffStep.common.jwt.filter.CustomJsonUsernamePasswordAuthenticationFilter;
 import SniffStep.common.jwt.filter.JwtAuthenticationProcessingFilter;
 import SniffStep.common.jwt.handler.LoginFailureHandler;
@@ -25,7 +25,6 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
-import org.springframework.web.client.RestTemplate;
 
 @Configuration
 @RequiredArgsConstructor
@@ -37,9 +36,9 @@ public class webSecurityConfig {
     private final MemberRepository memberRepository;
     private final ObjectMapper objectMapper;
     private final LoginService loginService;
-    private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
-    private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
-    private final CustomOAuth2UserService customOAuth2UserService;
+    private final OAuthLoginSuccessHandler oAuthLoginSuccessHandler;
+    private final OAuthLoginFailureHandler oAuthLoginFailureHandler;
+    private final CustomOAuthUserService customOAuthUserService;
 
 
     @Bean
@@ -69,9 +68,9 @@ public class webSecurityConfig {
                 .and()
                 .oauth2Login()
                 .loginPage("/v1/auth/oauth2/authorization/{provider}")
-                .successHandler(oAuth2LoginSuccessHandler)
-                .failureHandler(oAuth2LoginFailureHandler)
-                .userInfoEndpoint().userService(customOAuth2UserService);
+                .successHandler(oAuthLoginSuccessHandler)
+                .failureHandler(oAuthLoginFailureHandler)
+                .userInfoEndpoint().userService(customOAuthUserService);
 
 
 
