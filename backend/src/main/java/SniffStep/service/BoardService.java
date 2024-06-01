@@ -89,10 +89,11 @@ public class BoardService {
         }
 
         @Transactional
-        public void editBoard(Long id, BoardPatchDTO request) {
+        public void editBoard(Long id, String title, String description, String activityLocation, List<MultipartFile> addedImageFiles, List<Long> deletedImages) {
             Board board = boardRepository.findById(id).orElseThrow(BoardNotFoundException::new);
             validateBoardWriter(board);
-            Board.ImageUpdatedResult result = board.updateBoard(request);
+
+            Board.ImageUpdatedResult result = board.updateBoard(title, description, activityLocation, addedImageFiles, deletedImages);
             uploadImages(result.getAddedImages(), result.getAddedImageFiles());
             deleteImages(result.getDeletedImages());
         }

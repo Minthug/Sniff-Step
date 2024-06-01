@@ -1,6 +1,5 @@
 package SniffStep.dto.board;
 
-import SniffStep.dto.ImageResponseDTO;
 import SniffStep.entity.Board;
 import lombok.*;
 

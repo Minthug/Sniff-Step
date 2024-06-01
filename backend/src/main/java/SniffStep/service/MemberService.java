@@ -53,7 +53,7 @@ public class MemberService {
         if (memberUpdateDTO.getPassword() != null) {
             encryptedPassword = passwordEncoder.encode(memberUpdateDTO.getPassword());
         }
-        member.updateMember(memberUpdateDTO.getNickname(), memberUpdateDTO.getIntroduce(), encryptedPassword);
+        member.updateMember(memberUpdateDTO.getNickname(), memberUpdateDTO.getIntroduce(), encryptedPassword, memberUpdateDTO.getPhoneNumber());
     }
     @Transactional
     public void deleteMember(Long id) {

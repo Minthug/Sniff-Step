@@ -1,4 +1,4 @@
-package SniffStep.dto;
+package SniffStep.dto.board;
 
 import SniffStep.entity.Image;
 import lombok.AllArgsConstructor;

@@ -64,17 +64,30 @@ public class Board extends BaseTime {
         addImages(images);
     }
 
+    public ImageUpdatedResult updateBoard(String title, String description, String activityLocation, List<MultipartFile> addedImages, List<Long> deletedImages) {
+        this.title = title;
+        this.description = description;
+        this.activityLocation = activityLocation;
 
-    public ImageUpdatedResult updateBoard(BoardPatchDTO patch) {
-        this.title = patch.getTitle();
-        this.description = patch.getDescription();
-        ImageUpdatedResult result = findImageUpdatedResult(patch.getAddedImages(), patch.getDeletedImages());
-        this.activityLocation = patch.getActivityLocation();
+        ImageUpdatedResult result = findImageUpdatedResult(addedImages, deletedImages);
         addImages(result.getAddedImages());
         deleteImages(result.getDeletedImages());
         onPreUpdate();
+
         return result;
     }
+
+//    public ImageUpdatedResult updateBoard(BoardPatchDTO patch) {
+//        this.title = patch.getTitle();
+//        this.description = patch.getDescription();
+//        this.activityLocation = patch.getActivityLocation();
+//
+//        ImageUpdatedResult result = findImageUpdatedResult(patch.getAddedImages(), patch.getDeletedImages());
+//        addImages(result.getAddedImages());
+//        deleteImages(result.getDeletedImages());
+//        onPreUpdate();
+//        return result;
+//    }
 
     public boolean isOwnBoard(Member member) {
         return this.member.equals(member);

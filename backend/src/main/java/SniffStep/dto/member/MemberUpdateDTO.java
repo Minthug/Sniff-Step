@@ -10,5 +10,6 @@ public class MemberUpdateDTO {
     private String nickname;
     private String introduce;
     private String password;
+    private String phoneNumber;
 
 }
