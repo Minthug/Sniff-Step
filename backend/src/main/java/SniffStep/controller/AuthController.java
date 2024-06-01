@@ -1,14 +1,20 @@
 package SniffStep.controller;
 
+import SniffStep.common.jwt.service.JwtService;
 import SniffStep.dto.auth.LoginDTO;
 import SniffStep.dto.auth.SignUpRequestDTO;
 import SniffStep.service.AuthService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Optional;
 
 
 @RequiredArgsConstructor

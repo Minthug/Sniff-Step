@@ -21,6 +21,10 @@ public class S3Config {
     @Value("${cloud.aws.s3.region}")
     private String region;
 
+    // 수정
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucketName;
+
 
     @Bean
     public AmazonS3Client amazonS3Client() {
@@ -31,5 +35,11 @@ public class S3Config {
                 .withRegion(Regions.AP_NORTHEAST_2)
                 .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKey, secretKey)))
                 .build();
+    }
+
+
+    // 수정
+    public String getBucketName() {
+        return bucketName;
     }
 }

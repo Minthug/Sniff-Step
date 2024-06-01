@@ -13,6 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -49,9 +52,24 @@ public class BoardController {
     public ResponseEntity<?> editBoard(@PathVariable(value = "id") Long id,
                                        @Valid @RequestBody BoardPatchDTO request,
                                        @AuthenticationPrincipal UserDetails userDetails) {
-        boardService.editBoard(id, request);
+//        boardService.editBoard(id, request);
+        String title = request.getTitle();
+        String description = request.getDescription();
+        String activityLocation = request.getActivityLocation();
+        List<MultipartFile> addedImages = request.getAddedImages();
+        List<Long> deletedImages = request.getDeletedImages();
+
+        boardService.editBoard(id, title, description, activityLocation, addedImages, deletedImages);
         return ResponseEntity.ok().build();
     }
+
+//    @PatchMapping(value = "/patch/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<?> editBoard(@PathVariable(value = "id") Long id,
+//                                       @Valid @RequestBody BoardPatchDTO request,
+//                                       @AuthenticationPrincipal UserDetails userDetails) {
+//        boardService.editBoard(id, request);
+//        return ResponseEntity.ok().build();
+//    }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteBoard(@PathVariable(value = "id") Long id, @AuthenticationPrincipal UserDetails userDetails) {

@@ -50,7 +50,7 @@ public class Member extends BaseTime {
         this.password = passwordEncoder.encode(this.password);
     }
 
-    public void updateMember(String nickname, String introduce, String password) {
+    public void updateMember(String nickname, String introduce, String password, String phoneNumber) {
         if (nickname != null) {
             this.nickname = nickname;
         }
@@ -59,6 +59,9 @@ public class Member extends BaseTime {
         }
         if (password != null) {
             this.password = password;
+        }
+        if (phoneNumber != null) {
+            this.phoneNumber = phoneNumber;
         }
 
         onPreUpdate();

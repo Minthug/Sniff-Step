@@ -81,11 +81,11 @@ public class JwtService {
     }
 
     public void sendAccessTokenCookie(HttpServletResponse response, String accessToken) {
-        CookieUtil.addCookie(response, accessHeader, accessToken, accessTokenExpirationPeriod / 1000, true);
+        CookieUtil.addCookie(response, "accessToken", accessToken, accessTokenExpirationPeriod / 1000, true);
     }
 
     public void sendRefreshTokenCookie(HttpServletResponse response, String refreshToken) {
-        CookieUtil.addCookie(response, refreshHeader, refreshToken, refreshTokenExpirationPeriod / 1000, true);
+        CookieUtil.addCookie(response, "refreshToken", refreshToken, refreshTokenExpirationPeriod / 1000, true);
     }
 
     public void sendAccessAndRefreshTokenCookie(HttpServletResponse response, String accessToken, String refreshToken) {
@@ -169,6 +169,8 @@ public class JwtService {
             response.addCookie(cookie);
         }
 
+
+        // 아마 리프레쉬 토큰이나 토큰 만료시에 써야할듯
         public static Optional<Cookie> getCookie(HttpServletRequest request, String name) {
             Cookie[] cookies = request.getCookies();
             if (cookies != null) {
@@ -180,5 +182,21 @@ public class JwtService {
             }
                 return Optional.empty();
         }
+
+        // 쿠키 삭제
+        public static void deleteCookie(HttpServletRequest request, HttpServletResponse response, String name) {
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null && cookies.length > 0) {
+                for (Cookie cookie : cookies) {
+                    if (cookie.getName().equals(name)) {
+                        cookie.setValue("");
+                        cookie.setPath("/");
+                        cookie.setMaxAge(0);
+                        response.addCookie(cookie);
+                    }
+                }
+            }
+        }
+
     }
 }

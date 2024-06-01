@@ -1,9 +1,11 @@
 package SniffStep.service;
 
-import SniffStep.dto.AwsS3;
+import SniffStep.common.config.S3Config;
+import SniffStep.dto.board.AwsS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,13 +23,23 @@ import java.util.*;
 public class AwsService {
 
     private final AmazonS3Client amazonS3Client;
+    private final S3Config s3Config;
 
-    @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
+
+
+    // 수정
+    @PostConstruct
+    public void init() {
+        bucketName = s3Config.getBucketName();
+    }
+
+    // S3config에서 bucketName을 가져오는 방법으로 수정
+//    @Value("${cloud.aws.s3.bucket}")
+//    private String bucketName;
 
     public List<AwsS3> uploadFiles(String fileType, List<MultipartFile> multipartFiles) {
         List<AwsS3> s3files = new ArrayList<>();
-
         String uploadFilePath = fileType + "/" + getFolderName();
 
         for (MultipartFile multipartFile : multipartFiles) {
@@ -35,12 +47,13 @@ public class AwsService {
             String uploadFileName = getUuidFileName(originalFileName);
             String uploadFileUrl = "";
 
-            ObjectMetadata objectMetadata = new ObjectMetadata();
-            objectMetadata.setContentLength(multipartFile.getSize());
-            objectMetadata.setContentType(multipartFile.getContentType());
+//            ObjectMetadata objectMetadata = new ObjectMetadata();
+//            objectMetadata.setContentLength(multipartFile.getSize());
+//            objectMetadata.setContentType(multipartFile.getContentType());
 
             try (InputStream inputStream = multipartFile.getInputStream()) {
                 String keyName = uploadFilePath + "/" + uploadFileName;
+                ObjectMetadata objectMetadata = createObjectMetadata(multipartFile);
 
                 amazonS3Client.putObject(
                         new PutObjectRequest(bucketName, keyName, inputStream, objectMetadata));
@@ -59,6 +72,14 @@ public class AwsService {
                                 .build());
         }
         return s3files;
+    }
+
+    // 수정된 사항
+    private ObjectMetadata createObjectMetadata(MultipartFile multipartFile) {
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentLength(multipartFile.getSize());
+        objectMetadata.setContentType(multipartFile.getContentType());
+        return objectMetadata;
     }
 
     public String deleteFile(String uploadFilePath, String uuidFileName) {
@@ -88,5 +109,25 @@ public class AwsService {
     private String getUuidFileName(String fileName) {
         String ext = fileName.substring(fileName.indexOf(".") + 1);
         return UUID.randomUUID().toString() + "." + ext;
+    }
+
+
+    // 필요치 않으면 주석
+    private void uploadFileToS3(String keyName, InputStream inputStream, ObjectMetadata objectMetadata) {
+        amazonS3Client.putObject(
+                new PutObjectRequest(bucketName, keyName, inputStream, objectMetadata));
+    }
+
+    private String getUploadedFileUrl(String keyName) {
+        return amazonS3Client.getUrl(bucketName, keyName).toString();
+    }
+
+    private AwsS3 createAwsS3(String originalFileName, String uploadFileName, String uploadFilePath, String uploadFileUrl) {
+        return AwsS3.builder()
+                .originalFileName(originalFileName)
+                .uploadFileName(uploadFileName)
+                .uploadFilePath(uploadFilePath)
+                .uploadFileUrl(uploadFileUrl)
+                .build();
     }
 }
