@@ -52,30 +52,37 @@ export function Desktop({ lang, text, loginStates }: Props) {
                     <Input type="text" value={email} onChange={changeEmail} placeholder={text.emailPlaceholder} />
                 </div>
                 {emailError && <div className="text-red-500 text-[12px] mb-4">{text.emailError}</div>}
-                <div className="mb-8">
+                <form onSubmit={(e) => e.preventDefault()}>
                     <div className="flex justify-between">
                         <div className={`font-[600] mb-1 tracking-wide`}>{text.password}</div>
                     </div>
-                    <Input type="password" value={password} onChange={changePassword} placeholder={text.passwordPlaceholder} />
-                    {passwordError && <div className="text-red-500 text-[12px] my-4">{text.passwordError}</div>}
+                    <Input
+                        className="mb-4"
+                        type="password"
+                        value={password}
+                        onChange={changePassword}
+                        placeholder={text.passwordPlaceholder}
+                    />
+                    {passwordError && <div className="text-red-500 text-[12px] mb-4">{text.passwordError}</div>}
                     {passwordLengthError && <div className="text-red-500 text-[12px] mb-4">{text.passwordLengthError}</div>}
                     {passwordLetterError && <div className="text-red-500 text-[12px]">{text.passwordLetterError}</div>}
-                    {loginFailedError && <div className="text-red-500 text-[12px] mt-4">{text.loginFailedError}</div>}
-                </div>
-                <LargeButton
-                    theme="dark"
-                    onClick={async () => {
-                        try {
-                            const accessToken = await handleLogin()
-                            await handleGetProfile(accessToken)
-                            router.push(`/${lang}`)
-                        } catch (err) {
-                            console.log(err)
-                        }
-                    }}
-                >
-                    {text.signin}
-                </LargeButton>
+                    {loginFailedError && <div className="text-red-500 text-[12px] my-4">{text.loginFailedError}</div>}
+                    <LargeButton
+                        className="mt-4"
+                        theme="dark"
+                        onClick={async () => {
+                            try {
+                                const accessToken = await handleLogin()
+                                await handleGetProfile(accessToken)
+                                router.push(`/${lang}`)
+                            } catch (err) {
+                                console.log(err)
+                            }
+                        }}
+                    >
+                        {text.signin}
+                    </LargeButton>
+                </form>
                 <div className="flex gap-2 text-[12px] justify-center">
                     <div>{text.signupIntroduce}</div>
                     <button className="underline select-none" onClick={() => router.push(`/${lang}/signup`)}>
