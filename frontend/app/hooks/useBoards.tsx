@@ -206,7 +206,7 @@ export function useBoards({ lang }: Props): BoardState {
             if (value) data.append('activityTime', key.toUpperCase())
         })
 
-        const res = await customFetch('/api/boards/post', {
+        const res = await customFetch('/api/boards', {
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${accessToken}`

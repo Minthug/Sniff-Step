@@ -208,8 +208,8 @@ export function useUpdateBoard({ lang }: Props): BoardUpdateState {
             if (value) data.append('activityTime', key.toUpperCase())
         })
 
-        const res = await customFetch('/api/boards/update', {
-            method: 'POST',
+        const res = await customFetch('/api/boards', {
+            method: 'PATCH',
             body: data
         })
 
