@@ -7,6 +7,7 @@ import SniffStep.dto.auth.SignUpRequestDTO;
 import SniffStep.entity.JwtTokenType;
 import SniffStep.entity.Member;
 import SniffStep.entity.MemberRole;
+import SniffStep.entity.MemberType;
 import SniffStep.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -78,10 +79,13 @@ public class AuthService {
     // 새로 추가한 메서드
     @Transactional
     public Member registerOrUpdateMember(String email, String name, String providerId, String provider) {
+        MemberType memberType = provider.equals("google") ? MemberType.GOOGLE : MemberType.GOOGLE;
+
         return memberRepository.findByEmail(email)
                 .map(member -> {
                     member.updateName(name);
                     member.updateOAuthInfo(providerId, provider);
+                    member.updateMemberType(memberType);
                     return member;
                 })
                 .orElseGet(() ->{
@@ -91,6 +95,7 @@ public class AuthService {
                             .socialId(providerId)
                             .provider(provider)
                             .role(MemberRole.USER)
+                            .memberType(memberType)
                             .build();
                     return memberRepository.save(newMember);
                 });
