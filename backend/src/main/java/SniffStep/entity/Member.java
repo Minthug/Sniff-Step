@@ -96,4 +96,8 @@ public class Member extends BaseTime {
         this.socialId = socialId;
         this.provider = provider;
     }
+
+    public void updateMemberType(MemberType memberType) {
+        this.memberType = memberType;
+    }
 }
