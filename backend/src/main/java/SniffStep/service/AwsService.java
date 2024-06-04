@@ -26,17 +26,10 @@ public class AwsService {
     private final S3Config s3Config;
 
     private String bucketName;
-
-
-    // 수정
     @PostConstruct
     public void init() {
         bucketName = s3Config.getBucketName();
     }
-
-    // S3config에서 bucketName을 가져오는 방법으로 수정
-//    @Value("${cloud.aws.s3.bucket}")
-//    private String bucketName;
 
     public List<AwsS3> uploadFiles(String fileType, List<MultipartFile> multipartFiles) {
         List<AwsS3> s3files = new ArrayList<>();
@@ -46,10 +39,6 @@ public class AwsService {
             String originalFileName = multipartFile.getOriginalFilename();
             String uploadFileName = getUuidFileName(originalFileName);
             String uploadFileUrl = "";
-
-//            ObjectMetadata objectMetadata = new ObjectMetadata();
-//            objectMetadata.setContentLength(multipartFile.getSize());
-//            objectMetadata.setContentType(multipartFile.getContentType());
 
             try (InputStream inputStream = multipartFile.getInputStream()) {
                 String keyName = uploadFilePath + "/" + uploadFileName;

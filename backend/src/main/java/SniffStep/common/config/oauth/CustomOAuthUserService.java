@@ -1,5 +1,6 @@
 package SniffStep.common.config.oauth;
 
+import SniffStep.common.config.oauth.handler.CustomOAuthUser;
 import SniffStep.entity.Member;
 import SniffStep.entity.MemberType;
 import SniffStep.entity.OAuthUser;
