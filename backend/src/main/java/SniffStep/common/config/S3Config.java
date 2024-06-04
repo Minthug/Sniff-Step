@@ -38,7 +38,6 @@ public class S3Config {
     }
 
 
-    // 수정
     public String getBucketName() {
         return bucketName;
     }

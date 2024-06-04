@@ -1,4 +1,4 @@
-package SniffStep.common.config.oauth;
+package SniffStep.common.config.oauth.handler;
 
 import SniffStep.entity.MemberRole;
 import lombok.Getter;

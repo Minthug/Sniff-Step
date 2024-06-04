@@ -52,7 +52,6 @@ public class BoardController {
     public ResponseEntity<?> editBoard(@PathVariable(value = "id") Long id,
                                        @Valid @RequestBody BoardPatchDTO request,
                                        @AuthenticationPrincipal UserDetails userDetails) {
-//        boardService.editBoard(id, request);
         String title = request.getTitle();
         String description = request.getDescription();
         String activityLocation = request.getActivityLocation();
@@ -62,14 +61,6 @@ public class BoardController {
         boardService.editBoard(id, title, description, activityLocation, addedImages, deletedImages);
         return ResponseEntity.ok().build();
     }
-
-//    @PatchMapping(value = "/patch/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<?> editBoard(@PathVariable(value = "id") Long id,
-//                                       @Valid @RequestBody BoardPatchDTO request,
-//                                       @AuthenticationPrincipal UserDetails userDetails) {
-//        boardService.editBoard(id, request);
-//        return ResponseEntity.ok().build();
-//    }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteBoard(@PathVariable(value = "id") Long id, @AuthenticationPrincipal UserDetails userDetails) {

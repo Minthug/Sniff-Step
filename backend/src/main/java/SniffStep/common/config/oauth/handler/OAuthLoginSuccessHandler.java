@@ -1,6 +1,5 @@
 package SniffStep.common.config.oauth.handler;
 
-import SniffStep.common.config.oauth.CustomOAuthUser;
 import SniffStep.common.jwt.service.JwtService;
 import SniffStep.entity.JwtTokenType;
 import SniffStep.entity.MemberRole;
