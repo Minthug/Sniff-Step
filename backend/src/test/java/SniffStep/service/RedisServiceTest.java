@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.Duration;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 
 @SpringBootTest
@@ -71,10 +72,9 @@ class RedisServiceTest {
     @DisplayName("Redis에 저장된 값이 만료되는지 테스트")
     void expireTest() throws Exception {
         String findValue = redisService.getValues(KEY);
-        await.pollDelay(Duration.ofMillis(6000)).untilAsserted(() ->{
+        Thread.sleep(6000);
             String expiredValue = redisService.getValues(KEY);
             assertThat(expiredValue).isNotEqualTo(findValue);
             assertThat(expiredValue).isEqualTo("false");
-        });
-    }
+        }
 }
