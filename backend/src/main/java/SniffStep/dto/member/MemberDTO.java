@@ -7,6 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MemberDTO {
+    private long id;
     private String email;
     private String name;
     private String nickname;
@@ -16,6 +17,6 @@ public class MemberDTO {
 
 
     public static MemberDTO toDto(Member member) {
-        return new MemberDTO(member.getEmail(), member.getName(), member.getNickname(), member.getIntroduce(), member.getPhoneNumber());
+        return new MemberDTO(member.getId(), member.getEmail(), member.getName(), member.getNickname(), member.getIntroduce(), member.getPhoneNumber());
     }
 }
