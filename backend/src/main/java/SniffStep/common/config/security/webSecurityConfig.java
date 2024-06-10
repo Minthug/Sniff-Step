@@ -52,7 +52,7 @@ public class webSecurityConfig {
                 .headers().frameOptions().disable()
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/v1/auth/**", "/v1/upload/**", "/v1/boards/","/oauth2/authorization/**", "/",
+                .requestMatchers("/v1/auth/**", "/v1/upload/**", "/v1/boards","/oauth2/authorization/**", "/",
                         "/css/**", "/images/**", "/js/**", "/h2-console/**", "/favicon.ico", "/error").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/members/list").hasAnyAuthority("USER", "ADMIN")
                 .requestMatchers(HttpMethod.GET, "/api/v1/members/{id}").hasAnyAuthority("USER", "ADMIN")

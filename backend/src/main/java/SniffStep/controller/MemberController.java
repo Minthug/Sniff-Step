@@ -19,7 +19,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/list")
+    @GetMapping("")
     public ResponseEntity<List<MemberDTO>> findAllMember() {
         List<MemberDTO> members = memberService.findAllMember();
         return ResponseEntity.ok(members);
