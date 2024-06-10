@@ -52,13 +52,13 @@ public class webSecurityConfig {
                 .headers().frameOptions().disable()
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/v1/auth/**", "/v1/upload/**", "/v1/boards/find/", "/v1/boards/list","/oauth2/authorization/**", "/",
+                .requestMatchers("/v1/auth/**", "/v1/upload/**", "/v1/boards/","/oauth2/authorization/**", "/",
                         "/css/**", "/images/**", "/js/**", "/h2-console/**", "/favicon.ico", "/error").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/members/list").hasAnyAuthority("USER", "ADMIN")
                 .requestMatchers(HttpMethod.GET, "/api/v1/members/{id}").hasAnyAuthority("USER", "ADMIN")
                 .requestMatchers(HttpMethod.PATCH, "/api/v1/members/**").hasAnyAuthority("USER", "ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/v1/members/**").hasAnyAuthority("USER", "ADMIN")
-                .requestMatchers(HttpMethod.POST, "/api/v1/boards/create").hasAnyAuthority("USER", "ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/v1/boards/**").hasAnyAuthority("USER", "ADMIN")
                 .requestMatchers(HttpMethod.GET, "/api/v1/boards/{id}").hasAnyAuthority("USER", "ADMIN")
                 .requestMatchers(HttpMethod.PATCH, "/api/v1/boards/**").hasAnyAuthority("USER", "ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/v1/boards/**").hasAnyAuthority("USER", "ADMIN")
