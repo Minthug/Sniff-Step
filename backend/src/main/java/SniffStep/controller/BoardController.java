@@ -25,19 +25,19 @@ public class BoardController {
 
     private final BoardService boardService;
 
-    @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> createBoard(@Valid @ModelAttribute BoardCreatedRequestDTO request, Member member) {
         boardService.createBoard(request, member);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
 
-    @GetMapping("/find/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> findBoard(@PathVariable(value = "id") Long id) {
         return ResponseEntity.ok(boardService.findBoard(id));
     }
 
-    @GetMapping("/findAll")
+    @GetMapping("/")
     public ResponseEntity<?> findAllBoards(@RequestParam(defaultValue = "0") Integer page) {
         return ResponseEntity.ok(boardService.findAllBoards(page));
     }
@@ -48,7 +48,7 @@ public class BoardController {
         return ResponseEntity.ok(boardService.searchBoards(keyword, page));
     }
 
-    @PatchMapping(value = "/patch/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> editBoard(@PathVariable(value = "id") Long id,
                                        @Valid @RequestBody BoardPatchDTO request,
                                        @AuthenticationPrincipal UserDetails userDetails) {
@@ -62,7 +62,7 @@ public class BoardController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteBoard(@PathVariable(value = "id") Long id, @AuthenticationPrincipal UserDetails userDetails) {
 
         boardService.deleteBoard(id);

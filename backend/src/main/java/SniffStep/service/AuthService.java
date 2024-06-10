@@ -52,14 +52,18 @@ public class AuthService {
         member.hashPassword(encoder);
         memberRepository.save(member);
     }
+
+    @Transactional
     public TokenDto login(LoginDTO loginDTO) {
         // 이메일로 회원 정보 조회
         Member member = memberRepository.findByEmail(loginDTO.getEmail())
                 .orElseThrow(() -> new RuntimeException("회원 정보를 찾을 수 없습니다."));
 
         // 비밀번호 일치 여부 확인
-        if (!encoder.matches(loginDTO.getPassword(), member.getPassword())) {
-            throw new RuntimeException("비밀번호가 일치하지 않습니다.");
+        if (member.getMemberType() == MemberType.GENERAL) {
+            if (!encoder.matches(loginDTO.getPassword(), member.getPassword())) {
+                throw new RuntimeException("비밀번호가 일치하지 않습니다.");
+            }
         }
 
         // Access Token 생성
@@ -70,7 +74,7 @@ public class AuthService {
 
         // Refresh Token DB에 저장
         jwtService.updateRefreshToken(accessToken, refreshToken);
-        memberRepository.save(registerOrUpdateMember(member.getEmail(), member.getName(), member.getSocialId(), member.getProvider()));
+//        memberRepository.save(registerOrUpdateMember(member.getEmail(), member.getName(), member.getSocialId(), member.getProvider()));
 
         return new TokenDto(accessToken, refreshToken);
     }
@@ -79,7 +83,12 @@ public class AuthService {
     // 새로 추가한 메서드
     @Transactional
     public Member registerOrUpdateMember(String email, String name, String providerId, String provider) {
-        MemberType memberType = provider.equals("google") ? MemberType.GOOGLE : MemberType.GOOGLE;
+        MemberType memberType;
+        if (provider.equals("google")) {
+            memberType = MemberType.GOOGLE;
+        } else {
+            memberType = MemberType.GENERAL;
+        }
 
         return memberRepository.findByEmail(email)
                 .map(member -> {
