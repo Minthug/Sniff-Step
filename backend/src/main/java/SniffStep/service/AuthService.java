@@ -46,7 +46,9 @@ public class AuthService {
                 .name(signUpRequestDTO.getName())
                 .introduce(signUpRequestDTO.getIntroduce())
                 .phoneNumber(signUpRequestDTO.getPhoneNumber())
+                .imageUrl(signUpRequestDTO.getImageUrl())
                 .role(MemberRole.USER)
+                .memberType(MemberType.GENERAL)
                 .build();
 
         member.hashPassword(encoder);
@@ -74,7 +76,6 @@ public class AuthService {
 
         // Refresh Token DB에 저장
         jwtService.updateRefreshToken(accessToken, refreshToken);
-//        memberRepository.save(registerOrUpdateMember(member.getEmail(), member.getName(), member.getSocialId(), member.getProvider()));
 
         return new TokenDto(accessToken, refreshToken);
     }
@@ -82,7 +83,7 @@ public class AuthService {
 
     // 새로 추가한 메서드
     @Transactional
-    public Member registerOrUpdateMember(String email, String name, String providerId, String provider) {
+    public Member registerOrUpdateMember(String email, String name, String providerId, String provider, String profileImageUrl) {
         MemberType memberType;
         if (provider.equals("google")) {
             memberType = MemberType.GOOGLE;
@@ -95,6 +96,7 @@ public class AuthService {
                     member.updateName(name);
                     member.updateOAuthInfo(providerId, provider);
                     member.updateMemberType(memberType);
+                    member.updateProfileImageUrl(profileImageUrl);
                     return member;
                 })
                 .orElseGet(() ->{
@@ -105,6 +107,7 @@ public class AuthService {
                             .provider(provider)
                             .role(MemberRole.USER)
                             .memberType(memberType)
+                            .imageUrl(profileImageUrl)
                             .build();
                     return memberRepository.save(newMember);
                 });

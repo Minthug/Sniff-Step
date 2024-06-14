@@ -49,9 +49,10 @@ public class OAuthService {
         String email = googleUser.getEmail();
         String name = googleUser.getName();
         String providerId = googleUser.getId();
+        String profileImageUrl = googleUser.getPicture();
         String provider = "google";
 
-        Member newMember = authService.registerOrUpdateMember(email, name, providerId, provider);
+        Member newMember = authService.registerOrUpdateMember(email, name, providerId, provider, profileImageUrl);
 
 
         String accessToken = jwtService.createToken(email, JwtTokenType.ACCESS_TOKEN);

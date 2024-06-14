@@ -29,4 +29,6 @@ public class SignUpRequestDTO {
 
     private String phoneNumber;
 
+    private String imageUrl;
+
 }

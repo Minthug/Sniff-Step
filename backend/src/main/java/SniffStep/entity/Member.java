@@ -100,4 +100,8 @@ public class Member extends BaseTime {
     public void updateMemberType(MemberType memberType) {
         this.memberType = memberType;
     }
+
+    public void updateProfileImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 }
