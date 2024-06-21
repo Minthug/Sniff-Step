@@ -32,6 +32,10 @@ public class Image extends BaseTime {
     @JoinColumn(name = "board_id")
     private Board board;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
 
     @Builder
     public Image(String originName, String s3Url, String s3FilePath) {

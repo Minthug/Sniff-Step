@@ -20,6 +20,10 @@ public class MemberDTO {
 
 
     public static MemberDTO toDto(Member member) {
+        if (member.getMemberType() == MemberType.GOOGLE) {
+            String googleImageUrl = "https://lh3.googleusercontent.com/a/" + member.getId();
+            member.updateProfileImageUrl(googleImageUrl);
+        }
         return new MemberDTO(member.getId(), member.getEmail(), member.getName(),
                 member.getNickname(), member.getIntroduce(),
                 member.getPhoneNumber(), member.getImageUrl(), member.getMemberType());

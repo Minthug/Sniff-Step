@@ -1,15 +1,19 @@
     package SniffStep.dto.board;
 
+    import SniffStep.entity.ActivityDate;
+    import SniffStep.entity.ActivityTime;
     import SniffStep.entity.Board;
-    import lombok.Builder;
-    import lombok.Getter;
-    import lombok.NoArgsConstructor;
+    import lombok.*;
 
     import java.time.LocalDateTime;
+    import java.time.ZoneId;
     import java.util.List;
+    import java.util.stream.Collectors;
 
     @Getter
     @NoArgsConstructor
+    @Data
+    @AllArgsConstructor
     public class BoardFindAllResponseDTO {
 
         private Long id;
@@ -18,58 +22,44 @@
         private String email;
         private String description;
         private String activityLocation;
-        private List<String> ActivityDate;
-        private List<String> ActivityTime;
-        private LocalDateTime createdAt;
-        private LocalDateTime updatedAt;
-        private String profileImageUrl;
+        private ActivityDate activityDate;
+        private ActivityTime activityTime;
+        private String createdAt;
+        private String updatedAt;
+        private String imageUrl;
         private String nickname;
-
-        @Builder
-        public BoardFindAllResponseDTO(Long id, Long userId, String title, String email, String description, String activityLocation, List<String> activityDate, List<String> activityTime, LocalDateTime createdAt, LocalDateTime updatedAt, String profileImageUrl,String nickname) {
-            this.id = id;
-            this.userId = userId;
-            this.title = title;
-            this.email = email;
-            this.description = description;
-            this.activityLocation = activityLocation;
-            ActivityDate = activityDate;
-            ActivityTime = activityTime;
-            this.createdAt = createdAt;
-            this.updatedAt = updatedAt;
-            this.profileImageUrl = profileImageUrl;
-            this.nickname = nickname;
-        }
+        private List<ImageResponseDTO> images;
 
 
         public static BoardFindAllResponseDTO toDto(Board board) {
-            return BoardFindAllResponseDTO.builder()
-                    .id(board.getId())
-                    .userId(board.getMember().getId())
-                    .title(board.getTitle())
-                    .email(board.getMember().getEmail())
-                    .description(board.getDescription())
-                    .activityDate(convertActivityDateToStringList(board.getActivityDate()))
-                    .activityTime(convertActivityTimeToStringList(board.getActivityTime()))
-                    .activityLocation(board.getActivityLocation())
-                    .createdAt(board.getCreatedAt())
-                    .updatedAt(board.getUpdatedAt())
-                    .profileImageUrl(board.getMember().getImageUrl())
-                    .nickname(board.getMember().getNickname())
-                    .build();
+            return new BoardFindAllResponseDTO(
+                    board.getId(),
+                    board.getMember().getId(),
+                    board.getTitle(),
+                    board.getMember().getEmail(),
+                    board.getDescription(),
+                    board.getActivityLocation(),
+                    board.getActivityDate(),
+                    board.getActivityTime(),
+                    board.getCreatedAt().atZone(ZoneId.of("Asia/Seoul")).toInstant().toString(),
+                    board.getUpdatedAt().atZone(ZoneId.of("Asia/Seoul")).toInstant().toString(),
+                    board.getMember().getImageUrl(),
+                    board.getMember().getNickname(),
+                    board.getImages().stream().map(i -> ImageResponseDTO.toDto(i)).collect(Collectors.toList())
+            );
         }
 
-        private static List<String> convertActivityDateToStringList(SniffStep.entity.ActivityDate activityDate) {
-            if (activityDate == null) {
-                return null;
-            }
-            return List.of(activityDate.getValue());
-        }
-
-        private static List<String> convertActivityTimeToStringList(SniffStep.entity.ActivityTime activityTime) {
-            if (activityTime == null) {
-                return null;
-            }
-            return List.of(activityTime.getValue());
-        }
+//        private static List<String> convertActivityDateToStringList(SniffStep.entity.ActivityDate activityDate) {
+//            if (activityDate == null) {
+//                return null;
+//            }
+//            return List.of(activityDate.getValue());
+//        }
+//
+//        private static List<String> convertActivityTimeToStringList(SniffStep.entity.ActivityTime activityTime) {
+//            if (activityTime == null) {
+//                return null;
+//            }
+//            return List.of(activityTime.getValue());
+//        }
     }

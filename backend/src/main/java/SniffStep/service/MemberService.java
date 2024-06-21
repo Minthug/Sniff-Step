@@ -1,8 +1,6 @@
 package SniffStep.service;
 
 import SniffStep.common.exception.MemberNotFoundException;
-import SniffStep.dto.auth.LoginDTO;
-import SniffStep.dto.auth.SignUpRequestDTO;
 import SniffStep.dto.member.MemberDTO;
 import SniffStep.dto.member.MemberUpdateDTO;
 import SniffStep.entity.Member;
@@ -53,7 +51,8 @@ public class MemberService {
         if (memberUpdateDTO.getPassword() != null) {
             encryptedPassword = passwordEncoder.encode(memberUpdateDTO.getPassword());
         }
-        member.updateMember(memberUpdateDTO.getNickname(), memberUpdateDTO.getIntroduce(), encryptedPassword, memberUpdateDTO.getPhoneNumber());
+        member.updateMember(memberUpdateDTO.getNickname(), memberUpdateDTO.getIntroduce(), encryptedPassword,
+                memberUpdateDTO.getPhoneNumber(), memberUpdateDTO.getImageUrl());
     }
     @Transactional
     public void deleteMember(Long id) {

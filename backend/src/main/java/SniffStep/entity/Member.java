@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Builder
@@ -28,6 +30,7 @@ public class Member extends BaseTime {
     private String password;
 
     private String imageUrl;
+
     private String socialId;
     private String accessToken;
     private String refreshToken;
@@ -50,7 +53,7 @@ public class Member extends BaseTime {
         this.password = passwordEncoder.encode(this.password);
     }
 
-    public void updateMember(String nickname, String introduce, String password, String phoneNumber) {
+    public void updateMember(String nickname, String introduce, String password, String phoneNumber, String imageUrl) {
         if (nickname != null) {
             this.nickname = nickname;
         }
@@ -62,6 +65,9 @@ public class Member extends BaseTime {
         }
         if (phoneNumber != null) {
             this.phoneNumber = phoneNumber;
+        }
+        if (imageUrl != null) {
+            this.imageUrl = imageUrl;
         }
 
         onPreUpdate();

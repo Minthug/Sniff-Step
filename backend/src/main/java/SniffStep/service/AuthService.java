@@ -61,6 +61,11 @@ public class AuthService {
         Member member = memberRepository.findByEmail(loginDTO.getEmail())
                 .orElseThrow(() -> new RuntimeException("회원 정보를 찾을 수 없습니다."));
 
+        if (member.getMemberType() == null) {
+            member.updateMemberType(MemberType.GENERAL);
+            memberRepository.save(member);
+        }
+
         // 비밀번호 일치 여부 확인
         if (member.getMemberType() == MemberType.GENERAL) {
             if (!encoder.matches(loginDTO.getPassword(), member.getPassword())) {
