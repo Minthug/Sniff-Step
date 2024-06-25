@@ -11,10 +11,10 @@ import java.util.List;
 @NoArgsConstructor
 public class BoardFindAllWithPagingResponseDTO {
 
-    private List<BoardFindAllResponseDTO> boards;
+    private List<BoardFindAllResponseDTO> data;
     private PageInfoDTO pageInfo;
 
-    public static BoardFindAllWithPagingResponseDTO toDto(List<BoardFindAllResponseDTO> boards, PageInfoDTO pageInfo) {
-        return new BoardFindAllWithPagingResponseDTO(boards, pageInfo);
+    public static BoardFindAllWithPagingResponseDTO toDto(List<BoardFindAllResponseDTO> data, PageInfoDTO pageInfo) {
+        return new BoardFindAllWithPagingResponseDTO(data, pageInfo);
     }
 }

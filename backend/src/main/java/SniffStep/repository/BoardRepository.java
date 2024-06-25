@@ -12,7 +12,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     Board findByTitle(String title);
 
     @Query(value = "SELECT b from Board b JOIN FETCH b.member m",
-    countQuery = "select count(b) from Board b order by b.id desc")
+    countQuery = "select count(b) from Board b")
     Page<Board> findAll(Pageable pageable);
 
     @Query(value = "select b from Board b join fetch b.member m where b.title like '%:title%'",

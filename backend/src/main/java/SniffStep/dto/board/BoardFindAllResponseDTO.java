@@ -3,9 +3,11 @@
     import SniffStep.entity.ActivityDate;
     import SniffStep.entity.ActivityTime;
     import SniffStep.entity.Board;
-    import lombok.*;
+    import lombok.AllArgsConstructor;
+    import lombok.Data;
+    import lombok.Getter;
+    import lombok.NoArgsConstructor;
 
-    import java.time.LocalDateTime;
     import java.time.ZoneId;
     import java.util.List;
     import java.util.stream.Collectors;
@@ -48,18 +50,4 @@
                     board.getImages().stream().map(i -> ImageResponseDTO.toDto(i)).collect(Collectors.toList())
             );
         }
-
-//        private static List<String> convertActivityDateToStringList(SniffStep.entity.ActivityDate activityDate) {
-//            if (activityDate == null) {
-//                return null;
-//            }
-//            return List.of(activityDate.getValue());
-//        }
-//
-//        private static List<String> convertActivityTimeToStringList(SniffStep.entity.ActivityTime activityTime) {
-//            if (activityTime == null) {
-//                return null;
-//            }
-//            return List.of(activityTime.getValue());
-//        }
     }

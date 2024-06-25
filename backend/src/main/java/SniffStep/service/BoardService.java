@@ -64,8 +64,7 @@ public class BoardService {
         public BoardResponseDTO findBoard(Long id) {
             Board board = boardRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
 
-            Member member = board.getMember();
-            return BoardResponseDTO.toDto(member.getName(), board);
+            return BoardResponseDTO.toDto(board);
         }
 
         @Transactional(readOnly = true)
@@ -110,7 +109,6 @@ public class BoardService {
             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if (principal instanceof UserDetails) {
                 UserDetails userDetails = (UserDetails) principal;
-//                String username = userDetails.getUsername();
                 String username = userDetails.getUsername();
 
 

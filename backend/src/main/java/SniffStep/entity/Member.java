@@ -73,9 +73,6 @@ public class Member extends BaseTime {
         onPreUpdate();
     }
 
-    public String getRoleKey() {
-        return this.role.getKey();
-    }
 
     public Member update(String name, String email) {
         this.name = name;
@@ -88,10 +85,6 @@ public class Member extends BaseTime {
     }
     public void updateAccessToken(String updateAccessToken) {
         this.accessToken = updateAccessToken;
-    }
-
-    public void authorizeUser() {
-        this.role = MemberRole.USER;
     }
 
     public void updateName(String name) {

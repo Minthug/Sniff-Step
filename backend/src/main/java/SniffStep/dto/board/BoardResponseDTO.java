@@ -1,35 +1,53 @@
 package SniffStep.dto.board;
 
+import SniffStep.entity.ActivityDate;
+import SniffStep.entity.ActivityTime;
 import SniffStep.entity.Board;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@NoArgsConstructor
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 public class BoardResponseDTO {
 
     private Long id;
-    private String author;
+    private Long userId;
     private String title;
+    private String email;
     private String description;
     private String activityLocation;
-
+    private ActivityDate activityDate;
+    private ActivityTime activityTime;
+    private String createdAt;
+    private String updatedAt;
+    private String imageUrl;
+    private String nickname;
     private List<ImageResponseDTO> images;
-    private LocalDateTime createAt;
 
-    public static BoardResponseDTO toDto(String author, Board board) {
+
+
+    public static BoardResponseDTO toDto(Board board) {
         return new BoardResponseDTO(
                 board.getId(),
-                author,
+                board.getMember().getId(),
                 board.getTitle(),
+                board.getMember().getEmail(),
                 board.getDescription(),
                 board.getActivityLocation(),
-                board.getImages().stream().map(i -> ImageResponseDTO.toDto(i)).collect(Collectors.toList()),
-                board.getCreatedAt()
+                board.getActivityDate(),
+                board.getActivityTime(),
+                board.getCreatedAt().atZone(ZoneId.of("Asia/Seoul")).toInstant().toString(),
+                board.getUpdatedAt().atZone(ZoneId.of("Asia/Seoul")).toInstant().toString(),
+                board.getMember().getImageUrl(),
+                board.getMember().getNickname(),
+                board.getImages().stream().map(i -> ImageResponseDTO.toDto(i)).collect(Collectors.toList())
         );
     }
 
