@@ -31,9 +31,15 @@ public class BoardController {
 //        return ResponseEntity.status(HttpStatus.CREATED).build();
 //    }
 
+//    @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    public ResponseEntity<?> createBoardV2(@Valid @ModelAttribute BoardCreatedRequestDTO request, Member member) {
+//        boardService.createBoardV2(request, member);
+//        return ResponseEntity.status(HttpStatus.CREATED).build();
+//    }
+
     @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> createBoardV2(@Valid @ModelAttribute BoardCreatedRequestDTO request, Member member) {
-        boardService.createBoardV2(request, member);
+    public ResponseEntity<?> createBoardV3(@Valid @ModelAttribute BoardCreatedRequestDTO request, Member member) {
+        boardService.createBoardV3(request, member);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

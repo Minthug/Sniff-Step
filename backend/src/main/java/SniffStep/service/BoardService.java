@@ -31,9 +31,9 @@ public class BoardService {
         private final AwsService awsService;
         private final MemberRepository memberRepository;
 
+
 //        @Transactional
-//        public void createBoard(BoardCreatedRequestDTO request, Member member) {
-//
+//        public void createBoardV2(BoardCreatedRequestDTO request, Member member) {
 //            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //
 //            if (principal instanceof UserDetails) {
@@ -44,49 +44,51 @@ public class BoardService {
 //                if (optionalMember.isPresent()) {
 //                    member = optionalMember.get();
 //
-//                List<Image> images = request.getImages().stream()
-//                        .map(i -> new Image(i.getOriginalFilename()))
-//                        .collect(Collectors.toList());
-//                Board board = new Board(request.getTitle(), request.getDescription(), request.getActivityLocation(), images, member);
-//                boardRepository.save(board);
+//                    List<AwsS3> uploadFiles = awsService.uploadFiles("images/board", request.getImages());
 //
-//                uploadImages(board.getImages(), request.getImages());
+//                    List<Image> images  = uploadFiles.stream()
+//                            .map(file -> new Image(file.getOriginalFileName(), file.getUploadFileName(), file.getUploadFileUrl()))
+//                            .collect(Collectors.toList());
+//
+//                    Board board = new Board(request.getTitle(), request.getDescription(), request.getActivityLocation(), images, member);
+//                    boardRepository.save(board);
 //                } else {
 //                    throw new MemberNotFoundException();
 //                }
-//            } else {
-//                throw new AccessDeniedException("인증되지 않은 사용자입니다.");
-//
-//            }
+//                } else {
+//                    throw new AccessDeniedException("인증되지 않은 사용자입니다.");
+//                }
 //        }
 
-        @Transactional
-        public void createBoardV2(BoardCreatedRequestDTO request, Member member) {
-            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    @Transactional
+    public void createBoardV3(BoardCreatedRequestDTO request, Member member) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-            if (principal instanceof UserDetails) {
-                UserDetails userDetails = (UserDetails) principal;
-                String username = userDetails.getUsername();
+        if (principal instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) principal;
+            String username = userDetails.getUsername();
 
-                Optional<Member> optionalMember = memberRepository.findByEmail(username);
-                if (optionalMember.isPresent()) {
-                    member = optionalMember.get();
+            Optional<Member> optionalMember = memberRepository.findByEmail(username);
+            if (optionalMember.isPresent()) {
+                member = optionalMember.get();
 
-                    List<AwsS3> uploadFiles = awsService.uploadFiles("images/board", request.getImages());
+                String folderPath = String.format("images/board/member_%d", member.getId());
+                List<AwsS3> uploadFiles = awsService.uploadFilesV2(member.getId(), folderPath, request.getImages());
 
-                    List<Image> images  = uploadFiles.stream()
-                            .map(file -> new Image(file.getOriginalFileName(), file.getUploadFileName(), file.getUploadFileUrl()))
-                            .collect(Collectors.toList());
+                List<Image> images  = uploadFiles.stream()
+                        .map(file -> new Image(file.getOriginalFileName(), file.getUploadFileName(), file.getUploadFileUrl()))
+                        .collect(Collectors.toList());
 
-                    Board board = new Board(request.getTitle(), request.getDescription(), request.getActivityLocation(), images, member);
-                    boardRepository.save(board);
-                } else {
-                    throw new MemberNotFoundException();
-                }
-                } else {
-                    throw new AccessDeniedException("인증되지 않은 사용자입니다.");
-                }
+                Board board = new Board(request.getTitle(), request.getDescription(), request.getActivityLocation(), images, member);
+                boardRepository.save(board);
+            } else {
+                throw new MemberNotFoundException();
+            }
+        } else {
+            throw new AccessDeniedException("인증되지 않은 사용자입니다.");
         }
+    }
+
 
         @Transactional(readOnly = true)
         public BoardResponseDTO findBoard(Long id) {

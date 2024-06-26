@@ -31,37 +31,51 @@ public class AwsService {
         bucketName = s3Config.getBucketName();
     }
 
-    public List<AwsS3> uploadFiles(String folderPath, List<MultipartFile> multipartFiles) {
+        public List<AwsS3> uploadFiles(String folderPath, List<MultipartFile> multipartFiles) {
+            List<AwsS3> s3files = new ArrayList<>();
+
+            for (MultipartFile multipartFile : multipartFiles) {
+                String originalFileName = multipartFile.getOriginalFilename();
+                String uploadFileName = getUuidFileName(originalFileName);
+                String keyName = folderPath + "/" + uploadFileName;
+
+                try (InputStream inputStream = multipartFile.getInputStream()) {
+                    ObjectMetadata objectMetadata = createObjectMetadata(multipartFile);
+
+
+                    String uploadFileUrl = getUploadedFileUrl(keyName);
+                    s3files.add(createAwsS3(originalFileName, uploadFileName, folderPath, uploadFileUrl));
+
+                    uploadFileUrl = amazonS3Client.getUrl(bucketName, keyName).toString();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    log.error("File upload failed", e);
+                }
+            }
+            return s3files;
+        }
+
+    public List<AwsS3> uploadFilesV2(Long memberId, String folderPath, List<MultipartFile> multipartFiles) {
         List<AwsS3> s3files = new ArrayList<>();
+        String uploadFilePath = String.format("member/%d", memberId);
 
         for (MultipartFile multipartFile : multipartFiles) {
             String originalFileName = multipartFile.getOriginalFilename();
             String uploadFileName = getUuidFileName(originalFileName);
-            String keyName = folderPath + "/" + uploadFileName;
+            String keyName = uploadFilePath + "/" + uploadFileName;
 
             try (InputStream inputStream = multipartFile.getInputStream()) {
                 ObjectMetadata objectMetadata = createObjectMetadata(multipartFile);
 
+
                 uploadFileToS3(keyName, inputStream, objectMetadata);
-
                 String uploadFileUrl = getUploadedFileUrl(keyName);
-                s3files.add(createAwsS3(originalFileName, uploadFileName, folderPath, uploadFileUrl));
 
-//                amazonS3Client.putObject(
-//                        new PutObjectRequest(bucketName, keyName, inputStream, objectMetadata));
-
-                uploadFileUrl = amazonS3Client.getUrl(bucketName, keyName).toString();
+                s3files.add(createAwsS3(originalFileName, uploadFileName, uploadFilePath, uploadFileUrl));
             } catch (IOException e) {
                 e.printStackTrace();
                 log.error("File upload failed", e);
             }
-//                s3files.add(
-//                        AwsS3.builder()
-//                                .originalFileName(originalFileName)
-//                                .uploadFileName(uploadFileName)
-//                                .uploadFilePath(uploadFilePath)
-//                                .uploadFileUrl(uploadFileUrl)
-//                                .build());
         }
         return s3files;
     }
@@ -106,8 +120,8 @@ public class AwsService {
 
     // 필요치 않으면 주석
     private void uploadFileToS3(String keyName, InputStream inputStream, ObjectMetadata objectMetadata) {
-        amazonS3Client.putObject(
-                new PutObjectRequest(bucketName, keyName, inputStream, objectMetadata));
+        amazonS3Client.putObject(new PutObjectRequest(bucketName, keyName, inputStream, objectMetadata));
+        log.info("File upload is completed. KeyName: {}", bucketName, keyName);
     }
 
     private String getUploadedFileUrl(String keyName) {
