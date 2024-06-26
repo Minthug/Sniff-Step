@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 @Data
 @AllArgsConstructor
 public class BoardResponseDTO {
-
     private Long id;
     private Long userId;
     private String title;
@@ -30,8 +29,6 @@ public class BoardResponseDTO {
     private String imageUrl;
     private String nickname;
     private List<ImageResponseDTO> images;
-
-
 
     public static BoardResponseDTO toDto(Board board) {
         return new BoardResponseDTO(

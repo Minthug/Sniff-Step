@@ -28,11 +28,40 @@ public class BoardService {
 
         private final BoardRepository boardRepository;
         private final ImageService imageService;
+        private final AwsService awsService;
         private final MemberRepository memberRepository;
 
-        @Transactional
-        public void createBoard(BoardCreatedRequestDTO request, Member member) {
+//        @Transactional
+//        public void createBoard(BoardCreatedRequestDTO request, Member member) {
+//
+//            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//
+//            if (principal instanceof UserDetails) {
+//                UserDetails userDetails = (UserDetails) principal;
+//                String username = userDetails.getUsername();
+//
+//                Optional<Member> optionalMember = memberRepository.findByEmail(username);
+//                if (optionalMember.isPresent()) {
+//                    member = optionalMember.get();
+//
+//                List<Image> images = request.getImages().stream()
+//                        .map(i -> new Image(i.getOriginalFilename()))
+//                        .collect(Collectors.toList());
+//                Board board = new Board(request.getTitle(), request.getDescription(), request.getActivityLocation(), images, member);
+//                boardRepository.save(board);
+//
+//                uploadImages(board.getImages(), request.getImages());
+//                } else {
+//                    throw new MemberNotFoundException();
+//                }
+//            } else {
+//                throw new AccessDeniedException("인증되지 않은 사용자입니다.");
+//
+//            }
+//        }
 
+        @Transactional
+        public void createBoardV2(BoardCreatedRequestDTO request, Member member) {
             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
             if (principal instanceof UserDetails) {
@@ -43,21 +72,20 @@ public class BoardService {
                 if (optionalMember.isPresent()) {
                     member = optionalMember.get();
 
-                List<Image> images = request.getImages().stream()
-                        .map(i -> new Image(i.getOriginalFilename()))
-                        .collect(Collectors.toList());
-                Board board = new Board(request.getTitle(), request.getDescription(), request.getActivityLocation(), images, member);
-                boardRepository.save(board);
+                    List<AwsS3> uploadFiles = awsService.uploadFiles("images/board", request.getImages());
 
-                uploadImages(board.getImages(), request.getImages());
+                    List<Image> images  = uploadFiles.stream()
+                            .map(file -> new Image(file.getOriginalFileName(), file.getUploadFileName(), file.getUploadFileUrl()))
+                            .collect(Collectors.toList());
+
+                    Board board = new Board(request.getTitle(), request.getDescription(), request.getActivityLocation(), images, member);
+                    boardRepository.save(board);
                 } else {
                     throw new MemberNotFoundException();
                 }
-            } else {
-                throw new AccessDeniedException("인증되지 않은 사용자입니다.");
-
-            }
-
+                } else {
+                    throw new AccessDeniedException("인증되지 않은 사용자입니다.");
+                }
         }
 
         @Transactional(readOnly = true)

@@ -24,41 +24,44 @@ public class AwsService {
 
     private final AmazonS3Client amazonS3Client;
     private final S3Config s3Config;
-
     private String bucketName;
+
     @PostConstruct
     public void init() {
         bucketName = s3Config.getBucketName();
     }
 
-    public List<AwsS3> uploadFiles(String fileType, List<MultipartFile> multipartFiles) {
+    public List<AwsS3> uploadFiles(String folderPath, List<MultipartFile> multipartFiles) {
         List<AwsS3> s3files = new ArrayList<>();
-        String uploadFilePath = fileType + "/" + getFolderName();
 
         for (MultipartFile multipartFile : multipartFiles) {
             String originalFileName = multipartFile.getOriginalFilename();
             String uploadFileName = getUuidFileName(originalFileName);
-            String uploadFileUrl = "";
+            String keyName = folderPath + "/" + uploadFileName;
 
             try (InputStream inputStream = multipartFile.getInputStream()) {
-                String keyName = uploadFilePath + "/" + uploadFileName;
                 ObjectMetadata objectMetadata = createObjectMetadata(multipartFile);
 
-                amazonS3Client.putObject(
-                        new PutObjectRequest(bucketName, keyName, inputStream, objectMetadata));
+                uploadFileToS3(keyName, inputStream, objectMetadata);
+
+                String uploadFileUrl = getUploadedFileUrl(keyName);
+                s3files.add(createAwsS3(originalFileName, uploadFileName, folderPath, uploadFileUrl));
+
+//                amazonS3Client.putObject(
+//                        new PutObjectRequest(bucketName, keyName, inputStream, objectMetadata));
 
                 uploadFileUrl = amazonS3Client.getUrl(bucketName, keyName).toString();
             } catch (IOException e) {
                 e.printStackTrace();
                 log.error("File upload failed", e);
             }
-                s3files.add(
-                        AwsS3.builder()
-                                .originalFileName(originalFileName)
-                                .uploadFileName(uploadFileName)
-                                .uploadFilePath(uploadFilePath)
-                                .uploadFileUrl(uploadFileUrl)
-                                .build());
+//                s3files.add(
+//                        AwsS3.builder()
+//                                .originalFileName(originalFileName)
+//                                .uploadFileName(uploadFileName)
+//                                .uploadFilePath(uploadFilePath)
+//                                .uploadFileUrl(uploadFileUrl)
+//                                .build());
         }
         return s3files;
     }
