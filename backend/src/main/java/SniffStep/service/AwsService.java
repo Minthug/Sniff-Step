@@ -31,29 +31,29 @@ public class AwsService {
         bucketName = s3Config.getBucketName();
     }
 
-        public List<AwsS3> uploadFiles(String folderPath, List<MultipartFile> multipartFiles) {
-            List<AwsS3> s3files = new ArrayList<>();
-
-            for (MultipartFile multipartFile : multipartFiles) {
-                String originalFileName = multipartFile.getOriginalFilename();
-                String uploadFileName = getUuidFileName(originalFileName);
-                String keyName = folderPath + "/" + uploadFileName;
-
-                try (InputStream inputStream = multipartFile.getInputStream()) {
-                    ObjectMetadata objectMetadata = createObjectMetadata(multipartFile);
-
-
-                    String uploadFileUrl = getUploadedFileUrl(keyName);
-                    s3files.add(createAwsS3(originalFileName, uploadFileName, folderPath, uploadFileUrl));
-
-                    uploadFileUrl = amazonS3Client.getUrl(bucketName, keyName).toString();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    log.error("File upload failed", e);
-                }
-            }
-            return s3files;
-        }
+//        public List<AwsS3> uploadFiles(String folderPath, List<MultipartFile> multipartFiles) {
+//            List<AwsS3> s3files = new ArrayList<>();
+//
+//            for (MultipartFile multipartFile : multipartFiles) {
+//                String originalFileName = multipartFile.getOriginalFilename();
+//                String uploadFileName = getUuidFileName(originalFileName);
+//                String keyName = folderPath + "/" + uploadFileName;
+//
+//                try (InputStream inputStream = multipartFile.getInputStream()) {
+//                    ObjectMetadata objectMetadata = createObjectMetadata(multipartFile);
+//
+//
+//                    String uploadFileUrl = getUploadedFileUrl(keyName);
+//                    s3files.add(createAwsS3(originalFileName, uploadFileName, folderPath, uploadFileUrl));
+//
+//                    uploadFileUrl = amazonS3Client.getUrl(bucketName, keyName).toString();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                    log.error("File upload failed", e);
+//                }
+//            }
+//            return s3files;
+//        }
 
     public List<AwsS3> uploadFilesV2(Long memberId, String folderPath, List<MultipartFile> multipartFiles) {
         List<AwsS3> s3files = new ArrayList<>();

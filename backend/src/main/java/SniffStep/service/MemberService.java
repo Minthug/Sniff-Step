@@ -1,11 +1,14 @@
 package SniffStep.service;
 
 import SniffStep.common.exception.MemberNotFoundException;
+import SniffStep.dto.board.AwsS3;
 import SniffStep.dto.member.MemberDTO;
 import SniffStep.dto.member.MemberUpdateDTO;
 import SniffStep.entity.Member;
 import SniffStep.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +23,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AwsService awsService;
 
     @Transactional(readOnly = true)
     public List<MemberDTO> findAllMember() {
@@ -44,16 +48,37 @@ public class MemberService {
 
     @Transactional
     public void editMember(Long id, MemberUpdateDTO memberUpdateDTO) {
-        Member member = memberRepository.findById(id)
-                .orElseThrow(() -> new MemberNotFoundException());
 
-        String encryptedPassword = null;
-        if (memberUpdateDTO.getPassword() != null) {
-            encryptedPassword = passwordEncoder.encode(memberUpdateDTO.getPassword());
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) principal;
+            String username = userDetails.getUsername();
+
+
+            Member member = memberRepository.findById(id)
+                    .orElseThrow(() -> new MemberNotFoundException());
+
+            String encryptedPassword = null;
+            if (memberUpdateDTO.getPassword() != null) {
+                encryptedPassword = passwordEncoder.encode(memberUpdateDTO.getPassword());
+            }
+
+            String imageUrl = null;
+            if (!memberUpdateDTO.getImageFiles().isEmpty()) {
+                String folderPath = String.format("images/profile/member_%d", member.getId());
+                List<AwsS3> uploadFiles = awsService.uploadFilesV2(member.getId(), folderPath, memberUpdateDTO.getImageFiles());
+
+                if (!uploadFiles.isEmpty()) {
+                    imageUrl = uploadFiles.get(0).getUploadFileUrl();
+                }
+
+            }
+                member.updateMember(memberUpdateDTO.getNickname(), memberUpdateDTO.getIntroduce(), encryptedPassword,
+                        memberUpdateDTO.getPhoneNumber(), imageUrl);
         }
-        member.updateMember(memberUpdateDTO.getNickname(), memberUpdateDTO.getIntroduce(), encryptedPassword,
-                memberUpdateDTO.getPhoneNumber(), memberUpdateDTO.getImageUrl());
     }
+
     @Transactional
     public void deleteMember(Long id) {
         Member member = memberRepository.findById(id)

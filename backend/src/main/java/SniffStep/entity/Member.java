@@ -73,13 +73,6 @@ public class Member extends BaseTime {
         onPreUpdate();
     }
 
-
-    public Member update(String name, String email) {
-        this.name = name;
-        this.email = email;
-        return this;
-    }
-
     public void updateRefreshToken(String updateRefreshToken) {
         this.refreshToken = updateRefreshToken;
     }

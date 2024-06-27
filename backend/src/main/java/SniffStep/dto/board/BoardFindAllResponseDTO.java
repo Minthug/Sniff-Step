@@ -3,6 +3,7 @@
     import SniffStep.entity.ActivityDate;
     import SniffStep.entity.ActivityTime;
     import SniffStep.entity.Board;
+    import SniffStep.entity.Member;
     import lombok.AllArgsConstructor;
     import lombok.Data;
     import lombok.Getter;
@@ -34,19 +35,20 @@
 
 
         public static BoardFindAllResponseDTO toDto(Board board) {
+            Member member = board.getMember();
             return new BoardFindAllResponseDTO(
                     board.getId(),
-                    board.getMember().getId(),
+                    member.getId(),
                     board.getTitle(),
-                    board.getMember().getEmail(),
+                    member.getEmail(),
                     board.getDescription(),
                     board.getActivityLocation(),
                     board.getActivityDate(),
                     board.getActivityTime(),
                     board.getCreatedAt().atZone(ZoneId.of("Asia/Seoul")).toInstant().toString(),
                     board.getUpdatedAt().atZone(ZoneId.of("Asia/Seoul")).toInstant().toString(),
-                    board.getMember().getImageUrl(),
-                    board.getMember().getNickname(),
+                    member.getImageUrl(),
+                    member.getNickname(),
                     board.getImages().stream().map(i -> ImageResponseDTO.toDto(i)).collect(Collectors.toList())
             );
         }
