@@ -30,7 +30,6 @@ public class MemberService {
         return memberRepository.findAll().stream()
                 .map(MemberDTO::toDto)
                 .collect(Collectors.toList());
-
     }
 
     @Transactional(readOnly = true)

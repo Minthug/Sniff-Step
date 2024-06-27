@@ -92,9 +92,9 @@ public class BoardService {
 
         @Transactional(readOnly = true)
         public BoardResponseDTO findBoard(Long id) {
-            Board board = boardRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
-
-            return BoardResponseDTO.toDto(board);
+            return boardRepository.findByIdWithMemberAAndImages(id)
+                    .map(BoardResponseDTO::toDto)
+                    .orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
         }
 
         @Transactional(readOnly = true)
