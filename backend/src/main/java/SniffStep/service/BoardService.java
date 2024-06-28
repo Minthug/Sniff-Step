@@ -32,34 +32,6 @@ public class BoardService {
         private final MemberRepository memberRepository;
 
 
-//        @Transactional
-//        public void createBoardV2(BoardCreatedRequestDTO request, Member member) {
-//            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//
-//            if (principal instanceof UserDetails) {
-//                UserDetails userDetails = (UserDetails) principal;
-//                String username = userDetails.getUsername();
-//
-//                Optional<Member> optionalMember = memberRepository.findByEmail(username);
-//                if (optionalMember.isPresent()) {
-//                    member = optionalMember.get();
-//
-//                    List<AwsS3> uploadFiles = awsService.uploadFiles("images/board", request.getImages());
-//
-//                    List<Image> images  = uploadFiles.stream()
-//                            .map(file -> new Image(file.getOriginalFileName(), file.getUploadFileName(), file.getUploadFileUrl()))
-//                            .collect(Collectors.toList());
-//
-//                    Board board = new Board(request.getTitle(), request.getDescription(), request.getActivityLocation(), images, member);
-//                    boardRepository.save(board);
-//                } else {
-//                    throw new MemberNotFoundException();
-//                }
-//                } else {
-//                    throw new AccessDeniedException("인증되지 않은 사용자입니다.");
-//                }
-//        }
-
     @Transactional
     public void createBoardV3(BoardCreatedRequestDTO request, Member member) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -79,7 +51,7 @@ public class BoardService {
                         .map(file -> new Image(file.getOriginalFileName(), file.getUploadFileName(), file.getUploadFileUrl()))
                         .collect(Collectors.toList());
 
-                Board board = new Board(request.getTitle(), request.getDescription(), request.getActivityLocation(), images, member);
+                Board board = new Board(request.getTitle(), request.getDescription(), request.getActivityLocation(), images, member, request.getActivityDate(), request.getActivityTime());
                 boardRepository.save(board);
             } else {
                 throw new MemberNotFoundException();

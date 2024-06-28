@@ -1,5 +1,7 @@
 package SniffStep.dto.board;
 
+import SniffStep.entity.ActivityDate;
+import SniffStep.entity.ActivityTime;
 import SniffStep.entity.Board;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -19,5 +21,7 @@ public class BoardCreatedRequestDTO {
     private String activityLocation;
     private List<MultipartFile> images = new ArrayList<>();
     private List<Long> imageId;
+    private List<String> activityDate = new ArrayList<>();
+    private List<String> activityTime = new ArrayList<>();
 
 }

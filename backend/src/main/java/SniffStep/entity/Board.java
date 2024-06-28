@@ -47,20 +47,25 @@ public class Board extends BaseTime {
     @Column(name = "board_type")
     private BoardType boardType;
 
+    @ElementCollection
     @Enumerated(EnumType.STRING)
     @Column(name = "activity_date")
-    private ActivityDate activityDate;
+    private List<ActivityDate> activityDate = new ArrayList<>();
 
+    @ElementCollection
     @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "board_activity_time", joinColumns = @JoinColumn(name = "board_id"))
     @Column(name = "activity_time")
-    private ActivityTime activityTime;
+    private List<ActivityTime> activityTime = new ArrayList<>();
 
-    public Board(String title, String description, String activityLocation, List<Image> images, Member member) {
+    public Board(String title, String description, String activityLocation, List<Image> images, Member member,  List<ActivityDate> activityDate, List<ActivityTime> activityTime) {
         this.title = title;
         this.description = description;
         this.activityLocation = activityLocation;
         this.images = new ArrayList<>();
         this.member = member;
+        this.activityDate = activityDate;
+        this.activityTime = activityTime;
         addImages(images);
     }
 
@@ -76,18 +81,6 @@ public class Board extends BaseTime {
 
         return result;
     }
-
-//    public ImageUpdatedResult updateBoard(BoardPatchDTO patch) {
-//        this.title = patch.getTitle();
-//        this.description = patch.getDescription();
-//        this.activityLocation = patch.getActivityLocation();
-//
-//        ImageUpdatedResult result = findImageUpdatedResult(patch.getAddedImages(), patch.getDeletedImages());
-//        addImages(result.getAddedImages());
-//        deleteImages(result.getDeletedImages());
-//        onPreUpdate();
-//        return result;
-//    }
 
     public boolean isOwnBoard(Member member) {
         return this.member.equals(member);
@@ -122,10 +115,6 @@ public class Board extends BaseTime {
                 .peek(i -> i.initBoard(this))
                 .collect(Collectors.toList());
         images.addAll(toBeAdded);
-    }
-
-    public void saveMember(Member member) {
-        this.member = member;
     }
 
     private void deleteImages(List<Image> deletedImages) {

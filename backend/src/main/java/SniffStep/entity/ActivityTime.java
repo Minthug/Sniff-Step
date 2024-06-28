@@ -1,5 +1,6 @@
 package SniffStep.entity;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -12,4 +13,11 @@ public enum ActivityTime {
     EVENING("저녁");
 
     private final String value;
+
+    @JsonCreator
+    public static ActivityTime fromString(String key) {
+        return key == null
+                ? null
+                : ActivityTime.valueOf(key.toUpperCase());
+    }
 }

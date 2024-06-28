@@ -25,8 +25,8 @@
         private String email;
         private String description;
         private String activityLocation;
-        private ActivityDate activityDate;
-        private ActivityTime activityTime;
+        private List<String> activityDate;
+        private List<String> activityTime;
         private String createdAt;
         private String updatedAt;
         private String imageUrl;
@@ -43,8 +43,8 @@
                     member.getEmail(),
                     board.getDescription(),
                     board.getActivityLocation(),
-                    board.getActivityDate(),
-                    board.getActivityTime(),
+                    board.getActivityDate().stream().map(ActivityDate::name).collect(Collectors.toList()),
+                    board.getActivityTime().stream().map(ActivityTime::name).collect(Collectors.toList()),
                     board.getCreatedAt().atZone(ZoneId.of("Asia/Seoul")).toInstant().toString(),
                     board.getUpdatedAt().atZone(ZoneId.of("Asia/Seoul")).toInstant().toString(),
                     member.getImageUrl(),
