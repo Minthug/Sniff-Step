@@ -1,5 +1,6 @@
     package SniffStep.dto.board;
 
+    import SniffStep.dto.member.MemberDTO;
     import SniffStep.entity.ActivityDate;
     import SniffStep.entity.ActivityTime;
     import SniffStep.entity.Board;
@@ -11,6 +12,7 @@
 
     import java.time.ZoneId;
     import java.util.List;
+    import java.util.Objects;
     import java.util.stream.Collectors;
 
     @Getter
@@ -29,27 +31,34 @@
         private List<String> activityTime;
         private String createdAt;
         private String updatedAt;
-        private String imageUrl;
+        private String profileUrl;
         private String nickname;
-        private List<ImageResponseDTO> images;
+        private String image;
 
 
         public static BoardFindAllResponseDTO toDto(Board board) {
-            Member member = board.getMember();
+            MemberDTO memberDTO = MemberDTO.toDto(board.getMember());
+
+            String image = board.getImages().stream()
+                    .map(img -> ImageResponseDTO.toDto(img).getImageUrl())
+                    .filter(Objects::nonNull)
+                    .findFirst()
+                    .orElse(null);
+
             return new BoardFindAllResponseDTO(
                     board.getId(),
-                    member.getId(),
+                    memberDTO.getId(),
                     board.getTitle(),
-                    member.getEmail(),
+                    memberDTO.getEmail(),
                     board.getDescription(),
                     board.getActivityLocation(),
                     board.getActivityDates().stream().map(ActivityDate::name).collect(Collectors.toList()),
                     board.getActivityTimes().stream().map(ActivityTime::name).collect(Collectors.toList()),
                     board.getCreatedAt().atZone(ZoneId.of("Asia/Seoul")).toInstant().toString(),
                     board.getUpdatedAt().atZone(ZoneId.of("Asia/Seoul")).toInstant().toString(),
-                    member.getImageUrl(),
-                    member.getNickname(),
-                    board.getImages().stream().map(i -> ImageResponseDTO.toDto(i)).collect(Collectors.toList())
+                    memberDTO.getImageUrl(),
+                    memberDTO.getNickname(),
+                    image
             );
         }
     }
