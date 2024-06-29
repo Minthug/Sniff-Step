@@ -23,8 +23,8 @@ public class BoardResponseDTO {
     private String email;
     private String description;
     private String activityLocation;
-    private List<ActivityDate> activityDate;
-    private List<ActivityTime> activityTime;
+    private List<String> activityDate;
+    private List<String> activityTime;
     private String createdAt;
     private String updatedAt;
     private String profileUrl;
@@ -47,8 +47,8 @@ public class BoardResponseDTO {
                 memberDTO.getEmail(),
                 board.getDescription(),
                 board.getActivityLocation(),
-                board.getActivityDate().stream().map(ActivityDate::name).collect(Collectors.toList()),
-                board.getActivityTime().stream().map(ActivityTime::name).collect(Collectors.toList()),
+                board.getActivityDates().stream().map(ActivityDate::name).collect(Collectors.toList()),
+                board.getActivityTimes().stream().map(ActivityTime::name).collect(Collectors.toList()),
                 board.getCreatedAt().atZone(ZoneId.of("Asia/Seoul")).toInstant().toString(),
                 board.getUpdatedAt().atZone(ZoneId.of("Asia/Seoul")).toInstant().toString(),
                 memberDTO.getImageUrl(),

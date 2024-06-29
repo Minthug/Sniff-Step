@@ -12,6 +12,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -47,26 +48,53 @@ public class Board extends BaseTime {
     @Column(name = "board_type")
     private BoardType boardType;
 
-    @ElementCollection
-    @Enumerated(EnumType.STRING)
-    @Column(name = "activity_date")
-    private List<ActivityDate> activityDate = new ArrayList<>();
+//    @Enumerated(EnumType.STRING)
+    @Column(name = "activity_dates")
+    private String activityDate;
 
-    @ElementCollection
-    @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "board_activity_time", joinColumns = @JoinColumn(name = "board_id"))
-    @Column(name = "activity_time")
-    private List<ActivityTime> activityTime = new ArrayList<>();
+//    @Enumerated(EnumType.STRING)
+    @Column(name = "activity_times")
+    private String activityTime;
 
-    public Board(String title, String description, String activityLocation, List<Image> images, Member member,  List<ActivityDate> activityDate, List<ActivityTime> activityTime) {
+    public Board(String title, String description, String activityLocation, List<Image> images, Member member, List<ActivityDate> activityDate, List<ActivityTime> activityTime) {
         this.title = title;
         this.description = description;
         this.activityLocation = activityLocation;
         this.images = new ArrayList<>();
         this.member = member;
-        this.activityDate = activityDate;
-        this.activityTime = activityTime;
         addImages(images);
+        setActivityDateInternal(activityDate);
+        setActivityTimeInternal(activityTime);
+    }
+
+    private void setActivityDateInternal(List<ActivityDate> activityDate) {
+        this.activityDate = activityDate.stream()
+                .map(Enum::name)
+                .collect(Collectors.joining(","));
+    }
+
+    private void setActivityTimeInternal(List<ActivityTime> activityTime) {
+        this.activityTime = activityTime.stream()
+                .map(Enum::name)
+                .collect(Collectors.joining(","));
+    }
+
+    public List<ActivityDate> getActivityDates() {
+        if (activityDate == null || activityDate.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return Arrays.stream(activityDate.split(","))
+                .map(ActivityDate::valueOf)
+                .collect(Collectors.toList());
+    }
+
+    public List<ActivityTime> getActivityTimes() {
+        if (activityTime == null || activityTime.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return Arrays.stream(activityTime.split(","))
+                .map(ActivityTime::valueOf)
+                .collect(Collectors.toList());
     }
 
     public ImageUpdatedResult updateBoard(String title, String description, String activityLocation, List<MultipartFile> addedImages, List<Long> deletedImages) {
@@ -120,6 +148,7 @@ public class Board extends BaseTime {
     private void deleteImages(List<Image> deletedImages) {
         deletedImages.forEach(di -> this.images.remove(di));
     }
+
 
     @Getter
     @AllArgsConstructor

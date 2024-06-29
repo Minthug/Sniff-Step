@@ -2,9 +2,7 @@ package SniffStep.service;
 
 import SniffStep.common.exception.*;
 import SniffStep.dto.board.*;
-import SniffStep.entity.Board;
-import SniffStep.entity.Image;
-import SniffStep.entity.Member;
+import SniffStep.entity.*;
 import SniffStep.repository.BoardRepository;
 import SniffStep.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -51,7 +49,23 @@ public class BoardService {
                         .map(file -> new Image(file.getOriginalFileName(), file.getUploadFileName(), file.getUploadFileUrl()))
                         .collect(Collectors.toList());
 
-                Board board = new Board(request.getTitle(), request.getDescription(), request.getActivityLocation(), images, member, request.getActivityDate(), request.getActivityTime());
+                List<ActivityDate> activityDates = request.getActivityDate().stream()
+                        .map(ActivityDate::fromString)
+                        .collect(Collectors.toList());
+
+                List<ActivityTime> activityTimes = request.getActivityTime().stream()
+                        .map(ActivityTime::fromString)
+                        .collect(Collectors.toList());
+
+                Board board = new Board(
+                        request.getTitle(),
+                        request.getDescription(),
+                        request.getActivityLocation(),
+                        images,
+                        member,
+                        activityDates,
+                        activityTimes);
+
                 boardRepository.save(board);
             } else {
                 throw new MemberNotFoundException();
