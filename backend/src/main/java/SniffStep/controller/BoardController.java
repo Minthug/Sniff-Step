@@ -26,7 +26,7 @@ public class BoardController {
     private final BoardService boardService;
 
     @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> createBoardV3(@Valid @ModelAttribute BoardCreatedRequestDTO request, Member member) {
+    public ResponseEntity<?> createBoard(@Valid @ModelAttribute BoardCreatedRequestDTO request, Member member) {
         boardService.createBoardV3(request, member);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
