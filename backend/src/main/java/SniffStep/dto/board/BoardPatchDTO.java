@@ -10,6 +10,7 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
+@Getter
 @NoArgsConstructor
 public class BoardPatchDTO {
 
@@ -20,7 +21,7 @@ public class BoardPatchDTO {
 
     private String activityLocation;
 
-   private List<MultipartFile> addedImages = new ArrayList<>();
+   private List<MultipartFile> imageFiles = new ArrayList<>();
 
    private List<Long> deletedImages = new ArrayList<>();
 }

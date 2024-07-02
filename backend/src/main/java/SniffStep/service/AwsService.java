@@ -2,6 +2,8 @@ package SniffStep.service;
 
 import SniffStep.common.config.S3Config;
 import SniffStep.dto.board.AwsS3;
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -31,31 +33,8 @@ public class AwsService {
         bucketName = s3Config.getBucketName();
     }
 
-//        public List<AwsS3> uploadFiles(String folderPath, List<MultipartFile> multipartFiles) {
-//            List<AwsS3> s3files = new ArrayList<>();
-//
-//            for (MultipartFile multipartFile : multipartFiles) {
-//                String originalFileName = multipartFile.getOriginalFilename();
-//                String uploadFileName = getUuidFileName(originalFileName);
-//                String keyName = folderPath + "/" + uploadFileName;
-//
-//                try (InputStream inputStream = multipartFile.getInputStream()) {
-//                    ObjectMetadata objectMetadata = createObjectMetadata(multipartFile);
-//
-//
-//                    String uploadFileUrl = getUploadedFileUrl(keyName);
-//                    s3files.add(createAwsS3(originalFileName, uploadFileName, folderPath, uploadFileUrl));
-//
-//                    uploadFileUrl = amazonS3Client.getUrl(bucketName, keyName).toString();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                    log.error("File upload failed", e);
-//                }
-//            }
-//            return s3files;
-//        }
 
-    public List<AwsS3> uploadFilesV2(Long memberId, String folderPath, List<MultipartFile> multipartFiles) {
+    public List<AwsS3> uploadFiles(Long memberId, String folderPath, List<MultipartFile> multipartFiles) {
         List<AwsS3> s3files = new ArrayList<>();
         String uploadFilePath = String.format("member/%d", memberId);
 
@@ -103,6 +82,26 @@ public class AwsService {
             log.debug("Delete File failed", e);
         }
         return result;
+    }
+
+    public boolean deleteFileV2(String uploadFilePath, String uuidFileName) {
+        String keyName = uploadFilePath + "/" + uuidFileName;
+
+        try {
+            if (amazonS3Client.doesObjectExist(bucketName, keyName)) {
+                amazonS3Client.deleteObject(bucketName, keyName);
+                log.info("File delete is completed. KeyName: {}", keyName);
+                return true;
+            } else {
+                log.warn("File does not exist. KeyName: {}", keyName);
+                return false;
+            }
+        } catch (AmazonServiceException e) {
+            return false;
+        } catch (SdkClientException e) {
+            log.error("SDK client error while deleting file: {}", keyName, e);
+            return false;
+        }
     }
 
     private String getFolderName() {

@@ -76,7 +76,4 @@ public class Image extends BaseTime {
         return UUID.randomUUID().toString() + "." + extension;
     }
 
-    public void updatePost(Board board) {
-        this.board = board;
-    }
 }

@@ -48,11 +48,9 @@ public class Board extends BaseTime {
     @Column(name = "board_type")
     private BoardType boardType;
 
-//    @Enumerated(EnumType.STRING)
     @Column(name = "activity_dates")
     private String activityDate;
 
-//    @Enumerated(EnumType.STRING)
     @Column(name = "activity_times")
     private String activityTime;
 
@@ -97,64 +95,59 @@ public class Board extends BaseTime {
                 .collect(Collectors.toList());
     }
 
-    public ImageUpdatedResult updateBoard(String title, String description, String activityLocation, List<MultipartFile> addedImages, List<Long> deletedImages) {
+    public void update(String title, String description, String activityLocation) {
         this.title = title;
         this.description = description;
         this.activityLocation = activityLocation;
-
-        ImageUpdatedResult result = findImageUpdatedResult(addedImages, deletedImages);
-        addImages(result.getAddedImages());
-        deleteImages(result.getDeletedImages());
-        onPreUpdate();
-
-        return result;
     }
+
+//    public ImageUpdatedResult updateBoard(String title, String description, String activityLocation, List<MultipartFile> addedImages, List<Long> deletedImages) {
+//        this.title = title;
+//        this.description = description;
+//        this.activityLocation = activityLocation;
+//
+//        ImageUpdatedResult result = findImageUpdatedResult(addedImages, deletedImages);
+//        addImages(result.getAddedImages());
+//        deleteImages(result.getDeletedImages());
+//        onPreUpdate();
+//
+//        return result;
+//    }
+
 
     public boolean isOwnBoard(Member member) {
         return this.member.equals(member);
     }
 
-    private ImageUpdatedResult findImageUpdatedResult(List<MultipartFile> addedImageFiles, List<Long> deletedImageIds) {
-        List<Image> addedImage = convertImageFilesToImages(addedImageFiles);
-        List<Image> deletedImages = convertImageIdsToImages(deletedImageIds);
-        return new ImageUpdatedResult(addedImageFiles, addedImage, deletedImages);
-    }
+//    private ImageUpdatedResult findImageUpdatedResult(List<MultipartFile> addedImageFiles, List<Long> deletedImageIds) {
+//        List<Image> addedImage = convertImageFilesToImages(addedImageFiles);
+//        List<Image> deletedImages = convertImageIdsToImages(deletedImageIds);
+//        return new ImageUpdatedResult(addedImageFiles, addedImage, deletedImages);
+//    }
+//
+//    private List<Image> convertImageIdsToImages(List<Long> imageIds) {
+//        return imageIds.stream()
+//                .map(id -> convertImageIdsToImage(id))
+//                .filter(i -> i.isPresent())
+//                .map(i -> i.get())
+//                .collect(toList());
+//    }
+//
+//    private Optional<Image> convertImageIdsToImage(Long id) {
+//        return this.images.stream()
+//                .filter(i -> i.getId() == (id)).findAny();
+//    }
+//
+//    private List<Image> convertImageFilesToImages(List<MultipartFile> imageFiles) {
+//        return imageFiles.stream().map(imageFile ->
+//                new Image(imageFile.getOriginalFilename())).collect(toList());
+//    }
 
-    private List<Image> convertImageIdsToImages(List<Long> imageIds) {
-        return imageIds.stream()
-                .map(id -> convertImageIdsToImage(id))
-                .filter(i -> i.isPresent())
-                .map(i -> i.get())
-                .collect(toList());
-    }
-
-    private Optional<Image> convertImageIdsToImage(Long id) {
-        return this.images.stream()
-                .filter(i -> i.getId() == (id)).findAny();
-    }
-
-    private List<Image> convertImageFilesToImages(List<MultipartFile> imageFiles) {
-        return imageFiles.stream().map(imageFile ->
-                new Image(imageFile.getOriginalFilename())).collect(toList());
-    }
-
-    private void addImages(List<Image> added) {
+    public void addImages(List<Image> added) {
         List<Image> toBeAdded = added.stream()
                 .peek(i -> i.initBoard(this))
                 .collect(Collectors.toList());
         images.addAll(toBeAdded);
     }
 
-    private void deleteImages(List<Image> deletedImages) {
-        deletedImages.forEach(di -> this.images.remove(di));
-    }
-
-
-    @Getter
-    @AllArgsConstructor
-    public static class ImageUpdatedResult {
-        private List<MultipartFile> addedImageFiles;
-        private List<Image> addedImages;
-        private List<Image> deletedImages;
-    }
 }
