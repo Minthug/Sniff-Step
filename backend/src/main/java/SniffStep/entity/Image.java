@@ -44,12 +44,23 @@ public class Image extends BaseTime {
         this.s3FilePath = s3FilePath;
     }
 
+    public void assignToBoard(Board board) {
+        if (this.board != null) {
+            this.board.getImages().remove(this);
+        }
+        this.board = board;
+        if (board != null && !board.getImages().contains(this)) {
+            board.getImages().add(this);
+        }
+    }
+
     private final static String[] supportedExtensions = new String[]{"jpg", "jpeg", "png", "gif"};
 
     public Image(String originName) {
         this.originName = originName;
         this.uniqueName = generateUniqueName(extractExtension(originName));
     }
+
     private String extractExtension(String originName) {
         int dotIndex = originName.lastIndexOf(".");
         if (dotIndex == -1 || dotIndex == originName.length() - 1) {
@@ -76,4 +87,7 @@ public class Image extends BaseTime {
         return UUID.randomUUID().toString() + "." + extension;
     }
 
+    public Image updateImage(String originName, String uniqueName, String s3FilePath) {
+        return new Image(originName, uniqueName, s3FilePath);
+    }
 }

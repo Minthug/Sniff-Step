@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Service
 @Slf4j
@@ -106,36 +105,31 @@ public class BoardService {
         return BoardFindAllWithPagingResponseDTO.toDto(boardsWithDto, new PageInfoDTO(boards));
     }
 
-//        @Transactional
-//        public void editBoard(Long id, String title, String description, String activityLocation, List<MultipartFile> addedImageFiles, List<Long> deletedImages) {
-//            Board board = boardRepository.findById(id).orElseThrow(BoardNotFoundException::new);
-//            validateBoardWriter(board);
-//
-//            ImageUpdatedResult result = board.updateBoard(title, description, activityLocation, addedImageFiles, deletedImages);
-//            uploadImages(result.getAddedImages(), result.getAddedImageFiles());
-//            deleteImages(result.getDeletedImages());
-//        }
 
     @Transactional
     public ImageUpdateResultDTO updateBoard(Long boardId, String title, String description, String activityLocation, List<MultipartFile> addedImages, List<Long> deletedImages) {
-        Board board = boardRepository.findById(boardId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
+        Board board = findBoardById(boardId);
+        List<Image> imagesToDelete = findImagesToDelete(board.getImages(), deletedImages);
+        List<Image> newImage = createImageEntities(addedImages);
 
-        board.update(title, description, activityLocation);
+        deleteImages(board, imagesToDelete);
+        List<Image> updatedImage = updatedBoardImage(board, imagesToDelete, newImage);
 
-        ImageUpdateResultDTO result = processImages(board, addedImages, deletedImages);
+        board.updateBoardWithImages(title, description, activityLocation, updatedImage);
 
-        return result;
+        return new ImageUpdateResultDTO(addedImages, newImage, imagesToDelete);
     }
 
+    private Board findBoardById(Long boardId) {
+        return boardRepository.findById(boardId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
+    }
 
-    private ImageUpdateResultDTO processImages(Board board, List<MultipartFile> addedImages, List<Long> deletedImageIds) {
-        List<Image> addedImageEntities = createImageEntities(addedImages);
-        List<Image> deletedImageEntities = findImagesToDelete(board, deletedImageIds);
-
-        board.addImages(addedImageEntities);
-        deleteImages(deletedImageEntities);
-
-        return new ImageUpdateResultDTO(addedImages, addedImageEntities, deletedImageEntities);
+    private List<Image> updatedBoardImage(Board board, List<Image> imagesToDelete, List<Image> newImage) {
+        List<Image> updatedImage = new ArrayList<>(board.getImages());
+        updatedImage.removeAll(imagesToDelete);
+        updatedImage.addAll(newImage);
+        return updatedImage;
     }
 
     private List<Image> createImageEntities(List<MultipartFile> imageFiles) {
@@ -144,11 +138,12 @@ public class BoardService {
                 .collect(Collectors.toList());
     }
 
-    private List<Image> findImagesToDelete(Board board, List<Long> imageIds) {
-        return board.getImages().stream()
+    private List<Image> findImagesToDelete(List<Image> currentImage, List<Long> imageIds) {
+        return currentImage.stream()
                 .filter(image -> imageIds.contains(image.getId()))
                 .collect(Collectors.toList());
     }
+
     @Transactional
     public void deleteBoard(Long id) {
         Board board = boardRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
@@ -156,11 +151,12 @@ public class BoardService {
         boardRepository.delete(board);
     }
 
-    private void deleteImages(List<Image> images) {
-        for (Image image : images) {
+    private void deleteImages(Board board, List<Image> imageToDelete) {
+        for (Image image : imageToDelete) {
+            board.removeImage(image);
             boolean deleted = awsService.deleteFileV2(image.getS3FilePath(), image.getUniqueName());
             if (!deleted) {
-                log.warn("이미지 삭제에 실패했습니다. 이미지 경로: {}", image.getUniqueName());
+                log.warn("Failed to delete image file: {}", image.getUniqueName());
             }
         }
     }
@@ -188,14 +184,5 @@ public class BoardService {
         }
     }
 
-    private void uploadImages(List<Image> images, List<MultipartFile> filesImages) {
-
-        try {
-            IntStream.range(0, filesImages.size())
-                    .forEach(i ->  imageService.upload(filesImages.get(i), images.get(i).getUniqueName()));
-        } catch (BusinessLogicException e) {
-            throw new RuntimeException("이미지 업로드 중 오류가 발생했습니다.", e);
-        }
-    }
 }
 

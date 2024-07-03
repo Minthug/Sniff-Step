@@ -1,23 +1,14 @@
 package SniffStep.entity;
 
 import SniffStep.common.BaseTime;
-import SniffStep.dto.board.BoardPatchDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
 
 @Getter
 @Entity
@@ -54,15 +45,22 @@ public class Board extends BaseTime {
     @Column(name = "activity_times")
     private String activityTime;
 
-    public Board(String title, String description, String activityLocation, List<Image> images, Member member, List<ActivityDate> activityDate, List<ActivityTime> activityTime) {
+
+    public Board(String title, String description, String activityLocation, Member member, List<Image> images, List<ActivityDate> activityDate, List<ActivityTime> activityTime) {
         this.title = title;
         this.description = description;
         this.activityLocation = activityLocation;
         this.images = new ArrayList<>();
         this.member = member;
-        addImages(images);
         setActivityDateInternal(activityDate);
         setActivityTimeInternal(activityTime);
+        initializeImages(images);
+    }
+
+    private void initializeImages(List<Image> images) {
+        if (images != null) {
+            images.forEach(this::addImages);
+        }
     }
 
     private void setActivityDateInternal(List<ActivityDate> activityDate) {
@@ -101,53 +99,35 @@ public class Board extends BaseTime {
         this.activityLocation = activityLocation;
     }
 
-//    public ImageUpdatedResult updateBoard(String title, String description, String activityLocation, List<MultipartFile> addedImages, List<Long> deletedImages) {
-//        this.title = title;
-//        this.description = description;
-//        this.activityLocation = activityLocation;
-//
-//        ImageUpdatedResult result = findImageUpdatedResult(addedImages, deletedImages);
-//        addImages(result.getAddedImages());
-//        deleteImages(result.getDeletedImages());
-//        onPreUpdate();
-//
-//        return result;
-//    }
-
-
     public boolean isOwnBoard(Member member) {
         return this.member.equals(member);
     }
 
-//    private ImageUpdatedResult findImageUpdatedResult(List<MultipartFile> addedImageFiles, List<Long> deletedImageIds) {
-//        List<Image> addedImage = convertImageFilesToImages(addedImageFiles);
-//        List<Image> deletedImages = convertImageIdsToImages(deletedImageIds);
-//        return new ImageUpdatedResult(addedImageFiles, addedImage, deletedImages);
-//    }
-//
-//    private List<Image> convertImageIdsToImages(List<Long> imageIds) {
-//        return imageIds.stream()
-//                .map(id -> convertImageIdsToImage(id))
-//                .filter(i -> i.isPresent())
-//                .map(i -> i.get())
-//                .collect(toList());
-//    }
-//
-//    private Optional<Image> convertImageIdsToImage(Long id) {
-//        return this.images.stream()
-//                .filter(i -> i.getId() == (id)).findAny();
-//    }
-//
-//    private List<Image> convertImageFilesToImages(List<MultipartFile> imageFiles) {
-//        return imageFiles.stream().map(imageFile ->
-//                new Image(imageFile.getOriginalFilename())).collect(toList());
+
+//    public void addImages(List<Image> added) {
+//        List<Image> toBeAdded = added.stream()
+//                .peek(i -> i.initBoard(this))
+//                .collect(Collectors.toList());
+//        images.addAll(toBeAdded);
 //    }
 
-    public void addImages(List<Image> added) {
-        List<Image> toBeAdded = added.stream()
-                .peek(i -> i.initBoard(this))
-                .collect(Collectors.toList());
-        images.addAll(toBeAdded);
+    public void addImages(Image image) {
+        this.images.add(image);
+        image.assignToBoard(this);
     }
 
+    public void removeImage(Image image) {
+        this.images.remove(image);
+        image.assignToBoard(null);
+    }
+
+    public List<Image> getImages() {
+        return Collections.unmodifiableList(images);
+    }
+
+    public void updateBoardWithImages(String title, String description, String activityLocation, List<Image> newImage) {
+        this.update(title, description, activityLocation);
+        this.images.clear();
+        initializeImages(newImage);
+    }
 }

@@ -67,23 +67,6 @@ public class AwsService {
         return objectMetadata;
     }
 
-    public String deleteFile(String uploadFilePath, String uuidFileName) {
-        String result = "success";
-
-        try {
-            String keyName = uploadFilePath + "/" + uuidFileName;
-            boolean isObjectExist = amazonS3Client.doesObjectExist(bucketName, keyName);
-            if (isObjectExist) {
-                amazonS3Client.deleteObject(bucketName, keyName);
-            } else {
-                result = "fail";
-            }
-        } catch (Exception e) {
-            log.debug("Delete File failed", e);
-        }
-        return result;
-    }
-
     public boolean deleteFileV2(String uploadFilePath, String uuidFileName) {
         String keyName = uploadFilePath + "/" + uuidFileName;
 
