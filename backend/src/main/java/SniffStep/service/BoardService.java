@@ -124,14 +124,9 @@ public class BoardService {
 
         ImageUpdateResultDTO result = processImages(board, addedImages, deletedImages);
 
-        return null;
+        return result;
     }
 
-//    private ImageUpdateResultDTO findImageUpdatedResult(List<MultipartFile> addedImageFiles, List<Long> deletedImageIds) {
-//        List<Image> addedImage = convertImageFilesToImages(addedImageFiles);
-//        List<Image> deletedImages = convertImageIdsToImages(deletedImageIds);
-//        return new ImageUpdatedResult(addedImageFiles, addedImage, deletedImages);
-//    }
 
     private ImageUpdateResultDTO processImages(Board board, List<MultipartFile> addedImages, List<Long> deletedImageIds) {
         List<Image> addedImageEntities = createImageEntities(addedImages);

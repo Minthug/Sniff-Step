@@ -48,9 +48,9 @@ public class BoardController {
         return ResponseEntity.ok(boardService.searchBoards(keyword, page));
     }
 
-    @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> editBoard(@PathVariable(value = "id") Long id,
-                                       @Valid @RequestBody BoardPatchDTO request,
+                                       @Valid @ModelAttribute BoardPatchDTO request,
                                        @AuthenticationPrincipal UserDetails userDetails) {
         String title = request.getTitle();
         String description = request.getDescription();
