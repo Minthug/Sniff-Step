@@ -34,9 +34,8 @@ public class AwsService {
     }
 
 
-    public List<AwsS3> uploadFiles(Long memberId, String folderPath, List<MultipartFile> multipartFiles) {
+    public List<AwsS3> uploadFiles(String uploadFilePath, List<MultipartFile> multipartFiles) {
         List<AwsS3> s3files = new ArrayList<>();
-        String uploadFilePath = String.format("member/%d", memberId);
 
         for (MultipartFile multipartFile : multipartFiles) {
             String originalFileName = multipartFile.getOriginalFilename();
@@ -45,7 +44,6 @@ public class AwsService {
 
             try (InputStream inputStream = multipartFile.getInputStream()) {
                 ObjectMetadata objectMetadata = createObjectMetadata(multipartFile);
-
 
                 uploadFileToS3(keyName, inputStream, objectMetadata);
                 String uploadFileUrl = getUploadedFileUrl(keyName);
@@ -57,6 +55,17 @@ public class AwsService {
             }
         }
         return s3files;
+    }
+
+    public List<AwsS3> uploadBoardFiles(Long memberId, Long boardId, List<MultipartFile> imageFile) {
+        String uploadFilePath = String.format("member/%d/boards/%d", memberId, boardId);
+        return uploadFiles(uploadFilePath, imageFile);
+    }
+
+    public AwsS3 uploadProfileFiles(Long memberId, MultipartFile imageFile) {
+        String uploadFilePath = String.format("member/%d/profile/%d", memberId);
+        List<AwsS3> uploadedFiles = uploadFiles(uploadFilePath, Collections.singletonList(imageFile));
+        return uploadedFiles.isEmpty() ? null : uploadedFiles.get(0);
     }
 
     // 수정된 사항

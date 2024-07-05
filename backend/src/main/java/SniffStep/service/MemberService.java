@@ -65,12 +65,7 @@ public class MemberService {
 
             String imageUrl = null;
             if (!memberUpdateDTO.getImageFiles().isEmpty()) {
-                String folderPath = String.format("images/profile/member_%d", member.getId());
-                List<AwsS3> uploadFiles = awsService.uploadFiles(member.getId(), folderPath, memberUpdateDTO.getImageFiles());
-
-                if (!uploadFiles.isEmpty()) {
-                    imageUrl = uploadFiles.get(0).getUploadFileUrl();
-                }
+                AwsS3 uploadFiles = awsService.uploadProfileFiles(member.getId(), memberUpdateDTO.getImageFiles().get(0));
 
             }
                 member.updateMember(memberUpdateDTO.getNickname(), memberUpdateDTO.getIntroduce(), encryptedPassword,

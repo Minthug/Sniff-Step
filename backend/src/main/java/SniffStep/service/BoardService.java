@@ -32,50 +32,38 @@ public class BoardService {
 
 
     @Transactional
-    public void createBoard(BoardCreatedRequestDTO request, Member member) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public Board createBoard(BoardCreatedRequestDTO request, String username) {
+        Member member = memberRepository.findByEmail(username)
+                .orElseThrow(() -> new MemberNotFoundException());
 
-        if (principal instanceof UserDetails) {
-            UserDetails userDetails = (UserDetails) principal;
-            String username = userDetails.getUsername();
-
-            Optional<Member> optionalMember = memberRepository.findByEmail(username);
-            if (optionalMember.isPresent()) {
-                member = optionalMember.get();
-
-                String folderPath = String.format("images/board/member_%d", member.getId());
-                List<AwsS3> uploadFiles = awsService.uploadFiles(member.getId(), folderPath, request.getImages());
-
-                List<Image> images  = uploadFiles.stream()
-                        .map(file -> new Image(file.getOriginalFileName(), file.getUploadFileName(), file.getUploadFileUrl()))
-                        .collect(Collectors.toList());
-
-                List<ActivityDate> activityDates = request.getActivityDate().stream()
+        Board board = new Board(
+                request.getTitle(),
+                request.getDescription(),
+                request.getActivityLocation(),
+                member,
+                new ArrayList<>(),
+                request.getActivityDate().stream()
                         .map(ActivityDate::fromString)
-                        .collect(Collectors.toList());
-
-                List<ActivityTime> activityTimes = request.getActivityTime().stream()
+                        .collect(Collectors.toList()),
+                request.getActivityTime().stream()
                         .map(ActivityTime::fromString)
-                        .collect(Collectors.toList());
+                        .collect(Collectors.toList())
+        );
+        board = boardRepository.save(board);
 
-                Board board = new Board(
-                                        request.getTitle(),
-                                        request.getDescription(),
-                                        request.getActivityLocation(),
-                        member,
-                        images,
-                                        activityDates,
-                                        activityTimes);
+        if (!request.getImages().isEmpty()) {
+            List<AwsS3> uploadFiles = awsService.uploadBoardFiles(member.getId(), board.getId(), request.getImages());
 
-                boardRepository.save(board);
-            } else {
-                throw new MemberNotFoundException();
-            }
-        } else {
-            throw new AccessDeniedException("인증되지 않은 사용자입니다.");
+            List<Image> images = uploadFiles.stream()
+                    .map(file -> new Image(file.getOriginalFileName(), file.getUploadFileUrl(), file.getUploadFilePath()))
+                    .collect(Collectors.toList());
+
+            images.forEach(board::addImages);
+
+            boardRepository.save(board);
         }
+        return board;
     }
-
 
     @Transactional(readOnly = true)
     public BoardResponseDTO findBoard(Long id) {
@@ -111,11 +99,10 @@ public class BoardService {
         List<Image> imagesToDelete = findImagesToDelete(board.getImages(), deletedImages);
 
         // S3 이미지 업로드
-        String folderPath = String.format("images/board/member_%d", boardId);
-        List<AwsS3> uploadedImages = awsService.uploadFiles(board.getMember().getId(), folderPath, addedImages);
+        List<AwsS3> uploadedImages = awsService.uploadBoardFiles(board.getMember().getId(), boardId, addedImages);
         List<Image> newImages = createImageEntities(uploadedImages);
 
-        // 이미지 삭제 처
+        // 이미지 삭제 처리
         deleteImages(board, imagesToDelete);
 
         // 새 이미지 및 Board 업데이트
@@ -165,7 +152,8 @@ public class BoardService {
     private void deleteImages(Board board, List<Image> imageToDelete) {
         for (Image image : imageToDelete) {
             board.removeImage(image);
-            boolean deleted = awsService.deleteFileV2(image.getS3FilePath(), image.getUniqueName());
+            String filePath = String.format("member/%d/%d", board.getMember().getId(), board.getId());
+            boolean deleted = awsService.deleteFileV2(filePath, image.getUniqueName());
             if (!deleted) {
                 log.warn("Failed to delete image file: {}", image.getUniqueName());
             }
