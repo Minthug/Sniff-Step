@@ -104,13 +104,6 @@ public class Board extends BaseTime {
     }
 
 
-//    public void addImages(List<Image> added) {
-//        List<Image> toBeAdded = added.stream()
-//                .peek(i -> i.initBoard(this))
-//                .collect(Collectors.toList());
-//        images.addAll(toBeAdded);
-//    }
-
     public void addImages(Image image) {
         this.images.add(image);
         image.assignToBoard(this);
@@ -122,7 +115,7 @@ public class Board extends BaseTime {
     }
 
     public List<Image> getImages() {
-        return Collections.unmodifiableList(images);
+        return new ArrayList<>(images);
     }
 
     public void updateBoardWithImages(String title, String description, String activityLocation, List<Image> newImage) {

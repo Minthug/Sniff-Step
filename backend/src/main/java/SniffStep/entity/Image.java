@@ -42,6 +42,7 @@ public class Image extends BaseTime {
         this.originName = originName;
         this.s3Url = s3Url;
         this.s3FilePath = s3FilePath;
+        this.uniqueName = generateUniqueName(extractExtension(originName));
     }
 
     public void assignToBoard(Board board) {
@@ -55,11 +56,6 @@ public class Image extends BaseTime {
     }
 
     private final static String[] supportedExtensions = new String[]{"jpg", "jpeg", "png", "gif"};
-
-    public Image(String originName) {
-        this.originName = originName;
-        this.uniqueName = generateUniqueName(extractExtension(originName));
-    }
 
     private String extractExtension(String originName) {
         int dotIndex = originName.lastIndexOf(".");
@@ -87,7 +83,10 @@ public class Image extends BaseTime {
         return UUID.randomUUID().toString() + "." + extension;
     }
 
-    public Image updateImage(String originName, String uniqueName, String s3FilePath) {
-        return new Image(originName, uniqueName, s3FilePath);
+    public void updateImage(String originName, String s3Url, String s3FilePath) {
+        this.originName = originName;
+        this.s3Url = s3Url;
+        this.s3FilePath = s3FilePath;
+        this.uniqueName = generateUniqueName(extractExtension(originName));
     }
 }

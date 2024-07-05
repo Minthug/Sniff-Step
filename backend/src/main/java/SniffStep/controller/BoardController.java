@@ -2,6 +2,9 @@ package SniffStep.controller;
 
 import SniffStep.dto.board.BoardCreatedRequestDTO;
 import SniffStep.dto.board.BoardPatchDTO;
+import SniffStep.dto.board.BoardResponseDTO;
+import SniffStep.dto.board.ImageUpdateResultDTO;
+import SniffStep.entity.Board;
 import SniffStep.entity.Member;
 import SniffStep.service.BoardService;
 import jakarta.validation.Valid;
@@ -52,14 +55,16 @@ public class BoardController {
     public ResponseEntity<?> editBoard(@PathVariable(value = "id") Long id,
                                        @Valid @ModelAttribute BoardPatchDTO request,
                                        @AuthenticationPrincipal UserDetails userDetails) {
+
         String title = request.getTitle();
         String description = request.getDescription();
         String activityLocation = request.getActivityLocation();
         List<MultipartFile> addedImages = request.getImageFiles();
         List<Long> deletedImages = request.getDeletedImages();
 
-        boardService.updateBoard(id, title, description, activityLocation, addedImages, deletedImages);
-        return ResponseEntity.ok().build();
+        ImageUpdateResultDTO result = boardService.updateBoard(id, title, description, activityLocation, addedImages, deletedImages);
+
+        return ResponseEntity.ok(result);
     }
 
     @DeleteMapping("/{id}")

@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public class ImageUpdateResultDTO {
-    private List<MultipartFile> addedImageFiles;
+    private List<AwsS3> addedImageFiles;
     private List<Image> deletedImage;
     private List<Image> addedImages;
 }

@@ -27,7 +27,6 @@ import java.util.stream.Collectors;
 public class BoardService {
 
         private final BoardRepository boardRepository;
-        private final ImageService imageService;
         private final AwsService awsService;
         private final MemberRepository memberRepository;
 
@@ -60,13 +59,13 @@ public class BoardService {
                         .collect(Collectors.toList());
 
                 Board board = new Board(
-                        request.getTitle(),
-                        request.getDescription(),
-                        request.getActivityLocation(),
-                        images,
+                                        request.getTitle(),
+                                        request.getDescription(),
+                                        request.getActivityLocation(),
                         member,
-                        activityDates,
-                        activityTimes);
+                        images,
+                                        activityDates,
+                                        activityTimes);
 
                 boardRepository.save(board);
             } else {
@@ -110,17 +109,24 @@ public class BoardService {
     public ImageUpdateResultDTO updateBoard(Long boardId, String title, String description, String activityLocation, List<MultipartFile> addedImages, List<Long> deletedImages) {
         Board board = findBoardById(boardId);
         List<Image> imagesToDelete = findImagesToDelete(board.getImages(), deletedImages);
-        List<Image> newImage = createImageEntities(addedImages);
 
+        // S3 이미지 업로드
+        String folderPath = String.format("images/board/member_%d", boardId);
+        List<AwsS3> uploadedImages = awsService.uploadFiles(board.getMember().getId(), folderPath, addedImages);
+        List<Image> newImages = createImageEntities(uploadedImages);
+
+        // 이미지 삭제 처
         deleteImages(board, imagesToDelete);
-        List<Image> updatedImage = updatedBoardImage(board, imagesToDelete, newImage);
 
-        board.updateBoardWithImages(title, description, activityLocation, updatedImage);
+        // 새 이미지 및 Board 업데이트
+        List<Image> updatedImages = updatedBoardImage(board, imagesToDelete, newImages);
 
-        return new ImageUpdateResultDTO(addedImages, newImage, imagesToDelete);
+        board.updateBoardWithImages(title, description, activityLocation, updatedImages);
+
+        return new ImageUpdateResultDTO(uploadedImages, newImages, imagesToDelete);
     }
 
-    private Board findBoardById(Long boardId) {
+    public Board findBoardById(Long boardId) {
         return boardRepository.findById(boardId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
     }
@@ -132,10 +138,15 @@ public class BoardService {
         return updatedImage;
     }
 
-    private List<Image> createImageEntities(List<MultipartFile> imageFiles) {
-        return imageFiles.stream()
-                .map(file -> new Image(file.getOriginalFilename()))
+    private List<Image> createImageEntities(List<AwsS3> uploadedImage) {
+        return uploadedImage.stream()
+                .map(awsS3 -> Image.builder()
+                        .originName(awsS3.getOriginalFileName())
+                        .s3Url(awsS3.getUploadFileUrl())
+                        .s3FilePath(awsS3.getUploadFilePath())
+                        .build())
                 .collect(Collectors.toList());
+
     }
 
     private List<Image> findImagesToDelete(List<Image> currentImage, List<Long> imageIds) {
@@ -161,7 +172,7 @@ public class BoardService {
         }
     }
 
-    private void validateBoardWriter(Board board) {
+    public void validateBoardWriter(Board board) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserDetails) {
             UserDetails userDetails = (UserDetails) principal;
@@ -183,6 +194,8 @@ public class BoardService {
             throw new AccessDeniedException("인증되지 않은 사용자입니다.");
         }
     }
+
+
 
 }
 
