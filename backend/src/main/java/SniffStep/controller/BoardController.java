@@ -41,7 +41,6 @@ public class BoardController {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
 
-
     @GetMapping("/{id}")
     public ResponseEntity<?> findBoard(@PathVariable(value = "id") Long id) {
         return ResponseEntity.ok(boardService.findBoard(id));

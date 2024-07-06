@@ -33,11 +33,13 @@ public class AwsService {
         bucketName = s3Config.getBucketName();
     }
 
-
-    public List<AwsS3> uploadFiles(String uploadFilePath, List<MultipartFile> multipartFiles) {
+    public List<AwsS3> uploadFilesV2(String uploadFilePath, List<MultipartFile> multipartFiles) {
         List<AwsS3> s3files = new ArrayList<>();
 
         for (MultipartFile multipartFile : multipartFiles) {
+            if (multipartFile.isEmpty()) {
+                continue;
+            }
             String originalFileName = multipartFile.getOriginalFilename();
             String uploadFileName = getUuidFileName(originalFileName);
             String keyName = uploadFilePath + "/" + uploadFileName;
@@ -50,8 +52,8 @@ public class AwsService {
 
                 s3files.add(createAwsS3(originalFileName, uploadFileName, uploadFilePath, uploadFileUrl));
             } catch (IOException e) {
-                e.printStackTrace();
                 log.error("File upload failed", e);
+                throw new RuntimeException("File upload failed", e);
             }
         }
         return s3files;
@@ -59,12 +61,12 @@ public class AwsService {
 
     public List<AwsS3> uploadBoardFiles(Long memberId, Long boardId, List<MultipartFile> imageFile) {
         String uploadFilePath = String.format("member/%d/boards/%d", memberId, boardId);
-        return uploadFiles(uploadFilePath, imageFile);
+        return uploadFilesV2(uploadFilePath, imageFile);
     }
 
     public AwsS3 uploadProfileFiles(Long memberId, MultipartFile imageFile) {
         String uploadFilePath = String.format("member/%d/profile/%d", memberId);
-        List<AwsS3> uploadedFiles = uploadFiles(uploadFilePath, Collections.singletonList(imageFile));
+        List<AwsS3> uploadedFiles = uploadFilesV2(uploadFilePath, Collections.singletonList(imageFile));
         return uploadedFiles.isEmpty() ? null : uploadedFiles.get(0);
     }
 

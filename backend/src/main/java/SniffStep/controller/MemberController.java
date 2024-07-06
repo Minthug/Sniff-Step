@@ -33,7 +33,7 @@ public class MemberController {
     @PatchMapping(value = "/edit/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> editMember(@PathVariable(value = "id") Long id,
                                            @Valid @ModelAttribute MemberUpdateDTO memberUpdateDTO) {
-        memberService.editMember(id, memberUpdateDTO);
+        memberService.editMemberV2(id, memberUpdateDTO);
 
         return ResponseEntity.ok().build();
 

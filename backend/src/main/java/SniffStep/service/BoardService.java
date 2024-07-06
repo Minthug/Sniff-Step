@@ -47,8 +47,8 @@ public class BoardService {
                         .collect(Collectors.toList()),
                 request.getActivityTime().stream()
                         .map(ActivityTime::fromString)
-                        .collect(Collectors.toList())
-        );
+                        .collect(Collectors.toList()));
+
         board = boardRepository.save(board);
 
         if (!request.getImages().isEmpty()) {
