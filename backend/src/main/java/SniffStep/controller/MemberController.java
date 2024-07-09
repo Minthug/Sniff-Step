@@ -1,12 +1,17 @@
 package SniffStep.controller;
 
+import SniffStep.common.exception.AccessDeniedException;
+import SniffStep.common.exception.MemberNotFoundException;
 import SniffStep.dto.member.MemberDTO;
+import SniffStep.dto.member.MemberResponseDTO;
 import SniffStep.dto.member.MemberUpdateDTO;
 import SniffStep.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,12 +36,10 @@ public class MemberController {
     }
 
     @PatchMapping(value = "/edit/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void> editMember(@PathVariable(value = "id") Long id,
-                                           @Valid @ModelAttribute MemberUpdateDTO memberUpdateDTO) {
+    public ResponseEntity<?> editMember(@PathVariable(value = "id") Long id,
+                                        @Valid @ModelAttribute MemberUpdateDTO memberUpdateDTO) {
         memberService.editMemberV2(id, memberUpdateDTO);
-
         return ResponseEntity.ok().build();
-
     }
 
     @DeleteMapping("/{id}")

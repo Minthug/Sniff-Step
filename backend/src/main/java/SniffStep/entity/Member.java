@@ -3,6 +3,7 @@ package SniffStep.entity;
 import SniffStep.common.BaseTime;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 @Entity
 @Getter
 @Builder
+@Slf4j
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseTime {
@@ -54,23 +56,15 @@ public class Member extends BaseTime {
     }
 
     public void updateMember(String nickname, String introduce, String password, String phoneNumber, String imageUrl) {
-        if (nickname != null) {
-            this.nickname = nickname;
-        }
-        if (introduce != null) {
-            this.introduce = introduce;
-        }
-        if (password != null) {
-            this.password = password;
-        }
-        if (phoneNumber != null) {
-            this.phoneNumber = phoneNumber;
-        }
-        if (imageUrl != null) {
+        if (nickname != null && !nickname.isEmpty()) this.nickname = nickname;
+        if (introduce != null) this.introduce = introduce;
+        if (password != null && !password.isEmpty()) this.password = password;
+        if (phoneNumber != null && !phoneNumber.isEmpty()) this.phoneNumber = phoneNumber;
+        if (imageUrl != null && !imageUrl.isEmpty()) {
             this.imageUrl = imageUrl;
         }
-
         onPreUpdate();
+        log.info("Member updated: {}", this.imageUrl);
     }
 
     public void updateRefreshToken(String updateRefreshToken) {

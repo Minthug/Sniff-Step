@@ -64,10 +64,26 @@ public class AwsService {
         return uploadFilesV2(uploadFilePath, imageFile);
     }
 
-    public AwsS3 uploadProfileFiles(Long memberId, MultipartFile imageFile) {
-        String uploadFilePath = String.format("member/%d/profile/%d", memberId);
-        List<AwsS3> uploadedFiles = uploadFilesV2(uploadFilePath, Collections.singletonList(imageFile));
-        return uploadedFiles.isEmpty() ? null : uploadedFiles.get(0);
+    public List<AwsS3> uploadProfileFiles(Long memberId, List<MultipartFile> imageFile) {
+        String uploadFilePath = String.format("member/%d/profile", memberId);
+        return uploadFilesV2(uploadFilePath, imageFile);
+    }
+
+
+    public AwsS3 uploadProfileFilesV2(Long memberId, MultipartFile imageFile) {
+
+        validateImageFile(imageFile);
+
+        String fileName = generateFileName(imageFile.getOriginalFilename());
+        String uploadFilePath = String.format("member/%d/profile/%s", memberId, fileName);
+
+        List<AwsS3> uploadFiles = uploadFilesV2(uploadFilePath, Collections.singletonList(imageFile));
+
+        if (uploadFiles.isEmpty()) {
+            throw new RuntimeException("Failed to upload file");
+        }
+
+        return uploadFiles.get(0);
     }
 
     // 수정된 사항
@@ -98,13 +114,6 @@ public class AwsService {
         }
     }
 
-    private String getFolderName() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd", Locale.getDefault());
-        Date date = new Date();
-        String str = sdf.format(date);
-        return str.replace("-", "/");
-    }
-
     private String getUuidFileName(String fileName) {
         String ext = fileName.substring(fileName.indexOf(".") + 1);
         return UUID.randomUUID().toString() + "." + ext;
@@ -128,5 +137,20 @@ public class AwsService {
                 .uploadFilePath(uploadFilePath)
                 .uploadFileUrl(uploadFileUrl)
                 .build();
+    }
+
+    private void validateImageFile(MultipartFile imageFile) {
+        if (imageFile.isEmpty()) {
+            throw new IllegalArgumentException("Empty file submitted");
+        }
+
+        String contentType = imageFile.getContentType();
+        if (contentType == null || !contentType.startsWith("image/")) {
+            throw new IllegalArgumentException("Invalid file type");
+        }
+    }
+
+    private String generateFileName(String originalFileName) {
+        return UUID.randomUUID().toString() + "_" + originalFileName;
     }
 }

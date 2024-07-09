@@ -9,9 +9,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberResponseDTO {
+    private Long id;
     private String email;
+    private String nickname;
+    private String introduce;
+    private String phoneNumber;
+    private String imageUrl;
 
     public static MemberResponseDTO of(Member member) {
-        return new MemberResponseDTO(member.getEmail());
+        return new MemberResponseDTO(
+                member.getId(),
+                member.getEmail(),
+                member.getNickname(),
+                member.getIntroduce(),
+                member.getPhoneNumber(),
+                member.getImageUrl()
+        );
     }
 }
