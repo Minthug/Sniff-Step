@@ -3,7 +3,6 @@ package SniffStep.dto.board;
 import SniffStep.entity.Image;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 

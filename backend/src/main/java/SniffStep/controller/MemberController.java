@@ -1,17 +1,12 @@
 package SniffStep.controller;
 
-import SniffStep.common.exception.AccessDeniedException;
-import SniffStep.common.exception.MemberNotFoundException;
 import SniffStep.dto.member.MemberDTO;
-import SniffStep.dto.member.MemberResponseDTO;
 import SniffStep.dto.member.MemberUpdateDTO;
 import SniffStep.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
