@@ -197,7 +197,6 @@ export function useUpdateBoard({ lang }: Props): BoardUpdateState {
         const data = new FormData()
         if (file) data.append('file', file)
 
-        data.append('id', board.id)
         data.append('title', title)
         data.append('address', address)
         data.append('description', description)
@@ -208,7 +207,7 @@ export function useUpdateBoard({ lang }: Props): BoardUpdateState {
             if (value) data.append('activityTime', key.toUpperCase())
         })
 
-        const res = await customFetch('/api/boards', {
+        const res = await customFetch(`/api/boards/${board.id}`, {
             method: 'PATCH',
             body: data
         })

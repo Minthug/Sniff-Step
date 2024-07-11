@@ -18,21 +18,3 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ message: 'success' }, { status: 200 })
 }
-
-export async function PATCH(req: Request) {
-    const formdata = await req.formData()
-    const res = await fetch(process.env.NODE_BACKEND_URL + '/boards', {
-        method: 'PATCH',
-        headers: {
-            authorization: req.headers.get('authorization') || ''
-        },
-        body: formdata
-    })
-
-    if (!res.ok) {
-        const { message, error, statusCode } = await res.json()
-        return NextResponse.json({ message, error }, { status: statusCode })
-    }
-
-    return NextResponse.json({ message: 'success' }, { status: 200 })
-}
