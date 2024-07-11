@@ -215,7 +215,8 @@ export function useUpdateBoard({ lang }: Props): BoardUpdateState {
         if (res) {
             if (!res.ok) {
                 const { message } = await res?.json()
-                return handleUpdateError(message)
+                handleUpdateError(message)
+                throw new Error('patch failed')
             }
             router.push(`/${lang}/boards?reload=true`)
         }
