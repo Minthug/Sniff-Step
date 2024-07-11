@@ -1,8 +1,8 @@
 package SniffStep.controller;
 
 import SniffStep.common.config.oauth.GetSocialOAuthRes;
-import SniffStep.service.OAuthService;
 import SniffStep.common.jwt.service.JwtService;
+import SniffStep.service.OAuthService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

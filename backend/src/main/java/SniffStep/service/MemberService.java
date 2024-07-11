@@ -46,34 +46,6 @@ public class MemberService {
     }
 
 
-//    @Transactional
-//    public void editMember(Long id, MemberUpdateDTO memberUpdateDTO) {
-//
-//        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//
-//        if (principal instanceof UserDetails) {
-//            UserDetails userDetails = (UserDetails) principal;
-//            String username = userDetails.getUsername();
-//
-//
-//            Member member = memberRepository.findById(id)
-//                    .orElseThrow(() -> new MemberNotFoundException());
-//
-//            String encryptedPassword = null;
-//            if (memberUpdateDTO.getPassword() != null) {
-//                encryptedPassword = passwordEncoder.encode(memberUpdateDTO.getPassword());
-//            }
-//
-//            String imageUrl = null;
-//            if (!memberUpdateDTO.getImageFiles().isEmpty()) {
-//                AwsS3 uploadFiles = awsService.uploadProfileFilesV2(member.getId(), memberUpdateDTO.getImageFiles().get(0));
-//
-//            }
-//                member.updateMember(memberUpdateDTO.getNickname(), memberUpdateDTO.getIntroduce(), encryptedPassword,
-//                        memberUpdateDTO.getPhoneNumber(), imageUrl);
-//        }
-//    }
-
     @Transactional
     public MemberResponseDTO editMemberV2(Long id, MemberUpdateDTO memberUpdateDTO) {
 

@@ -20,7 +20,6 @@ public class BoardCreatedRequestDTO {
     private String description;
     private String activityLocation;
     private List<MultipartFile> images = new ArrayList<>();
-    private List<Long> imageId;
     private List<String> activityDate = new ArrayList<>();
     private List<String> activityTime = new ArrayList<>();
 

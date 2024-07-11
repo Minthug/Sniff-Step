@@ -70,9 +70,6 @@ public class webSecurityConfig {
                 .failureHandler(oAuthLoginFailureHandler)
                 .userInfoEndpoint().userService(customOAuthUserService);
 
-
-
-
         http.addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class);
         http.addFilterBefore(jwtAuthenticationProcessingFilter(), CustomJsonUsernamePasswordAuthenticationFilter.class);
 

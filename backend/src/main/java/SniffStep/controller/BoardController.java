@@ -5,7 +5,6 @@ import SniffStep.dto.board.BoardPatchDTO;
 import SniffStep.dto.board.BoardResponseDTO;
 import SniffStep.dto.board.ImageUpdateResultDTO;
 import SniffStep.entity.Board;
-import SniffStep.entity.Member;
 import SniffStep.service.BoardService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

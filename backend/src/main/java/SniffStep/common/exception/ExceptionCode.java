@@ -1,7 +1,6 @@
 package SniffStep.common.exception;
 
 import lombok.Getter;
-import org.springframework.data.repository.cdi.Eager;
 
 public enum ExceptionCode {
 

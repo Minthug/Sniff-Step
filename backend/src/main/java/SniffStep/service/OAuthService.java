@@ -2,12 +2,10 @@ package SniffStep.service;
 
 
 import SniffStep.common.config.oauth.*;
-import SniffStep.common.jwt.dto.TokenDto;
 import SniffStep.common.jwt.service.JwtService;
 import SniffStep.entity.JwtTokenType;
 import SniffStep.entity.Member;
 import SniffStep.repository.MemberRepository;
-import SniffStep.service.AuthService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

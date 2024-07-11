@@ -1,6 +1,9 @@
 package SniffStep.service;
 
-import SniffStep.common.exception.*;
+import SniffStep.common.exception.AccessDeniedException;
+import SniffStep.common.exception.BusinessLogicException;
+import SniffStep.common.exception.ExceptionCode;
+import SniffStep.common.exception.MemberNotFoundException;
 import SniffStep.dto.board.*;
 import SniffStep.entity.*;
 import SniffStep.repository.BoardRepository;

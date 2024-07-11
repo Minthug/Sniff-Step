@@ -2,7 +2,9 @@ package SniffStep.dto.member;
 
 import SniffStep.entity.Member;
 import SniffStep.entity.MemberType;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor

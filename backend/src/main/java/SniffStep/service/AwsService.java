@@ -10,14 +10,15 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -61,11 +62,6 @@ public class AwsService {
 
     public List<AwsS3> uploadBoardFiles(Long memberId, Long boardId, List<MultipartFile> imageFile) {
         String uploadFilePath = String.format("member/%d/boards/%d", memberId, boardId);
-        return uploadFilesV2(uploadFilePath, imageFile);
-    }
-
-    public List<AwsS3> uploadProfileFiles(Long memberId, List<MultipartFile> imageFile) {
-        String uploadFilePath = String.format("member/%d/profile", memberId);
         return uploadFilesV2(uploadFilePath, imageFile);
     }
 

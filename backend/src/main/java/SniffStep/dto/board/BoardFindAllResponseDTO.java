@@ -4,7 +4,6 @@
     import SniffStep.entity.ActivityDate;
     import SniffStep.entity.ActivityTime;
     import SniffStep.entity.Board;
-    import SniffStep.entity.Member;
     import lombok.AllArgsConstructor;
     import lombok.Data;
     import lombok.Getter;
