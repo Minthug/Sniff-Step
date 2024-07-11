@@ -1,7 +1,7 @@
 import React from 'react'
 import { container } from '@/app/common'
 import { LocaleBoard, Locales } from '@/app/types/locales'
-import { changeDayToKorean, changeTimeToKorean } from '@/app/utils/changeDateUtils'
+import { changeDayToKorean, changeTimeToKorean, convertDateFormat } from '@/app/utils/changeDateUtils'
 import { Board } from '@/app/types/board'
 import { Map } from '.'
 import Link from 'next/link'
@@ -15,7 +15,6 @@ interface Props {
 
 export function Desktop({ lang, text, board, dates }: Props) {
     const { title, nickname, description, activityDate, activityTime, createdAt, image, profileUrl, address } = board
-
     return (
         <div className={container.main.desktop}>
             <div>
@@ -41,7 +40,7 @@ export function Desktop({ lang, text, board, dates }: Props) {
                 </div>
                 <div className="flex items-center justify-between mb-8">
                     <div className="text-[32px] font-[500]">{title}</div>
-                    <div className="text-[14px] text-gray-400">{new Date(createdAt).toLocaleString()}</div>
+                    <div className="text-[14px] text-gray-400">{convertDateFormat(createdAt)}</div>
                 </div>
                 <div className="flex items-center gap-4 mb-4">
                     <div className="text-[24px] font-[500]">1. {text.address}</div>

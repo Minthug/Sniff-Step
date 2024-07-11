@@ -38,3 +38,16 @@ export const changeTimeToKorean = (lang: string, time: string) => {
             return ''
     }
 }
+
+export function convertDateFormat(time: string) {
+    const date = new Date(time)
+    return date.toLocaleString('ko-KR', {
+        month: 'numeric',
+        day: 'numeric',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true
+    })
+}

@@ -1,7 +1,7 @@
 import React from 'react'
 import { container } from '@/app/common'
 import { LocaleBoard, Locales } from '@/app/types/locales'
-import { changeDayToKorean, changeTimeToKorean } from '@/app/utils/changeDateUtils'
+import { changeDayToKorean, changeTimeToKorean, convertDateFormat } from '@/app/utils/changeDateUtils'
 import { Board } from '@/app/types/board'
 import { Map } from '.'
 import Link from 'next/link'
@@ -36,7 +36,7 @@ export function Mobile({ lang, text, board, dates }: Props) {
             </div>
             <div className="flex flex-col justify-between mb-8 z-20">
                 <div className="text-[28px] font-[500]">{title}</div>
-                <div className="text-[14px] text-gray-400">{new Date(createdAt).toLocaleString()}</div>
+                <div className="text-[14px] text-gray-400">{convertDateFormat(createdAt)}</div>
             </div>
             <div className="flex flex-wrap gap-2 mb-8 z-20">
                 <div className="text-[18px] font-[500]">1. {text.address}</div>
