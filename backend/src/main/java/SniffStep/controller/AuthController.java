@@ -1,14 +1,17 @@
 package SniffStep.controller;
 
 import SniffStep.dto.auth.LoginDTO;
+import SniffStep.dto.auth.ProfileDTO;
 import SniffStep.dto.auth.SignUpRequestDTO;
+import SniffStep.dto.member.MemberDTO;
+import SniffStep.entity.Member;
 import SniffStep.service.AuthService;
+import SniffStep.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
 
 
 @RequiredArgsConstructor
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
+    private final MemberService memberService;
 
 
     // 자체 회원가입
@@ -30,5 +34,12 @@ public class AuthController {
     @PostMapping("/signin")
     public ResponseEntity login(@RequestBody LoginDTO loginDTO) {
         return ResponseEntity.ok(authService.login(loginDTO));
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<ProfileDTO> getProfile(@AuthenticationPrincipal UserDetails userDetails) {
+        String email = userDetails.getUsername();
+        ProfileDTO profileDTO = memberService.getProfile(email);
+        return ResponseEntity.ok(profileDTO);
     }
 }

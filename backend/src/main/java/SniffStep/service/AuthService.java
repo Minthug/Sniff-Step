@@ -41,7 +41,7 @@ public class AuthService {
                 .email(signUpRequestDTO.getEmail())
                 .password(signUpRequestDTO.getPassword())
                 .nickname(signUpRequestDTO.getNickname())
-                .name(signUpRequestDTO.getName())
+//                .name(signUpRequestDTO.getName())
                 .introduce(signUpRequestDTO.getIntroduce())
                 .phoneNumber(signUpRequestDTO.getPhoneNumber())
                 .imageUrl(signUpRequestDTO.getImageUrl())
@@ -115,7 +115,4 @@ public class AuthService {
                     return memberRepository.save(newMember);
                 });
     }
-
-
-
 }

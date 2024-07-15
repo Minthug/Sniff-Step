@@ -2,6 +2,7 @@ package SniffStep.service;
 
 import SniffStep.common.exception.AccessDeniedException;
 import SniffStep.common.exception.MemberNotFoundException;
+import SniffStep.dto.auth.ProfileDTO;
 import SniffStep.dto.board.AwsS3;
 import SniffStep.dto.member.MemberDTO;
 import SniffStep.dto.member.MemberResponseDTO;
@@ -106,6 +107,13 @@ public class MemberService {
                 .orElseThrow(() -> new MemberNotFoundException());
 
         memberRepository.delete(member);
+    }
+
+    @Transactional(readOnly = true)
+    public ProfileDTO getProfile(String email) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new MemberNotFoundException());
+        return ProfileDTO.fromMember(member);
     }
 
 }

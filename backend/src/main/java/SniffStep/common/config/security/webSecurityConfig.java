@@ -56,6 +56,7 @@ public class webSecurityConfig {
                         "/css/**", "/images/**", "/js/**", "/h2-console/**", "/favicon.ico", "/error").permitAll()
                 .requestMatchers(HttpMethod.GET, "/v1/members", "/v1/members/{id}", "/v1/boards/{id}").permitAll()
                 .requestMatchers(HttpMethod.PATCH, "/v1/members/**").hasAnyAuthority("USER", "ADMIN")
+                .requestMatchers(HttpMethod.GET, "/v1/members/profile").hasAnyAuthority("USER", "ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/v1/members/**").hasAnyAuthority("USER", "ADMIN")
                 .requestMatchers(HttpMethod.POST, "/v1/boards/**").hasAnyAuthority("USER", "ADMIN")
                 .requestMatchers(HttpMethod.PATCH, "/v1/boards/**").hasAnyAuthority("USER", "ADMIN")
