@@ -26,3 +26,4 @@ gradle-app.setting
 application.yml
 *.yml
 application.properties
+application-prod.properties
