@@ -194,11 +194,11 @@ export function useBoards({ lang }: Props): BoardState {
 
         const accessToken = localStorage.getItem('accessToken')
         const data = new FormData()
-        if (file) data.append('file', file)
+        if (file) data.append('images', file)
 
         data.append('title', title)
-        data.append('address', address)
         data.append('description', description)
+        data.append('activityLocation', address)
         Object.entries(days).forEach(([key, value]) => {
             if (value) data.append('activityDate', key.toUpperCase())
         })
@@ -213,7 +213,6 @@ export function useBoards({ lang }: Props): BoardState {
             },
             body: data
         })
-
         if (res) {
             if (!res.ok) {
                 const { message } = await res?.json()
