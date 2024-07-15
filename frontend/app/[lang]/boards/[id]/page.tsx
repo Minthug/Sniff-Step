@@ -14,7 +14,6 @@ interface Props {
 export default async function page({ params: { lang, id } }: Props) {
     try {
         const board = await getBoardById(id)
-        console.log(board)
         const dates = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
         const text = await getLocales<LocaleBoard>('boards/board', lang)
 
