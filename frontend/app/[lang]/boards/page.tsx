@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default async function page({ params: { lang } }: Props) {
-    const { data, total } = await getBoards()
+    const { data } = await getBoards()
     const text = await getLocales<LocaleBoards>('boards', lang)
 
     return (

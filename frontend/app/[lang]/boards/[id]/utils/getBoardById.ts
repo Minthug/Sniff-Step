@@ -1,7 +1,7 @@
 import { Board } from '@/app/types/board'
 
 export async function getBoardById(id: string): Promise<Board> {
-    const res = await fetch(`${process.env.NODE_BACKEND_URL}/boards/${id}`, {
+    const res = await fetch(`${process.env.JAVA_BACKEND_URL}/v1/boards/${id}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -16,6 +16,6 @@ export async function getBoardById(id: string): Promise<Board> {
         throw new Error(error)
     }
 
-    const { data: board } = await res.json()
+    const board = await res.json()
     return board
 }

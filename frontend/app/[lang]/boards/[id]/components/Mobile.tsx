@@ -14,7 +14,7 @@ interface Props {
 }
 
 export function Mobile({ lang, text, board, dates }: Props) {
-    const { title, nickname, description, activityDate, activityTime, createdAt, image, profileUrl, address } = board
+    const { title, nickname, description, activityDate, activityTime, activityLocation, createdAt, image, profileUrl } = board
 
     return (
         <div className={container.main.mobile}>
@@ -30,7 +30,7 @@ export function Mobile({ lang, text, board, dates }: Props) {
                     <img className="w-[48px] h-[48px] border rounded-full" src={profileUrl || '/images/logo1-removebg-preview.png'} />
                     <div>
                         <div className="text-[18px] font-[600]">{nickname}</div>
-                        <div className="text-[14px]">{address}</div>
+                        <div className="text-[14px]">{activityLocation}</div>
                     </div>
                 </div>
             </div>
@@ -40,9 +40,9 @@ export function Mobile({ lang, text, board, dates }: Props) {
             </div>
             <div className="flex flex-wrap gap-2 mb-8 z-20">
                 <div className="text-[18px] font-[500]">1. {text.address}</div>
-                <div className="text-[18px] font-[500] border-b-2 mb-[2px] border-red-600">{address}</div>
+                <div className="text-[18px] font-[500] border-b-2 mb-[2px] border-red-600">{activityLocation}</div>
             </div>
-            <Map address={address} />
+            <Map address={activityLocation} />
             <div className="flex flex-col gap-4 mb-8 z-20">
                 <div className="flex flex-wrap items-center gap-3">
                     <div className="text-[18px] font-[500]">2. {text.availableTime}</div>

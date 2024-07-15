@@ -7,11 +7,11 @@ export interface Board {
     description: string
     likeNumber: 0
     imagePath: string
+    activityLocation: string
     activityDate: string[]
     activityTime: string[]
     createdAt: string
     updatedAt: string
     image: string
     profileUrl: string | null
-    address: string
 }

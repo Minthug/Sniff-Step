@@ -43,7 +43,7 @@ export function Desktop({ lang, text, boards }: Props) {
                             />
                             <div className="flex flex-col justify-center">
                                 <div className="w-[170px] whitespace-nowrap overflow-hidden text-ellipsis text-[14px]">{board.title}</div>
-                                <div className="text-[12px]">{board.address}</div>
+                                <div className="text-[12px]">{board.activityLocation}</div>
                             </div>
                         </div>
                     </Link>

@@ -224,7 +224,7 @@ export function useUpdateBoard({ lang }: Props): BoardUpdateState {
 
     const adjustBoard = (board: Board) => {
         setTitle(board.title)
-        setAddress(board.address)
+        setAddress(board.activityLocation)
         setDescription(board.description)
         setDays((prevDays) => {
             Object.keys(prevDays).forEach((key) => {

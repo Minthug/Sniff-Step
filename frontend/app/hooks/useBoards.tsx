@@ -240,14 +240,27 @@ export function useBoards({ lang }: Props): BoardState {
         const accessToken = localStorage.getItem('accessToken')
         if (!accessToken) return false
 
-        const res = await customFetch(`/api/boards/${id}/owned`, {
-            method: 'GET'
+        const res = await fetch('/api/auth/profile', {
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
         })
 
-        if (res) {
-            const data = await res.json()
-            return data.data
+        if (!res.ok) {
+            return
         }
+
+        console.log(await res.json())
+
+        // const res = await customFetch(`/api/boards/${id}/owned`, {
+        //     method: 'GET'
+        // })
+
+        // if (res) {
+        //     const data = await res.json()
+        //     return data.data
+        // }
+        return false
     }
 
     return {

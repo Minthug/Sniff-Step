@@ -14,7 +14,7 @@ interface Props {
 }
 
 export function Desktop({ lang, text, board, dates }: Props) {
-    const { title, nickname, description, activityDate, activityTime, createdAt, image, profileUrl, address } = board
+    const { title, nickname, description, activityDate, activityLocation, activityTime, createdAt, image, profileUrl } = board
     return (
         <div className={container.main.desktop}>
             <div>
@@ -34,7 +34,7 @@ export function Desktop({ lang, text, board, dates }: Props) {
                         />
                         <div>
                             <div className="text-[18px] font-[600]">{nickname}</div>
-                            <div className="text-[14px]">{address}</div>
+                            <div className="text-[14px]">{activityLocation}</div>
                         </div>
                     </div>
                 </div>
@@ -44,9 +44,9 @@ export function Desktop({ lang, text, board, dates }: Props) {
                 </div>
                 <div className="flex items-center gap-4 mb-4">
                     <div className="text-[24px] font-[500]">1. {text.address}</div>
-                    <div className="text-[24px] font-[500] mt-[4px] border-b-2 border-red-600 leading-7">{address}</div>
+                    <div className="text-[24px] font-[500] mt-[4px] border-b-2 border-red-600 leading-7">{activityLocation}</div>
                 </div>
-                <Map address={address} />
+                <Map address={activityLocation} />
                 <div className="flex flex-col gap-4 mb-12">
                     <div className="flex gap-4 items-center ">
                         <div className="text-[24px] font-[500]">2. {text.availableTime}</div>
