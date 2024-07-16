@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 export async function POST(req: Request) {
     const { nickname, email, password, phoneNumber } = await req.json()
 
-    const res = await fetch(process.env.NODE_BACKEND_URL + '/users/register', {
+    const res = await fetch(process.env.JAVA_BACKEND_URL + '/v1/auth/signup', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

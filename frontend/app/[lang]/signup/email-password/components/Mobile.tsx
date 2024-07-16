@@ -31,7 +31,8 @@ export function Mobile({ lang, text, signupStates }: Props) {
         changePhoneNumber,
         changeIsAgreed,
         handleLogin,
-        handleRegister
+        handleRegister,
+        handleGetProfile
     } = signupStates
 
     return (
@@ -74,7 +75,8 @@ export function Mobile({ lang, text, signupStates }: Props) {
                     onClick={async () => {
                         const isRegister = await handleRegister()
                         if (isRegister) {
-                            await handleLogin()
+                            const accessToken = await handleLogin()
+                            handleGetProfile(accessToken)
                             router.push(`/${lang}/`)
                         }
                     }}

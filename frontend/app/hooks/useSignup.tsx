@@ -18,8 +18,9 @@ export interface SignupStates {
     changePassword: (e: React.ChangeEvent<HTMLInputElement>) => void
     changePhoneNumber: (e: React.ChangeEvent<HTMLInputElement>) => void
     changeIsAgreed: (e: React.ChangeEvent<HTMLInputElement>) => void
-    handleLogin: () => Promise<void>
+    handleLogin: () => Promise<string>
     handleRegister: () => Promise<boolean>
+    handleGetProfile: (accessToken: string) => Promise<void>
 }
 
 export function useSignup(): SignupStates {
@@ -28,7 +29,6 @@ export function useSignup(): SignupStates {
     const [password, setPassword] = useState('')
     const [phoneNumber, setPhoneNumber] = useState('')
     const [isAgreed, setIsAgreed] = useState(false)
-
     const [nicknameError, setNicknameError] = useState(false)
     const [emailError, setEmailError] = useState(false)
     const [passwordError, setPasswordError] = useState(false)
@@ -60,6 +60,22 @@ export function useSignup(): SignupStates {
         setIsAgreedError(false)
     }
 
+    const handleGetProfile = async (accessToken: string) => {
+        const res = await fetch('/api/auth/profile', {
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        })
+
+        if (!res.ok) {
+            return
+        }
+
+        const { data } = await res.json()
+        const { id } = data
+        localStorage.setItem('userId', id)
+    }
+
     const handleLogin = async () => {
         const res = await fetch('/api/signin/email-password', {
             method: 'POST',
@@ -73,6 +89,8 @@ export function useSignup(): SignupStates {
         const { accessToken, refreshToken } = data
         localStorage.setItem('accessToken', accessToken)
         localStorage.setItem('refreshToken', refreshToken)
+
+        return accessToken
     }
 
     const handleRegister = async () => {
@@ -143,6 +161,7 @@ export function useSignup(): SignupStates {
         changePhoneNumber,
         changeIsAgreed,
         handleLogin,
-        handleRegister
+        handleRegister,
+        handleGetProfile
     }
 }
