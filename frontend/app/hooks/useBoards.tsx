@@ -17,6 +17,7 @@ export interface BoardState {
     descriptionExample: string
     showDescriptionModal: boolean
     titleError: boolean
+    imagesError: boolean
     addressError: boolean
     dateError: boolean
     timeError: boolean
@@ -30,6 +31,7 @@ export interface BoardState {
     changeTimeToKorean: (lang: string, time: string) => string
     handleDescriptionChange: (value: string) => void
     setShowDescriptionModal: (value: boolean) => void
+    setImagesError: (value: boolean) => void
     getBoardById: (id: string) => Promise<Board>
     handlePost: (file: File | null) => Promise<void>
     handleDelete: (id: string) => Promise<void>
@@ -66,6 +68,7 @@ export function useBoards({ lang }: Props): BoardState {
     const [descriptionSizeError, setDescriptionSizeError] = useState(false)
     const [showDescriptionModal, setShowDescriptionModal] = useState(false)
     const [titleError, setTitleError] = useState(false)
+    const [imagesError, setImagesError] = useState(false)
     const [addressError, setAddressError] = useState(false)
     const [dateError, setDateError] = useState(false)
     const [timeError, setTimeError] = useState(false)
@@ -157,6 +160,9 @@ export function useBoards({ lang }: Props): BoardState {
                 case 'title should not be empty':
                     setTitleError(true)
                     return
+                case 'images should not be empty':
+                    setImagesError(true)
+                    return
                 case 'address should not be empty':
                     setAddressError(true)
                     return
@@ -195,7 +201,6 @@ export function useBoards({ lang }: Props): BoardState {
         const accessToken = localStorage.getItem('accessToken')
         const data = new FormData()
         if (file) data.append('images', file)
-
         data.append('title', title)
         data.append('description', description)
         data.append('activityLocation', address)
@@ -263,6 +268,7 @@ export function useBoards({ lang }: Props): BoardState {
         descriptionExample,
         showDescriptionModal,
         titleError,
+        imagesError,
         addressError,
         dateError,
         timeError,
@@ -276,6 +282,7 @@ export function useBoards({ lang }: Props): BoardState {
         changeTimeToKorean,
         handleDescriptionChange,
         setShowDescriptionModal,
+        setImagesError,
         getBoardById,
         handlePost,
         handleDelete,

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(req: NextRequest) {
     const keyword = req.nextUrl.searchParams.get('keyword')
-    const res = await fetch(process.env.NODE_BACKEND_URL + `/boards/search?keyword=${keyword}`, {
+    const res = await fetch(process.env.JAVA_BACKEND_URL + `/v1/boards/search?keyword=${keyword}`, {
         method: 'GET',
         headers: {
             'content-type': 'application/json',

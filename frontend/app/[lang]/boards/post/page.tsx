@@ -12,13 +12,19 @@ interface Props {
 }
 
 export default function page({ params: { lang } }: Props) {
-    const fileChangeState = useFileChange()
     const boardState = useBoards({ lang })
+    const fileChangeState = useFileChange()
     const [text, setText] = useState<LocalePostBoard>()
 
     useEffect(() => {
         getLocales<LocalePostBoard>('boards/post', lang).then(setText)
     }, [])
+
+    useEffect(() => {
+        if (fileChangeState.file) {
+            boardState.setImagesError(false)
+        }
+    }, [fileChangeState.file])
 
     if (!text)
         return (

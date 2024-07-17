@@ -26,6 +26,7 @@ export function Mobile({ lang, text, fileChangeState, boardState }: Props) {
         descriptionExample,
         showDescriptionModal,
         titleError,
+        imagesError,
         addressError,
         dateError,
         timeError,
@@ -127,6 +128,7 @@ export function Mobile({ lang, text, fileChangeState, boardState }: Props) {
                     {text.post}
                 </button>
                 {titleError && <div className="text-[12px] text-[#ff0000]">{text.titleError}</div>}
+                {imagesError && <div className="text-[12px] text-[#ff0000]">{text.imagesError}</div>}
                 {addressError && <div className="text-[12px] text-[#ff0000]">{text.addressError}</div>}
                 {dateError && <div className="text-[12px] text-[#ff0000]">{text.dateError}</div>}
                 {timeError && <div className="text-[12px] text-[#ff0000]">{text.timeError}</div>}

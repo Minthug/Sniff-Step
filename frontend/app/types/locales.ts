@@ -61,6 +61,7 @@ export interface LocalePostBoard {
     post: string
     fileSizeError: string
     titleError: string
+    imagesError: string
     addressError: string
     dateError: string
     timeError: string
