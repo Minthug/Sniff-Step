@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(req: NextRequest) {
-    const res = await fetch('http://localhost:4000/auth/google', {
+    const res = await fetch(process.env.JAVA_BACKEND_URL + '/v1/auth/google', {
         cache: 'no-store'
     })
 
@@ -10,7 +10,5 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ message, error }, { status: statusCode })
     }
 
-    const data = await res.json()
-
-    return NextResponse.json(data, { status: 200 })
+    return NextResponse.json({ url: res.url }, { status: 200 })
 }
