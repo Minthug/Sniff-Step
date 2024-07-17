@@ -19,7 +19,7 @@ export default async function page({ params: { lang, id } }: Props) {
 
         return (
             <div className="z-20">
-                <Update lang={lang} boardId={id} />
+                <Update lang={lang} boardId={id} userId={board.userId} />
                 <div className={container.section}>
                     <Desktop lang={lang} text={text} board={board} dates={dates} />
                     <Mobile lang={lang} text={text} board={board} dates={dates} />

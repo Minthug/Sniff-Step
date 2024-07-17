@@ -10,6 +10,7 @@ import { MdModeEdit, MdDelete } from 'react-icons/md'
 interface Props {
     lang: Locales
     boardId: string
+    userId: number
 }
 
 interface List {
@@ -18,7 +19,7 @@ interface List {
     onClick: () => void
 }
 
-export default function Update({ lang, boardId }: Props) {
+export default function Update({ lang, boardId, userId }: Props) {
     const [show, setShow] = useState(false)
     const [active, setActive] = useState(false)
     const { handleDelete, isMyBoard } = useBoards({ lang })
@@ -31,7 +32,7 @@ export default function Update({ lang, boardId }: Props) {
     ]
 
     useEffect(() => {
-        isMyBoard(boardId).then((result) => setShow(result))
+        isMyBoard(userId).then((result) => setShow(result))
     }, [])
 
     if (!show) return

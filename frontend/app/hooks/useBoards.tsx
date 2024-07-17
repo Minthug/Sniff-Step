@@ -33,7 +33,7 @@ export interface BoardState {
     getBoardById: (id: string) => Promise<Board>
     handlePost: (file: File | null) => Promise<void>
     handleDelete: (id: string) => Promise<void>
-    isMyBoard: (boardId: string) => Promise<boolean>
+    isMyBoard: (boardId: number) => Promise<boolean>
 }
 
 export interface Props {
@@ -235,7 +235,7 @@ export function useBoards({ lang }: Props): BoardState {
         }
     }
 
-    const isMyBoard = async (id: string) => {
+    const isMyBoard = async (userId: number) => {
         const accessToken = localStorage.getItem('accessToken')
         if (!accessToken) return false
 
@@ -246,20 +246,11 @@ export function useBoards({ lang }: Props): BoardState {
         })
 
         if (!res.ok) {
-            return
+            return false
         }
 
-        console.log(await res.json())
-
-        // const res = await customFetch(`/api/boards/${id}/owned`, {
-        //     method: 'GET'
-        // })
-
-        // if (res) {
-        //     const data = await res.json()
-        //     return data.data
-        // }
-        return false
+        const profile = await res.json()
+        return profile.data.id === userId
     }
 
     return {
