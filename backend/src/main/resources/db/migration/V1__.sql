@@ -15,3 +15,5 @@ ALTER TABLE board
 
 ALTER TABLE board
     DROP COLUMN activity_time;
+
+ALTER TABLE board ALTER COLUMN description TYPE TEXT;

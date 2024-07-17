@@ -31,7 +31,6 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 @EnableWebSecurity
 public class webSecurityConfig {
 
-
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
     private final ObjectMapper objectMapper;
@@ -53,8 +52,8 @@ public class webSecurityConfig {
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/v1/auth/**", "/v1/upload/**", "/v1/boards","/oauth2/authorization/**", "/",
-                        "/css/**", "/images/**", "/js/**", "/h2-console/**", "/favicon.ico", "/error").permitAll()
-                .requestMatchers(HttpMethod.GET, "/v1/members", "/v1/members/{id}", "/v1/boards/{id}").permitAll()
+                        "/css/**", "/images/**", "/js/**", "/h2-console/**", "/favicon.ico", "/error", "/v1/oauth/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/v1/members", "/v1/members/{id}", "/v1/boards/{id}", "/v1/boards/search/**").permitAll()
                 .requestMatchers(HttpMethod.PATCH, "/v1/members/**").hasAnyAuthority("USER", "ADMIN")
                 .requestMatchers(HttpMethod.GET, "/v1/members/profile").hasAnyAuthority("USER", "ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/v1/members/**").hasAnyAuthority("USER", "ADMIN")
@@ -66,7 +65,7 @@ public class webSecurityConfig {
                 .anyRequest().authenticated()
                 .and()
                 .oauth2Login()
-                .loginPage("/v1/auth/oauth2/authorization/{provider}")
+                .loginPage("/v1/oauth/oauth2/authorization/{provider}")
                 .successHandler(oAuthLoginSuccessHandler)
                 .failureHandler(oAuthLoginFailureHandler)
                 .userInfoEndpoint().userService(customOAuthUserService);

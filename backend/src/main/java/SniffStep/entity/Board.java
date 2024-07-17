@@ -26,7 +26,7 @@ public class Board extends BaseTime {
 
     private String title;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", length = 1000)
     private String description;
 
     private String activityLocation;
@@ -66,13 +66,13 @@ public class Board extends BaseTime {
         }
     }
 
-    private void setActivityDateInternal(List<ActivityDate> activityDate) {
+    public void setActivityDateInternal(List<ActivityDate> activityDate) {
         this.activityDate = activityDate.stream()
                 .map(Enum::name)
                 .collect(Collectors.joining(","));
     }
 
-    private void setActivityTimeInternal(List<ActivityTime> activityTime) {
+    public void setActivityTimeInternal(List<ActivityTime> activityTime) {
         this.activityTime = activityTime.stream()
                 .map(Enum::name)
                 .collect(Collectors.joining(","));

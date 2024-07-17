@@ -16,15 +16,16 @@ import java.util.List;
 @NoArgsConstructor
 public class BoardPatchDTO {
 
-    @NotBlank(message = "제목을 입력해주세요.")
     private String title;
-    @NotBlank(message = "내용을 입력해주세요.")
     private String description;
 
     private String activityLocation;
 
-   private List<MultipartFile> imageFiles = new ArrayList<>();
+    private List<String> activityDate = new ArrayList<>();
+    private List<String> activityTime = new ArrayList<>();
 
-   private List<Long> deletedImages = new ArrayList<>();
+    private List<MultipartFile> imageFiles = new ArrayList<>();
+
+    private List<Long> deletedImages = new ArrayList<>();
 }
 

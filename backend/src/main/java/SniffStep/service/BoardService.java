@@ -89,15 +89,21 @@ public class BoardService {
     public BoardFindAllWithPagingResponseDTO searchBoards(String keyword, Integer page) {
         PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("id").descending());
         Page<Board> boards = boardRepository.findAllByTitleContaining(keyword, pageRequest);
-        List<BoardFindAllResponseDTO> boardsWithDto = boards.stream()
+
+        List<BoardFindAllResponseDTO> boardsWithDto = boards.getContent().stream()
                 .map(BoardFindAllResponseDTO::toDto)
                 .collect(Collectors.toList());
-        return BoardFindAllWithPagingResponseDTO.toDto(boardsWithDto, new PageInfoDTO(boards));
+
+        PageInfoDTO pageInfo = new PageInfoDTO(boards);
+
+        return BoardFindAllWithPagingResponseDTO.toFrom(boardsWithDto, new PageInfoDTO(boards), keyword);
     }
 
 
     @Transactional
-    public ImageUpdateResultDTO updateBoard(Long boardId, String title, String description, String activityLocation, List<MultipartFile> addedImages, List<Long> deletedImages) {
+    public ImageUpdateResultDTO updateBoard(Long boardId, String title, String description, String activityLocation,
+                                            List<String> activityDates, List<String> activityTimes,
+                                            List<MultipartFile> addedImages, List<Long> deletedImages) {
         Board board = findBoardById(boardId);
         List<Image> imagesToDelete = findImagesToDelete(board.getImages(), deletedImages);
 
@@ -112,6 +118,8 @@ public class BoardService {
         List<Image> updatedImages = updatedBoardImage(board, imagesToDelete, newImages);
 
         board.updateBoardWithImages(title, description, activityLocation, updatedImages);
+        updateActivityDates(board, activityDates);
+        updateActivityTimes(board, activityTimes);
 
         return new ImageUpdateResultDTO(uploadedImages, newImages, imagesToDelete);
     }
@@ -127,6 +135,7 @@ public class BoardService {
         updatedImage.addAll(newImage);
         return updatedImage;
     }
+
 
     private List<Image> createImageEntities(List<AwsS3> uploadedImage) {
         return uploadedImage.stream()
@@ -145,6 +154,20 @@ public class BoardService {
                 .collect(Collectors.toList());
     }
 
+    private void updateActivityDates(Board board, List<String> activityDates) {
+        List<ActivityDate> enumDates = activityDates.stream()
+                .map(ActivityDate::fromString)
+                .collect(Collectors.toList());
+        board.setActivityDateInternal(enumDates);
+    }
+
+    private void updateActivityTimes(Board board, List<String> activityTimes) {
+        List<ActivityTime> enumTimes = activityTimes.stream()
+                .map(ActivityTime::fromString)
+                .collect(Collectors.toList());
+        board.setActivityTimeInternal(enumTimes);
+    }
+
     @Transactional
     public void deleteBoard(Long id) {
         Board board = boardRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
@@ -156,9 +179,13 @@ public class BoardService {
         for (Image image : imageToDelete) {
             board.removeImage(image);
             String filePath = String.format("member/%d/%d", board.getMember().getId(), board.getId());
-            boolean deleted = awsService.deleteFileV2(filePath, image.getUniqueName());
-            if (!deleted) {
-                log.warn("Failed to delete image file: {}", image.getUniqueName());
+            try {
+                boolean deleted = awsService.deleteFileV2(filePath, image.getUniqueName());
+                if (!deleted) {
+                    log.warn("Failed to delete image file: {}", image.getUniqueName());
+                }
+            } catch (Exception e) {
+                log.error("Failed to delete image file: {}", image.getUniqueName(), e);
             }
         }
     }
@@ -185,8 +212,5 @@ public class BoardService {
             throw new AccessDeniedException("인증되지 않은 사용자입니다.");
         }
     }
-
-
-
 }
 

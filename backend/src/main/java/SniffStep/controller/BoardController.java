@@ -50,8 +50,8 @@ public class BoardController {
         return ResponseEntity.ok(boardService.findAllBoards(page));
     }
 
-    @GetMapping("/search/{keyword}")
-    public ResponseEntity<?> searchBoards(@PathVariable(value = "keyword") String keyword,
+    @GetMapping("/search")
+    public ResponseEntity<?> searchBoards(@RequestParam(value = "keyword") String keyword,
                                  @RequestParam(defaultValue = "0") Integer page) {
         return ResponseEntity.ok(boardService.searchBoards(keyword, page));
     }
@@ -64,10 +64,12 @@ public class BoardController {
         String title = request.getTitle();
         String description = request.getDescription();
         String activityLocation = request.getActivityLocation();
+        List<String> activityDates = request.getActivityDate();
+        List<String> activityTimes = request.getActivityTime();
         List<MultipartFile> addedImages = request.getImageFiles();
         List<Long> deletedImages = request.getDeletedImages();
 
-        ImageUpdateResultDTO result = boardService.updateBoard(id, title, description, activityLocation, addedImages, deletedImages);
+        ImageUpdateResultDTO result = boardService.updateBoard(id, title, description, activityLocation, activityDates, activityTimes, addedImages, deletedImages);
 
         return ResponseEntity.ok(result);
     }

@@ -16,8 +16,9 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     countQuery = "select count(b) from Board b")
     Page<Board> findAll(Pageable pageable);
 
+
     @Query(value = "select b from Board b join fetch b.member m where b.title like '%:title%'",
-    countQuery = "select count(b) from Board b order by b.id desc ")
+    countQuery = "select count(b) from Board b where b.title like '%:title%'")
     Page<Board> findAllByTitleContaining(@Param(value = "title") String keyword, Pageable pageable);
 
     @Query("SELECT b FROM Board b JOIN FETCH b.member JOIN FETCH b.images WHERE b.id = :id")

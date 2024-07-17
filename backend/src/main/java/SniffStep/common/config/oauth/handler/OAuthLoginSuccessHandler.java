@@ -31,9 +31,7 @@ public class OAuthLoginSuccessHandler implements AuthenticationSuccessHandler {
             if (oAuth2User.getRole() == MemberRole.GUEST) {
                 String accessToken = jwtService.createToken(oAuth2User.getEmail(), JwtTokenType.ACCESS_TOKEN);
                 String refreshToken = jwtService.createToken(oAuth2User.getEmail(), JwtTokenType.REFRESH_TOKEN);
-//                jwtService.sendAccessToken(response, accessToken);
                 response.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
-//                jwtService.sendAccessAndRefreshToken(response, accessToken, null);
                 jwtService.sendAccessAndRefreshTokenCookie(response, accessToken, null);
                 response.sendRedirect("http://localhost:3000");
 

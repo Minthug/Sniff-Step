@@ -42,10 +42,10 @@ public class GoogleOauth implements SocialOAuth {
 
     // Google API로 요청을 보내고 받을 객체입니다.
     private final RestTemplate restTemplate;
-    
+
     @Value("${jwt.secret-key}")
     private String jwtSecret;
-    
+
     @Value("${jwt.accessTokenExpireTime}")
     private long jwtExpiration;
 
