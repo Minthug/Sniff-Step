@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 
 export async function GET(req: Request, { params: { id } }: { params: { id: string } }) {
-    const res = await fetch(process.env.NODE_BACKEND_URL + `/boards/${id}`, {
+    const res = await fetch(process.env.JAVA_BACKEND_URL + `/v1/boards/${id}`, {
         method: 'GET',
         headers: {
             'content-type': 'application/json',
@@ -14,13 +14,13 @@ export async function GET(req: Request, { params: { id } }: { params: { id: stri
         return NextResponse.json({ message, error }, { status: statusCode })
     }
 
-    const { data } = await res.json()
+    const data = await res.json()
     return NextResponse.json({ data }, { status: 200 })
 }
 
 export async function PATCH(req: Request, { params: { id } }: { params: { id: string } }) {
     const formdata = await req.formData()
-    const res = await fetch(process.env.NODE_BACKEND_URL + '/boards/' + id, {
+    const res = await fetch(process.env.JAVA_BACKEND_URL + `/v1/boards/${id}`, {
         method: 'PATCH',
         headers: {
             authorization: req.headers.get('authorization') || ''
@@ -37,7 +37,7 @@ export async function PATCH(req: Request, { params: { id } }: { params: { id: st
 }
 
 export async function DELETE(req: Request, { params: { id } }: { params: { id: string } }) {
-    const res = await fetch(process.env.NODE_BACKEND_URL + `/boards/${id}`, {
+    const res = await fetch(process.env.JAVA_BACKEND_URL + `/v1/boards/${id}`, {
         method: 'DELETE',
         headers: {
             'content-type': 'application/json',

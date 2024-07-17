@@ -198,8 +198,8 @@ export function useUpdateBoard({ lang }: Props): BoardUpdateState {
         if (file) data.append('file', file)
 
         data.append('title', title)
-        data.append('address', address)
         data.append('description', description)
+        data.append('activityLocation', address)
         Object.entries(days).forEach(([key, value]) => {
             if (value) data.append('activityDate', key.toUpperCase())
         })
@@ -224,8 +224,8 @@ export function useUpdateBoard({ lang }: Props): BoardUpdateState {
 
     const adjustBoard = (board: Board) => {
         setTitle(board.title)
-        setAddress(board.activityLocation)
         setDescription(board.description)
+        setAddress(board.activityLocation)
         setDays((prevDays) => {
             Object.keys(prevDays).forEach((key) => {
                 prevDays[key] = board.activityDate.includes(key.toUpperCase())

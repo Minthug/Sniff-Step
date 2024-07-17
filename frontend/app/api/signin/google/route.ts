@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(req: NextRequest) {
-    const res = await fetch(process.env.JAVA_BACKEND_URL + '/v1/auth/google', {
+    const res = await fetch(process.env.JAVA_BACKEND_URL + '/v1/oauth/google', {
         cache: 'no-store'
     })
 
