@@ -6,9 +6,12 @@ import SniffStep.service.OAuthService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,10 +38,12 @@ public class OAuthController {
     }
 
     @GetMapping("/oauth2/authorization/{provider}")
-    public void oauth2Authorization(@PathVariable("provider") String provider, HttpServletResponse response) throws IOException {
+    public ResponseEntity<?> oauth2Authorization(@PathVariable("provider") String provider) throws IOException {
         String requestURL = oAuthService.request(provider);
+        Map<String, String> response = new HashMap<>();
 
-        response.sendRedirect(requestURL);
+        response.put("url", requestURL);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/oauth2/code/google")
