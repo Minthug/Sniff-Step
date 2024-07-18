@@ -85,16 +85,22 @@ public class BoardService {
         return BoardFindAllWithPagingResponseDTO.toDto(boardsWithDto, new PageInfoDTO(boards));
     }
 
+
     @Transactional(readOnly = true)
-    public BoardFindAllWithPagingResponseDTO searchBoards(String keyword, Integer page) {
+    public BoardFindAllWithPagingResponseDTO searchBoardsV2(String keyword, Integer page) {
         PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("id").descending());
         Page<Board> boards = boardRepository.findAllByTitleContaining(keyword, pageRequest);
 
-        List<BoardFindAllResponseDTO> boardsWithDto = boards.getContent().stream()
+        List<Long> boardIds = boards.getContent().stream()
+                .map(Board::getId)
+                .collect(Collectors.toList());
+
+        List<Board> boardWithMember = boardRepository.findBoardsWithMemberByIds(boardIds);
+
+        List<BoardFindAllResponseDTO> boardsWithDto = boardWithMember.stream()
                 .map(BoardFindAllResponseDTO::toDto)
                 .collect(Collectors.toList());
 
-        PageInfoDTO pageInfo = new PageInfoDTO(boards);
 
         return BoardFindAllWithPagingResponseDTO.toFrom(boardsWithDto, new PageInfoDTO(boards), keyword);
     }

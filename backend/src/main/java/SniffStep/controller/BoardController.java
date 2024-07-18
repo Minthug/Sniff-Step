@@ -53,7 +53,7 @@ public class BoardController {
     @GetMapping("/search")
     public ResponseEntity<?> searchBoards(@RequestParam(value = "keyword") String keyword,
                                  @RequestParam(defaultValue = "0") Integer page) {
-        return ResponseEntity.ok(boardService.searchBoards(keyword, page));
+        return ResponseEntity.ok(boardService.searchBoardsV2(keyword, page));
     }
 
     @PatchMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
