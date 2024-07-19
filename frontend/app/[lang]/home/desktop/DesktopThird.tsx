@@ -31,15 +31,15 @@ export function DesktopThird({ text }: Props) {
                     </div>
                 </div>
                 <div ref={target2} className="flex gap-10 transition-opacity duration-[1s] opacity-0">
-                    <div className="flex-1 h-[144px] flex gap-2 flex-col justify-center items-center text-[18px] font-[700] shadow-xl rounded-xl bg-white">
+                    <div className="flex-1 h-[144px] flex gap-2 flex-col justify-center items-center text-[18px] font-[700] shadow-xl rounded-xl bg-white text-gray-600">
                         <MdAppRegistration size={32} />
                         <div className="text-center">{text.section3.box1}</div>
                     </div>
-                    <div className="flex-1 h-[144px] flex gap-2 flex-col justify-center items-center text-[18px] font-[700] shadow-xl rounded-xl bg-white">
+                    <div className="flex-1 h-[144px] flex gap-2 flex-col justify-center items-center text-[18px] font-[700] shadow-xl rounded-xl bg-white text-gray-600">
                         <MdPhoneInTalk size={32} />
                         <div className="text-center">{text.section3.box2}</div>
                     </div>
-                    <div className="flex-1 h-[144px] flex gap-2 flex-col justify-center items-center text-[18px] font-[700] shadow-xl rounded-xl bg-white">
+                    <div className="flex-1 h-[144px] flex gap-2 flex-col justify-center items-center text-[18px] font-[700] shadow-xl rounded-xl bg-white text-gray-600">
                         <FaWpforms size={32} />
                         <div className="text-center">{text.section3.box3}</div>
                     </div>

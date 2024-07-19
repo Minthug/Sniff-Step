@@ -31,15 +31,15 @@ export function MobileThird({ text }: Props) {
                     </div>
                 </div>
                 <div ref={target2} className="flex flex-col gap-10 transition-opacity duration-[1s] opacity-0">
-                    <div className="h-[144px] flex gap-2 flex-col justify-center items-center text-[18px] font-[700] shadow-md rounded-xl bg-white">
+                    <div className="h-[144px] flex gap-2 flex-col justify-center items-center text-[18px] font-[700] shadow-md rounded-xl bg-white text-gray-600">
                         <MdAppRegistration size={32} />
                         <div>{text.section3.box1}</div>
                     </div>
-                    <div className="h-[144px] flex gap-2 flex-col justify-center items-center text-[18px] font-[700] shadow-md rounded-xl bg-white">
+                    <div className="h-[144px] flex gap-2 flex-col justify-center items-center text-[18px] font-[700] shadow-md rounded-xl bg-white text-gray-600">
                         <MdPhoneInTalk size={32} />
                         <div>{text.section3.box2}</div>
                     </div>
-                    <div className="h-[144px] flex gap-2 flex-col justify-center items-center text-[18px] font-[700] shadow-md rounded-xl bg-white">
+                    <div className="h-[144px] flex gap-2 flex-col justify-center items-center text-[18px] font-[700] shadow-md rounded-xl bg-white text-gray-600">
                         <FaWpforms size={32} />
                         <div>{text.section3.box3}</div>
                     </div>
