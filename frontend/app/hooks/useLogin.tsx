@@ -73,9 +73,7 @@ export function useLogin(): LoginStates {
 
         if (!res.ok) {
             const { message } = await res.json()
-            const messages = [...message]
-
-            messages.forEach((msg: string) => {
+            message.forEach((msg: string) => {
                 switch (msg) {
                     case 'email must be an email':
                         setEmailError(true)

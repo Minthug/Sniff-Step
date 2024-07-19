@@ -71,7 +71,7 @@ export function useSignup(): SignupStates {
             return
         }
 
-        const data = await res.json()
+        const { data } = await res.json()
         const { id } = data
         localStorage.setItem('userId', id)
     }
@@ -85,7 +85,7 @@ export function useSignup(): SignupStates {
             })
         })
 
-        const data = await res.json()
+        const { data } = await res.json()
         const { accessToken, refreshToken } = data
         localStorage.setItem('accessToken', accessToken)
         localStorage.setItem('refreshToken', refreshToken)

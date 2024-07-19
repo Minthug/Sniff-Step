@@ -49,8 +49,8 @@ export async function POST(req: Request) {
     })
 
     if (!res.ok) {
-        const { message, error, statusCode } = await res.json()
-        return NextResponse.json({ message, error }, { status: statusCode })
+        const { error, status } = await res.json()
+        return NextResponse.json({ message: ['failed'], error }, { status })
     }
 
     return NextResponse.json({ message: 'success' }, { status: 200 })

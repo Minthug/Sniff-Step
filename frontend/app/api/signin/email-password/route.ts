@@ -42,11 +42,11 @@ export async function POST(req: Request) {
     })
 
     if (!res.ok) {
-        const { message, error, statusCode } = await res.json()
-        return NextResponse.json({ message, error }, { status: statusCode })
+        const { error } = await res.json()
+        return NextResponse.json({ message: ['failed'], error }, { status: 400 })
     }
 
     const result = await res.json()
 
-    return NextResponse.json({ message: 'success', result }, { status: 200 })
+    return NextResponse.json({ message: 'success', data: result }, { status: 200 })
 }
