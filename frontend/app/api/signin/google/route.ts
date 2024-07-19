@@ -10,5 +10,7 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ message, error }, { status: statusCode })
     }
 
-    return NextResponse.json({ url: res.url }, { status: 200 })
+    const data = await res.json()
+
+    return NextResponse.json({ url: data.url }, { status: 200 })
 }
