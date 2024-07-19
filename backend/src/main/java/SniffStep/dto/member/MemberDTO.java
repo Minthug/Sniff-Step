@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 public class MemberDTO {
     private long id;
     private String email;
-    private String name;
     private String nickname;
     private String introduce;
     private String phoneNumber;
@@ -29,7 +28,7 @@ public class MemberDTO {
             String defaultImageUrl = "https://sniff-step-s3-bucket.s3.ap-northeast-2.amazonaws.com/default_profile.jpeg";
             member.updateProfileImageUrl(defaultImageUrl);
         }
-        return new MemberDTO(member.getId(), member.getEmail(), member.getName(),
+        return new MemberDTO(member.getId(), member.getEmail(),
                 member.getNickname(), member.getIntroduce(),
                 member.getPhoneNumber(), member.getImageUrl(), member.getMemberType());
     }

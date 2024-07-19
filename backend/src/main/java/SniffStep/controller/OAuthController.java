@@ -24,9 +24,12 @@ public class OAuthController {
 
 
     @GetMapping("/{type}")
-    public void socialLoginRequest(@PathVariable("type")String type, HttpServletResponse response) throws IOException {
+    public ResponseEntity<?> socialLoginRequest(@PathVariable("type")String type) throws IOException {
         String requestURL = oAuthService.request(type.toUpperCase());
-        response.sendRedirect(requestURL);
+        Map<String, String> response = new HashMap<>();
+
+        response.put("url", requestURL);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/oauth2/{type}/redirect")
