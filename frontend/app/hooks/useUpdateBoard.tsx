@@ -195,7 +195,7 @@ export function useUpdateBoard({ lang }: Props): BoardUpdateState {
         if (isFetching || !board) return
 
         const data = new FormData()
-        if (file) data.append('file', file)
+        if (file) data.append('images', file)
 
         data.append('title', title)
         data.append('description', description)
