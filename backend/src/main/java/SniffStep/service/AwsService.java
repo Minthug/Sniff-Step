@@ -10,6 +10,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -68,18 +69,36 @@ public class AwsService {
 
     public AwsS3 uploadProfileFilesV2(Long memberId, MultipartFile imageFile) {
 
-        validateImageFile(imageFile);
+        log.info("Uploading profile image for Member Id: {}", memberId);
 
-        String fileName = generateFileName(imageFile.getOriginalFilename());
-        String uploadFilePath = String.format("member/%d/profile/%s", memberId, fileName);
+        try {
+            validateImageFile(imageFile);
 
-        List<AwsS3> uploadFiles = uploadFilesV2(uploadFilePath, Collections.singletonList(imageFile));
+            String originalFileName = imageFile.getOriginalFilename();
+            String fileName = generateFileName(imageFile.getOriginalFilename());
+            String uploadFilePath = String.format("member/%d/profile/%s", memberId, fileName);
 
-        if (uploadFiles.isEmpty()) {
-            throw new RuntimeException("Failed to upload file");
+            log.info("Generated file path: {}", uploadFilePath);
+
+            List<AwsS3> uploadFiles = uploadFilesV2(uploadFilePath, Collections.singletonList(imageFile));
+
+            if (uploadFiles.isEmpty()) {
+                throw new RuntimeException("Failed to upload file");
+            }
+
+            AwsS3 uploadedFile = uploadFiles.get(0);
+            log.info("File uploaded successfully. URL: {}", uploadedFile.getUploadFileUrl());
+
+            if (uploadedFile.getUploadFileUrl() != null || uploadedFile.getUploadFileUrl().isEmpty()) {
+                throw new FileUploadException("Uploaded file URL is empty or null");
+            }
+
+            return uploadedFile;
+
+        } catch (Exception e) {
+            log.error("Failed to upload profile image", e);
+            throw new RuntimeException("Failed to upload profile image", e);
         }
-
-        return uploadFiles.get(0);
     }
 
     // 수정된 사항

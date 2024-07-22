@@ -9,6 +9,8 @@ import SniffStep.entity.Member;
 import SniffStep.entity.MemberRole;
 import SniffStep.entity.MemberType;
 import SniffStep.repository.MemberRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,6 +26,7 @@ public class AuthService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder encoder;
     private final JwtService jwtService;
+    private final MemberService memberService;
 
 
 
@@ -41,7 +44,6 @@ public class AuthService {
                 .email(signUpRequestDTO.getEmail())
                 .password(signUpRequestDTO.getPassword())
                 .nickname(signUpRequestDTO.getNickname())
-//                .name(signUpRequestDTO.getName())
                 .introduce(signUpRequestDTO.getIntroduce())
                 .phoneNumber(signUpRequestDTO.getPhoneNumber())
                 .imageUrl(signUpRequestDTO.getImageUrl())
@@ -78,6 +80,7 @@ public class AuthService {
         String refreshToken = jwtService.createToken(member.getEmail(), JwtTokenType.REFRESH_TOKEN);
 
         // Refresh Token DB에 저장
+        jwtService.updateAccessToken(member.getEmail(), refreshToken);
         jwtService.updateRefreshToken(accessToken, refreshToken);
 
         return new TokenDto(accessToken, refreshToken);
@@ -115,4 +118,5 @@ public class AuthService {
                     return memberRepository.save(newMember);
                 });
     }
+
 }

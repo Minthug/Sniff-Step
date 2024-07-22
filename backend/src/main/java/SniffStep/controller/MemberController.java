@@ -1,10 +1,13 @@
 package SniffStep.controller;
 
+import SniffStep.dto.board.BoardResponseDTO;
 import SniffStep.dto.member.MemberDTO;
+import SniffStep.dto.member.MemberResponseDTO;
 import SniffStep.dto.member.MemberUpdateDTO;
 import SniffStep.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,8 +36,8 @@ public class MemberController {
     @PatchMapping(value = "/edit/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> editMember(@PathVariable(value = "id") Long id,
                                         @Valid @ModelAttribute MemberUpdateDTO memberUpdateDTO) {
-        memberService.editMemberV2(id, memberUpdateDTO);
-        return ResponseEntity.ok().build();
+        MemberResponseDTO responseDTO = memberService.editMemberV2(id, memberUpdateDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
     }
 
     @DeleteMapping("/{id}")

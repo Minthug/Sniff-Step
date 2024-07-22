@@ -7,6 +7,7 @@ import SniffStep.common.exception.MemberNotFoundException;
 import SniffStep.dto.board.*;
 import SniffStep.entity.*;
 import SniffStep.repository.BoardRepository;
+import SniffStep.repository.ImageRepository;
 import SniffStep.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +33,7 @@ public class BoardService {
         private final BoardRepository boardRepository;
         private final AwsService awsService;
         private final MemberRepository memberRepository;
+    private final ImageRepository imageRepository;
 
 
     @Transactional
@@ -181,19 +183,21 @@ public class BoardService {
         boardRepository.delete(board);
     }
 
-    private void deleteImages(Board board, List<Image> imageToDelete) {
+    private List<Image> deleteImages(Board board, List<Image> imageToDelete) {
+        List<Image> failedToDeleteImages = new ArrayList<>();
+
         for (Image image : imageToDelete) {
-            board.removeImage(image);
             String filePath = String.format("member/%d/%d", board.getMember().getId(), board.getId());
-            try {
-                boolean deleted = awsService.deleteFileV2(filePath, image.getUniqueName());
-                if (!deleted) {
-                    log.warn("Failed to delete image file: {}", image.getUniqueName());
-                }
-            } catch (Exception e) {
-                log.error("Failed to delete image file: {}", image.getUniqueName(), e);
+            boolean deleted = awsService.deleteFileV2(filePath, image.getUniqueName());
+            if (deleted) {
+                board.removeImage(image);
+                imageRepository.delete(image);
+            } else {
+                log.warn("Failed to delete image. ImageId: {}", image.getUniqueName());
+                failedToDeleteImages.add(image);
             }
         }
+        return failedToDeleteImages;
     }
 
     public void validateBoardWriter(Board board) {

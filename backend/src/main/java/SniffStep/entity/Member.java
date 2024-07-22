@@ -29,6 +29,7 @@ public class Member extends BaseTime {
     private String phoneNumber;
     private String password;
 
+    @Column(name = "image_url")
     private String imageUrl;
 
     private String socialId;

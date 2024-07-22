@@ -15,12 +15,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -73,7 +77,16 @@ public class MemberService {
             MultipartFile profileImage = memberUpdateDTO.getImageFiles().get(0);
             if (!profileImage.isEmpty()) {
                 try {
-                    log.info("Uploading profile image: {}", profileImage.getOriginalFilename());
+                    // 기존 이미지 삭제
+                    if (updatedImageUrl != null && !updatedImageUrl.isEmpty()) {
+                        boolean deleted = awsService.deleteFileV2(extractFilePath(updatedImageUrl), extractFileName(updatedImageUrl));
+                        if (deleted) {
+                            log.info("Old profile image deleted successfully: {}", updatedImageUrl);
+                        } else {
+                            log.warn("Failed to delete old profile image: {}", updatedImageUrl);
+                        }
+                    }
+                    log.info("Uploading new profile image: {}", profileImage.getOriginalFilename());
                     AwsS3 uploadedImage = awsService.uploadProfileFilesV2(member.getId(), profileImage);
                     updatedImageUrl = uploadedImage.getUploadFileUrl();
                     log.info("New image uploaded. Updated image Url: {}", updatedImageUrl);
@@ -95,6 +108,8 @@ public class MemberService {
                 encryptedPassword,
                 updatedImageUrl
         );
+
+        member.updateProfileImageUrl(updatedImageUrl);
         memberRepository.save(member);
         log.info("Member updated successfully. Member url: {}", member.getImageUrl());
 
@@ -116,4 +131,40 @@ public class MemberService {
         return ProfileDTO.fromMember(member);
     }
 
+    private String extractFilePath(String s3url) {
+        try {
+            URL url = new URL(s3url);
+            String path = url.getPath();
+
+
+            int lastSlashIndex = path.lastIndexOf("/");
+            if (lastSlashIndex > 0) {
+                return path.substring(1, lastSlashIndex);
+            } else {
+                throw new IllegalArgumentException("Invalid s3 URL format: {}" + s3url);
+            }
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException("Invalid URL: " + s3url, e);
+        }
+    }
+
+    private String extractFileName(String s3Url) {
+        try {
+            URL url = new URL(s3Url);
+            String path = url.getPath();
+            int lastSlashIndex = path.lastIndexOf("/");
+            if (lastSlashIndex >= 0 && lastSlashIndex < path.length() - 1) {
+                return path.substring(lastSlashIndex + 1);
+            } else {
+                throw new IllegalArgumentException("Invalid s3 URL format: {}" + s3Url);
+            }
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException("Invalid URL: " + s3Url, e);
+        }
+    }
+
+    public Member findByEmail(String email) {
+        return memberRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+    }
 }
