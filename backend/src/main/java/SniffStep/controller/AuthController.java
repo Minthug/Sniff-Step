@@ -1,5 +1,7 @@
 package SniffStep.controller;
 
+import SniffStep.common.exception.DuplicateEmailException;
+import SniffStep.common.exception.DuplicateNicknameException;
 import SniffStep.common.jwt.dto.TokenDto;
 import SniffStep.common.jwt.service.JwtService;
 import SniffStep.dto.auth.LoginDTO;
@@ -35,8 +37,23 @@ public class AuthController {
     // 자체 회원가입
     @PostMapping("/signup")
     public ResponseEntity signup(@RequestBody SignUpRequestDTO signUpRequestDTO) throws Exception {
-        authService.signup(signUpRequestDTO);
-        return ResponseEntity.ok().build();
+
+        try {
+            authService.signup(signUpRequestDTO);
+            return ResponseEntity.ok().body(Map.of("Message", "회원가입 성공하였습니다"));
+        } catch (DuplicateEmailException e) {
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body(Map.of("error", "이미 존재하는 이메일입니다.", "message", e.getMessage()));
+        } catch (DuplicateNicknameException e) {
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body(Map.of("error", "이미 존재하는 닉네임입니다.", "message", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "서버 오류가 발생하였습니다.", "message", "회원 가입에 실패하였습니다."));
+        }
     }
 
     // 로그인

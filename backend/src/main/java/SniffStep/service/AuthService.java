@@ -1,5 +1,7 @@
 package SniffStep.service;
 
+import SniffStep.common.exception.DuplicateEmailException;
+import SniffStep.common.exception.DuplicateNicknameException;
 import SniffStep.common.jwt.dto.TokenDto;
 import SniffStep.common.jwt.service.JwtService;
 import SniffStep.dto.auth.LoginDTO;
@@ -33,11 +35,11 @@ public class AuthService {
     @Transactional
     public void signup(SignUpRequestDTO signUpRequestDTO) throws Exception {
         if (memberRepository.findByEmail(signUpRequestDTO.getEmail()).isPresent()) {
-            throw new Exception("이미 존재하는 이메일입니다.");
+            throw new DuplicateEmailException("이미 존재하는 이메일입니다.");
         }
 
         if (memberRepository.findByNickname(signUpRequestDTO.getNickname()).isPresent()) {
-            throw new Exception("이미 존재하는 닉네임입니다.");
+            throw new DuplicateNicknameException("이미 존재하는 닉네임입니다.");
         }
 
         Member member = Member.builder()
