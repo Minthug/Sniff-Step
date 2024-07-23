@@ -17,17 +17,26 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Slf4j
 public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
+    private static final List<String> NO_CHECK_URL = Arrays.asList("/login", "/signup", "/refresh", "/v1/oauth/oauth2/authorization/{provider}",
+            "/v1/oauth/oauth2/authorization/google", "/v1/oauth/google", "/v1/oauth/oauth2/google/redirect", "/v1/oauth/{type}");
 
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+        if (NO_CHECK_URL.contains(request.getRequestURI())) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         try {
             String refreshToken = jwtService.extractRefreshToken(request)
