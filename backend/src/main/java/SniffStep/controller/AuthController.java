@@ -2,6 +2,8 @@ package SniffStep.controller;
 
 import SniffStep.common.exception.DuplicateEmailException;
 import SniffStep.common.exception.DuplicateNicknameException;
+import SniffStep.common.exception.LoginFailureException;
+import SniffStep.common.exception.NotFoundException;
 import SniffStep.common.jwt.dto.TokenDto;
 import SniffStep.common.jwt.service.JwtService;
 import SniffStep.dto.auth.LoginDTO;
@@ -59,7 +61,18 @@ public class AuthController {
     // 로그인
     @PostMapping("/signin")
     public ResponseEntity login(@RequestBody LoginDTO loginDTO) {
-        return ResponseEntity.ok(authService.login(loginDTO));
+
+        try {
+            return ResponseEntity.ok(authService.login(loginDTO));
+        } catch (LoginFailureException e) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "로그인 실패", "message", "비밀번호가 일치하지 않습니다."));
+        } catch (NotFoundException e) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("error", "로그인 실패", "message", "존재하지 않는 이메일입니다."));
+        }
     }
 
     @GetMapping("/profile")
