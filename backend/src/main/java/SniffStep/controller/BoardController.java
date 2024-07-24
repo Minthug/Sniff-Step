@@ -5,7 +5,6 @@ import SniffStep.dto.board.BoardPatchDTO;
 import SniffStep.dto.board.BoardResponseDTO;
 import SniffStep.dto.board.ImageUpdateResultDTO;
 import SniffStep.entity.Board;
-import SniffStep.entity.Image;
 import SniffStep.service.BoardService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -70,7 +69,7 @@ public class BoardController {
         List<MultipartFile> addedImages = request.getImageFiles();
         List<Long> deletedImages = request.getDeletedImages();
 
-        ImageUpdateResultDTO result = boardService.updateBoard(id, title, description, activityLocation, activityDates, activityTimes, addedImages, deletedImages);
+        ImageUpdateResultDTO result = boardService.updateBoardV3(id, title, description, activityLocation, activityDates, activityTimes, addedImages, deletedImages);
 
         return ResponseEntity.ok(result);
     }
@@ -81,6 +80,4 @@ public class BoardController {
         boardService.deleteBoard(id);
         return ResponseEntity.ok().build();
     }
-
-
 }

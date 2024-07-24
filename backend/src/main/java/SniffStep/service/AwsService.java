@@ -3,7 +3,6 @@ package SniffStep.service;
 import SniffStep.common.config.S3Config;
 import SniffStep.dto.board.AwsS3;
 import com.amazonaws.AmazonServiceException;
-import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -28,6 +27,8 @@ public class AwsService {
 
     private final AmazonS3Client amazonS3Client;
     private final S3Config s3Config;
+
+
     private String bucketName;
 
     @PostConstruct
@@ -35,37 +36,43 @@ public class AwsService {
         bucketName = s3Config.getBucketName();
     }
 
-    public List<AwsS3> uploadFilesV2(String uploadFilePath, List<MultipartFile> multipartFiles) {
+    public List<AwsS3> uploadBoardFilesV3(Long memberId, Long boardId, List<MultipartFile> imageFiles) {
+        String uploadFilePath = String.format("member/%d/boards/%d", memberId, boardId);
+        return uploadFilesV3(uploadFilePath, imageFiles);
+    }
+
+    public List<AwsS3> uploadFilesV3(String uploadFilePath, List<MultipartFile> multipartFiles) {
         List<AwsS3> s3files = new ArrayList<>();
 
         for (MultipartFile multipartFile : multipartFiles) {
             if (multipartFile.isEmpty()) {
                 continue;
             }
-            String originalFileName = multipartFile.getOriginalFilename();
-            String uploadFileName = getUuidFileName(originalFileName);
-            String keyName = uploadFilePath + "/" + uploadFileName;
-
-            try (InputStream inputStream = multipartFile.getInputStream()) {
-                ObjectMetadata objectMetadata = createObjectMetadata(multipartFile);
-
-                uploadFileToS3(keyName, inputStream, objectMetadata);
-                String uploadFileUrl = getUploadedFileUrl(keyName);
-
-                s3files.add(createAwsS3(originalFileName, uploadFileName, uploadFilePath, uploadFileUrl));
+            try {
+                AwsS3 uploadResult = uploadSingleFile(multipartFile, uploadFilePath);
+                s3files.add(uploadResult);
             } catch (IOException e) {
-                log.error("File upload failed", e);
-                throw new RuntimeException("File upload failed", e);
+                log.error("File upload failed for file: {}", multipartFile.getOriginalFilename(), e);
+                s3files.add(createFailedAwsS3(multipartFile.getOriginalFilename(), e.getMessage()));
             }
         }
         return s3files;
     }
 
-    public List<AwsS3> uploadBoardFiles(Long memberId, Long boardId, List<MultipartFile> imageFile) {
-        String uploadFilePath = String.format("member/%d/boards/%d", memberId, boardId);
-        return uploadFilesV2(uploadFilePath, imageFile);
-    }
+    private AwsS3 uploadSingleFile(MultipartFile multipartFile, String uploadFilePath) throws IOException {
+        String originalFileName = multipartFile.getOriginalFilename();
+        String uploadFileName = getUuidFileName(originalFileName);
+        String keyName = uploadFilePath + "/" + uploadFileName;
 
+        ObjectMetadata objectMetadata = createObjectMetadata(multipartFile);
+
+        try (InputStream inputStream = multipartFile.getInputStream()) {
+            uploadFileToS3(keyName, inputStream, objectMetadata);
+            String uploadFileUrl = getUploadedFileUrl(keyName);
+
+            return createAwsS3(originalFileName, uploadFileName, uploadFilePath, uploadFileUrl);
+        }
+    }
 
     public AwsS3 uploadProfileFilesV2(Long memberId, MultipartFile imageFile) {
 
@@ -76,11 +83,11 @@ public class AwsService {
 
             String originalFileName = imageFile.getOriginalFilename();
             String fileName = generateFileName(imageFile.getOriginalFilename());
-            String uploadFilePath = String.format("member/%d/profile/%s", memberId, fileName);
+            String uploadFilePath = String.format("member/%d/profile", memberId, fileName);
 
             log.info("Generated file path: {}", uploadFilePath);
 
-            List<AwsS3> uploadFiles = uploadFilesV2(uploadFilePath, Collections.singletonList(imageFile));
+            List<AwsS3> uploadFiles = uploadFilesV3(uploadFilePath, Collections.singletonList(imageFile));
 
             if (uploadFiles.isEmpty()) {
                 throw new RuntimeException("Failed to upload file");
@@ -110,9 +117,9 @@ public class AwsService {
     }
 
     public boolean deleteFileV2(String uploadFilePath, String uuidFileName) {
-        String keyName = uploadFilePath + "/" + uuidFileName;
 
         try {
+            String keyName = uploadFilePath + "/" + uuidFileName;
             if (amazonS3Client.doesObjectExist(bucketName, keyName)) {
                 amazonS3Client.deleteObject(bucketName, keyName);
                 log.info("File delete is completed. KeyName: {}", keyName);
@@ -122,10 +129,8 @@ public class AwsService {
                 return false;
             }
         } catch (AmazonServiceException e) {
-            return false;
-        } catch (SdkClientException e) {
-            log.error("SDK client error while deleting file: {}", keyName, e);
-            return false;
+            log.error("Failed to delete file", e);
+            throw new RuntimeException("Failed to delete file", e);
         }
     }
 
@@ -133,7 +138,6 @@ public class AwsService {
         String ext = fileName.substring(fileName.indexOf(".") + 1);
         return UUID.randomUUID().toString() + "." + ext;
     }
-
 
     // 필요치 않으면 주석
     private void uploadFileToS3(String keyName, InputStream inputStream, ObjectMetadata objectMetadata) {
@@ -168,4 +172,13 @@ public class AwsService {
     private String generateFileName(String originalFileName) {
         return UUID.randomUUID().toString() + "_" + originalFileName;
     }
+
+    private AwsS3 createFailedAwsS3(String originalFileName, String errorMessage) {
+        return AwsS3.builder()
+                .originalFileName(originalFileName)
+                .uploadSuccessful(false)
+                .errorMessage(errorMessage)
+                .build();
+    }
+
 }

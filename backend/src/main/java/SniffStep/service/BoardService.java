@@ -1,14 +1,12 @@
 package SniffStep.service;
 
-import SniffStep.common.exception.AccessDeniedException;
-import SniffStep.common.exception.BusinessLogicException;
-import SniffStep.common.exception.ExceptionCode;
-import SniffStep.common.exception.MemberNotFoundException;
+import SniffStep.common.exception.*;
 import SniffStep.dto.board.*;
 import SniffStep.entity.*;
 import SniffStep.repository.BoardRepository;
 import SniffStep.repository.ImageRepository;
 import SniffStep.repository.MemberRepository;
+import com.amazonaws.services.s3.AmazonS3Client;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -30,11 +28,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BoardService {
 
-        private final BoardRepository boardRepository;
-        private final AwsService awsService;
-        private final MemberRepository memberRepository;
+    private final BoardRepository boardRepository;
+    private final AwsService awsService;
+    private final MemberRepository memberRepository;
     private final ImageRepository imageRepository;
-
+    private final AmazonS3Client amazonS3Client;
 
     @Transactional
     public Board createBoard(BoardCreatedRequestDTO request, String username) {
@@ -57,7 +55,7 @@ public class BoardService {
         board = boardRepository.save(board);
 
         if (!request.getImages().isEmpty()) {
-            List<AwsS3> uploadFiles = awsService.uploadBoardFiles(member.getId(), board.getId(), request.getImages());
+            List<AwsS3> uploadFiles = awsService.uploadBoardFilesV3(member.getId(), board.getId(), request.getImages());
 
             List<Image> images = uploadFiles.stream()
                     .map(file -> new Image(file.getOriginalFileName(), file.getUploadFileUrl(), file.getUploadFilePath()))
@@ -107,31 +105,6 @@ public class BoardService {
         return BoardFindAllWithPagingResponseDTO.toFrom(boardsWithDto, new PageInfoDTO(boards), keyword);
     }
 
-
-    @Transactional
-    public ImageUpdateResultDTO updateBoard(Long boardId, String title, String description, String activityLocation,
-                                            List<String> activityDates, List<String> activityTimes,
-                                            List<MultipartFile> addedImages, List<Long> deletedImages) {
-        Board board = findBoardById(boardId);
-        List<Image> imagesToDelete = findImagesToDelete(board.getImages(), deletedImages);
-
-        // S3 이미지 업로드
-        List<AwsS3> uploadedImages = awsService.uploadBoardFiles(board.getMember().getId(), boardId, addedImages);
-        List<Image> newImages = createImageEntities(uploadedImages);
-
-        // 이미지 삭제 처리
-        deleteImages(board, imagesToDelete);
-
-        // 새 이미지 및 Board 업데이트
-        List<Image> updatedImages = updatedBoardImage(board, imagesToDelete, newImages);
-
-        board.updateBoardWithImages(title, description, activityLocation, updatedImages);
-        updateActivityDates(board, activityDates);
-        updateActivityTimes(board, activityTimes);
-
-        return new ImageUpdateResultDTO(uploadedImages, newImages, imagesToDelete);
-    }
-
     public Board findBoardById(Long boardId) {
         return boardRepository.findById(boardId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
@@ -139,19 +112,20 @@ public class BoardService {
 
     private List<Image> updatedBoardImage(Board board, List<Image> imagesToDelete, List<Image> newImage) {
         List<Image> updatedImage = new ArrayList<>(board.getImages());
-        updatedImage.removeAll(imagesToDelete);
+        updatedImage.removeIf(image -> imagesToDelete.contains(image.getId()));
         updatedImage.addAll(newImage);
         return updatedImage;
     }
 
 
-    private List<Image> createImageEntities(List<AwsS3> uploadedImage) {
+    private List<Image> createImageEntities(List<AwsS3> uploadedImage, Board board) {
         return uploadedImage.stream()
-                .map(awsS3 -> Image.builder()
-                        .originName(awsS3.getOriginalFileName())
-                        .s3Url(awsS3.getUploadFileUrl())
-                        .s3FilePath(awsS3.getUploadFilePath())
-                        .build())
+                .map(awsS3 ->
+                        Image.builder()
+                                .originName(awsS3.getOriginalFileName())
+                                .s3Url(awsS3.getUploadFileUrl())
+                                .s3FilePath(awsS3.getUploadFilePath())
+                                .build())
                 .collect(Collectors.toList());
 
     }
@@ -180,6 +154,13 @@ public class BoardService {
     public void deleteBoard(Long id) {
         Board board = boardRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
         validateBoardWriter(board);
+
+        // 게시판의 모든 이미지 삭제
+        List<Image> failedToDeleteImages = deleteImages(board, new ArrayList<>(board.getImages()));
+        if (!failedToDeleteImages.isEmpty()) {
+            log.warn("Failed to delete some images for board: {}", id);
+            // 추가적인 에러 처리 로직
+        }
         boardRepository.delete(board);
     }
 
@@ -222,5 +203,83 @@ public class BoardService {
             throw new AccessDeniedException("인증되지 않은 사용자입니다.");
         }
     }
+
+    private void verifyS3Operation(List<AwsS3> uploadedImages, List<Image> deletedImages, List<Image> failedToDeleteImages) {
+        boolean allUploaded = uploadedImages.stream().allMatch(AwsS3::isUploadSuccessful);
+        boolean allDeleted = deletedImages.size() == failedToDeleteImages.size();
+
+        if (!allUploaded || !allDeleted) {
+            log.error("S3 operations failed. Uploaded: {}, Deleted: {}, Failed to delete: {}",
+                    uploadedImages.size(), deletedImages.size() - failedToDeleteImages.size(), failedToDeleteImages.size());
+            throw new FileUploadFailureException("S3 파일 업로드 또는 삭제에 실패했습니다.");
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public void verifyBoardUpdate(Long boardId, List<Image> expectedImages) {
+        Board board = findBoardById(boardId);
+        if (!board.getImages().equals(expectedImages)) {
+            log.error("Database synchronization failed. BoardId: {}", boardId);
+            throw new RuntimeException("Database synchronization failed.");
+        }
+    }
+
+    private void rollbackS3Operation(List<AwsS3> uploadedImages, Long memberId, Long boardId, List<Image> deletedImages) {
+        // 업로드된 이미지 삭제
+        for (AwsS3 uploadedImage : uploadedImages) {
+            String filePath = String.format("member/%d/%d", memberId, boardId);
+            boolean deleted = awsService.deleteFileV2(filePath, uploadedImage.getUploadFileName());
+            if (!deleted) {
+                log.error("Failed to rollback uploaded image. ImageId: {}", uploadedImage.getUploadFileName());
+            }
+        }
+        /* 삭제된 이미지 복구
+        for (Image deletedImage : deletedImages) {
+            log.warn("Cannot recover deleted image. ImageId: {}", deletedImage.getUniqueName());
+        }
+        */
+    }
+
+    @Transactional
+    public ImageUpdateResultDTO updateBoardV3(Long boardId, String title, String description, String activityLocation,
+                                              List<String> activityDates, List<String> activityTimes,
+                                              List<MultipartFile> addedImages, List<Long> deletedImageIds) {
+        Board board = findBoardById(boardId);
+        Long memberId = board.getMember().getId();
+        List<Image> imagesToDelete = findImagesToDelete(board.getImages(), deletedImageIds);
+
+        try {
+            // 이미지 삭제 처리
+            List<Image> failedToDeleteImages = deleteImages(board, imagesToDelete);
+
+            // S3 이미지 업로드
+            List<AwsS3> uploadedImages = awsService.uploadBoardFilesV3(memberId, boardId, addedImages);
+            List<Image> newImages = createImageEntities(uploadedImages, board);
+
+            // 새 이미지 및 Board 업데이트
+            List<Image> updatedImages = updatedBoardImage(board, imagesToDelete, newImages);
+
+            board.updateBoardWithImages(title, description, activityLocation, updatedImages);
+            updateActivityDates(board, activityDates);
+            updateActivityTimes(board, activityTimes);
+
+            // 변경사항 저장
+            boardRepository.save(board);
+            imageRepository.saveAll(newImages);
+
+            List<Image> successfullyDeletedImages = imagesToDelete.stream()
+                    .filter(image -> !failedToDeleteImages.contains(image))
+                    .collect(Collectors.toList());
+
+            verifyS3Operation(uploadedImages, successfullyDeletedImages, failedToDeleteImages);
+            verifyBoardUpdate(boardId, updatedImages);
+
+            return new ImageUpdateResultDTO(uploadedImages, newImages, successfullyDeletedImages, failedToDeleteImages);
+        } catch (FileUploadFailureException e) {
+            rollbackS3Operation(new ArrayList<>(), memberId, boardId, imagesToDelete);
+            throw new FileUploadFailureException("파일 업로드에 실패했습니다.", e);
+        }
+    }
+
 }
 

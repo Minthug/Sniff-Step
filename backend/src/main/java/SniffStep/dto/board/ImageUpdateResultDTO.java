@@ -16,5 +16,6 @@ public class ImageUpdateResultDTO {
     private List<AwsS3> addedImageFiles;
     private List<Image> deletedImage;
     private List<Image> addedImages;
+    private List<Image> failedToDeleteImages;
 
 }

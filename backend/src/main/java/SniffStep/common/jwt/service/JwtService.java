@@ -219,48 +219,7 @@ public class JwtService {
 
 
     @Transactional
-    public TokenDto reissue(HttpServletRequest request, HttpServletResponse response) {
-            log.info("Token reissue process started");
-
-            // 1. Refresh Token 추출
-            String refreshToken = extractRefreshToken(request)
-                    .orElseThrow(() -> new InvalidParameterException("Refresh Token이 없습니다."));
-            log.info("Refresh Token extracted");
-
-            // 2. Refresh Token 유효성 검증
-            if (!isTokenValid(refreshToken)) {
-                throw new InvalidParameterException("Refresh Token이 유효하지 않습니다.");
-            }
-            log.info("Refresh Token validated");
-
-            // 3. Refresh Token에서 email 추출
-            String email = extractEmail(refreshToken)
-                    .orElseThrow(() -> new InvalidParameterException("Refresh Token에서 email을 추출할 수 없습니다."));
-            log.info("Email extracted from Refresh Token: {}", email);
-
-            // 4. 사용자 정보 조회
-            Member member = memberRepository.findByEmail(email)
-                    .orElseThrow(() -> new MemberNotFoundException());
-            log.info("Member found: {}", member.getEmail());
-
-            // 5. 새로운 AccessToken 생성
-            String newAccessToken = createToken(email, JwtTokenType.ACCESS_TOKEN);
-            log.info("New Access Token created");
-
-            // 6. 새로운 RefreshToken 생성 (선택적)
-            String newRefreshToken = createToken(email, JwtTokenType.REFRESH_TOKEN);
-            log.info("New Refresh Token created");
-
-            // 7. 새로운 RefreshToken을 DB에 저장
-            updateAccessToken(email, newAccessToken);
-            updateRefreshToken(email, newRefreshToken);
-            log.info("Refresh Token updated in DB");
-
-            return new TokenDto(newAccessToken, newRefreshToken);
-    }
-
-    @Transactional
-    public TokenDto reissueV2(String refreshToken, HttpServletResponse response) {
+    public TokenDto reissue(String refreshToken, HttpServletResponse response) {
         if (refreshToken == null || refreshToken.isEmpty()) {
             throw new InvalidParameterException("Refresh Token이 없습니다.");
         }
@@ -274,7 +233,6 @@ public class JwtService {
             String email = extractEmailFromToken(refreshToken);
 
             // DB에서 저장된 RefreshToken 확인 (필요한 경우)
-
 
             // 새로운 Access Token 생성
             String newAccessToken = createToken(email, JwtTokenType.ACCESS_TOKEN);
@@ -296,8 +254,8 @@ public class JwtService {
             Cookie cookie = new Cookie(name, value);
             cookie.setPath("/");
             cookie.setSecure(true);
-            cookie.setMaxAge((int) maxAge);
-            cookie.setHttpOnly(httpOnly);
+            cookie.setMaxAge(7 * 24 * 60 * 60); // 7 Days
+            cookie.setHttpOnly(true);
             response.addCookie(cookie);
         }
 

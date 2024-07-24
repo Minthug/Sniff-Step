@@ -83,21 +83,9 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<TokenDto> reissue(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<TokenDto> reissue(@RequestBody TokenDto tokenDto, HttpServletResponse response) {
         try {
-            TokenDto tokenDto = jwtService.reissue(request, response);
-            return ResponseEntity.ok(tokenDto);
-        } catch (InvalidParameterException e) {
-            return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED)
-                    .body(new TokenDto(null, null));
-        }
-    }
-
-    @PostMapping("/refreshV2")
-    public ResponseEntity<TokenDto> reissueV2(@RequestBody TokenDto tokenDto, HttpServletResponse response) {
-        try {
-            TokenDto newTokenDto = jwtService.reissueV2(tokenDto.getRefreshToken(), response);
+            TokenDto newTokenDto = jwtService.reissue(tokenDto.getRefreshToken(), response);
             return ResponseEntity.ok(newTokenDto);
         } catch (InvalidParameterException e) {
             return ResponseEntity

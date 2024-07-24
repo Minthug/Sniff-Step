@@ -15,4 +15,15 @@ public class AwsS3 {
     private String uploadFileName;
     private String uploadFilePath;
     private String uploadFileUrl;
+    private boolean uploadSuccessful;
+    private String errorMessage;
+
+
+    public boolean isUploadSuccessful() {
+        return uploadSuccessful;
+    }
+
+    public void setUploadSuccessful(boolean uploadSuccessful) {
+        this.uploadSuccessful = uploadSuccessful;
+    }
 }
