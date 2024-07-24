@@ -5,7 +5,16 @@ import { i18n } from './i18n.config'
 
 function getLocale(request: NextRequest): string | undefined {
     const negotiatorHeaders: Record<string, string> = {}
-    request.headers.forEach((value, key) => (negotiatorHeaders[key] = value))
+    request.headers.forEach((value, key) => {
+        if (key === 'accept-language' && value === '*') {
+            value = 'ko-KR,ko;q=0.9'
+        }
+    })
+
+    if (!request.headers.has('accept-language')) {
+        negotiatorHeaders['accept-language'] = 'ko-KR,ko;q=0.9'
+    }
+
     // @ts-ignore locales are readonly
     const locales: string[] = i18n.locales
     const languages = new Negotiator({ headers: negotiatorHeaders }).languages()
