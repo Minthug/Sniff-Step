@@ -2,6 +2,7 @@
 set -e
 cd "$(dirname "$0")"
 
+git pull
 
 docker build -t frontend .
 
