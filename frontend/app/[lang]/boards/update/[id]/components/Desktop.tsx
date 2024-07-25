@@ -68,7 +68,7 @@ export function Desktop({ lang, text, board, fileChangeState, boardState }: Prop
                         lang={lang}
                         address={address}
                         addressEnglish={addressEnglish}
-                        getAddress={board.address}
+                        getAddress={board.activityLocation}
                         handleChangeAddress={handleChangeAddress}
                     />
                 </div>

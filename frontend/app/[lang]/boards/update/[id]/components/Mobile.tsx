@@ -68,7 +68,7 @@ export function Mobile({ lang, text, board, fileChangeState, boardState }: Props
                         lang={lang}
                         address={address}
                         addressEnglish={addressEnglish}
-                        getAddress={board.address}
+                        getAddress={board.activityLocation}
                         handleChangeAddress={handleChangeAddress}
                     />
                 </div>
