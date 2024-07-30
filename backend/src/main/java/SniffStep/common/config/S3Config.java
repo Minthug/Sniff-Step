@@ -12,17 +12,17 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class S3Config {
 
-    @Value("${cloud.aws.credentials.accessKey}")
+    @Value("${spring.cloud.aws.credentials.accessKey}")
     private String accessKey;
 
-    @Value("${cloud.aws.credentials.secretKey}")
+    @Value("${spring.cloud.aws.credentials.secretKey}")
     private String secretKey;
 
-    @Value("${cloud.aws.region}")
+    @Value("${spring.cloud.aws.region}")
     private String region;
 
     // 수정
-    @Value("${cloud.aws.bucket}")
+    @Value("${spring.cloud.aws.bucket}")
     private String bucketName;
 
 

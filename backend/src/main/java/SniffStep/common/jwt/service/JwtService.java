@@ -1,10 +1,7 @@
 package SniffStep.common.jwt.service;
 
-import SniffStep.common.exception.MemberNotFoundException;
 import SniffStep.common.jwt.dto.TokenDto;
-import SniffStep.common.jwt.filter.CustomJsonUsernamePasswordAuthenticationFilter;
 import SniffStep.entity.JwtTokenType;
-import SniffStep.entity.Member;
 import SniffStep.repository.MemberRepository;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
