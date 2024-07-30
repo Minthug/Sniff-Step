@@ -27,3 +27,4 @@ application.yml
 *.yml
 application.properties
 application-prod.properties
+build.gradle
