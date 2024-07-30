@@ -22,19 +22,19 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class GoogleOauth implements SocialOAuth {
 
-    @Value("${security.oauth2.client.registration.google.end-point}")
+    @Value("${spring.config.security.oauth2.client.registration.google.end-point}")
     private String GOOGLE_SNS_LOGIN_URL;
 
-    @Value("${security.oauth2.client.registration.google.client-id}")
+    @Value("${spring.config.security.oauth2.client.registration.google.client-id}")
     private String GOOGLE_SNS_CLIENT_ID;
 
-    @Value("${security.oauth2.client.registration.google.redirect-uri}")
+    @Value("${spring.config.security.oauth2.client.registration.google.redirect-uri}")
     private String GOOGLE_SNS_CALLBACK_URL;
 
-    @Value("${security.oauth2.client.registration.google.client-secret}")
+    @Value("${spring.config.security.oauth2.client.registration.google.client-secret}")
     private String GOOGLE_SNS_CLIENT_SECRET;
 
-    @Value("${security.oauth2.client.registration.google.scope}")
+    @Value("${spring.config.security.oauth2.client.registration.google.scope}")
     private String GOOGLE_DATA_ACCESS_SCOPE;
 
     // Stirng 값을 객체로 바꾸는 Mapper
@@ -43,11 +43,6 @@ public class GoogleOauth implements SocialOAuth {
     // Google API로 요청을 보내고 받을 객체입니다.
     private final RestTemplate restTemplate;
 
-    @Value("${jwt.secret-key}")
-    private String jwtSecret;
-
-    @Value("${jwt.accessTokenExpireTime}")
-    private long jwtExpiration;
 
 
     @Override

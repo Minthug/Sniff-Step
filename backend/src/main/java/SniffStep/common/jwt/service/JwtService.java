@@ -29,19 +29,19 @@ import java.util.Optional;
 @Slf4j
 public class JwtService {
 
-    @Value("${jwt.secret-key}")
+    @Value("${spring.config.jwt.secret-key}")
     private String secretKey;
 
-    @Value("${jwt.accessTokenExpireTime}")
+    @Value("${spring.config.jwt.accessTokenExpiration}")
     private Long accessTokenExpirationPeriod;
 
-    @Value("${jwt.refreshTokenExpireTime}")
+    @Value("${spring.config.jwt.refreshTokenExpiration}")
     private Long refreshTokenExpirationPeriod;
 
-    @Value("${jwt.header}")
+    @Value("${spring.config.jwt.header}")
     private String accessHeader;
 
-    @Value("${jwt.refresh.header}")
+    @Value("${spring.config.jwt.refresh.header}")
     private String refreshHeader;
 
     private final MemberRepository memberRepository;
