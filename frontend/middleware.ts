@@ -9,6 +9,7 @@ function getLocale(request: NextRequest): string | undefined {
         if (key === 'accept-language' && value === '*') {
             value = 'ko-KR,ko;q=0.9'
         }
+        negotiatorHeaders[key] = value
     })
 
     if (!request.headers.has('accept-language')) {
