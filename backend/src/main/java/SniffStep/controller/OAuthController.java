@@ -37,6 +37,7 @@ public class OAuthController {
 
          GetSocialOAuthRes res = oAuthService.oAuthLogin(code, type.toUpperCase());
          jwtService.sendAccessAndRefreshTokenCookie(response, res.getAccessToken(), res.getRefreshToken());
+
          response.sendRedirect("http://localhost:3000");
     }
 

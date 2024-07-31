@@ -23,7 +23,6 @@ public class OAuthService {
     private final MemberRepository memberRepository;
     private final JwtService jwtService;
     private final AuthService authService;
-
     private final GoogleOauth googleOAuth;
 
     public String request(String type) throws IOException {

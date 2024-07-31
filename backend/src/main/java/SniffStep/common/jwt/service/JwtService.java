@@ -246,6 +246,7 @@ public class JwtService {
         }
     }
 
+
     private static class CookieUtil {
         public static void addCookie(HttpServletResponse response, String name, String value, long maxAge, boolean httpOnly) {
             Cookie cookie = new Cookie(name, value);
