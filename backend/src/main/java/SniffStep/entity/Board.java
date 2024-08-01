@@ -126,4 +126,5 @@ public class Board extends BaseTime {
         this.images.clear();
         initializeImages(newImage);
     }
+
 }

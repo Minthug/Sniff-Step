@@ -69,9 +69,8 @@ public class BoardController {
         List<MultipartFile> addedImages = request.getImageFiles();
         List<Long> deletedImages = request.getDeletedImages();
 
-        ImageUpdateResultDTO result = boardService.updateBoardV3(id, title, description, activityLocation, activityDates, activityTimes, addedImages, deletedImages);
-
-        return ResponseEntity.ok(result);
+        ImageUpdateResultDTO imageUpdateResultDTO = boardService.updateBoardV3(id, title, description, activityLocation, activityDates, activityTimes, addedImages, deletedImages);
+        return ResponseEntity.status(HttpStatus.OK).body(imageUpdateResultDTO);
     }
 
     @DeleteMapping("/{id}")
@@ -80,4 +79,11 @@ public class BoardController {
         boardService.deleteBoard(id);
         return ResponseEntity.ok().build();
     }
+
+//    @PatchMapping(value = "/test/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    public ResponseEntity<?> editBoard(@PathVariable(value = "id") Long id,
+//                                       @Valid @ModelAttribute BoardPatchDTO request) {
+//        BoardResponseDTO boardResponseDTO = boardService.updateBoardV4(id, request);
+//        return ResponseEntity.status(HttpStatus.OK).body(boardResponseDTO);
+//    }
 }

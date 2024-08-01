@@ -17,14 +17,10 @@ public class BoardPatchDTO {
 
     private String title;
     private String description;
-
     private String activityLocation;
-
     private List<String> activityDate = new ArrayList<>();
     private List<String> activityTime = new ArrayList<>();
-
     private List<MultipartFile> imageFiles = new ArrayList<>();
-
     private List<Long> deletedImages = new ArrayList<>();
 }
 

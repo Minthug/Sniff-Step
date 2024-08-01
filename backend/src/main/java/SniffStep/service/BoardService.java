@@ -274,10 +274,35 @@ public class BoardService {
             verifyS3Operation(uploadedImages, successfullyDeletedImages, failedToDeleteImages);
             verifyBoardUpdate(boardId, updatedImages);
 
+
+            verifyS3Operation(uploadedImages, successfullyDeletedImages, failedToDeleteImages);
+            verifyBoardUpdate(boardId, updatedImages);
+
             return new ImageUpdateResultDTO(uploadedImages, newImages, successfullyDeletedImages, failedToDeleteImages);
         } catch (FileUploadFailureException e) {
             rollbackS3Operation(new ArrayList<>(), memberId, boardId, imagesToDelete);
             throw new FileUploadFailureException("파일 업로드에 실패했습니다.", e);
+        }
+    }
+
+    private boolean deleteExistingImage(String imageUrl) {
+        if (imageUrl == null && imageUrl.isEmpty()) {
+            log.debug("No existing image to delete");
+            return true;
+        }
+
+        try {
+            boolean deleted = awsService.deleteFileV3(imageUrl);
+            if (deleted) {
+                log.info("Old profile image deleted successfully: {}", imageUrl);
+                return true;
+            } else {
+                log.warn("Failed to delete old profile image: {}", imageUrl);
+                return false;
+            }
+        } catch (Exception e) {
+            log.error("Failed to delete old profile image: {}", imageUrl, e);
+            return false;
         }
     }
 

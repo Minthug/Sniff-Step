@@ -4,6 +4,8 @@ import SniffStep.common.config.S3Config;
 import SniffStep.dto.board.AwsS3;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import jakarta.annotation.PostConstruct;
@@ -74,39 +76,6 @@ public class AwsService {
         }
     }
 
-    public AwsS3 uploadProfileFilesV2(Long memberId, MultipartFile imageFile) {
-
-        log.info("Uploading profile image for Member Id: {}", memberId);
-
-        try {
-            validateImageFile(imageFile);
-
-            String originalFileName = imageFile.getOriginalFilename();
-            String fileName = generateFileName(imageFile.getOriginalFilename());
-            String uploadFilePath = String.format("member/%d/profile", memberId, fileName);
-
-            log.info("Generated file path: {}", uploadFilePath);
-
-            List<AwsS3> uploadFiles = uploadFilesV3(uploadFilePath, Collections.singletonList(imageFile));
-
-            if (uploadFiles.isEmpty()) {
-                throw new RuntimeException("Failed to upload file");
-            }
-
-            AwsS3 uploadedFile = uploadFiles.get(0);
-            log.info("File uploaded successfully. URL: {}", uploadedFile.getUploadFileUrl());
-
-            if (uploadedFile.getUploadFileUrl() != null || uploadedFile.getUploadFileUrl().isEmpty()) {
-                throw new FileUploadException("Uploaded file URL is empty or null");
-            }
-
-            return uploadedFile;
-
-        } catch (Exception e) {
-            log.error("Failed to upload profile image", e);
-            throw new RuntimeException("Failed to upload profile image", e);
-        }
-    }
 
     // 수정된 사항
     private ObjectMetadata createObjectMetadata(MultipartFile multipartFile) {
@@ -122,6 +91,25 @@ public class AwsService {
             String keyName = uploadFilePath + "/" + uuidFileName;
             if (amazonS3Client.doesObjectExist(bucketName, keyName)) {
                 amazonS3Client.deleteObject(bucketName, keyName);
+                log.info("File delete is completed. KeyName: {}", keyName);
+                return true;
+            } else {
+                log.warn("File does not exist. KeyName: {}", keyName);
+                return false;
+            }
+        } catch (AmazonServiceException e) {
+            log.error("Failed to delete file", e);
+            throw new RuntimeException("Failed to delete file", e);
+        }
+    }
+
+    public boolean deleteFileV3(String fileUrl) {
+        try {
+            String splitStr = ".com/";
+            String keyName = fileUrl.substring(fileUrl.lastIndexOf(splitStr) + splitStr.length());
+
+            if (amazonS3Client.doesObjectExist(bucketName, keyName)) {
+                amazonS3Client.deleteObject(new DeleteObjectRequest(bucketName, keyName));
                 log.info("File delete is completed. KeyName: {}", keyName);
                 return true;
             } else {
@@ -158,19 +146,17 @@ public class AwsService {
                 .build();
     }
 
-    private void validateImageFile(MultipartFile imageFile) {
-        if (imageFile.isEmpty()) {
-            throw new IllegalArgumentException("Empty file submitted");
-        }
-
-        String contentType = imageFile.getContentType();
-        if (contentType == null || !contentType.startsWith("image/")) {
-            throw new IllegalArgumentException("Invalid file type");
-        }
-    }
 
     private String generateFileName(String originalFileName) {
-        return UUID.randomUUID().toString() + "_" + originalFileName;
+        return UUID.randomUUID().toString() + getFileExtension(originalFileName);
+    }
+
+    private String getFileExtension(String fileName) {
+        try {
+            return fileName.substring(fileName.lastIndexOf("."));
+        } catch (StringIndexOutOfBoundsException e) {
+            throw new IllegalArgumentException("잘못된 형식의 파일(" + fileName + ") 입니다.");
+        }
     }
 
     private AwsS3 createFailedAwsS3(String originalFileName, String errorMessage) {
@@ -181,4 +167,49 @@ public class AwsService {
                 .build();
     }
 
+    public AwsS3 uploadBoardV4(Long boardId, MultipartFile imageFile) throws Exception {
+        if (imageFile == null || imageFile.isEmpty()) {
+            throw new FileUploadException("파일이 비어있습니다.");
+        }
+
+        String uploadFilePath = String.format("member/%d/boards/%d", boardId);
+        List<MultipartFile> fileList = Collections.singletonList(imageFile);
+
+        List<AwsS3> uploadResult = uploadFilesV3(uploadFilePath, fileList);
+
+        if (uploadResult.isEmpty()) {
+            throw new FileUploadException("파일 업로드에 실패하였습니다.");
+        }
+
+        AwsS3 result = uploadResult.get(0);
+        if (result.getUploadFileUrl() == null || result.getUploadFileUrl().isEmpty()) {
+            throw new FileUploadException("업로드된 파일 URL이 비어있습니다.");
+        }
+
+        log.info("Board image uploaded successfully. URL: {}", boardId, result.getUploadFileUrl());
+        return result;
+    }
+
+    public AwsS3 uploadProfileV3(Long memberId, MultipartFile imageFile) throws Exception {
+        if (imageFile == null || imageFile.isEmpty()) {
+            throw new FileUploadException("파일이 비어있습니다.");
+        }
+
+        String uploadFilePath = String.format("member/%d/profile", memberId);
+        List<MultipartFile> fileList = Collections.singletonList(imageFile);
+
+        List<AwsS3> uploadResult = uploadFilesV3(uploadFilePath, fileList);
+
+        if (uploadResult.isEmpty()) {
+            throw new FileUploadException("파일 업로드에 실패하였습니다.");
+        }
+
+        AwsS3 result = uploadResult.get(0);
+        if (result.getUploadFileUrl() == null || result.getUploadFileUrl().isEmpty()) {
+            throw new FileUploadException("업로드된 파일 URL이 비어있습니다.");
+        }
+
+        log.info("Profile image uploaded successfully. URL: {}", memberId ,result.getUploadFileUrl());
+        return result;
+    }
 }

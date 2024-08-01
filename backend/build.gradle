@@ -79,7 +79,7 @@ flyway {
 	user = 'minthug'
 	password = 'g1138745x'
 	locations = ['classpath:db/migration}']
-	cleanDisabled = false
+	cleanDisabled = true
 	baselineOnMigrate = true
 	baselineVersion = '1'
 }

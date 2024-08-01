@@ -13,13 +13,14 @@ import SniffStep.entity.Member;
 import SniffStep.entity.MemberRole;
 import SniffStep.entity.MemberType;
 import SniffStep.repository.MemberRepository;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.security.InvalidParameterException;
 
 
 @Service
@@ -36,13 +37,8 @@ public class AuthService {
 
     @Transactional
     public void signup(SignUpRequestDTO signUpRequestDTO) throws Exception {
-        if (memberRepository.findByEmail(signUpRequestDTO.getEmail()).isPresent()) {
-            throw new DuplicateEmailException("이미 존재하는 이메일입니다.");
-        }
-
-        if (memberRepository.findByNickname(signUpRequestDTO.getNickname()).isPresent()) {
-            throw new DuplicateNicknameException("이미 존재하는 닉네임입니다.");
-        }
+        validateUniqueInfo(signUpRequestDTO);
+        validateRequiredFields(signUpRequestDTO);
 
         Member member = Member.builder()
                 .email(signUpRequestDTO.getEmail())
@@ -123,4 +119,28 @@ public class AuthService {
                 });
     }
 
+    private void validateUniqueInfo(SignUpRequestDTO dto) {
+        if (memberRepository.findByEmail(dto.getEmail()).isPresent()) {
+            throw new DuplicateEmailException("이미 존재하는 이메일입니다.");
+        }
+
+        if (memberRepository.findByNickname(dto.getNickname()).isPresent()) {
+            throw new DuplicateNicknameException("이미 존재하는 닉네임입니다.");
+        }
+    }
+
+    private void validateRequiredFields(SignUpRequestDTO dto) {
+        if (StringUtils.isEmpty(dto.getEmail())) {
+            throw new InvalidParameterException("이메일은 필수 입력값입니다.");
+        }
+
+        if (StringUtils.isBlank(dto.getPassword())) {
+            throw new InvalidParameterException("비밀번호는 필수 입력값입니다.");
+        }
+
+        if (StringUtils.isBlank(dto.getNickname())) {
+            throw new InvalidParameterException("닉네임은 필수 입력값입니다.");
+        }
+
+    }
 }

@@ -33,17 +33,18 @@ public class MemberController {
         return ResponseEntity.ok(member);
     }
 
-    @PatchMapping(value = "/edit/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> editMember(@PathVariable(value = "id") Long id,
-                                        @Valid @ModelAttribute MemberUpdateDTO memberUpdateDTO) {
-        MemberResponseDTO responseDTO = memberService.editMemberV2(id, memberUpdateDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
-    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteMember(@PathVariable(value = "id") Long id) {
 
         memberService.deleteMember(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping(value = "/edit/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> editMember(@PathVariable(value = "id") Long id,
+                                          @Valid @ModelAttribute MemberUpdateDTO memberUpdateDTO) {
+        MemberResponseDTO memberResponseDTO = memberService.editMemberV3(id, memberUpdateDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(memberResponseDTO);
     }
 }

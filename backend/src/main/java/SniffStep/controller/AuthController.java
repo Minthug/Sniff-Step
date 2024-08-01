@@ -15,14 +15,18 @@ import SniffStep.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.DuplicateMappingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.InvalidParameterException;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @RequiredArgsConstructor
@@ -39,6 +43,22 @@ public class AuthController {
     // 자체 회원가입
     @PostMapping("/signup")
     public ResponseEntity signup(@RequestBody SignUpRequestDTO signUpRequestDTO) throws Exception {
+        if (signUpRequestDTO.getEmail() == null || signUpRequestDTO.getEmail().trim().isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("error", "이메일 주소를 입력해주세요."));
+        }
+        if (signUpRequestDTO.getPassword() == null || signUpRequestDTO.getPassword().trim().isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("error", "비밀번호를 입력해주세요."));
+        }
+        if (signUpRequestDTO.getNickname() == null || signUpRequestDTO.getNickname().trim().isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("error", "닉네임을 입력해주세요."));
+        }
+
 
         try {
             authService.signup(signUpRequestDTO);
@@ -51,7 +71,7 @@ public class AuthController {
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
                     .body(Map.of("error", "이미 존재하는 닉네임입니다.", "message", e.getMessage()));
-        } catch (Exception e) {
+       } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of("error", "서버 오류가 발생하였습니다.", "message", "회원 가입에 실패하였습니다."));
