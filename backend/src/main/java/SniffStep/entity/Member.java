@@ -9,7 +9,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Entity
 @Getter
 @Builder
-@Slf4j
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseTime {
@@ -63,7 +62,6 @@ public class Member extends BaseTime {
             this.imageUrl = imageUrl;
         }
         onPreUpdate();
-        log.info("Member updated: {}", this.imageUrl);
     }
 
     public void updateRefreshToken(String updateRefreshToken) {

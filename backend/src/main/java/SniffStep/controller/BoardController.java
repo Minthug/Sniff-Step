@@ -56,23 +56,6 @@ public class BoardController {
         return ResponseEntity.ok(boardService.searchBoardsV2(keyword, page));
     }
 
-    @PatchMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> editBoard(@PathVariable(value = "id") Long id,
-                                       @Valid @ModelAttribute BoardPatchDTO request,
-                                       @AuthenticationPrincipal UserDetails userDetails) {
-
-        String title = request.getTitle();
-        String description = request.getDescription();
-        String activityLocation = request.getActivityLocation();
-        List<String> activityDates = request.getActivityDate();
-        List<String> activityTimes = request.getActivityTime();
-        List<MultipartFile> addedImages = request.getImageFiles();
-        List<Long> deletedImages = request.getDeletedImages();
-
-        ImageUpdateResultDTO imageUpdateResultDTO = boardService.updateBoardV3(id, title, description, activityLocation, activityDates, activityTimes, addedImages, deletedImages);
-        return ResponseEntity.status(HttpStatus.OK).body(imageUpdateResultDTO);
-    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteBoard(@PathVariable(value = "id") Long id, @AuthenticationPrincipal UserDetails userDetails) {
 
@@ -80,10 +63,10 @@ public class BoardController {
         return ResponseEntity.ok().build();
     }
 
-//    @PatchMapping(value = "/test/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-//    public ResponseEntity<?> editBoard(@PathVariable(value = "id") Long id,
-//                                       @Valid @ModelAttribute BoardPatchDTO request) {
-//        BoardResponseDTO boardResponseDTO = boardService.updateBoardV4(id, request);
-//        return ResponseEntity.status(HttpStatus.OK).body(boardResponseDTO);
-//    }
+    @PatchMapping(value = "/edit/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> editBoard(@PathVariable(value = "id") Long id,
+                                       @Valid @ModelAttribute BoardPatchDTO request) {
+        BoardResponseDTO boardResponseDTO = boardService.updateBoardV4(id, request);
+        return ResponseEntity.status(HttpStatus.OK).body(boardResponseDTO);
+    }
 }

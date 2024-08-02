@@ -110,32 +110,6 @@ public class BoardService {
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
     }
 
-    private List<Image> updatedBoardImage(Board board, List<Image> imagesToDelete, List<Image> newImage) {
-        List<Image> updatedImage = new ArrayList<>(board.getImages());
-        updatedImage.removeIf(image -> imagesToDelete.contains(image.getId()));
-        updatedImage.addAll(newImage);
-        return updatedImage;
-    }
-
-
-    private List<Image> createImageEntities(List<AwsS3> uploadedImage, Board board) {
-        return uploadedImage.stream()
-                .map(awsS3 ->
-                        Image.builder()
-                                .originName(awsS3.getOriginalFileName())
-                                .s3Url(awsS3.getUploadFileUrl())
-                                .s3FilePath(awsS3.getUploadFilePath())
-                                .build())
-                .collect(Collectors.toList());
-
-    }
-
-    private List<Image> findImagesToDelete(List<Image> currentImage, List<Long> imageIds) {
-        return currentImage.stream()
-                .filter(image -> imageIds.contains(image.getId()))
-                .collect(Collectors.toList());
-    }
-
     private void updateActivityDates(Board board, List<String> activityDates) {
         List<ActivityDate> enumDates = activityDates.stream()
                 .map(ActivityDate::fromString)
@@ -204,107 +178,86 @@ public class BoardService {
         }
     }
 
-    private void verifyS3Operation(List<AwsS3> uploadedImages, List<Image> deletedImages, List<Image> failedToDeleteImages) {
-        boolean allUploaded = uploadedImages.stream().allMatch(AwsS3::isUploadSuccessful);
-        boolean allDeleted = deletedImages.size() == failedToDeleteImages.size();
-
-        if (!allUploaded || !allDeleted) {
-            log.error("S3 operations failed. Uploaded: {}, Deleted: {}, Failed to delete: {}",
-                    uploadedImages.size(), deletedImages.size() - failedToDeleteImages.size(), failedToDeleteImages.size());
-            throw new FileUploadFailureException("S3 파일 업로드 또는 삭제에 실패했습니다.");
-        }
-    }
-
-    @Transactional(readOnly = true)
-    public void verifyBoardUpdate(Long boardId, List<Image> expectedImages) {
-        Board board = findBoardById(boardId);
-        if (!board.getImages().equals(expectedImages)) {
-            log.error("Database synchronization failed. BoardId: {}", boardId);
-            throw new RuntimeException("Database synchronization failed.");
-        }
-    }
-
-    private void rollbackS3Operation(List<AwsS3> uploadedImages, Long memberId, Long boardId, List<Image> deletedImages) {
-        // 업로드된 이미지 삭제
-        for (AwsS3 uploadedImage : uploadedImages) {
-            String filePath = String.format("member/%d/%d", memberId, boardId);
-            boolean deleted = awsService.deleteFileV2(filePath, uploadedImage.getUploadFileName());
-            if (!deleted) {
-                log.error("Failed to rollback uploaded image. ImageId: {}", uploadedImage.getUploadFileName());
-            }
-        }
-        /* 삭제된 이미지 복구
-        for (Image deletedImage : deletedImages) {
-            log.warn("Cannot recover deleted image. ImageId: {}", deletedImage.getUniqueName());
-        }
-        */
-    }
-
     @Transactional
-    public ImageUpdateResultDTO updateBoardV3(Long boardId, String title, String description, String activityLocation,
-                                              List<String> activityDates, List<String> activityTimes,
-                                              List<MultipartFile> addedImages, List<Long> deletedImageIds) {
+    public BoardResponseDTO updateBoardV4(Long boardId, BoardPatchDTO updateDTO) {
         Board board = findBoardById(boardId);
         Long memberId = board.getMember().getId();
-        List<Image> imagesToDelete = findImagesToDelete(board.getImages(), deletedImageIds);
 
         try {
-            // 이미지 삭제 처리
-            List<Image> failedToDeleteImages = deleteImages(board, imagesToDelete);
+            updateBoardImage(board, updateDTO.getImageFiles());
+            updateBoardDetails(board, updateDTO);
 
-            // S3 이미지 업로드
-            List<AwsS3> uploadedImages = awsService.uploadBoardFilesV3(memberId, boardId, addedImages);
-            List<Image> newImages = createImageEntities(uploadedImages, board);
-
-            // 새 이미지 및 Board 업데이트
-            List<Image> updatedImages = updatedBoardImage(board, imagesToDelete, newImages);
-
-            board.updateBoardWithImages(title, description, activityLocation, updatedImages);
-            updateActivityDates(board, activityDates);
-            updateActivityTimes(board, activityTimes);
-
-            // 변경사항 저장
             boardRepository.save(board);
-            imageRepository.saveAll(newImages);
+            log.info("Board updated successfully. Board id: {}", board.getId());
 
-            List<Image> successfullyDeletedImages = imagesToDelete.stream()
-                    .filter(image -> !failedToDeleteImages.contains(image))
-                    .collect(Collectors.toList());
-
-            verifyS3Operation(uploadedImages, successfullyDeletedImages, failedToDeleteImages);
-            verifyBoardUpdate(boardId, updatedImages);
-
-
-            verifyS3Operation(uploadedImages, successfullyDeletedImages, failedToDeleteImages);
-            verifyBoardUpdate(boardId, updatedImages);
-
-            return new ImageUpdateResultDTO(uploadedImages, newImages, successfullyDeletedImages, failedToDeleteImages);
-        } catch (FileUploadFailureException e) {
-            rollbackS3Operation(new ArrayList<>(), memberId, boardId, imagesToDelete);
-            throw new FileUploadFailureException("파일 업로드에 실패했습니다.", e);
+            return BoardResponseDTO.toDto(board);
+        } catch (Exception e) {
+            log.error("Failed to update board. BoardId: {}", boardId, e);
+            throw new FileUploadFailureException("게시글 업데이트에 실패했습니다.", e);
         }
     }
 
-    private boolean deleteExistingImage(String imageUrl) {
-        if (imageUrl == null && imageUrl.isEmpty()) {
+    private void updateBoardImage(Board board, List<MultipartFile> imageFile) {
+        if (imageFile == null || imageFile.isEmpty() || imageFile.get(0).isEmpty()) {
+            log.info("No new image provided for board id: {}. Keeping existing image.", board.getId());
+            return;
+        }
+
+        Long memberId = board.getMember().getId();
+        try {
+                deleteExistingImages(board);
+            // 새 이미지 업로드
+            List<AwsS3> uploadedImage = awsService.uploadBoardV4(memberId, board.getId(), imageFile);
+            for (AwsS3 awsS3 : uploadedImage) {
+            Image newImage = new Image(uploadedImage.get(0).getOriginalFileName(), uploadedImage.get(0).getUploadFileUrl(), uploadedImage.get(0).getUploadFilePath());
+            board.addImages(newImage);
+            log.info("New image uploaded for board id: {}. New URL: {}", board.getId(), newImage.getS3Url());
+            }
+        } catch (Exception e) {
+            log.error("Failed to update board image for board id: {}", board.getId(), e);
+            throw new FileUploadFailureException("Failed to update board image", e);
+        }
+    }
+
+    private void updateBoardDetails(Board board, BoardPatchDTO updateDTO) {
+        board.update(
+                updateDTO.getTitle(),
+                updateDTO.getDescription(),
+                updateDTO.getActivityLocation()
+        );
+        updateActivityDates(board, updateDTO.getActivityDate());
+        updateActivityTimes(board, updateDTO.getActivityTime());
+    }
+
+    private void deleteExistingImages(Board board) {
+        if (!board.getImages().isEmpty()) {
+            for (Image existingImage : board.getImages()) {
+                deleteExistingImage(existingImage.getS3Url());
+            }
+            board.getImages().clear();
+            log.info("Existing images deleted for board id: {}", board.getId());
+        }
+    }
+
+    private boolean deleteExistingImage(String s3Url) {
+        if (s3Url == null || s3Url.isEmpty()) {
             log.debug("No existing image to delete");
             return true;
         }
 
         try {
-            boolean deleted = awsService.deleteFileV3(imageUrl);
+            boolean deleted = awsService.deleteFileV3(s3Url);
             if (deleted) {
-                log.info("Old profile image deleted successfully: {}", imageUrl);
+                log.info("Old profile image deleted successfully: {}", s3Url);
                 return true;
             } else {
-                log.warn("Failed to delete old profile image: {}", imageUrl);
+                log.warn("Failed to delete old profile image: {}", s3Url);
                 return false;
             }
         } catch (Exception e) {
-            log.error("Failed to delete old profile image: {}", imageUrl, e);
+            log.error("Failed to delete old profile image: {}", s3Url, e);
             return false;
         }
     }
-
 }
 

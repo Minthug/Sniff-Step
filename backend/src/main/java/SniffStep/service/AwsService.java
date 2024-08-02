@@ -2,6 +2,7 @@ package SniffStep.service;
 
 import SniffStep.common.config.S3Config;
 import SniffStep.dto.board.AwsS3;
+import SniffStep.entity.Board;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
@@ -167,15 +168,14 @@ public class AwsService {
                 .build();
     }
 
-    public AwsS3 uploadBoardV4(Long boardId, MultipartFile imageFile) throws Exception {
+    public List<AwsS3> uploadBoardV4(Long memberId, Long boardId, List<MultipartFile> imageFile) throws Exception {
         if (imageFile == null || imageFile.isEmpty()) {
             throw new FileUploadException("파일이 비어있습니다.");
         }
 
-        String uploadFilePath = String.format("member/%d/boards/%d", boardId);
-        List<MultipartFile> fileList = Collections.singletonList(imageFile);
+        String uploadFilePath = String.format("member/%d/boards/%d", memberId, boardId);
 
-        List<AwsS3> uploadResult = uploadFilesV3(uploadFilePath, fileList);
+        List<AwsS3> uploadResult = uploadFilesV3(uploadFilePath, imageFile);
 
         if (uploadResult.isEmpty()) {
             throw new FileUploadException("파일 업로드에 실패하였습니다.");
@@ -187,7 +187,7 @@ public class AwsService {
         }
 
         log.info("Board image uploaded successfully. URL: {}", boardId, result.getUploadFileUrl());
-        return result;
+        return uploadResult;
     }
 
     public AwsS3 uploadProfileV3(Long memberId, MultipartFile imageFile) throws Exception {
