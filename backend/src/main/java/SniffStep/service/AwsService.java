@@ -2,17 +2,15 @@ package SniffStep.service;
 
 import SniffStep.common.config.S3Config;
 import SniffStep.dto.board.AwsS3;
-import SniffStep.entity.Board;
 import com.amazonaws.AmazonServiceException;
+import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.DeleteObjectRequest;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.*;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,7 +29,7 @@ public class AwsService {
     private final AmazonS3Client amazonS3Client;
     private final S3Config s3Config;
 
-
+    @Value("${spring.cloud.aws.bucket}")
     private String bucketName;
 
     @PostConstruct
@@ -86,23 +84,45 @@ public class AwsService {
         return objectMetadata;
     }
 
-    public boolean deleteFileV2(String uploadFilePath, String uuidFileName) {
+    public boolean deleteFolder(Long memberId, Long boardId) {
+        String folderKey = String.format("members/%d/%d/", memberId, boardId);
 
         try {
-            String keyName = uploadFilePath + "/" + uuidFileName;
-            if (amazonS3Client.doesObjectExist(bucketName, keyName)) {
-                amazonS3Client.deleteObject(bucketName, keyName);
-                log.info("File delete is completed. KeyName: {}", keyName);
+            log.debug("Deleting post folder: {}", folderKey);
+            ObjectListing objectListing = amazonS3Client.listObjects(bucketName, folderKey);
+
+            if (objectListing.getObjectSummaries().isEmpty()) {
+                log.warn("Folder is empty. KeyName: {}", folderKey);
                 return true;
-            } else {
-                log.warn("File does not exist. KeyName: {}", keyName);
-                return false;
             }
+
+            for (S3ObjectSummary objectSummary : objectListing.getObjectSummaries()) {
+                amazonS3Client.deleteObject(bucketName, objectSummary.getKey());
+            }
+
+            while (objectListing.isTruncated()) {
+                log.debug("Listing next batch of objects");
+                objectListing = amazonS3Client.listNextBatchOfObjects(objectListing);
+                for (S3ObjectSummary file : objectListing.getObjectSummaries()) {
+                    log.debug("Attempting to delete object: {}", file.getKey());
+                    amazonS3Client.deleteObject(bucketName, file.getKey());
+                    log.debug("Successfully deleted object: {}", file.getKey());
+                }
+            }
+
+            log.debug("Attempting to delete folder object itself: {}", folderKey);
+            amazonS3Client.deleteObject(bucketName, folderKey);
+            log.info("Successfully deleted S3 folder: {}", folderKey);
+            return true;
         } catch (AmazonServiceException e) {
-            log.error("Failed to delete file", e);
-            throw new RuntimeException("Failed to delete file", e);
+            log.error("Failed to delete folder", e);
+            throw new RuntimeException("Failed to delete folder", e);
+        } catch (SdkClientException e) {
+            log.error("Failed to delete folder", e);
+            throw new RuntimeException("Failed to delete folder", e);
         }
     }
+
 
     public boolean deleteFileV3(String fileUrl) {
         try {

@@ -6,6 +6,7 @@ import SniffStep.entity.*;
 import SniffStep.repository.BoardRepository;
 import SniffStep.repository.ImageRepository;
 import SniffStep.repository.MemberRepository;
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3Client;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -125,37 +126,31 @@ public class BoardService {
     }
 
     @Transactional
-    public void deleteBoard(Long id) {
+    public void deleteBoardV2(Long id) {
         Board board = boardRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
         validateBoardWriter(board);
 
-        // 게시판의 모든 이미지 삭제
-        List<Image> failedToDeleteImages = deleteImages(board, new ArrayList<>(board.getImages()));
-        if (!failedToDeleteImages.isEmpty()) {
-            log.warn("Failed to delete some images for board: {}", id);
-            // 추가적인 에러 처리 로직
-        }
-        boardRepository.delete(board);
-    }
 
-    private List<Image> deleteImages(Board board, List<Image> imageToDelete) {
-        List<Image> failedToDeleteImages = new ArrayList<>();
-
-        for (Image image : imageToDelete) {
-            String filePath = String.format("member/%d/%d", board.getMember().getId(), board.getId());
-            boolean deleted = awsService.deleteFileV2(filePath, image.getUniqueName());
-            if (deleted) {
-                board.removeImage(image);
-                imageRepository.delete(image);
+        try {
+            boolean folderDeleted = awsService.deleteFolder(board.getMember().getId(), board.getId());
+            if (!folderDeleted) {
+                log.warn("Failed to delete folder for board: {}", id);
             } else {
-                log.warn("Failed to delete image. ImageId: {}", image.getUniqueName());
-                failedToDeleteImages.add(image);
+                log.info("Folder deleted successfully for board: {}", id);
             }
+
+            boardRepository.delete(board);
+            log.info("Board deleted successfully. Board id: {}", id);
+        } catch (AmazonServiceException e) {
+            log.error("Failed to delete board. Board id: {}", id, e);
+            throw new FileUploadFailureException("게시글 삭제에 실패했습니다.", e);
+        } catch (Exception e) {
+            log.error("Failed to delete board. Board id: {}", id, e);
+            throw new FileUploadFailureException("게시글 삭제에 실패했습니다.", e);
         }
-        return failedToDeleteImages;
     }
 
-    public void validateBoardWriter(Board board) {
+    public void validateBoardWriter (Board board) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserDetails) {
             UserDetails userDetails = (UserDetails) principal;
