@@ -183,6 +183,7 @@ public class BoardService {
             updateBoardDetails(board, updateDTO);
 
             boardRepository.save(board);
+            boardRepository.flush();
             log.info("Board updated successfully. Board id: {}", board.getId());
 
             return BoardResponseDTO.toDto(board);
@@ -204,9 +205,9 @@ public class BoardService {
             // 새 이미지 업로드
             List<AwsS3> uploadedImage = awsService.uploadBoardV4(memberId, board.getId(), imageFile);
             for (AwsS3 awsS3 : uploadedImage) {
-            Image newImage = new Image(uploadedImage.get(0).getOriginalFileName(), uploadedImage.get(0).getUploadFileUrl(), uploadedImage.get(0).getUploadFilePath());
-            board.addImages(newImage);
-            log.info("New image uploaded for board id: {}. New URL: {}", board.getId(), newImage.getS3Url());
+                Image newImage = new Image(uploadedImage.get(0).getOriginalFileName(), uploadedImage.get(0).getUploadFileUrl(), uploadedImage.get(0).getUploadFilePath());
+                board.addImages(newImage);
+                log.info("New image uploaded for board id: {}. New URL: {}", board.getId(), newImage.getS3Url());
             }
         } catch (Exception e) {
             log.error("Failed to update board image for board id: {}", board.getId(), e);

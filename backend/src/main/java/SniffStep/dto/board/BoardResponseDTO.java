@@ -4,11 +4,13 @@ import SniffStep.dto.member.MemberDTO;
 import SniffStep.entity.ActivityDate;
 import SniffStep.entity.ActivityTime;
 import SniffStep.entity.Board;
+import SniffStep.entity.Image;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.ZoneId;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -29,15 +31,14 @@ public class BoardResponseDTO {
     private String updatedAt;
     private String profileUrl;
     private String nickname;
-    private String image;
+    private String imageUrl;
 
     public static BoardResponseDTO toDto(Board board) {
         MemberDTO memberDTO = MemberDTO.toDto(board.getMember());
 
-        String image = board.getImages().stream()
+        String imageUrl = board.getImages().stream()
+                .max(Comparator.comparing(Image::getCreatedAt))
                 .map(img -> ImageResponseDTO.toDto(img).getImageUrl())
-                .filter(Objects::nonNull)
-                .findFirst()
                 .orElse(null);
 
         return new BoardResponseDTO(
@@ -53,7 +54,8 @@ public class BoardResponseDTO {
                 board.getUpdatedAt().atZone(ZoneId.of("Asia/Seoul")).toInstant().toString(),
                 memberDTO.getImageUrl(),
                 memberDTO.getNickname(),
-                image
+                imageUrl
+
         );
     }
 }
