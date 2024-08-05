@@ -63,7 +63,7 @@ public class BoardController {
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping(value = "/edit/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PatchMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> editBoard(@PathVariable(value = "id") Long id,
                                        @Valid @ModelAttribute BoardPatchDTO request) {
         BoardResponseDTO boardResponseDTO = boardService.updateBoardV4(id, request);

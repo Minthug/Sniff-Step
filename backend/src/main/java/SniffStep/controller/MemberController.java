@@ -41,7 +41,7 @@ public class MemberController {
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping(value = "/edit/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PatchMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> editMember(@PathVariable(value = "id") Long id,
                                           @Valid @ModelAttribute MemberUpdateDTO memberUpdateDTO) {
         MemberResponseDTO memberResponseDTO = memberService.editMemberV3(id, memberUpdateDTO);
