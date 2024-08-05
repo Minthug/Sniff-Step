@@ -18,12 +18,9 @@ public class MemberDTO {
     private String imageUrl;
     private MemberType memberType;
 
-
-
     public static MemberDTO toDto(Member member) {
         if (member.getMemberType() == MemberType.GOOGLE) {
-            String googleImageUrl = "https://lh3.googleusercontent.com/a/" + member.getId();
-            member.updateProfileImageUrl(googleImageUrl);
+            member.updateProfileImageUrl(member.getImageUrl());
         } else if (member.getImageUrl() == null || member.getImageUrl().isEmpty()) {
             String defaultImageUrl = "https://sniff-step-s3-bucket.s3.ap-northeast-2.amazonaws.com/default_profile.jpeg";
             member.updateProfileImageUrl(defaultImageUrl);
