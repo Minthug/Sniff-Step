@@ -3,7 +3,6 @@ package SniffStep.controller;
 import SniffStep.dto.board.BoardCreatedRequestDTO;
 import SniffStep.dto.board.BoardPatchDTO;
 import SniffStep.dto.board.BoardResponseDTO;
-import SniffStep.dto.board.ImageUpdateResultDTO;
 import SniffStep.entity.Board;
 import SniffStep.service.BoardService;
 import jakarta.validation.Valid;
@@ -15,9 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -56,6 +52,13 @@ public class BoardController {
         return ResponseEntity.ok(boardService.searchBoardsV2(keyword, page));
     }
 
+    @PatchMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> editBoard(@PathVariable(value = "id") Long id,
+                                       @Valid @ModelAttribute BoardPatchDTO request) {
+        BoardResponseDTO boardResponseDTO = boardService.updateBoardV4(id, request);
+        return ResponseEntity.status(HttpStatus.OK).body(boardResponseDTO);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteBoard(@PathVariable(value = "id") Long id, @AuthenticationPrincipal UserDetails userDetails) {
 
@@ -63,10 +66,5 @@ public class BoardController {
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> editBoard(@PathVariable(value = "id") Long id,
-                                       @Valid @ModelAttribute BoardPatchDTO request) {
-        BoardResponseDTO boardResponseDTO = boardService.updateBoardV4(id, request);
-        return ResponseEntity.status(HttpStatus.OK).body(boardResponseDTO);
-    }
+
 }
