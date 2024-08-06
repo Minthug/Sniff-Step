@@ -29,9 +29,9 @@ cd Sniff-Step
 
 ## 연락처
 
-김민석 Backend Developer - [@jkisimmortal4@gmail.com](mailto:jkisimmortal4@gmail.com)
+김민석 Backend Developer - [jkisimmortal4@gmail.com](mailto:jkisimmortal4@gmail.com)
 
-김우석 Frontend Developer - [@vvsogi@gmail.com](mailto:vvsogi@gamil.com)
+김우석 Frontend Developer - [vvsogi@gmail.com](mailto:vvsogi@gamil.com)
 
 ## 라이선스
 
