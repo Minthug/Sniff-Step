@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -229,7 +232,35 @@ public class AwsService {
             throw new FileUploadException("업로드된 파일 URL이 비어있습니다.");
         }
 
-        log.info("Profile image uploaded successfully. URL: {}", memberId ,result.getUploadFileUrl());
+        log.info("Profile image uploaded successfully. URL: {}", memberId, result.getUploadFileUrl());
         return result;
+    }
+
+    @Async
+    public CompletableFuture<AwsS3> uploadFileAsync(MultipartFile file, String uploadFilePath) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return uploadSingleFile(file, uploadFilePath);
+            } catch (IOException e) {
+                log.error("File upload failed for file: {}", file.getOriginalFilename(), e);
+                return createFailedAwsS3(file.getOriginalFilename(), e.getMessage());
+            }
+        });
+    }
+
+    public CompletableFuture<List<AwsS3>> uploadFilesV3Async(String uploadFilePath, List<MultipartFile> multipartFiles) {
+        List<CompletableFuture<AwsS3>> futures = multipartFiles.stream()
+                .filter(file -> !file.isEmpty())
+                .map(file -> uploadFileAsync(file, uploadFilePath)
+                        .exceptionally(e -> {
+                            log.error("File upload failed for file: {}", file.getOriginalFilename(), e);
+                            return createFailedAwsS3(file.getOriginalFilename(), e.getMessage());
+                        }))
+                .collect(Collectors.toList());
+
+        return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
+                .thenApply(v -> futures.stream()
+                        .map(CompletableFuture::join)
+                        .collect(Collectors.toList()));
     }
 }
