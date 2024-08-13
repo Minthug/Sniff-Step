@@ -12,21 +12,16 @@ import SniffStep.dto.auth.SignUpRequestDTO;
 import SniffStep.repository.MemberRepository;
 import SniffStep.service.AuthService;
 import SniffStep.service.MemberService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.DuplicateMappingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.InvalidParameterException;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 
 @RequiredArgsConstructor

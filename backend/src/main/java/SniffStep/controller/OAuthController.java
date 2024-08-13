@@ -54,5 +54,4 @@ public class OAuthController {
     public String home() {
         return "redirect:/";
     }
-
 }
