@@ -3,7 +3,6 @@ package SniffStep.entity;
 import SniffStep.common.BaseTime;
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity

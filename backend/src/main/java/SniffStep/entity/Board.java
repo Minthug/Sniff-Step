@@ -112,19 +112,8 @@ public class Board extends BaseTime {
         image.assignToBoard(this);
     }
 
-    public void removeImage(Image image) {
-        this.images.remove(image);
-        image.assignToBoard(null);
-    }
-
     public List<Image> getImages() {
         return new ArrayList<>(images);
-    }
-
-    public void updateBoardWithImages(String title, String description, String activityLocation, List<Image> newImage) {
-        this.update(title, description, activityLocation);
-        this.images.clear();
-        initializeImages(newImage);
     }
 
 }
