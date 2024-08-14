@@ -38,7 +38,7 @@ public class BoardService {
     @Transactional
     public Board createBoard(BoardCreatedRequestDTO request, String username) {
         Member member = memberRepository.findByEmail(username)
-                .orElseThrow(() -> new MemberNotFoundException());
+                .orElseThrow(() -> new MemberNotFoundException("Member not found with email: " + username));
 
         Board board = new Board(
                 request.getTitle(),
@@ -216,13 +216,25 @@ public class BoardService {
     }
 
     private void updateBoardDetails(Board board, BoardPatchDTO updateDTO) {
+        List<ActivityDate> activityDates = updateDTO.getActivityDate() != null ?
+                updateDTO.getActivityDate().stream()
+                        .map(ActivityDate::fromString)
+                        .collect(Collectors.toList()) :
+                null;
+
+        List<ActivityTime> activityTimes = updateDTO.getActivityTime() != null ?
+                updateDTO.getActivityTime().stream()
+                        .map(ActivityTime::fromString)
+                        .collect(Collectors.toList()) :
+                null;
+
         board.update(
                 updateDTO.getTitle(),
                 updateDTO.getDescription(),
-                updateDTO.getActivityLocation()
+                updateDTO.getActivityLocation(),
+                activityDates,
+                activityTimes
         );
-        updateActivityDates(board, updateDTO.getActivityDate());
-        updateActivityTimes(board, updateDTO.getActivityTime());
     }
 
     private void deleteExistingImages(Board board) {

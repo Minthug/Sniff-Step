@@ -96,10 +96,13 @@ public class Board extends BaseTime {
                 .collect(Collectors.toList());
     }
 
-    public void update(String title, String description, String activityLocation) {
-        this.title = title;
-        this.description = description;
-        this.activityLocation = activityLocation;
+    public void update(String title, String description, String activityLocation,
+                       List<ActivityDate> activityDates, List<ActivityTime> activityTimes) {
+        if (title != null && !title.isEmpty()) this.title = title;
+        if (description != null) this.description = description;
+        if (activityLocation != null && !activityLocation.isEmpty()) this.activityLocation = activityLocation;
+        if (activityDates != null && !activityDates.isEmpty()) setActivityDateInternal(activityDates);
+        if (activityTimes != null && !activityTimes.isEmpty()) setActivityTimeInternal(activityTimes);
     }
 
     public boolean isOwnBoard(Member member) {

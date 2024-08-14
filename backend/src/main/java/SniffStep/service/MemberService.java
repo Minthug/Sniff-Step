@@ -45,26 +45,24 @@ public class MemberService {
     public MemberDTO findMember(Long id) {
         return memberRepository.findById(id)
                 .map(MemberDTO::toDto)
-                .orElseThrow(MemberNotFoundException::new);
+                .orElseThrow(() -> new MemberNotFoundException("Member not found with id: " + id));
     }
 
     @Transactional
     public void deleteMember(Long id) {
-        Member member = memberRepository.findById(id)
-                .orElseThrow(() -> new MemberNotFoundException());
-
+        Member member = findMemberById(id);
         memberRepository.delete(member);
     }
 
     @Transactional(readOnly = true)
     public ProfileDTO getProfile(String email) {
         Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new MemberNotFoundException());
+                .orElseThrow(() -> new MemberNotFoundException("Member not found with email: " + email));
         return ProfileDTO.fromMember(member);
     }
 
     @Transactional
-    public MemberResponseDTO editMemberV3(Long id, MemberUpdateDTO memberUpdateDTO) {
+    public MemberResponseDTO editMember(Long id, MemberUpdateDTO memberUpdateDTO) {
         log.info("Editing member with id: {}", id);
         Member member = findMemberById(id);
 
@@ -95,7 +93,7 @@ public class MemberService {
 
     private Member findMemberById(Long id) {
        return memberRepository.findById(id)
-                .orElseThrow(() -> new MemberNotFoundException());
+                .orElseThrow(() -> new MemberNotFoundException("Member not found with id: " + id));
     }
 
     private String encryptPasswordIfProvided(String password) {
