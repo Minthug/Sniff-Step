@@ -23,8 +23,7 @@ gradle-app.setting
 
 .idea
 
-application.yml
-*.yml
+application-prod.yml
 application.properties
 application-prod.properties
 build.gradle

@@ -1,0 +1,19 @@
+#version: '3.8'
+#
+#services:
+#  app:
+#    image: docker.io/minthug/sniff-step:latest
+#    ports:
+#      - "8081:8081"
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=prod
+#      - SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/postgres
+#      - SPRING_DATASOURCE_USERNAME=${}
+#      - SPRING_DATASOURCE_PASSWORD=${}
+#      - JWT_SECRET_KEY=${}
+#      - AWS_ACCESS_KEY=${}
+#      - AWS_SECRET_KEY=${}
+#      - GOOGLE_CLIENT_ID=${}
+#      - GOOGLE_CLIENT_SECRET=${}
+#    depends_on:
+#      - db
