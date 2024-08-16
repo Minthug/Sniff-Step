@@ -18,8 +18,8 @@ jobs:
             docker stop sniff-step || true
             docker rm sniff-step || true
             
-            docker run -d --name backend -p :8081:8081 \
-            -e SPRING_PROFILES_ACTIVE=prod \ 
+            docker run -d --name backend -p 8081:8081 \
+            -e SPRING_PROFILES_ACTIVE=prod \
             minthug/sniff-step:${{ github.sha }}
             
             docker exec -i nginx nginx -s reload
