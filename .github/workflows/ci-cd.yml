@@ -16,18 +16,26 @@ jobs:
           script: |
             set -e
             echo "Starting deployment process..."
-
-            cd ~/sniff-step-nest
+            cd ~/Sniff-Step
+            cd ~/backend
             git pull origin main
-            docker-compose --profile services build
-
-            echo "Stopping and removing backend service..."
-            docker-compose stop backend
-            docker-compose rm -f backend
-
-            echo "Starting backend service..."
-            docker-compose --profile services up -d
-
+            
+            echo "Building Docker image..."
+            docker build -t sniff-step:latest .
+            
+            echo "Stopping and removing existing container..."
+            docker stop sniff-step || true
+            docker rm sniff-step || true
+            
+            echo "Starting new container..."
+            docker run -d --name sniff-step -p 8081:8081 \
+              -e SPRING_PROFILES_ACTIVE=prod \
+              sniff-step:latest
+            
             echo "Deployment completed successfully!"
-
-            docker exec -i nginx nginx -s reload
+            
+            if docker ps | grep -q nginx; then
+              docker exec nginx nginx -s reload
+            else
+              echo "Nginx container not found or not running"
+            fi
