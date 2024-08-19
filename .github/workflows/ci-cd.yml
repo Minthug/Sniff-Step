@@ -14,6 +14,16 @@ jobs:
           key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
           port: ${{ secrets.SERVER_PORT }}
           script: |
-            set -e
-            cd /home/min
-            touch hello.txt
+            docker pull minthug/sniff-step:${{ github.sha }}
+            docker stop sniff-step || true
+            docker rm sniff-step || true
+            
+            docker run -d --name sniff-step -p 8081:8081 \
+            -e SPRING_PROFILES_ACTIVE=prod \
+            minthug/sniff-step:${{ github.sha }}
+            
+            if docker ps | grep -q nginx; then
+              docker exec nginx nginx -s reload
+            else
+              echo "Nginx container not found or not running"
+            fi
