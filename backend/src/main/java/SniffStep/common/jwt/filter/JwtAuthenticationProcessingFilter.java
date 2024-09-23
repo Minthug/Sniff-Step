@@ -97,50 +97,12 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
         jwtService.sendAccessAndRefreshToken(response, user.getEmail(), newRefreshToken);
     }
 
-    public void checkRefreshTokenAndReIssueAccessToken(HttpServletResponse response, String refreshToken) {
-        memberRepository.findByRefreshToken(refreshToken)
-                .ifPresentOrElse(
-                        user -> {
-                            String reIssuedRefreshToken = reIssueRefreshToken(user);
-                            jwtService.sendAccessAndRefreshToken(response, user.getEmail(), reIssuedRefreshToken);
-                        },
-                        () -> {
-                            log.warn("Refresh token is valid but member not found");
-                            throw new RuntimeException("Refresh token is valid but member not found");
-                        }
-                );
-    }
-
     public String reIssueRefreshToken(Member member) {
         String reIssueRefreshToken = jwtService.createToken(member.getEmail(), JwtTokenType.REFRESH_TOKEN);
         member.updateRefreshToken(reIssueRefreshToken);
         memberRepository.saveAndFlush(member);
         return reIssueRefreshToken;
     }
-
-    public void checkAccessTokenAndAuthentication(HttpServletRequest request,
-                HttpServletResponse response,
-                FilterChain filterChain) throws ServletException, IOException {
-        log.info("checkAccessTokenAndAuthentication() call");
-        jwtService.extractAccessToken(request)
-                .filter(jwtService::isTokenValid)
-                .ifPresent(accessToken -> jwtService.extractEmail(accessToken)
-                        .ifPresent(email -> memberRepository.findByEmail(email)
-                                .ifPresent(this::saveAuthentication)));
-
-        filterChain.doFilter(request, response);
-    }
-
-//    public void saveAuthentication(Member member) {
-//        UserDetails userDetails = org.springframework.security.core.userdetails.User.builder()
-//                .username(member.getEmail())
-//                .password("") // 소셜 로그인 사용자의 경우 비밀번호를 사용하지 않음
-//                .authorities(member.getRole().name())
-//                .build();
-//
-//        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//    }
 
     private void saveAuthentication(Member member) {
         UserDetails userDetails = createUserDetails(member);

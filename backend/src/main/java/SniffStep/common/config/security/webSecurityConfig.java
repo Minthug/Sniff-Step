@@ -20,6 +20,8 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
+import org.springframework.security.config.annotation.web.configurers.oauth2.client.OAuth2LoginConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,6 +32,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 @Configuration
 @RequiredArgsConstructor
@@ -44,43 +47,63 @@ public class webSecurityConfig {
     private final OAuthLoginFailureHandler oAuthLoginFailureHandler;
     private final CustomOAuthUserService customOAuthUserService;
 
+    private static final String[] PUBLIC_URLS = {
+            "/v1/auth/**", "/v1/upload/**", "/v1/boards","/oauth2/authorization/**", "/",
+            "/css/**", "/images/**", "/js/**", "/h2-console/**", "/favicon.ico", "/error", "/v1/oauth/**"
+    };
+
+    private static final String[] USER_ADMIN_AUTHORITIES = {"USER", "ADMIN"};
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .cors().configurationSource(configurationSource()).and()
-                .csrf().disable()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .formLogin().disable()
-                .httpBasic().disable()
-                .headers().frameOptions().disable()
-                .and()
-                .authorizeHttpRequests()
-                .requestMatchers("/v1/auth/**", "/v1/upload/**", "/v1/boards","/oauth2/authorization/**", "/",
-                        "/css/**", "/images/**", "/js/**", "/h2-console/**", "/favicon.ico", "/error", "/v1/oauth/**").permitAll()
+                .cors(cors -> cors.configurationSource(configurationSource()))
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .formLogin(form -> form.disable())
+                .httpBasic(basic -> basic.disable())
+                .headers(headers -> headers.frameOptions().disable())
+                .authorizeHttpRequests(auth -> configureAuthorizeHttpRequests(auth))
+                .oauth2Login(oauth2 -> configureOauth2Login(oauth2))
+                .addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class)
+                .addFilterBefore(jwtAuthenticationProcessingFilter(), CustomJsonUsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
+
+    private void configureAuthorizeHttpRequests(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry auth) {
+        auth
+                .requestMatchers(PUBLIC_URLS).permitAll()
                 .requestMatchers(HttpMethod.GET, "/v1/members", "/v1/members/{id}", "/v1/boards/{id}", "/v1/boards/search/**").permitAll()
-                .requestMatchers(HttpMethod.PATCH, "/v1/members/{id}").hasAnyAuthority("USER", "ADMIN")
-                .requestMatchers(HttpMethod.GET, "/v1/members/profile").hasAnyAuthority("USER", "ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/v1/members/**").hasAnyAuthority("USER", "ADMIN")
-                .requestMatchers(HttpMethod.POST, "/v1/boards/**").hasAnyAuthority("USER", "ADMIN")
-                .requestMatchers(HttpMethod.PATCH, "/v1/boards/**").hasAnyAuthority("USER", "ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/v1/boards/**").hasAnyAuthority("USER", "ADMIN")
-                .requestMatchers(HttpMethod.POST, "/v1/s3/").hasAnyAuthority("USER", "ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/v1/s3/resource").hasAnyAuthority("USER", "ADMIN")
-                .anyRequest().authenticated()
-                .and()
-                .oauth2Login()
+                .requestMatchers(HttpMethod.PATCH, "/v1/members/{id}").hasAnyAuthority(USER_ADMIN_AUTHORITIES);
+
+        configureUserAdminRequests(auth);
+
+        auth.anyRequest().authenticated();
+    }
+
+    private void configureUserAdminRequests(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry auth) {
+        auth
+                .requestMatchers(HttpMethod.GET, "/v1/members/profile").hasAnyAuthority(USER_ADMIN_AUTHORITIES)
+                .requestMatchers(HttpMethod.DELETE, "/v1/members/**").hasAnyAuthority(USER_ADMIN_AUTHORITIES)
+                .requestMatchers(HttpMethod.POST, "/v1/boards/**").hasAnyAuthority(USER_ADMIN_AUTHORITIES)
+                .requestMatchers(HttpMethod.PATCH, "/v1/boards/**").hasAnyAuthority(USER_ADMIN_AUTHORITIES)
+                .requestMatchers(HttpMethod.DELETE, "/v1/boards/**").hasAnyAuthority(USER_ADMIN_AUTHORITIES)
+                .requestMatchers(HttpMethod.POST, "/v1/s3/**").hasAnyAuthority(USER_ADMIN_AUTHORITIES)
+                .requestMatchers(HttpMethod.DELETE, "/v1/s3/resource").hasAnyAuthority(USER_ADMIN_AUTHORITIES);
+    }
+
+    private void authorizeUserAdminRequests(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry auth,
+                                  HttpMethod method, String patterns) {
+        auth.requestMatchers(method, patterns).hasAnyAuthority(USER_ADMIN_AUTHORITIES);
+    }
+
+    private void configureOauth2Login(OAuth2LoginConfigurer<HttpSecurity> oauth2) {
+        oauth2
                 .loginPage("/v1/oauth/oauth2/authorization/{provider}")
                 .successHandler(oAuthLoginSuccessHandler)
                 .failureHandler(oAuthLoginFailureHandler)
-                .userInfoEndpoint().userService(customOAuthUserService);
-
-        http.addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class);
-        http.addFilterBefore(jwtAuthenticationProcessingFilter(), CustomJsonUsernamePasswordAuthenticationFilter.class);
-
-        return http.build();
+                .userInfoEndpoint(userInfo -> userInfo.userService(customOAuthUserService));
     }
 
     @Bean
@@ -89,7 +112,7 @@ public class webSecurityConfig {
         configuration.setAllowedOrigins(Arrays.asList("https://sniffstep.com"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowCredentials(true);
-        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowedHeaders(Collections.singletonList("*"));
         configuration.setExposedHeaders(Arrays.asList("Authorization", "RefreshToken"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
