@@ -43,36 +43,29 @@ public class JwtService {
 
     private final MemberRepository memberRepository;
 
-    private static final String ACCESS_TOKEN_SUBJECT = "AccessToken";
-    private static final String REFRESH_TOKEN_SUBJECT = "RefreshToken";
-    private static final String EMAIL_CLAIM = "email";
-    private static final String BEARER = "Bearer ";
 
     public String createToken(String email, JwtTokenType tokenType) {
         Date now = new Date();
-        Date expiration;
-        String subject;
-
-        if (tokenType == JwtTokenType.ACCESS_TOKEN) {
-            expiration = new Date(now.getTime() + accessTokenExpirationPeriod);
-            subject = ACCESS_TOKEN_SUBJECT;
-        } else {
-            expiration = new Date(now.getTime() + refreshTokenExpirationPeriod);
-            subject = REFRESH_TOKEN_SUBJECT;
-        }
+        Date expiration = calculateExpirationDate(now, tokenType);
+        String subject = tokenType == JwtTokenType.ACCESS_TOKEN ? JwtConstans.ACCESS_TOKEN_SUBJECT : JwtConstans.REFRESH_TOKEN_SUBJECT;
 
         return JWT.create()
                 .withSubject(subject)
                 .withExpiresAt(expiration)
-                .withClaim(EMAIL_CLAIM, email)
+                .withClaim(JwtConstans.EMAIL_CLAIMS, email)
                 .sign(Algorithm.HMAC512(secretKey));
+    }
+
+    private Date calculateExpirationDate(Date now, JwtTokenType tokenType) {
+        long expirationPeriod = tokenType == JwtTokenType.ACCESS_TOKEN ? accessTokenExpirationPeriod : refreshTokenExpirationPeriod;
+        return new Date(now.getTime() + expirationPeriod);
     }
 
     private String extractEmailFromToken(String token) {
         DecodedJWT jwt = JWT.require(Algorithm.HMAC512(secretKey))
                 .build()
                 .verify(token);
-        return jwt.getClaim(EMAIL_CLAIM).asString();
+        return jwt.getClaim(JwtConstans.EMAIL_CLAIMS).asString();
     }
 
 
@@ -111,8 +104,8 @@ public class JwtService {
 
         // 1. 헤더에서 추출 시도 (Bearer 접두사 있는 경우)
         Optional<String> fromHeader = Optional.ofNullable(request.getHeader(refreshHeader))
-                .filter(token -> token.startsWith(BEARER))
-                .map(token -> token.replace(BEARER, ""));
+                .filter(token -> token.startsWith(JwtConstans.BEARER))
+                .map(token -> token.replace(JwtConstans.BEARER, ""));
         if (fromHeader.isPresent()) {
             log.info("Refresh Token extracted from header with Bearer prefix");
             return fromHeader;
@@ -158,8 +151,8 @@ public class JwtService {
 
     public Optional<String> extractAccessToken(HttpServletRequest request) {
         return Optional.ofNullable(request.getHeader(accessHeader))
-                .filter(accessToken -> accessToken.startsWith(BEARER))
-                .map(accessToken -> accessToken.replace(BEARER, ""));
+                .filter(accessToken -> accessToken.startsWith(JwtConstans.BEARER))
+                .map(accessToken -> accessToken.replace(JwtConstans.BEARER, ""));
     }
 
     public Optional<String> extractEmail(String accessToken) {
@@ -167,7 +160,7 @@ public class JwtService {
             return Optional.ofNullable(JWT.require(Algorithm.HMAC512(secretKey))
                     .build()
                     .verify(accessToken)
-                    .getClaim(EMAIL_CLAIM)
+                    .getClaim(JwtConstans.EMAIL_CLAIMS)
                     .asString());
         } catch (Exception e) {
             log.error("액세스 토큰이 유효하지 않습니다.");
@@ -246,6 +239,13 @@ public class JwtService {
         }
     }
 
+    class JwtConstans {
+        public static final String ACCESS_TOKEN_SUBJECT = "AccessToken";
+        public static final String REFRESH_TOKEN_SUBJECT = "RefreshToken";
+        public static final String EMAIL_CLAIMS = "email";
+        public static final String BEARER = "Bearer ";
+    }
+
 
     private static class CookieUtil {
         public static void addCookie(HttpServletResponse response, String name, String value, long maxAge, boolean httpOnly) {
@@ -284,6 +284,5 @@ public class JwtService {
                 }
             }
         }
-
     }
 }

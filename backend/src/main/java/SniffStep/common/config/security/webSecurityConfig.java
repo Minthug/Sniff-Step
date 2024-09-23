@@ -93,6 +93,7 @@ public class webSecurityConfig {
                 .requestMatchers(HttpMethod.DELETE, "/v1/s3/resource").hasAnyAuthority(USER_ADMIN_AUTHORITIES);
     }
 
+    // 선택적
     private void authorizeUserAdminRequests(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry auth,
                                   HttpMethod method, String patterns) {
         auth.requestMatchers(method, patterns).hasAnyAuthority(USER_ADMIN_AUTHORITIES);
