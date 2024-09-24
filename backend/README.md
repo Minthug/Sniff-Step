@@ -1,4 +1,4 @@
-# Sniff & Step
+Sniff & Step
 
 ## Welcome!
 
