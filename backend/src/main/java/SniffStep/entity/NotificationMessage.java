@@ -9,8 +9,8 @@ import java.text.MessageFormat;
 @RequiredArgsConstructor
 public enum NotificationMessage {
 
-    NEW_EVENT("뉴 이벤트"),
-    DEADLINE("마감 임박");
+    NEW_EVENT("뉴 이벤트", "새로운 이벤트가 있습니다: {0}"),
+    DEADLINE("마감 임박", "마감이 임박했습니다: {0}");
 
     private final String title;
     private final String contentFormat;
