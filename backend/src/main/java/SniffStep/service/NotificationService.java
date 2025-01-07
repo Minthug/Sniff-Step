@@ -1,8 +1,11 @@
 package SniffStep.service;
 
+import SniffStep.entity.Notification;
+import SniffStep.entity.NotificationType;
 import SniffStep.repository.EmitterRepository;
 import SniffStep.repository.MemberRepository;
 import SniffStep.service.request.ConnectNotificationCommand;
+import SniffStep.service.request.SendNotificationCommand;
 import SniffStep.service.response.NotificationResponse;
 import io.jsonwebtoken.io.IOException;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +49,30 @@ public class NotificationService {
                     .forEach(entry -> send(sseEmitter, emitterId, entry.getValue()));
         }
         return sseEmitter;
+    }
+
+    public void sendNotification(SendNotificationCommand sendNotificationCommand) {
+        Long memberId = sendNotificationCommand.getMemberId();
+        String title = sendNotificationCommand.getTitle();
+        String content = sendNotificationCommand.getContent();
+        NotificationType notificationType = sendNotificationCommand.getNotificationType();
+        verifyExistsUser(memberId);
+        Notification notification = Notification.builder()
+                .title(title)
+                .content(content)
+                .memberId(memberId)
+                .notificationType(notificationType)
+                .build();
+
+        Map<String, SseEmitter> emitters = emitterRepository.findAllByIdStartWith(memberId);
+        emitters.forEach((key, emitter) -> {
+            send(emitter, key, NotificationResponse.from(notification));
+        });
+    }
+
+    private void verifyExistsUser(Long memberId) {
+        memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("존재하지 않은 유저 입니다"));
     }
 
     /**
