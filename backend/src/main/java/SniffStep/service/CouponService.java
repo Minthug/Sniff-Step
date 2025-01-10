@@ -1,14 +1,22 @@
 package SniffStep.service;
 
+import SniffStep.common.exception.InvalidUsedCouponException;
+import SniffStep.common.exception.NotFoundException;
 import SniffStep.entity.Coupon;
+import SniffStep.entity.Member;
+import SniffStep.entity.UserCoupon;
 import SniffStep.repository.CouponRepository;
 import SniffStep.repository.MemberRepository;
 import SniffStep.repository.UserCouponRepository;
 import SniffStep.service.request.RegisterCouponCommand;
+import SniffStep.service.request.RegisterUserCouponCommand;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
 
 @Service
 @Slf4j
@@ -28,5 +36,39 @@ public class CouponService {
                 .endAt(command.getEndAt())
                 .build();
         return couponRepository.save(coupon).getId();
+    }
+
+    @Transactional
+    public Long registerUserCoupon(RegisterUserCouponCommand command) {
+        Member findMember = findMemberByMemberId(command.getMemberId());
+        Coupon findCoupon = findCouponByCouponId(command.getCouponId());
+
+        validateCouponExpiration(findCoupon.getEndAt());
+        validateAlreadyIssuedCoupon(findMember, findCoupon);
+
+        UserCoupon userCoupon = new UserCoupon(findMember, findCoupon);
+        return userCouponRepository.save(userCoupon).getId();
+    }
+
+    private void validateAlreadyIssuedCoupon(Member findMember, Coupon findCoupon) {
+        if (userCouponRepository.existsByMemberAndCoupon(findMember, findCoupon)) {
+                throw new InvalidUsedCouponException("이미 발급된 쿠폰입니다");
+        }
+    }
+
+    private void validateCouponExpiration(LocalDate expirationDate) {
+        if (expirationDate.isBefore(LocalDate.now())) {
+            throw new InvalidUsedCouponException("쿠폰이 이미 만료 되었습니다");
+        }
+    }
+
+    private Coupon findCouponByCouponId(Long couponId) {
+        return couponRepository.findById(couponId)
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 쿠폰 입니다"));
+    }
+
+    private Member findMemberByMemberId(Long memberId) {
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new NotFoundException("존재하지 않는 사용자 입니다"));
     }
 }

@@ -18,10 +18,10 @@ public class RegisterCouponCommand {
 
     public static RegisterCouponCommand from(RegisterCouponRequest request) {
         return new RegisterCouponCommand(
-                request.name(),
-                request.discount(),
-                request.description(),
-                request.endAt()
+                request.getName(),
+                request.getDiscount(),
+                request.getDescription(),
+                request.getEndAt()
         );
     }
 
