@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -23,6 +24,19 @@ public class CouponCacheService {
             redisTemplate.opsForValue().set(key, value, 1, TimeUnit.HOURS);
         } catch (JsonProcessingException ex) {
             throw new RuntimeException("Failed to cache coupon", ex);
+        }
+    }
+
+    public Optional<CouponDTO> getCacheCoupon(Long couponId) {
+        try {
+            String key = CACHE_KEY_PREFIX + couponId;
+            String value = redisTemplate.opsForValue().get(key);
+            if (value == null) {
+                return Optional.empty();
+            }
+            return Optional.of(objectMapper.readValue(value, CouponDTO.class));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Failed to get cached coupon", e);
         }
     }
 }
