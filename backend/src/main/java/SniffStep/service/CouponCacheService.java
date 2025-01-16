@@ -3,9 +3,12 @@ package SniffStep.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -13,9 +16,19 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class CouponCacheService {
 
-    private final StringRedisTemplate redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
     private final ObjectMapper objectMapper;
     private static final String CACHE_KEY_PREFIX = "coupon:light";
+    private static final String COUPON_INFO_PREFIX = "coupon:info";
+    private static final String AVAILABLE_COUPON_KEY = "coupons:available";
+
+    public void cacheCouponInfo(CouponDTO couponDTO) {
+        redisTemplate.opsForValue().set(
+                COUPON_INFO_PREFIX + couponDTO.getId(),
+                couponDTO,
+                Duration.ofDays(1)
+        );
+    }
 
     public void cacheCoupon(CouponDTO couponDTO) {
         try {
@@ -30,7 +43,7 @@ public class CouponCacheService {
     public Optional<CouponDTO> getCacheCoupon(Long couponId) {
         try {
             String key = CACHE_KEY_PREFIX + couponId;
-            String value = redisTemplate.opsForValue().get(key);
+            String value = (String) redisTemplate.opsForValue().get(key);
             if (value == null) {
                 return Optional.empty();
             }
@@ -38,5 +51,10 @@ public class CouponCacheService {
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Failed to get cached coupon", e);
         }
+    }
+
+    public void deleteCachedCoupon(Long couponId) {
+        String key = CACHE_KEY_PREFIX + couponId;
+        redisTemplate.delete(key);
     }
 }
