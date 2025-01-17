@@ -3,13 +3,13 @@ package SniffStep.controller;
 import SniffStep.service.CouponService;
 import SniffStep.service.request.RegisterCouponCommand;
 import SniffStep.service.request.RegisterCouponRequest;
+import SniffStep.service.request.RegisterUserCouponCommand;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
@@ -25,6 +25,16 @@ public class CouponController {
         RegisterCouponCommand command = RegisterCouponCommand.from(request);
         Long couponId = couponService.createCoupon(command);
         URI location = URI.create("/v1/coupons/" + couponId);
+        return ResponseEntity.created(location).build();
+    }
+
+    @PostMapping("/my-coupons/{couponId}")
+    public ResponseEntity<Void> RegisterUserCoupon(@PathVariable(value = "couponId") final long couponId,
+                                                   @PathVariable(value = "memberId") final long memberId) {
+        RegisterUserCouponCommand userCouponCommand = RegisterUserCouponCommand.of(memberId, couponId);
+        Long userCouponId = couponService.registerUserCoupon(userCouponCommand);
+
+        URI location = URI.create("/v1/coupons/" + userCouponId);
         return ResponseEntity.created(location).build();
     }
 }
