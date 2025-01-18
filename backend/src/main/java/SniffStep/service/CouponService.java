@@ -11,6 +11,7 @@ import SniffStep.repository.UserCouponRepository;
 import SniffStep.service.request.RegisterCouponCommand;
 import SniffStep.service.request.RegisterUserCouponCommand;
 import SniffStep.service.response.FindCouponsResponse;
+import SniffStep.service.response.FindIssuedCouponsResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cglib.core.Local;
@@ -56,6 +57,13 @@ public class CouponService {
     public FindCouponsResponse findCoupons() {
         List<Coupon> findCoupons = couponRepository.findByEndAtGreaterThanEqual(LocalDate.now());
         return FindCouponsResponse.from(findCoupons);
+    }
+
+    @Transactional(readOnly = true)
+    public FindIssuedCouponsResponse findIssuedCoupons(Long memberId) {
+        Member findMember = findMemberByMemberId(memberId);
+        List<UserCoupon> findUserCoupons = userCouponRepository.findByMemberAndIsUsedAndCouponEndAtAfter(findMember, false, LocalDate.now());
+        return FindIssuedCouponsResponse.from(findUserCoupons);
     }
 
     private void validateAlreadyIssuedCoupon(Member findMember, Coupon findCoupon) {

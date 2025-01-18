@@ -41,6 +41,7 @@ public class CouponController {
 
     @GetMapping
     public ResponseEntity<FindCouponsResponse> findCoupons() {
-        FindCouponsResponse findCouponsResponse = couponService.find
+        FindCouponsResponse findCouponsResponse = couponService.findCoupons();
+        return ResponseEntity.ok(findCouponsResponse);
     }
 }
