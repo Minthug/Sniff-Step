@@ -5,6 +5,7 @@ import SniffStep.service.request.RegisterCouponCommand;
 import SniffStep.service.request.RegisterCouponRequest;
 import SniffStep.service.request.RegisterUserCouponCommand;
 import SniffStep.service.response.FindCouponsResponse;
+import SniffStep.service.response.FindIssuedCouponsResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -43,5 +44,11 @@ public class CouponController {
     public ResponseEntity<FindCouponsResponse> findCoupons() {
         FindCouponsResponse findCouponsResponse = couponService.findCoupons();
         return ResponseEntity.ok(findCouponsResponse);
+    }
+
+    @GetMapping
+    public ResponseEntity<FindIssuedCouponsResponse> findIssuedCoupons(final long memberId) {
+        FindIssuedCouponsResponse issuedCoupons = couponService.findIssuedCoupons(memberId);
+        return ResponseEntity.ok(issuedCoupons);
     }
 }
