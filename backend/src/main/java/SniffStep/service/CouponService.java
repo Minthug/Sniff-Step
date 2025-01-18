@@ -10,6 +10,7 @@ import SniffStep.repository.MemberRepository;
 import SniffStep.repository.UserCouponRepository;
 import SniffStep.service.request.RegisterCouponCommand;
 import SniffStep.service.request.RegisterUserCouponCommand;
+import SniffStep.service.response.FindCouponsResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cglib.core.Local;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -48,6 +50,12 @@ public class CouponService {
 
         UserCoupon userCoupon = new UserCoupon(findMember, findCoupon);
         return userCouponRepository.save(userCoupon).getId();
+    }
+
+    @Transactional
+    public FindCouponsResponse findCoupons() {
+        List<Coupon> findCoupons = couponRepository.findByEndAtGreaterThanEqual(LocalDate.now());
+        return FindCouponsResponse.from(findCoupons);
     }
 
     private void validateAlreadyIssuedCoupon(Member findMember, Coupon findCoupon) {

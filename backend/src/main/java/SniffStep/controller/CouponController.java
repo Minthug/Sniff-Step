@@ -4,6 +4,7 @@ import SniffStep.service.CouponService;
 import SniffStep.service.request.RegisterCouponCommand;
 import SniffStep.service.request.RegisterCouponRequest;
 import SniffStep.service.request.RegisterUserCouponCommand;
+import SniffStep.service.response.FindCouponsResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -36,5 +37,10 @@ public class CouponController {
 
         URI location = URI.create("/v1/coupons/" + userCouponId);
         return ResponseEntity.created(location).build();
+    }
+
+    @GetMapping
+    public ResponseEntity<FindCouponsResponse> findCoupons() {
+        FindCouponsResponse findCouponsResponse = couponService.find
     }
 }
