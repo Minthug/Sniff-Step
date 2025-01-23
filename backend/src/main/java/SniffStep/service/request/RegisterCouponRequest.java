@@ -62,4 +62,3 @@ public class RegisterCouponRequest {
         this.endAt = endAt;
     }
 }
-}
