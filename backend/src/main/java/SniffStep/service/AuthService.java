@@ -6,7 +6,7 @@ import SniffStep.common.exception.LoginFailureException;
 import SniffStep.common.exception.NotFoundException;
 import SniffStep.common.jwt.dto.TokenDto;
 import SniffStep.common.jwt.service.JwtService;
-import SniffStep.dto.auth.LoginDTO;
+import SniffStep.dto.auth.LoginRequest;
 import SniffStep.dto.auth.SignUpRequestDTO;
 import SniffStep.entity.JwtTokenType;
 import SniffStep.entity.Member;
@@ -56,9 +56,9 @@ public class AuthService {
     }
 
     @Transactional
-    public TokenDto login(LoginDTO loginDTO) {
+    public TokenDto login(LoginRequest loginRequest) {
         // 이메일로 회원 정보 조회
-        Member member = memberRepository.findByEmail(loginDTO.getEmail())
+        Member member = memberRepository.findByEmail(loginRequest.email())
                 .orElseThrow(() -> new NotFoundException("회원 정보를 찾을 수 없습니다."));
 
         if (member.getMemberType() == null) {
@@ -68,7 +68,7 @@ public class AuthService {
 
         // 비밀번호 일치 여부 확인
         if (member.getMemberType() == MemberType.GENERAL) {
-            if (!encoder.matches(loginDTO.getPassword(), member.getPassword())) {
+            if (!encoder.matches(loginRequest.password(), member.getPassword())) {
                 throw new LoginFailureException("비밀번호가 일치하지 않습니다.");
             }
         }

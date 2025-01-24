@@ -6,7 +6,7 @@ import SniffStep.common.exception.LoginFailureException;
 import SniffStep.common.exception.NotFoundException;
 import SniffStep.common.jwt.dto.TokenDto;
 import SniffStep.common.jwt.service.JwtService;
-import SniffStep.dto.auth.LoginDTO;
+import SniffStep.dto.auth.LoginRequest;
 import SniffStep.dto.auth.ProfileDTO;
 import SniffStep.dto.auth.SignUpRequestDTO;
 import SniffStep.repository.MemberRepository;
@@ -75,10 +75,10 @@ public class AuthController {
 
     // 로그인
     @PostMapping("/signin")
-    public ResponseEntity login(@RequestBody LoginDTO loginDTO) {
+    public ResponseEntity login(@RequestBody LoginRequest request) {
 
         try {
-            return ResponseEntity.ok(authService.login(loginDTO));
+            return ResponseEntity.ok(authService.login(request));
         } catch (LoginFailureException e) {
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
