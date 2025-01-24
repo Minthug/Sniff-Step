@@ -7,7 +7,6 @@ import SniffStep.common.exception.NotFoundException;
 import SniffStep.common.jwt.dto.TokenDto;
 import SniffStep.common.jwt.service.JwtService;
 import SniffStep.dto.auth.LoginRequest;
-import SniffStep.dto.auth.ProfileDTO;
 import SniffStep.dto.auth.ProfileRequest;
 import SniffStep.dto.auth.SignUpRequestDTO;
 import SniffStep.repository.MemberRepository;
