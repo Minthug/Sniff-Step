@@ -8,7 +8,7 @@ import SniffStep.common.jwt.dto.TokenDto;
 import SniffStep.common.jwt.service.JwtService;
 import SniffStep.dto.auth.LoginRequest;
 import SniffStep.dto.auth.ProfileRequest;
-import SniffStep.dto.auth.SignUpRequestDTO;
+import SniffStep.dto.auth.SignUpRequest;
 import SniffStep.repository.MemberRepository;
 import SniffStep.service.AuthService;
 import SniffStep.service.MemberService;
@@ -37,18 +37,18 @@ public class AuthController {
 
     // 자체 회원가입
     @PostMapping("/signup")
-    public ResponseEntity signup(@RequestBody SignUpRequestDTO signUpRequestDTO) throws Exception {
-        if (signUpRequestDTO.getEmail() == null || signUpRequestDTO.getEmail().trim().isEmpty()) {
+    public ResponseEntity signup(@RequestBody SignUpRequest request) throws Exception {
+        if (request.email() == null || request.email().trim().isEmpty()) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body(Map.of("error", "이메일 주소를 입력해주세요."));
         }
-        if (signUpRequestDTO.getPassword() == null || signUpRequestDTO.getPassword().trim().isEmpty()) {
+        if (request.password() == null || request.password().trim().isEmpty()) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body(Map.of("error", "비밀번호를 입력해주세요."));
         }
-        if (signUpRequestDTO.getNickname() == null || signUpRequestDTO.getNickname().trim().isEmpty()) {
+        if (request.nickname() == null || request.nickname().trim().isEmpty()) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body(Map.of("error", "닉네임을 입력해주세요."));
@@ -56,7 +56,7 @@ public class AuthController {
 
 
         try {
-            authService.signup(signUpRequestDTO);
+            authService.signup(request);
             return ResponseEntity.ok().body(Map.of("Message", "회원가입 성공하였습니다"));
         } catch (DuplicateEmailException e) {
             return ResponseEntity

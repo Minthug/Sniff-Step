@@ -7,7 +7,7 @@ import SniffStep.common.exception.NotFoundException;
 import SniffStep.common.jwt.dto.TokenDto;
 import SniffStep.common.jwt.service.JwtService;
 import SniffStep.dto.auth.LoginRequest;
-import SniffStep.dto.auth.SignUpRequestDTO;
+import SniffStep.dto.auth.SignUpRequest;
 import SniffStep.entity.JwtTokenType;
 import SniffStep.entity.Member;
 import SniffStep.entity.MemberRole;
@@ -36,17 +36,17 @@ public class AuthService {
 
 
     @Transactional
-    public void signup(SignUpRequestDTO signUpRequestDTO) throws Exception {
-        validateUniqueInfo(signUpRequestDTO);
-        validateRequiredFields(signUpRequestDTO);
+    public void signup(SignUpRequest request) throws Exception {
+        validateUniqueInfo(request);
+        validateRequiredFields(request);
 
         Member member = Member.builder()
-                .email(signUpRequestDTO.getEmail())
-                .password(signUpRequestDTO.getPassword())
-                .nickname(signUpRequestDTO.getNickname())
-                .introduce(signUpRequestDTO.getIntroduce())
-                .phoneNumber(signUpRequestDTO.getPhoneNumber())
-                .imageUrl(signUpRequestDTO.getImageUrl())
+                .email(request.email())
+                .password(request.password())
+                .nickname(request.nickname())
+                .introduce(request.introduce())
+                .phoneNumber(request.phoneNumber())
+                .imageUrl(request.imageUrl())
                 .role(MemberRole.USER)
                 .memberType(MemberType.GENERAL)
                 .build();
@@ -119,26 +119,26 @@ public class AuthService {
                 });
     }
 
-    private void validateUniqueInfo(SignUpRequestDTO dto) {
-        if (memberRepository.findByEmail(dto.getEmail()).isPresent()) {
+    private void validateUniqueInfo(SignUpRequest dto) {
+        if (memberRepository.findByEmail(dto.email()).isPresent()) {
             throw new DuplicateEmailException("이미 존재하는 이메일입니다.");
         }
 
-        if (memberRepository.findByNickname(dto.getNickname()).isPresent()) {
+        if (memberRepository.findByNickname(dto.nickname()).isPresent()) {
             throw new DuplicateNicknameException("이미 존재하는 닉네임입니다.");
         }
     }
 
-    private void validateRequiredFields(SignUpRequestDTO dto) {
-        if (StringUtils.isEmpty(dto.getEmail())) {
+    private void validateRequiredFields(SignUpRequest dto) {
+        if (StringUtils.isEmpty(dto.email())) {
             throw new InvalidParameterException("이메일은 필수 입력값입니다.");
         }
 
-        if (StringUtils.isBlank(dto.getPassword())) {
+        if (StringUtils.isBlank(dto.password())) {
             throw new InvalidParameterException("비밀번호는 필수 입력값입니다.");
         }
 
-        if (StringUtils.isBlank(dto.getNickname())) {
+        if (StringUtils.isBlank(dto.nickname())) {
             throw new InvalidParameterException("닉네임은 필수 입력값입니다.");
         }
 
