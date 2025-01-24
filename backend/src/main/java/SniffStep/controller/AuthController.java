@@ -8,6 +8,7 @@ import SniffStep.common.jwt.dto.TokenDto;
 import SniffStep.common.jwt.service.JwtService;
 import SniffStep.dto.auth.LoginRequest;
 import SniffStep.dto.auth.ProfileDTO;
+import SniffStep.dto.auth.ProfileRequest;
 import SniffStep.dto.auth.SignUpRequestDTO;
 import SniffStep.repository.MemberRepository;
 import SniffStep.service.AuthService;
@@ -91,9 +92,9 @@ public class AuthController {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<ProfileDTO> getProfile(@AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<ProfileRequest> getProfile(@AuthenticationPrincipal UserDetails userDetails) {
         String email = userDetails.getUsername();
-        ProfileDTO profileDTO = memberService.getProfile(email);
+        ProfileRequest profileDTO = memberService.getProfile(email);
         return ResponseEntity.ok(profileDTO);
     }
 

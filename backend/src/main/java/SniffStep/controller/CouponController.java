@@ -44,7 +44,7 @@ public class CouponController {
         return ResponseEntity.ok(findCouponsResponse);
     }
 
-    @GetMapping
+    @GetMapping("/issued")
     public ResponseEntity<FindIssuedCouponsResponse> findIssuedCoupons(final long memberId) {
         FindIssuedCouponsResponse issuedCoupons = couponService.findIssuedCoupons(memberId);
         return ResponseEntity.ok(issuedCoupons);

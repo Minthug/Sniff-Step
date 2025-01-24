@@ -2,7 +2,7 @@ package SniffStep.service;
 
 import SniffStep.common.exception.AccessDeniedException;
 import SniffStep.common.exception.MemberNotFoundException;
-import SniffStep.dto.auth.ProfileDTO;
+import SniffStep.dto.auth.ProfileRequest;
 import SniffStep.dto.board.AwsS3;
 import SniffStep.dto.member.MemberDTO;
 import SniffStep.dto.member.MemberResponseDTO;
@@ -12,8 +12,6 @@ import SniffStep.repository.BoardRepository;
 import SniffStep.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -56,10 +54,10 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public ProfileDTO getProfile(String email) {
+    public ProfileRequest getProfile(String email) {
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new MemberNotFoundException("Member not found with email: " + email));
-        return ProfileDTO.fromMember(member);
+        return ProfileRequest.fromMember(member);
     }
 
     @Transactional
