@@ -5,7 +5,7 @@ import SniffStep.common.exception.MemberNotFoundException;
 import SniffStep.dto.auth.ProfileRequest;
 import SniffStep.dto.board.AwsS3;
 import SniffStep.dto.member.MemberDTO;
-import SniffStep.dto.member.MemberResponseDTO;
+import SniffStep.dto.member.MemberResponse;
 import SniffStep.dto.member.MemberUpdateResponse;
 import SniffStep.entity.Member;
 import SniffStep.repository.BoardRepository;
@@ -61,7 +61,7 @@ public class MemberService {
     }
 
     @Transactional
-    public MemberResponseDTO editMember(Long id, MemberUpdateResponse updateResponse) {
+    public MemberResponse editMember(Long id, MemberUpdateResponse updateResponse) {
         log.info("Editing member with id: {}", id);
         Member member = findMemberById(id);
 
@@ -75,7 +75,7 @@ public class MemberService {
             memberRepository.save(member);
             log.info("Member updated successfully. Member url: {}", member.getImageUrl());
 
-            return MemberResponseDTO.of(member);
+            return MemberResponse.of(member);
         } catch (Exception e) {
             log.error("Failed to update member", e);
             throw new RuntimeException("Failed to update member", e);

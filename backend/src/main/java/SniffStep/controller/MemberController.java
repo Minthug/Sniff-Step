@@ -1,7 +1,7 @@
 package SniffStep.controller;
 
 import SniffStep.dto.member.MemberDTO;
-import SniffStep.dto.member.MemberResponseDTO;
+import SniffStep.dto.member.MemberResponse;
 import SniffStep.dto.member.MemberUpdateResponse;
 import SniffStep.service.MemberService;
 import jakarta.validation.Valid;
@@ -35,8 +35,8 @@ public class MemberController {
     @PatchMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> editMember(@PathVariable(value = "id") Long id,
                                         @Valid @ModelAttribute MemberUpdateResponse updateResponse) {
-        MemberResponseDTO memberResponseDTO = memberService.editMember(id, updateResponse);
-        return ResponseEntity.status(HttpStatus.OK).body(memberResponseDTO);
+        MemberResponse response = memberService.editMember(id, updateResponse);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 
