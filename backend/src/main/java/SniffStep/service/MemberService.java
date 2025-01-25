@@ -6,7 +6,7 @@ import SniffStep.dto.auth.ProfileRequest;
 import SniffStep.dto.board.AwsS3;
 import SniffStep.dto.member.MemberDTO;
 import SniffStep.dto.member.MemberResponseDTO;
-import SniffStep.dto.member.MemberUpdateDTO;
+import SniffStep.dto.member.MemberUpdateResponse;
 import SniffStep.entity.Member;
 import SniffStep.repository.BoardRepository;
 import SniffStep.repository.MemberRepository;
@@ -61,16 +61,16 @@ public class MemberService {
     }
 
     @Transactional
-    public MemberResponseDTO editMember(Long id, MemberUpdateDTO memberUpdateDTO) {
+    public MemberResponseDTO editMember(Long id, MemberUpdateResponse updateResponse) {
         log.info("Editing member with id: {}", id);
         Member member = findMemberById(id);
 
         try {
             validateUserPermission(member);
 
-            String encryptedPassword = encryptPasswordIfProvided(memberUpdateDTO.getPassword());
-            AwsS3 updatedImage = updateProfileImage(member, memberUpdateDTO.getImageFiles());
-            updateMemberDetails(member, memberUpdateDTO, encryptedPassword, updatedImage.getUploadFileUrl());
+            String encryptedPassword = encryptPasswordIfProvided(updateResponse.password());
+            AwsS3 updatedImage = updateProfileImage(member, updateResponse.imageFiles());
+            updateMemberDetails(member, updateResponse, encryptedPassword, updatedImage.getUploadFileUrl());
 
             memberRepository.save(member);
             log.info("Member updated successfully. Member url: {}", member.getImageUrl());
@@ -150,11 +150,11 @@ public class MemberService {
     }
 
 
-    private void updateMemberDetails(Member member, MemberUpdateDTO memberUpdateDTO, String encryptedPassword, String updatedImageUrl) {
+    private void updateMemberDetails(Member member, MemberUpdateResponse updateResponse, String encryptedPassword, String updatedImageUrl) {
         member.updateMember(
-                memberUpdateDTO.getNickname(),
-                memberUpdateDTO.getIntroduce(),
-                memberUpdateDTO.getPhoneNumber(),
+                updateResponse.nickname(),
+                updateResponse.introduce(),
+                updateResponse.phoneNumber(),
                 encryptedPassword,
                 updatedImageUrl
         );
