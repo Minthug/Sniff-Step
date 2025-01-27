@@ -1,6 +1,5 @@
 package SniffStep.controller;
 
-import SniffStep.dto.member.MemberDTO;
 import SniffStep.dto.member.MemberDetailResponse;
 import SniffStep.dto.member.MemberResponse;
 import SniffStep.dto.member.MemberUpdateResponse;

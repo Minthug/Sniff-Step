@@ -42,6 +42,7 @@ public class BoardResponseDTO {
                 .orElse(null);
 
         return new BoardResponseDTO(
+
                 board.getId(),
                 memberDTO.getId(),
                 board.getTitle(),
