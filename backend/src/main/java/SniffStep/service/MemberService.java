@@ -4,7 +4,7 @@ import SniffStep.common.exception.AccessDeniedException;
 import SniffStep.common.exception.MemberNotFoundException;
 import SniffStep.dto.auth.ProfileRequest;
 import SniffStep.dto.board.AwsS3;
-import SniffStep.dto.member.MemberDTO;
+import SniffStep.dto.member.MemberDetailResponse;
 import SniffStep.dto.member.MemberResponse;
 import SniffStep.dto.member.MemberUpdateResponse;
 import SniffStep.entity.Member;
@@ -34,16 +34,16 @@ public class MemberService {
     private final BoardRepository boardRepository;
 
     @Transactional(readOnly = true)
-    public List<MemberDTO> findAllMember() {
+    public List<MemberDetailResponse> findAllMember() {
         return memberRepository.findAll().stream()
-                .map(MemberDTO::toDto)
+                .map(MemberDetailResponse::from)
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public MemberDTO findMember(Long id) {
+    public MemberDetailResponse findMember(Long id) {
         return memberRepository.findById(id)
-                .map(MemberDTO::toDto)
+                .map(MemberDetailResponse::from)
                 .orElseThrow(() -> new MemberNotFoundException("Member not found with id: " + id));
     }
 

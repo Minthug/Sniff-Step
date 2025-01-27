@@ -1,6 +1,7 @@
 package SniffStep.controller;
 
 import SniffStep.dto.member.MemberDTO;
+import SniffStep.dto.member.MemberDetailResponse;
 import SniffStep.dto.member.MemberResponse;
 import SniffStep.dto.member.MemberUpdateResponse;
 import SniffStep.service.MemberService;
@@ -21,14 +22,14 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping("")
-    public ResponseEntity<List<MemberDTO>> findAllMember() {
-        List<MemberDTO> members = memberService.findAllMember();
+    public ResponseEntity<List<MemberDetailResponse>> findAllMember() {
+        List<MemberDetailResponse> members = memberService.findAllMember();
         return ResponseEntity.ok(members);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MemberDTO> findMember(@PathVariable(value = "id") Long id) {
-        MemberDTO member = memberService.findMember(id);
+    public ResponseEntity<MemberDetailResponse> findMember(@PathVariable(value = "id") Long id) {
+        MemberDetailResponse member = memberService.findMember(id);
         return ResponseEntity.ok(member);
     }
 
