@@ -1,9 +1,6 @@
 package SniffStep.controller;
 
-import SniffStep.dto.board.BoardCreatedRequestDTO;
-import SniffStep.dto.board.BoardDetailResponse;
-import SniffStep.dto.board.BoardPatchDTO;
-import SniffStep.dto.board.BoardResponseDTO;
+import SniffStep.dto.board.*;
 import SniffStep.entity.Board;
 import SniffStep.service.BoardService;
 import jakarta.validation.Valid;
@@ -26,7 +23,7 @@ public class BoardController {
 
 
     @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<BoardDetailResponse> createBoard(@Valid @ModelAttribute BoardCreatedRequestDTO request,
+    public ResponseEntity<BoardDetailResponse> createBoard(@Valid @ModelAttribute BoardCreatedRequest request,
                                          @AuthenticationPrincipal UserDetails userDetails) {
         if (userDetails == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

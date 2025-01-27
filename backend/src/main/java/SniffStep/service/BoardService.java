@@ -36,27 +36,29 @@ public class BoardService {
     private final AmazonS3Client amazonS3Client;
 
     @Transactional
-    public Board createBoard(BoardCreatedRequestDTO request, String username) {
+    public Board createBoard(BoardCreatedRequest request, String username) {
         Member member = memberRepository.findByEmail(username)
                 .orElseThrow(() -> new MemberNotFoundException("Member not found with email: " + username));
 
+        //Null 예외 추가
+        List<ActivityDate> activityDates = (request.activityDate() != null) ? request.activityDate().stream().map(ActivityDate::fromString).collect(Collectors.toList()) : new ArrayList<>();
+
+        List<ActivityTime> activityTimes = (request.activityTime() != null) ? request.activityTime().stream().map(ActivityTime::fromString).collect(Collectors.toList()) : new ArrayList<>();
+
         Board board = new Board(
-                request.getTitle(),
-                request.getDescription(),
-                request.getActivityLocation(),
+                request.title(),
+                request.description(),
+                request.activityLocation(),
                 member,
                 new ArrayList<>(),
-                request.getActivityDate().stream()
-                        .map(ActivityDate::fromString)
-                        .collect(Collectors.toList()),
-                request.getActivityTime().stream()
-                        .map(ActivityTime::fromString)
-                        .collect(Collectors.toList()));
+                activityDates,
+                activityTimes
+            );
 
         board = boardRepository.save(board);
 
-        if (!request.getImages().isEmpty()) {
-            List<AwsS3> uploadFiles = awsService.uploadBoardFilesV3(member.getId(), board.getId(), request.getImages());
+        if (!request.images().isEmpty()) {
+            List<AwsS3> uploadFiles = awsService.uploadBoardFilesV3(member.getId(), board.getId(), request.images());
 
             List<Image> images = uploadFiles.stream()
                     .map(file -> new Image(file.getOriginalFileName(), file.getUploadFileUrl(), file.getUploadFilePath()))
@@ -77,13 +79,13 @@ public class BoardService {
     }
 
     @Transactional(readOnly = true)
-    public BoardFindAllWithPagingResponseDTO findAllBoards(Integer page) {
+    public BoardPageResponse findAllBoards(Integer page) {
         PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("id").descending());
         Page<Board> boards = boardRepository.findAll(pageRequest);
-        List<BoardFindAllResponseDTO> boardsWithDto = boards.stream()
-                .map(BoardFindAllResponseDTO::toDto)
+        List<BoardFindAllResponse> boardsWithDto = boards.stream()
+                .map(BoardFindAllResponse::from)
                 .collect(Collectors.toList());
-        return BoardFindAllWithPagingResponseDTO.toDto(boardsWithDto, new PageInfoDTO(boards));
+        return BoardPageResponse.of(boardsWithDto, PageInfo.from(boards));
     }
 
 
