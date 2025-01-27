@@ -1,6 +1,7 @@
 package SniffStep.controller;
 
 import SniffStep.dto.board.BoardCreatedRequestDTO;
+import SniffStep.dto.board.BoardDetailResponse;
 import SniffStep.dto.board.BoardPatchDTO;
 import SniffStep.dto.board.BoardResponseDTO;
 import SniffStep.entity.Board;
@@ -25,15 +26,15 @@ public class BoardController {
 
 
     @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<BoardResponseDTO> createBoard(@Valid @ModelAttribute BoardCreatedRequestDTO request,
+    public ResponseEntity<BoardDetailResponse> createBoard(@Valid @ModelAttribute BoardCreatedRequestDTO request,
                                          @AuthenticationPrincipal UserDetails userDetails) {
         if (userDetails == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         Board createBoard = boardService.createBoard(request, userDetails.getUsername());
-        BoardResponseDTO responseDTO = BoardResponseDTO.toDto(createBoard);
+        BoardDetailResponse response = BoardDetailResponse.from(createBoard);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{id}")

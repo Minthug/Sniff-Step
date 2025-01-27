@@ -70,9 +70,9 @@ public class BoardService {
     }
 
     @Transactional(readOnly = true)
-    public BoardResponseDTO findBoard(Long id) {
+    public BoardDetailResponse findBoard(Long id) {
         return boardRepository.findByIdWithMemberAAndImages(id)
-                .map(BoardResponseDTO::toDto)
+                .map(BoardDetailResponse::from)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
     }
 
@@ -88,7 +88,7 @@ public class BoardService {
 
 
     @Transactional(readOnly = true)
-    public BoardFindAllWithPagingResponseDTO searchBoardsV2(String keyword, Integer page) {
+    public BoardPageResponse searchBoardsV2(String keyword, Integer page) {
         PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("id").descending());
         Page<Board> boards = boardRepository.findAllByTitleContaining(keyword, pageRequest);
 
@@ -98,12 +98,12 @@ public class BoardService {
 
         List<Board> boardWithMember = boardRepository.findBoardsWithMemberByIds(boardIds);
 
-        List<BoardFindAllResponseDTO> boardsWithDto = boardWithMember.stream()
-                .map(BoardFindAllResponseDTO::toDto)
+        List<BoardFindAllResponse> boardsWithDto = boardWithMember.stream()
+                .map(BoardFindAllResponse::from)
                 .collect(Collectors.toList());
 
 
-        return BoardFindAllWithPagingResponseDTO.toFrom(boardsWithDto, new PageInfoDTO(boards), keyword);
+        return BoardPageResponse.of(boardsWithDto,PageInfo.from(boards), keyword);
     }
 
     public Board findBoardById(Long boardId) {
