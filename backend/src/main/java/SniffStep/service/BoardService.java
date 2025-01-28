@@ -176,7 +176,7 @@ public class BoardService {
     }
 
     @Transactional
-    public BoardResponseDTO updateBoardV4(Long boardId, BoardPatchDTO updateDTO) {
+    public BoardDetailResponse updateBoardV4(Long boardId, BoardPatchDTO updateDTO) {
         Board board = findBoardById(boardId);
         Long memberId = board.getMember().getId();
 
@@ -188,7 +188,7 @@ public class BoardService {
             boardRepository.flush();
             log.info("Board updated successfully. Board id: {}", board.getId());
 
-            return BoardResponseDTO.toDto(board);
+            return BoardDetailResponse.from(board);
         } catch (Exception e) {
             log.error("Failed to update board. BoardId: {}", boardId, e);
             throw new FileUploadFailureException("게시글 업데이트에 실패했습니다.", e);

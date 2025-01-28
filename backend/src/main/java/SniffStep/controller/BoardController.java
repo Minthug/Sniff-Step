@@ -53,8 +53,8 @@ public class BoardController {
     @PatchMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> editBoard(@PathVariable(value = "id") Long id,
                                        @Valid @ModelAttribute BoardPatchDTO request) {
-        BoardResponseDTO boardResponseDTO = boardService.updateBoardV4(id, request);
-        return ResponseEntity.status(HttpStatus.OK).body(boardResponseDTO);
+        BoardDetailResponse response = boardService.updateBoardV4(id, request);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @DeleteMapping("/{id}")
