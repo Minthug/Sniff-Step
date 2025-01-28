@@ -176,13 +176,13 @@ public class BoardService {
     }
 
     @Transactional
-    public BoardDetailResponse updateBoardV4(Long boardId, BoardPatchDTO updateDTO) {
+    public BoardDetailResponse updateBoardV4(Long boardId, BoardPatchRequest request) {
         Board board = findBoardById(boardId);
         Long memberId = board.getMember().getId();
 
         try {
-            updateBoardImage(board, updateDTO.getImageFiles());
-            updateBoardDetails(board, updateDTO);
+            updateBoardImage(board, request.imageFiles());
+            updateBoardDetails(board, request);
 
             boardRepository.save(board);
             boardRepository.flush();
@@ -217,23 +217,23 @@ public class BoardService {
         }
     }
 
-    private void updateBoardDetails(Board board, BoardPatchDTO updateDTO) {
-        List<ActivityDate> activityDates = updateDTO.getActivityDate() != null ?
-                updateDTO.getActivityDate().stream()
+    private void updateBoardDetails(Board board, BoardPatchRequest request) {
+        List<ActivityDate> activityDates = request.activityDate() != null ?
+                request.activityDate().stream()
                         .map(ActivityDate::fromString)
                         .collect(Collectors.toList()) :
                 null;
 
-        List<ActivityTime> activityTimes = updateDTO.getActivityTime() != null ?
-                updateDTO.getActivityTime().stream()
+        List<ActivityTime> activityTimes = request.activityTime() != null ?
+                request.activityTime().stream()
                         .map(ActivityTime::fromString)
                         .collect(Collectors.toList()) :
                 null;
 
         board.update(
-                updateDTO.getTitle(),
-                updateDTO.getDescription(),
-                updateDTO.getActivityLocation(),
+                request.title(),
+                request.description(),
+                request.activityLocation(),
                 activityDates,
                 activityTimes
         );
