@@ -7,6 +7,7 @@ import SniffStep.repository.MemberRepository;
 import SniffStep.service.request.ConnectNotificationCommand;
 import SniffStep.service.request.SendNotificationCommand;
 import SniffStep.service.response.NotificationResponse;
+import SniffStep.service.response.NotificationResponseCommand;
 import io.jsonwebtoken.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -81,11 +82,11 @@ public class NotificationService {
      * @param emitterId
      * @param data
      */
-    private void send(SseEmitter emitter, String emitterId, NotificationResponse data) {
+    private void send(SseEmitter emitter, String emitterId, NotificationResponseCommand data) {
         try {
             emitter.send(SseEmitter.event()
                     .id(emitterId)
-                    .name(data.getNotificationType().getValue())
+                    .name(data.notificationType().getValue())
                     .data(data));
         } catch (IOException | java.io.IOException ex) {
             emitterRepository.deleteById(emitterId);
