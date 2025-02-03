@@ -16,12 +16,12 @@ public class RegisterCouponCommand {
         this.endAt = endAt;
     }
 
-    public static RegisterCouponCommand from(RegisterCouponRequest request) {
+    public static RegisterCouponCommand from(RegisterCouponRequestCommand request) {
         return new RegisterCouponCommand(
-                request.getName(),
-                request.getDiscount(),
-                request.getDescription(),
-                request.getEndAt()
+                request.name(),
+                request.discount(),
+                request.description(),
+                request.endAt()
         );
     }
 

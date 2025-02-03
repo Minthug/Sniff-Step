@@ -2,7 +2,7 @@ package SniffStep.controller;
 
 import SniffStep.service.CouponService;
 import SniffStep.service.request.RegisterCouponCommand;
-import SniffStep.service.request.RegisterCouponRequest;
+import SniffStep.service.request.RegisterCouponRequestCommand;
 import SniffStep.service.request.RegisterUserCouponCommand;
 import SniffStep.service.response.FindCouponsResponse;
 import SniffStep.service.response.FindIssuedCouponsResponse;
@@ -21,7 +21,7 @@ public class CouponController {
     private final CouponService couponService;
 
     @PostMapping
-    public ResponseEntity<Void> createCoupon(@Valid @RequestBody RegisterCouponRequest request) {
+    public ResponseEntity<Void> createCoupon(@Valid @RequestBody RegisterCouponRequestCommand request) {
         RegisterCouponCommand command = RegisterCouponCommand.from(request);
         Long couponId = couponService.createCoupon(command);
         URI location = URI.create("/v1/coupons/" + couponId);
