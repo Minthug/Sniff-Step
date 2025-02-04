@@ -8,13 +8,12 @@ import SniffStep.entity.UserCoupon;
 import SniffStep.repository.CouponRepository;
 import SniffStep.repository.MemberRepository;
 import SniffStep.repository.UserCouponRepository;
-import SniffStep.service.request.RegisterCouponCommand;
+import SniffStep.service.request.RegisterCouponRequest;
 import SniffStep.service.request.RegisterUserCouponCommand;
 import SniffStep.service.response.FindCouponsResponse;
 import SniffStep.service.response.FindIssuedCouponsResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,12 +30,12 @@ public class CouponService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public Long createCoupon(RegisterCouponCommand command) {
+    public Long createCoupon(RegisterCouponRequest request) {
         Coupon coupon = Coupon.builder()
-                .name(command.getName())
-                .discount(command.getDiscount())
-                .description(command.getDescription())
-                .endAt(command.getEndAt())
+                .name(request.name())
+                .discount(request.discount())
+                .description(request.description())
+                .endAt(request.endAt())
                 .build();
         return couponRepository.save(coupon).getId();
     }
