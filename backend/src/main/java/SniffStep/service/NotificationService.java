@@ -5,7 +5,6 @@ import SniffStep.entity.NotificationType;
 import SniffStep.repository.EmitterRepository;
 import SniffStep.repository.MemberRepository;
 import SniffStep.service.request.ConnectNotificationCommand;
-import SniffStep.service.request.NotificationResponseCommand;
 import SniffStep.service.request.SendNotificationRequest;
 import SniffStep.service.response.NotificationResponse;
 import io.jsonwebtoken.io.IOException;
@@ -82,7 +81,7 @@ public class NotificationService {
      * @param emitterId
      * @param data
      */
-    private void send(SseEmitter emitter, String emitterId, NotificationResponseCommand data) {
+    private void send(SseEmitter emitter, String emitterId, NotificationResponse data) {
         try {
             emitter.send(SseEmitter.event()
                     .id(emitterId)
