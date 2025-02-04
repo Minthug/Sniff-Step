@@ -5,9 +5,9 @@ import SniffStep.entity.NotificationType;
 import SniffStep.repository.EmitterRepository;
 import SniffStep.repository.MemberRepository;
 import SniffStep.service.request.ConnectNotificationCommand;
-import SniffStep.service.request.SendNotificationCommand;
+import SniffStep.service.request.NotificationResponseCommand;
+import SniffStep.service.request.SendNotificationRequest;
 import SniffStep.service.response.NotificationResponse;
-import SniffStep.service.response.NotificationResponseCommand;
 import io.jsonwebtoken.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,11 +52,11 @@ public class NotificationService {
         return sseEmitter;
     }
 
-    public void sendNotification(SendNotificationCommand sendNotificationCommand) {
-        Long memberId = sendNotificationCommand.getMemberId();
-        String title = sendNotificationCommand.getTitle();
-        String content = sendNotificationCommand.getContent();
-        NotificationType notificationType = sendNotificationCommand.getNotificationType();
+    public void sendNotification(SendNotificationRequest request) {
+        Long memberId = request.memberId();
+        String title = request.title();
+        String content = request.content();
+        NotificationType notificationType = request.notificationType();
         verifyExistsUser(memberId);
         Notification notification = Notification.builder()
                 .title(title)
