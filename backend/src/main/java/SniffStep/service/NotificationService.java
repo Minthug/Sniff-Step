@@ -4,7 +4,7 @@ import SniffStep.entity.Notification;
 import SniffStep.entity.NotificationType;
 import SniffStep.repository.EmitterRepository;
 import SniffStep.repository.MemberRepository;
-import SniffStep.service.request.ConnectNotificationCommand;
+import SniffStep.service.request.ConnectNotificationRequest;
 import SniffStep.service.request.SendNotificationRequest;
 import SniffStep.service.response.NotificationResponse;
 import io.jsonwebtoken.io.IOException;
@@ -28,9 +28,9 @@ public class NotificationService {
     private final MemberRepository memberRepository;
 
 
-    public SseEmitter connectNotification(ConnectNotificationCommand command) {
-        Long memberId = command.getMemberId();
-        String lastEventId = command.getLastEventId();
+    public SseEmitter connectNotification(ConnectNotificationRequest request) {
+        Long memberId = request.memberId();
+        String lastEventId = request.lastEventId();
 
         String emitterId = format("{0}_{1}", memberId, System.currentTimeMillis());
         SseEmitter sseEmitter = new SseEmitter(DEFAULT_TIMEOUT);
@@ -43,7 +43,7 @@ public class NotificationService {
 
         send(sseEmitter, emitterId, format("[connected] MemberId={0}", memberId));
 
-        if (!command.getLastEventId().isEmpty()) {
+        if (!request.lastEventId().isEmpty()) {
             Map<String, SseEmitter> events = emitterRepository.findAllByIdStartWith(memberId);
             events.entrySet().stream().filter(entry -> lastEventId.compareTo(entry.getKey()) < 0)
                     .forEach(entry -> send(sseEmitter, emitterId, entry.getValue()));
