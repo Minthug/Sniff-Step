@@ -26,10 +26,10 @@ public class CouponCacheService {
     private static final String COUPON_INFO_PREFIX = "coupon:info";
     private static final String AVAILABLE_COUPON_KEY = "coupons:available";
 
-    public void cacheCoupon(CouponDTO couponDTO) {
+    public void cacheCoupon(CouponResponse response) {
         try {
-            String key = CACHE_KEY_PREFIX + couponDTO.getId();
-            String value = objectMapper.writeValueAsString(couponDTO);
+            String key = CACHE_KEY_PREFIX + response.id();
+            String value = objectMapper.writeValueAsString(response);
             redisTemplate.opsForValue().set(key, value, 1, TimeUnit.HOURS);
         } catch (JsonProcessingException ex) {
             throw new RuntimeException("Failed to cache coupon", ex);
@@ -62,14 +62,14 @@ public class CouponCacheService {
                 MDC.get("requestId"));
     }
 
-    public Optional<CouponDTO> getCacheCoupon(Long couponId) {
+    public Optional<CouponResponse> getCacheCoupon(Long couponId) {
         try {
             String key = CACHE_KEY_PREFIX + couponId;
             String value = (String) redisTemplate.opsForValue().get(key);
             if (value == null) {
                 return Optional.empty();
             }
-            return Optional.of(objectMapper.readValue(value, CouponDTO.class));
+            return Optional.of(objectMapper.readValue(value, CouponResponse.class));
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Failed to get cached coupon", e);
         }
