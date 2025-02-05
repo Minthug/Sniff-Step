@@ -3,7 +3,7 @@ package SniffStep.controller;
 import SniffStep.service.CouponService;
 import SniffStep.service.request.RegisterCouponRequest;
 import SniffStep.service.request.RegisterCouponRequestCommand;
-import SniffStep.service.request.RegisterUserCouponCommand;
+import SniffStep.service.request.RegisterUserCouponRequest;
 import SniffStep.service.response.FindCouponsResponse;
 import SniffStep.service.response.FindIssuedCouponsResponse;
 import jakarta.validation.Valid;
@@ -31,8 +31,8 @@ public class CouponController {
     @PostMapping("/my-coupons/{couponId}")
     public ResponseEntity<Void> RegisterUserCoupon(@PathVariable(value = "couponId") final long couponId,
                                                    @PathVariable(value = "memberId") final long memberId) {
-        RegisterUserCouponCommand userCouponCommand = RegisterUserCouponCommand.of(memberId, couponId);
-        Long userCouponId = couponService.registerUserCoupon(userCouponCommand);
+        RegisterUserCouponRequest request = RegisterUserCouponRequest.of(memberId, couponId);
+        Long userCouponId = couponService.registerUserCoupon(request);
 
         URI location = URI.create("/v1/coupons/" + userCouponId);
         return ResponseEntity.created(location).build();

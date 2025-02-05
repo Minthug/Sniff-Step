@@ -9,7 +9,7 @@ import SniffStep.repository.CouponRepository;
 import SniffStep.repository.MemberRepository;
 import SniffStep.repository.UserCouponRepository;
 import SniffStep.service.request.RegisterCouponRequest;
-import SniffStep.service.request.RegisterUserCouponCommand;
+import SniffStep.service.request.RegisterUserCouponRequest;
 import SniffStep.service.response.FindCouponsResponse;
 import SniffStep.service.response.FindIssuedCouponsResponse;
 import lombok.RequiredArgsConstructor;
@@ -41,9 +41,9 @@ public class CouponService {
     }
 
     @Transactional
-    public Long registerUserCoupon(RegisterUserCouponCommand command) {
-        Member findMember = findMemberByMemberId(command.getMemberId());
-        Coupon findCoupon = findCouponByCouponId(command.getCouponId());
+    public Long registerUserCoupon(RegisterUserCouponRequest request) {
+        Member findMember = findMemberByMemberId(request.memberId());
+        Coupon findCoupon = findCouponByCouponId(request.couponId());
 
         validateCouponExpiration(findCoupon.getEndAt());
         validateAlreadyIssuedCoupon(findMember, findCoupon);
