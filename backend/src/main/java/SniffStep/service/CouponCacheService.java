@@ -36,16 +36,16 @@ public class CouponCacheService {
         }
     }
 
-    public void bulkCacheCouponInfo(List<CouponRedisDto> coupons) {
-        Map<String, CouponRedisDto> couponMap = coupons.stream()
+    public void bulkCacheCouponInfo(List<CouponRedisResponse> coupons) {
+        Map<String, CouponRedisResponse> couponMap = coupons.stream()
                 .collect(Collectors.toMap(
-                        dto -> COUPON_INFO_PREFIX + dto.getCouponId(),
+                        dto -> COUPON_INFO_PREFIX + dto.couponId(),
                         dto -> dto
                 ));
         redisTemplate.opsForValue().multiSet(couponMap);
     }
 
-    public List<CouponRedisDto> getCouponsByIds(List<Long> couponIds) {
+    public List<CouponRedisResponse> getCouponsByIds(List<Long> couponIds) {
         List<String> keys = couponIds.stream()
                 .map(id -> COUPON_INFO_PREFIX + id)
                 .collect(Collectors.toList());
@@ -53,7 +53,7 @@ public class CouponCacheService {
 
         return values.stream()
                 .filter(Objects::nonNull)
-                .map(obj -> (CouponRedisDto) obj)
+                .map(obj -> (CouponRedisResponse) obj)
                 .collect(Collectors.toList());
     }
 
